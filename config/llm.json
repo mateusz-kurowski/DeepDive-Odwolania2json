@@ -12,7 +12,7 @@
     },
     "extra_body": {
       "provider": {
-        "require_parameters": true,
+        "require_parameters": false,
         "data_collection": "deny",
         "allow_fallbacks": true
       },
