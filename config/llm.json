@@ -1,0 +1,26 @@
+{
+  "_comment": "Parametry wywołań LLM po stronie aplikacji. LiteLLM jest zewnętrzny (URL i klucz w .env); retry, timeout i ceny ustawia się w jego panelu.",
+  "model": "env:LLM_MODEL",
+  "extraction": {
+    "temperature": 0,
+    "max_tokens": 8192,
+    "response_format": {
+      "type": "json_schema",
+      "name": "kio_odwolanie",
+      "strict": true,
+      "schema_path": "schemas/odwolanie.schema.json"
+    },
+    "extra_body": {
+      "provider": {
+        "require_parameters": true,
+        "data_collection": "deny",
+        "allow_fallbacks": true
+      },
+      "reasoning": { "enabled": false }
+    },
+    "validation": {
+      "max_retries": 2,
+      "retry_with_error_message": true
+    }
+  }
+}
