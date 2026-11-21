@@ -53,6 +53,8 @@ Przepływ dla każdego PDF-a:
 3. **Ekstrakcja:** konfiguracja klasy (plik YAML w `classes/`) zawiera: schemat pól, opisy pól dla modelu, przykłady few-shot, walidatory formatów, reguły szczególne w języku naturalnym. Model dostaje schemat i tekst i zwraca JSON przez `response_format` (JSON schema).
 4. **Cytaty:** dla każdego pola model zwraca cytat źródłowy; kod sprawdza dopasowanie do tekstu (dopasowanie przybliżone). Niezgodność oznacza obniżone zaufanie i może uruchomić ponowną próbę.
 5. **Walidacja i normalizacja:** walidatory formatów (NIP, KRS, REGON, BZP `YYYY/BZP########`, TED `NNNNNN-YYYY`, IBAN, ISO-daty, kwota jako liczba). Błędny format: jedna ponowna próba, potem `null`.
+Tryb ekstrakcji (przełącznik): `EXTRACTION_MODE=hybrid|llm_only` w env, nadpisywany flagą CLI `--mode`. Domyślnie `hybrid`. W `llm_only` krok 5 jest pominięty, czyli żadne walidatory ani normalizacja regexem nie ingerują w wynik, a pola zwraca sam model (nadal ze schematem i weryfikacją cytatów z kroku 4). Reguły w języku naturalnym z konfiguracji klasy działają w obu trybach. Przełącznik dotyczy całej warstwy regexowej naraz, nie pojedynczych walidatorów. Komenda `eval` przyjmuje ten sam przełącznik, więc F1 obu trybów porównujemy na 60 przykładach i wybieramy lepszy (liczba na slajd).
+
 6. **Zapis:** `output/caseN/<nazwa>.json` w dokładnym kształcie z `oczekiwane-json/`.
 
 Konfiguracja klasy (kluczowa dla punktacji): nowa klasa to nowy plik w `classes/`, wykrywany automatycznie. Słownik `czynnosc_powod_id` 1–11 mieszka w konfiguracji klasy `odwolanie`. Reguły (pierwszy „Zarzut" wyznacza pola `czynnosc_*`, konsorcjum oznacza dane Lidera, `prowadzacy_postepowanie` ∈ {null,1,0}, `przez-pelnomocnika` ∈ {1,0}) są opisane w konfiguracji.
