@@ -33,6 +33,10 @@ docker compose run --rm app classes    # lista wczytanych klas
 
 W kontenerze `localhost` to nie Twój komputer. Jeśli LiteLLM działa na hoście, ustaw `OPENAI_BASE_URL=http://host.docker.internal:4000/v1`.
 
+### Makefile
+
+Skróty do najczęstszych komend: `make help` (lista), `make install`, `make test`, `make run`, `make classes`, `make eval MODE=llm_only LIMIT=10 MODEL=<nazwa>`, `make eval-hybrid`, `make eval-llm-only`, `make docker-build`, `make docker-run`, `make clean`.
+
 ### Opcje `run`
 
 | Opcja | Znaczenie |
