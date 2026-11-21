@@ -52,6 +52,9 @@ def _parser() -> argparse.ArgumentParser:
     ev.add_argument("--out-json", type=Path, help="zapisz raport jako JSON")
     common(ev)
 
+    sw = sub.add_parser("sweep", help="seria ewaluacji na wariantach z pliku YAML")
+    sw.add_argument("config", type=Path, help="plik YAML z wariantami (np. sweeps/przyklad.yaml)")
+
     classes = sub.add_parser("classes", help="wypisz wczytane klasy")
     classes.add_argument("--classes", type=Path)
     return parser
@@ -108,6 +111,20 @@ def _write_summary(args, results, settings, llm) -> None:
     )
 
 
+def _sweep(args: argparse.Namespace, llm: LLM | None, env: Mapping[str, str] | None) -> int:
+    from src.sweep import SweepConfigError, run_sweep
+
+    try:
+        results = run_sweep(args.config, env=env, llm_factory=(lambda s: llm) if llm else None)
+    except (SweepConfigError, ClassConfigError) as exc:
+        print(f"Błąd: {exc}", file=sys.stderr)
+        return 2
+    for r in results:
+        status = r["error"] or f"F1 {r['micro_f1']:.4f} ({r['docs']} dok.)"
+        print(f"{r['name']} [{r['model']}]: {status}")
+    return 1 if any(r["error"] for r in results) else 0
+
+
 def main(
     argv: list[str] | None = None,
     llm: LLM | None = None,
@@ -115,6 +132,8 @@ def main(
 ) -> int:
     logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s", stream=sys.stderr)
     args = _parser().parse_args(argv)
+    if args.command == "sweep":
+        return _sweep(args, llm, env)
     settings = _settings(args, env)
     try:
         classes = load_classes(settings.classes_dir)

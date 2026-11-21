@@ -139,6 +139,16 @@ uv run python -m src eval --cache results/cache  # cache odpowiedzi LLM na dysku
 
 Raport pokazuje precision, recall i F1 per pole oraz łącznie, exact match dokumentu, poprawność klasyfikacji, odsetek poprawnych cytatów i odsetek `null` przy polach z wartością referencyjną. Skaner organizatora nie jest opublikowany, więc założenia porównania są w dokumencie projektowym (sekcja 7). `--dump` zapisuje dla każdego PDF-a predykcję, referencję, listę różnic i ślad cytatów (`<dump>/<przyklad>/<plik>.json`; `_missed.json` dla klas bez dokumentu). `run` zapisuje dodatkowo `trace/_summary.json` (klasa, błąd, plik wyjściowy, tokeny per plik). Wyniki pomiarów: `docs/benchmark.md`.
 
+### Seria ewaluacji na wielu wariantach
+
+Porównanie modeli i ustawień jednym poleceniem (ten sam klucz API z `.env`, wariant zmienia model, tryb, OCR):
+
+```bash
+uv run python -m src sweep sweeps/przyklad.yaml    # lub: make sweep CONFIG=sweeps/przyklad.yaml
+```
+
+Plik YAML (wzór: `sweeps/przyklad.yaml`) ma `out_dir`, wspólne ustawienia (`data`, `workers`, `cache`, `mode`, `limit`, `examples`, `ocr_backend`, `vlm_model`) i listę `variants` (`name`, `model` oraz opcjonalne nadpisania). Pełne wyniki każdego wariantu trafiają do `<out_dir>/<name>/` (`report.json`, `report.txt`, `dump/`), a zestawienie do `<out_dir>/summary.md` i `summary.json`. Wariant z błędem (np. brak dostępu do modelu) nie przerywa serii.
+
 ## Jak dodać klasę dokumentu
 
 Nic nie edytujesz w Pythonie. Przykład: `classes_examples/faktura.yaml`.

@@ -43,7 +43,7 @@ Kolejność wg wpływu na punkty: preselekcja to 100% F1 na ukrytym zbiorze ze s
 11. [ ] Pełny run 60 przykładów w obu trybach po wszystkich poprawkach (ostatni hybrid: F1 0.9956, do potwierdzenia na `llm_only`).
 12. [ ] Wybór modelu i licencja: zapytać organizatora, czy open-weights z własną licencją jest OK, przed zamrożeniem modelu.
 13. [ ] Czyszczenie `results/`: `smoke-hybrid-3.*`, `old/`, `SUMMARY.md` (czeka na decyzję).
-14. [ ] Target `eval-skany` w Makefile z parametrem `DATA`.
+14. [ ] Target `eval-skany` w Makefile z parametrem `DATA` (częściowo: `make sweep CONFIG=...`, `data` per wariant w YAML).
 15. [ ] Przed zgłoszeniem: `make requirements`, `make lint`, sprawdzenie linków w incognito.
 
 ## Kolejność
