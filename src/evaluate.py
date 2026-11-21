@@ -367,6 +367,31 @@ class Report:
         return "\n".join(lines)
 
 
+def _ref_class(ref: dict, classes: dict[str, ClassConfig]) -> str | None:
+    """Klasa referencji o nazwie niezgodnej z klasą (skany: `0001.json`): po kluczach najwyższego poziomu."""
+    keys = set(ref)
+    best, best_n = None, 0
+    for name, cfg in classes.items():
+        n = len(keys & {f.name for f in cfg.fields})
+        if n > best_n:
+            best, best_n = name, n
+    return best
+
+
+def _label(example: Path) -> str:
+    """Nazwa katalogu w dumpie; skany mają powtarzalne numery (odwolania/0001), więc dostają prefiks."""
+    return f"{example.parent.name}_{example.name}" if example.name.isdigit() else example.name
+
+
+def _find_examples(data_dir: Path) -> list[Path]:
+    """`przyklad_*` albo, gdy ich brak (skany, negatywne), każdy katalog z PDF-ami."""
+    data_dir = Path(data_dir)
+    examples = sorted(p for p in data_dir.glob("przyklad_*") if p.is_dir())
+    if examples:
+        return examples
+    return sorted({p.parent for p in data_dir.rglob("*.pdf")})
+
+
 def _evaluate_example(
     example: Path,
     classes: dict[str, ClassConfig],
@@ -376,11 +401,12 @@ def _evaluate_example(
 ) -> Report:
     report = Report()
     results = [process_pdf(p, classes, llm, settings) for p in sorted(example.glob("*.pdf"))]
-    refs = {
-        p.stem: json.loads(p.read_text(encoding="utf-8"))
-        for p in sorted(example.glob("*.json"))
-        if p.stem in classes
-    }
+    refs: dict[str, dict] = {}
+    for p in sorted(example.glob("*.json")):
+        ref = json.loads(p.read_text(encoding="utf-8"))
+        name = p.stem if p.stem in classes else _ref_class(ref, classes)
+        if name:
+            refs[name] = ref
     scored: dict[int, dict] = {}
     missed: dict[str, dict] = {}
     report.errors = sum(1 for r in results if r.error)
@@ -409,9 +435,9 @@ def _evaluate_example(
         if r.error:
             log.warning("%s: %s", r.path, r.error)
         if dump_dir is not None and r.path is not None:
-            _dump_result(dump_dir / example.name, r, scored.get(id(r)), classes)
+            _dump_result(dump_dir / _label(example), r, scored.get(id(r)), classes)
     if dump_dir is not None and missed:
-        _dump_json(dump_dir / example.name / "_missed.json", missed)
+        _dump_json(dump_dir / _label(example) / "_missed.json", missed)
     return report
 
 
@@ -451,7 +477,7 @@ def evaluate(
     dump_dir: Path | None = None,
     only: list[str] | None = None,
 ) -> Report:
-    examples = sorted(p for p in Path(data_dir).glob("przyklad_*") if p.is_dir())
+    examples = _find_examples(data_dir)
     if only:
         wanted = {example_name(x) for x in only}
         examples = [e for e in examples if e.name in wanted]

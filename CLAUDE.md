@@ -7,8 +7,8 @@ Kontekst projektu dla Claude'a i zespołu. Język: polski (nazwy techniczne po a
 PDF-y sprawy odwoławczej KIO → klasyfikacja dokumentu → ekstrakcja pól → JSON zgodny ze schematem UZP.
 
 - Wejście: `input/caseN/*.pdf`. Wyjście: `output/caseN/<ta-sama-nazwa>.json`.
-- Klasy: `odwolanie`, `pelnomocnictwo`, `przelew`. Dokument spoza klas = `nieznany`: bez pliku JSON, wpis w logu.
-- Ocena: etap I to F1 na ukrytym zbiorze min. 10 realnych spraw; etap II (maks. 3 finalistów) to 50% F1 i 50% elastyczność/rozszerzalność (regulamin i README) albo 50/30/20 (PDF zadania). **Rozbieżność niewyjaśniona** — zapytać organizatora.
+- Klasy: `odwolanie`, `pelnomocnictwo`, `przelew`. Dokument spoza klas = `nieznany`: pusty JSON `{}` pod oryginalną nazwą (FAQ organizatora), wpis w logu.
+- Ocena: etap I to F1 na ukrytym zbiorze min. 10 realnych spraw; preselekcja to 100% F1; etap II (maks. 3 finalistów) to 50% F1 i 50% elastyczność/rozszerzalność (FAQ organizatora v1.0 rozstrzyga rozbieżność z PDF-em: 50/50, nie 50/30/20).
 - Premie: nowe klasy dokumentów dodawane samą konfiguracją; przezroczystość ekstrakcji (cytaty źródłowe).
 - Nagroda 20 000 zł brutto, z przeniesieniem praw autorskich; zwycięzca dostarcza kod, Docker Compose, dokumentację i instrukcję dodawania klasy.
 
@@ -16,6 +16,7 @@ Pełny projekt: `docs/superpowers/specs/2026-11-21-odwolania2json-design.md`. **
 
 ## 2. Twarde ograniczenia (anty-cele)
 
+- **Model przez API w UE** (hostowane na terenie UE, dostawca z polityką prywatności), model musi dać się zainstalować lokalnie; sprawdzić lokalizację serwera LiteLLM przed zgłoszeniem.
 - **Wyłącznie open source, w tym modele (open-weights).** Żadnego Gemini/Claude/GPT w rozwiązaniu. Claude służy tylko do budowania kodu, nie jest zależnością działania.
 - Python 3.13+, zależności przez uv (`pyproject.toml`, `uv.lock`); `requirements.txt` wymagany przez organizatora w dostawie, generowany na żądanie: `make requirements`. CLI lub `start.bat`, bez GPU na docelowej maszynie (model wołany przez API zgodne z OpenAI: LiteLLM, vLLM, Ollama).
 - Logika klas **nie może** być zaszyta w kodzie: nowa klasa = nowy plik YAML w `classes/`. Jeśli coś wymaga edycji Pythona przy dodaniu klasy, to błąd projektu.
@@ -60,10 +61,11 @@ Pełny projekt: `docs/superpowers/specs/2026-11-21-odwolania2json-design.md`. **
 
 ## 7. Otwarte pytania do organizatora/mentorów
 
-1. Wagi oceny: 50/50 czy 50/30/20.
-2. Jak jury uruchamia rozwiązanie i skąd bierze model (endpoint od nas czy w Docker Compose).
-3. Jak dokładnie liczone jest F1 (pola puste, tablice, nadmiarowe pliki).
-4. Czy „wyłącznie open source, w tym modele" dopuszcza open-weights, czy wymaga licencji OSI. Zadać przed wyborem modelu.
+1. Jak dokładnie liczone jest F1 (pola `null`, tablice, normalizacja, nadmiarowe pliki).
+2. Czy „wyłącznie open source, w tym modele" dopuszcza open-weights z własną licencją, czy wymaga licencji OSI. Zadać przed wyborem modelu.
+3. Układ i skany w zbiorze testowym, kod `czynnosc_powod_id` 12, konsorcja (`docs/pytania-do-mentorow.md`).
+
+Rozstrzygnięte przez FAQ organizatora: wagi 50/50 (F1 / elastyczność), testy na komputerze bez GPU z kluczem API od nas, API w UE, obcy dokument = pusty JSON `{}`, imiona w mianowniku.
 
 ## 8. Dziennik
 

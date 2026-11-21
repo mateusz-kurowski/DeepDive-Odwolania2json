@@ -223,7 +223,7 @@ def test_run_writes_summary_with_unknown_and_errors(tmp_path, demo_classes, fake
     summary = json.loads((trace / "_summary.json").read_text(encoding="utf-8"))
     assert summary["files"][0]["source"] == "case1/a.pdf"
     assert summary["files"][0]["class"] == "nieznany"
-    assert summary["files"][0]["output"] is None
+    assert summary["files"][0]["output"] == "case1/a.json"
 
 
 def test_eval_examples_and_cache_flags(tmp_path, demo_classes, fake_llm, capsys):

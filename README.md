@@ -6,10 +6,11 @@ Zamienia PDF-y sprawy odwoławczej KIO na JSON-y zgodne ze schematem UZP (HackNa
 input/case1/*.pdf  →  klasyfikacja  →  ekstrakcja modelem  →  walidacja  →  output/case1/<ta-sama-nazwa>.json
 ```
 
-- Klasy dokumentów: `odwolanie`, `pelnomocnictwo`, `przelew`. Dokument spoza klas (`nieznany`) nie dostaje pliku JSON, tylko wpis w logu.
+- Klasy dokumentów: `odwolanie`, `pelnomocnictwo`, `przelew`. Dokument spoza klas (`nieznany`) dostaje pusty JSON `{}` pod oryginalną nazwą pliku oraz wpis w logu.
 - Każda klasa to plik YAML w `classes/`. **Nowa klasa nie wymaga zmian w kodzie** (patrz niżej).
 - Dla każdego pola model podaje cytat z dokumentu, a kod sprawdza go w tekście. Ślad cytatów trafia do `trace/` (nie do `output/`).
-- Tylko open source, w tym modele open-weights. Model jest wołany przez API zgodne z OpenAI (LiteLLM, vLLM, Ollama). Kod nie wymaga GPU.
+- Tylko open source, w tym modele open-weights. Model jest wołany przez API zgodne z OpenAI (LiteLLM, vLLM, Ollama). Kod nie wymaga GPU. Wymagania organizatora (FAQ): model da się zainstalować lokalnie, a API jest hostowane w UE przez dostawcę z polityką prywatności; klucz API do używanej usługi dostarcza zespół.
+- Imiona i nazwiska są zwracane w mianowniku („Mateusz Szymański”), brak informacji to `null`.
 
 ## Uruchomienie
 

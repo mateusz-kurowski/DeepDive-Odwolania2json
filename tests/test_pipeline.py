@@ -54,13 +54,30 @@ def test_writes_json_with_same_stem_and_structure(tmp_path, demo_classes, fake_l
     assert results[0].class_name == "demo" and results[0].error is None
 
 
-def test_unknown_writes_no_file_and_logs(tmp_path, demo_classes, fake_llm, caplog):
-    touch(tmp_path / "input", "case1", "a.pdf")
+def test_unknown_writes_empty_json_with_same_name_and_logs(
+    tmp_path, demo_classes, fake_llm, caplog
+):
+    touch(tmp_path / "input", "case1", "Obcy plik.pdf")
     with caplog.at_level(logging.INFO):
         results = batch(tmp_path, demo_classes[1], fake_llm([classification("nieznany")]))
-    assert not (tmp_path / "output").exists() or not list((tmp_path / "output").rglob("*.json"))
+    out = tmp_path / "output" / "case1" / "Obcy plik.json"
+    assert json.loads(out.read_text(encoding="utf-8")) == {}
+    assert not (tmp_path / "trace" / "case1" / "Obcy plik.json").exists()
     assert "nieznany" in caplog.text
     assert results[0].class_name == "nieznany" and results[0].error is None
+
+
+def test_failed_document_writes_no_file(tmp_path, demo_classes, fake_llm):
+    touch(tmp_path / "input", "case1", "a.pdf")
+    from src.llm import LLMError
+
+    class Boom:
+        def complete_json(self, *a, **k):
+            raise LLMError("model niedostępny")
+
+    results = batch(tmp_path, demo_classes[1], Boom())
+    assert results[0].error
+    assert not list((tmp_path / "output").rglob("*.json"))
 
 
 def test_non_pdf_ignored(tmp_path, demo_classes, fake_llm):
