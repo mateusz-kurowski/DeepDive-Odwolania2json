@@ -14,7 +14,7 @@ SETTINGS = Settings(openai_api_key="k", llm_model="m")
 
 @pytest.fixture(autouse=True)
 def fake_pdf_reader(monkeypatch):
-    def read(path):
+    def read(path, settings=None):
         if "pusty" in path.stem:
             return DocText(text="", pages=1, ocr_used=False)
         return DocText(text=DEMO_TEXT, pages=1, ocr_used=False)

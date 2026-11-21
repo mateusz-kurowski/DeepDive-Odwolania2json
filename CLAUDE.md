@@ -25,7 +25,7 @@ Pełny projekt: `docs/superpowers/specs/2026-11-21-odwolania2json-design.md`. **
 
 ## 3. Architektura (decyzje podjęte)
 
-- Hybryda: tekst z PDF (pypdf; Tesseract z danymi `pol` tylko gdy brak tekstu) → klasyfikacja → ekstrakcja modelem ze schematu z YAML → walidatory formatów (NIP, KRS, REGON, BZP, TED, IBAN, daty ISO, kwota) → zapis JSON.
+- Hybryda: tekst z PDF (pypdf; gdy brak tekstu: OCR przez VLM, Tesseract opcjonalny i niedomyślny) → klasyfikacja → ekstrakcja modelem ze schematu z YAML → walidatory formatów (NIP, KRS, REGON, BZP, TED, IBAN, daty ISO, kwota) → zapis JSON.
 - Cytat źródłowy dla każdego pola, weryfikowany w kodzie dopasowaniem przybliżonym do tekstu.
 - Przełącznik `EXTRACTION_MODE=hybrid|llm_only` (env, flaga `--mode`; domyślnie `hybrid`): `llm_only` pomija walidatory i normalizację, schemat i cytaty zostają. `eval` przyjmuje ten sam przełącznik (porównanie F1 obu trybów).
 - Własna cienka warstwa zamiast LangExtract (powody w dokumencie projektowym, decyzja zespołu).

@@ -1,9 +1,9 @@
-import shutil
 from pathlib import Path
 
 import pytest
 
-from src import textextract
+from src import ocr, textextract
+from src.settings import Settings
 from src.textextract import looks_garbage, read_pdf
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -26,7 +26,7 @@ def test_looks_garbage_empty_and_symbols():
 
 
 def test_ocr_failure_returns_empty(monkeypatch):
-    def boom(path):
+    def boom(path, settings):
         raise RuntimeError("tesseract not installed")
 
     monkeypatch.setattr(textextract, "_ocr", boom)
@@ -37,7 +37,7 @@ def test_ocr_failure_returns_empty(monkeypatch):
 
 
 def test_ocr_used_when_no_text_layer(monkeypatch):
-    monkeypatch.setattr(textextract, "_ocr", lambda path: "Odwołanie " * 100)
+    monkeypatch.setattr(textextract, "_ocr", lambda path, settings: "Odwołanie " * 100)
     doc = read_pdf(SCAN_PDF)
     assert doc.ocr_used is True
     assert doc.text.startswith("Odwołanie")
@@ -51,8 +51,8 @@ def test_corrupt_pdf_returns_empty(tmp_path):
     assert doc.pages == 0
 
 
-@pytest.mark.skipif(shutil.which("tesseract") is None, reason="brak Tesseracta")
+@pytest.mark.skipif(not ocr.tesseract_available(), reason="brak Tesseracta (opcjonalny)")
 def test_real_ocr_on_scanned_pdf():
-    doc = read_pdf(SCAN_PDF)
+    doc = read_pdf(SCAN_PDF, Settings(ocr_backend="tesseract"))
     assert doc.ocr_used is True
     assert "Krajowej Izby Odwoławczej" in doc.text

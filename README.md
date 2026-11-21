@@ -12,18 +12,58 @@ input/case1/*.pdf  →  klasyfikacja  →  ekstrakcja modelem  →  walidacja  �
 - Tylko open source, w tym modele open-weights. Model jest wołany przez API zgodne z OpenAI (LiteLLM, vLLM, Ollama). Kod nie wymaga GPU. Wymagania organizatora (FAQ): model da się zainstalować lokalnie, a API jest hostowane w UE przez dostawcę z polityką prywatności; klucz API do używanej usługi dostarcza zespół.
 - Imiona i nazwiska są zwracane w mianowniku („Mateusz Szymański”), brak informacji to `null`.
 
-## Uruchomienie
+## Architektura
 
-Wymagania: [uv](https://docs.astral.sh/uv/) (instaluje Python 3.13+ i zależności), Tesseract z danymi `pol` (tylko do skanów bez warstwy tekstowej; w obrazie Docker jest w środku).
-
-```bash
-cp .env.example .env        # uzupełnij OPENAI_API_KEY, OPENAI_BASE_URL, LLM_MODEL
-uv sync                      # tworzy .venv i instaluje zależności z uv.lock
-mkdir -p input/case1 && cp "twoj plik.pdf" input/case1/
-uv run python -m src run
+```mermaid
+flowchart LR
+    A["PDF<br/>input/caseN/*.pdf"] --> B{"Warstwa tekstowa?"}
+    B -- tak --> C["Tekst (pypdf)"]
+    B -- "nie (skan)" --> D["OCR: model z wizją (VLM)"]
+    D --> C
+    C --> E["Klasyfikacja<br/>LLM (hinty z YAML jako awaria)"]
+    E -- nieznany --> N["{} + wpis w logu"]
+    E -- "klasa z classes/*.yaml" --> F["Ekstrakcja LLM<br/>schemat JSON z YAML, wartość + cytat"]
+    F --> G["Weryfikacja cytatów<br/>dopasowanie przybliżone"]
+    G --> H["Walidatory i normalizacja<br/>NIP, KRS, IBAN, daty... (hybrid)"]
+    H --> I["output/caseN/*.json"]
+    G -.-> T["trace/ (cytaty, tokeny)"]
+    Y[("classes/*.yaml<br/>schemat, prompty, hinty")] -.-> E
+    Y -.-> F
+    Y -.-> H
 ```
 
-Windows: `start.bat` (przekazuje argumenty do `run`). Docker:
+- Klasy opisuje wyłącznie konfiguracja YAML (schemat pól, opis, hinty, reguły), dlatego nowa klasa nie wymaga zmian w kodzie.
+- Cytaty są weryfikowane w kodzie (cytat spoza tekstu wywołuje ponowną próbę, wynik trafia do `trace/`). Wartość o błędnym formacie po ponownej próbie dostaje `null`; program nie zgaduje.
+- Model (ekstrakcja) i VLM (OCR) są wołane przez API zgodne z OpenAI (LiteLLM, vLLM, Ollama), więc maszyna docelowa nie potrzebuje GPU.
+
+## Uruchomienie
+
+Trzy sposoby, każdy wymaga pliku `.env` (klucz i adres API) oraz PDF-ów w `input/caseN/`; wynik trafia do `output/caseN/`.
+
+| Sposób | Komenda | Wymagania |
+|---|---|---|
+| pip (Linux/macOS) | `pip install -r requirements.txt && python -m src run` w venv | Python 3.13+ |
+| Windows | `start.bat` (venv, pip i `run` w jednym kroku) | Python 3.13+ |
+| Docker | `docker compose run --rm app` | Docker |
+
+Lokalne API i interfejs graficzny: wkrótce.
+
+Szczegóły poniżej. Wymagania: Python 3.13+. Instalacja przez `pip` (`requirements.txt`) albo [uv](https://docs.astral.sh/uv/) (`uv.lock`). Do skanów potrzebny jest model z wizją (VLM, patrz „OCR skanów”); Tesseract jest opcjonalny i nie instaluje się domyślnie.
+
+```bash
+cp .env.example .env        # uzupełnij OPENAI_API_KEY, OPENAI_BASE_URL, LLM_MODEL (+ VLM_MODEL dla skanów)
+mkdir -p input/case1 && cp "twoj plik.pdf" input/case1/
+
+# pip (Linux/macOS)
+python3.13 -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt
+python -m src run
+
+# uv
+uv sync && uv run python -m src run
+```
+
+Windows: `start.bat` sam tworzy `.venv`, instaluje `requirements.txt` i uruchamia `run` (argumenty są przekazywane, np. `start.bat classes`). Docker:
 
 ```bash
 cp .env.example .env
@@ -33,6 +73,27 @@ docker compose run --rm app classes    # lista wczytanych klas
 ```
 
 W kontenerze `localhost` to nie Twój komputer. Jeśli LiteLLM działa na hoście, ustaw `OPENAI_BASE_URL=http://host.docker.internal:4000/v1`.
+
+### OCR skanów
+
+PDF bez warstwy tekstowej jest czytany przez model z wizją (VLM): każda strona idzie jako obraz do API zgodnego z OpenAI, a model zwraca przepisany tekst. Ustawienia w `.env`:
+
+| Zmienna | Znaczenie |
+|---|---|
+| `OCR_BACKEND` | `vlm` (domyślnie) lub `tesseract` |
+| `VLM_MODEL` | nazwa modelu z wizją (open-weights); wymagana dla `vlm` |
+| `VLM_BASE_URL`, `VLM_API_KEY` | opcjonalnie inny endpoint i klucz niż `OPENAI_*` |
+
+Model ekstrakcji (`LLM_MODEL`) może być tekstowy. Gdy VLM zawiedzie, a Tesseract jest zainstalowany, program użyje go jako zapasowego.
+
+**Tesseract (opcjonalnie, tylko jeśli nie masz VLM).** Nie jest częścią `requirements.txt`. Zainstaluj program z danymi języka polskiego, potem pakiet Pythona:
+
+- macOS: `brew install tesseract tesseract-lang`
+- Debian/Ubuntu: `sudo apt install tesseract-ocr tesseract-ocr-pol`
+- Windows: instalator z <https://github.com/UB-Mannheim/tesseract/wiki> (zaznacz język Polish), dodaj do `PATH`
+- pakiet: `pip install pytesseract` (lub `uv sync --extra tesseract`), potem `OCR_BACKEND=tesseract`
+
+Obraz Docker nie zawiera Tesseracta (używa VLM).
 
 ### Makefile
 
@@ -78,6 +139,16 @@ uv run python -m src eval --cache results/cache  # cache odpowiedzi LLM na dysku
 
 Raport pokazuje precision, recall i F1 per pole oraz łącznie, exact match dokumentu, poprawność klasyfikacji, odsetek poprawnych cytatów i odsetek `null` przy polach z wartością referencyjną. Skaner organizatora nie jest opublikowany, więc założenia porównania są w dokumencie projektowym (sekcja 7). `--dump` zapisuje dla każdego PDF-a predykcję, referencję, listę różnic i ślad cytatów (`<dump>/<przyklad>/<plik>.json`; `_missed.json` dla klas bez dokumentu). `run` zapisuje dodatkowo `trace/_summary.json` (klasa, błąd, plik wyjściowy, tokeny per plik). Wyniki pomiarów: `docs/benchmark.md`.
 
+### Seria ewaluacji na wielu wariantach
+
+Porównanie modeli i ustawień jednym poleceniem (ten sam klucz API z `.env`, wariant zmienia model, tryb, OCR):
+
+```bash
+uv run python -m src sweep sweeps/przyklad.yaml    # lub: make sweep CONFIG=sweeps/przyklad.yaml
+```
+
+Plik YAML (wzór: `sweeps/przyklad.yaml`) ma `out_dir`, wspólne ustawienia (`data`, `workers`, `cache`, `mode`, `limit`, `examples`, `ocr_backend`, `vlm_model`) i listę `variants` (`name`, `model` oraz opcjonalne nadpisania). Pełne wyniki każdego wariantu trafiają do `<out_dir>/<name>/` (`report.json`, `report.txt`, `dump/`), a zestawienie do `<out_dir>/summary.md` i `summary.json`. Wariant z błędem (np. brak dostępu do modelu) nie przerywa serii.
+
 ## Jak dodać klasę dokumentu
 
 Nic nie edytujesz w Pythonie. Przykład: `classes_examples/faktura.yaml`.
@@ -104,4 +175,4 @@ Testy: `make test` (`uv run pytest`). Lint i format: `make lint`, `make format` 
 
 ## Licencje
 
-Zależności: pypdf (BSD), pydantic (MIT), PyYAML (MIT), openai SDK (Apache-2.0), RapidFuzz (MIT), pytesseract (Apache-2.0), pypdfium2 (Apache-2.0/BSD), python-dotenv (BSD). Tesseract: Apache-2.0. Licencja wybranego modelu: patrz `docs/benchmark.md` (po wyborze).
+Zależności: pypdf (BSD), pydantic (MIT), PyYAML (MIT), openai SDK (Apache-2.0), RapidFuzz (MIT), pypdfium2 (Apache-2.0/BSD), Pillow (HPND), python-dotenv (BSD). Opcjonalnie: pytesseract (Apache-2.0), Tesseract (Apache-2.0). Licencja wybranego modelu: patrz `docs/benchmark.md` (po wyborze).

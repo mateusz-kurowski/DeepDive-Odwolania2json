@@ -1,0 +1,23 @@
+# Seria ewaluacji: python -m src sweep sweeps/przyklad.yaml   (lub: make sweep CONFIG=sweeps/przyklad.yaml)
+# Klucz API i adres z .env (OPENAI_API_KEY, OPENAI_BASE_URL); warianty zmieniają model i ustawienia.
+out_dir: results/sweep-przyklad   # pełne wyniki: <out_dir>/<wariant>/{report.json,report.txt,dump/}, zbiorczo summary.{md,json}
+data: data/dane
+workers: 4
+# cache: .cache/llm        # opcjonalnie: cache odpowiedzi LLM (klucz zawiera nazwę modelu)
+# classes: classes
+# Wartości domyślne dla wszystkich wariantów (każdy wariant może je nadpisać):
+mode: hybrid                # hybrid | llm_only
+# limit: 10
+# examples: ["01", "02"]
+# ocr_backend: vlm          # vlm | tesseract
+# vlm_model: nazwa-modelu-z-wizja
+
+variants:
+  - name: extractor-hybrid
+    model: extractor
+  - name: extractor-llm-only
+    model: extractor
+    mode: llm_only
+  # - name: inny-model
+  #   model: nazwa-w-litellm
+  #   vlm_model: model-z-wizja   # OCR skanów tym modelem

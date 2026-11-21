@@ -57,7 +57,7 @@ def process_pdf(
     path: Path, classes: dict[str, ClassConfig], llm: LLM, settings: Settings
 ) -> DocResult:
     try:
-        doc = read_pdf(path)
+        doc = read_pdf(path, settings)
         if not doc.text.strip():
             log.warning("Pominięto %s: brak czytelnego tekstu", path)
             return DocResult(path, UNKNOWN, error="brak czytelnego tekstu w PDF")

@@ -1,5 +1,5 @@
 .DEFAULT_GOAL := help
-.PHONY: help install requirements lint format test run classes eval eval-hybrid eval-llm-only docker-build docker-run clean
+.PHONY: help install requirements lint format test run classes eval eval-hybrid eval-llm-only sweep docker-build docker-run clean
 
 # Parametry (nadpisz: make eval MODE=llm_only LIMIT=10 MODEL=nazwa)
 MODE ?=
@@ -53,6 +53,9 @@ eval-hybrid: ## F1 w trybie hybrid, raport i dump do results/<timestamp>/
 eval-llm-only: ## F1 w trybie llm_only, raport i dump do results/<timestamp>/
 	@mkdir -p $(RUN_DIR)
 	uv run python -m src eval --mode llm_only --workers $(WORKERS) $(EVAL_EXTRA) --out-json $(RUN_DIR)/llm_only.json --dump $(RUN_DIR)/dump-llm_only 2>&1 | tee $(RUN_DIR)/llm_only.log
+
+sweep: ## Seria ewaluacji z pliku YAML (CONFIG=sweeps/przyklad.yaml)
+	uv run python -m src sweep $(or $(CONFIG),sweeps/przyklad.yaml)
 
 docker-build: ## Zbuduj obraz
 	docker compose build
