@@ -1,0 +1,186 @@
+name: odwolanie
+description: >-
+  Odwołanie do Prezesa Krajowej Izby Odwoławczej (KIO) wnoszone przez wykonawcę
+  w postępowaniu o udzielenie zamówienia publicznego: strony, pełnomocnik, numery
+  postępowania i zarzuty.
+hints:
+  - odwołanie
+  - odwolanie
+  - Krajowej Izby Odwoławczej
+  - Odwołujący
+rules:
+  - "czynnosc_dzien, czynnosc_powod_id: ustalaj WYŁĄCZNIE z pierwszego „Zarzutu”. Czynność zamawiającego, której dotyczy pierwszy zarzut, jest zwykle opisana zdaniem w rodzaju „Zamawiający w dniu DATA ... [czynność]” (bywa tuż przed pierwszym zarzutem). Kolejne zarzuty ignoruj."
+  - "czynnosc_dzien to data tej czynności zamawiającego (ISO). Gdy brak wiarygodnej daty dla pierwszego zarzutu, zwróć null."
+  - "czynnosc_powod_id wybierz z listy opcji według rodzaju czynności z pierwszego zarzutu. „Zaniechanie” (7, 8, 10) dotyczy braku działania zamawiającego, a decyzje (1, 3, 9) jego aktywnych czynności."
+  - "data i miejscowosc pochodzą z nagłówka pierwszej strony (linia „Miejscowość, dnia DD.MM.RRRR” albo „Miejscowość DD.MM.RRRR”). Gdy nagłówka z miejscowością i datą nie ma, zwróć null."
+  - "Odwolujacy: gdy występuje konsorcjum odwołujących, podaj dane Lidera konsorcjum (jeden element tablicy)."
+  - "przez-pelnomocnika = 1, gdy odwołujący jest reprezentowany przez pełnomocnika (np. „reprezentowany przez”, „na podstawie pełnomocnictwa”), w przeciwnym razie 0."
+  - "pelnomocnik.imie_nazwisko: gdy jest kilku pełnomocników, pierwszy wymieniony. pelnomocnik.nazwa to nazwa podmiotu zatrudniającego pełnomocnika (np. kancelarii), a mail to adres kontaktowy pełnomocnika odwołującego, nie zamawiającego."
+  - "Zamawiajacy: dane NIP, KRS, REGON podaj tylko jeśli są jawnie przy zamawiającym. Każdy zamawiający to osobny element tablicy."
+  - "prowadzacy_postepowanie: null, gdy jest jeden zamawiający lub brak informacji. Gdy zamawiających jest więcej: 1 dla oznaczonego jako prowadzący postępowanie lub lider postępowania, 0 dla pozostałych."
+  - "numer_bzp w formacie YYYY/BZP########, bez spacji, tylko numer ogłoszenia BZP (nie TED). numer_ted w formacie NNNNNN-YYYY, a zapis „YYYY/S ###-NNNNNN” zamień na NNNNNN-YYYY."
+  - "numer_postepowania to numer referencyjny sprawy (np. ZP.039.2025). tytul to tytuł zamówienia bez cudzysłowów."
+examples:
+  - text: |
+      Odwołujący:
+      Belmoria Rozwiązania S.A.
+      KRS: 9999405188, NIP: 9999284065, REGON: 999642785
+      reprezentowana przez: r. pr. Aleksandra Marciniak, r. pr. Jolanta Zajkowski
+      adres do korespondencji: Kancelaria Adwokacka Spółka z ograniczoną odpowiedzialnością, ul. Jasionowa 19, 80-994 Gdańsk
+      tel. 000 000 000, biuro@poczta.example
+      Zamawiający:
+      Aurelink Automatyka S.A.
+      KRS: 9999716254, NIP: 9997518659, REGON: 999184816
+      pn. „Zakup i dostawa sprzętu komputerowego” nr referencyjny sprawy: ZS.791.2026, ogłoszenie o zamówieniu nr 2026/BZP00999778, numer ogłoszenia TED: 999137-2026
+      Zamawiający w dniu 20 marca 2026 roku unieważnił postępowanie.
+      Zarzut nr 1 naruszenia obowiązku sporządzenia dokumentacji postępowania w sposób przejrzysty:
+    output:
+      OdwolanieKIO:
+        data: null
+        czynnosc_dzien: "2026-03-20"
+        czynnosc_powod_id: 9
+        miejscowosc: null
+      Odwolujacy:
+        - krs: "9999405188"
+          nazwa: "Belmoria Rozwiązania S.A."
+          nip: "9999284065"
+          regon: "999642785"
+          przez-pelnomocnika: 1
+          pelnomocnik:
+            imie_nazwisko: "Aleksandra Marciniak"
+            nazwa: "Kancelaria Adwokacka Spółka z ograniczoną odpowiedzialnością"
+            mail: "biuro@poczta.example"
+      Zamawiajacy:
+        - krs: "9999716254"
+          nazwa: "Aurelink Automatyka S.A."
+          nip: "9997518659"
+          regon: "999184816"
+          prowadzacy_postepowanie: null
+      ZamowieniePubliczne:
+        numer_bzp: "2026/BZP00999778"
+        numer_postepowania: "ZS.791.2026"
+        numer_ted: "999137-2026"
+        tytul: "Zakup i dostawa sprzętu komputerowego"
+fields:
+  - name: OdwolanieKIO
+    type: object
+    fields:
+      - name: data
+        type: text
+        validator: date
+        description: Data z nagłówka pierwszej strony (ISO YYYY-MM-DD), null gdy brak.
+      - name: czynnosc_dzien
+        type: text
+        validator: date
+        description: Data czynności uruchamiającej bieg terminu odwołania dla pierwszego zarzutu (ISO).
+      - name: czynnosc_powod_id
+        type: enum
+        description: Powód odwołania, ustalany wyłącznie z pierwszego zarzutu.
+        options:
+          1: odrzucenie oferty
+          2: wybór oferty
+          3: wykluczenie wykonawcy
+          4: publikacja SWZ
+          5: modyfikacja SWZ
+          6: odpowiedzi i wyjaśnienia do SWZ
+          7: zaniechanie odrzucenia oferty
+          8: zaniechanie wykluczenia wykonawcy
+          9: unieważnienie postępowania
+          10: zaniechanie unieważnienia postępowania
+          11: opis przedmiotu zamówienia (OPZ)
+      - name: czynnosc_opis
+        type: text
+        derive:
+          from: czynnosc_powod_id
+          map:
+            1: "Decyzja o odrzuceniu oferty"
+            2: "Ogłoszenie wyboru oferty"
+            3: "Decyzja o wykluczeniu wykonawcy"
+            4: "Publikacja specyfikacji warunków zamówienia (SWZ)"
+            5: "Modyfikacja treści SWZ"
+            6: "Odpowiedzi i wyjaśnienia do SWZ"
+            7: "Zaniechanie odrzucenia oferty"
+            8: "Zaniechanie wykluczenia wykonawcy"
+            9: "Decyzja o unieważnieniu postępowania"
+            10: "Zaniechanie unieważnienia postępowania"
+            11: "Opis przedmiotu zamówienia (OPZ)"
+      - name: miejscowosc
+        type: text
+        description: Miejscowość z nagłówka pierwszej strony, null gdy brak.
+  - name: Odwolujacy
+    type: array
+    key: [krs, nip]
+    description: Odwołujący (przy konsorcjum Lider).
+    fields:
+      - name: krs
+        type: text
+        validator: krs
+        description: KRS odwołującego lub Lidera konsorcjum.
+      - name: nazwa
+        type: text
+        description: Pełna nazwa odwołującego (przy konsorcjum Lidera).
+      - name: nip
+        type: text
+        validator: nip
+        description: NIP odwołującego lub Lidera.
+      - name: regon
+        type: text
+        validator: regon
+        description: REGON odwołującego lub Lidera.
+      - name: przez-pelnomocnika
+        type: flag
+        nullable: false
+        description: 1 gdy reprezentuje pełnomocnik, 0 gdy nie.
+      - name: pelnomocnik
+        type: object
+        fields:
+          - name: imie_nazwisko
+            type: text
+            description: Imię i nazwisko pełnomocnika odwołującego, jeśli występuje.
+          - name: nazwa
+            type: text
+            description: Nazwa podmiotu zatrudniającego pełnomocnika.
+          - name: mail
+            type: text
+            validator: email
+            description: Adres e-mail kontaktowy pełnomocnika.
+  - name: Zamawiajacy
+    type: array
+    key: [krs, nip]
+    description: Zamawiający.
+    fields:
+      - name: krs
+        type: text
+        validator: krs
+        description: KRS zamawiającego, jeśli jawnie podany.
+      - name: nazwa
+        type: text
+        description: Pełna nazwa zamawiającego.
+      - name: nip
+        type: text
+        validator: nip
+        description: NIP zamawiającego, jeśli jawnie podany.
+      - name: regon
+        type: text
+        validator: regon
+        description: REGON zamawiającego, jeśli jawnie podany.
+      - name: prowadzacy_postepowanie
+        type: flag
+        description: null gdy brak informacji, 1 lub 0 gdy jest kilku zamawiających.
+  - name: ZamowieniePubliczne
+    type: object
+    fields:
+      - name: numer_bzp
+        type: text
+        validator: bzp
+        description: Numer ogłoszenia w BZP (nie TED).
+      - name: numer_postepowania
+        type: text
+        description: Numer referencyjny lub numer postępowania.
+      - name: numer_ted
+        type: text
+        validator: ted
+        description: Numer ogłoszenia TED.
+      - name: tytul
+        type: text
+        description: Tytuł zamówienia lub postępowania.

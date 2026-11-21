@@ -102,3 +102,63 @@ def test_pelnomocnictwo_structure():
     assert set(pel) == {"imie_nazwisko", "pesel"}
     assert pel["pesel"].validator == "pesel"
     assert cfg.hints and cfg.rules and cfg.examples
+
+
+def test_odwolanie_structure():
+    from odwolania2json.schema import build_response_schema
+
+    cfg = CLASSES["odwolanie"]
+    top = {f.name: f for f in cfg.fields}
+    assert set(top) == {"OdwolanieKIO", "Odwolujacy", "Zamawiajacy", "ZamowieniePubliczne"}
+    info = {f.name: f for f in top["OdwolanieKIO"].fields}
+    assert set(info) == {"data", "czynnosc_dzien", "czynnosc_powod_id", "czynnosc_opis", "miejscowosc"}
+    assert set(info["czynnosc_powod_id"].options) == set(range(1, 12))
+    assert info["czynnosc_opis"].derive.from_field == "czynnosc_powod_id"
+    assert set(info["czynnosc_opis"].derive.map) == set(range(1, 12))
+    assert info["data"].validator == "date" and info["czynnosc_dzien"].validator == "date"
+
+    odw = {f.name: f for f in top["Odwolujacy"].fields}
+    assert top["Odwolujacy"].key == ["krs", "nip"] and top["Zamawiajacy"].key == ["krs", "nip"]
+    assert odw["przez-pelnomocnika"].type == "flag" and odw["przez-pelnomocnika"].nullable is False
+    pel = {f.name: f for f in odw["pelnomocnik"].fields}
+    assert set(pel) == {"imie_nazwisko", "nazwa", "mail"} and pel["mail"].validator == "email"
+    zam = {f.name: f for f in top["Zamawiajacy"].fields}
+    assert zam["prowadzacy_postepowanie"].type == "flag" and zam["prowadzacy_postepowanie"].nullable
+    zp = {f.name: f for f in top["ZamowieniePubliczne"].fields}
+    assert zp["numer_bzp"].validator == "bzp" and zp["numer_ted"].validator == "ted"
+    assert {"krs", "nip", "regon"} <= {n for n, f in odw.items() if f.validator} | {
+        n for n, f in zam.items() if f.validator
+    }
+
+    schema = build_response_schema(cfg)
+    assert "czynnosc_opis" not in schema["properties"]["OdwolanieKIO"]["properties"]
+    assert cfg.hints and cfg.rules and cfg.examples
+
+
+def _wrap(data, fields):
+    out = {}
+    for spec in fields:
+        if spec.derive is not None:
+            continue
+        value = data.get(spec.name) if isinstance(data, dict) else None
+        if spec.type == "object":
+            out[spec.name] = _wrap(value or {}, spec.fields)
+        elif spec.type == "array":
+            out[spec.name] = [_wrap(item, spec.fields) for item in value or []]
+        else:
+            out[spec.name] = {"value": value, "quote": None}
+    return out
+
+
+@pytest.mark.parametrize("class_name", sorted(CLASSES))
+def test_unwrap_of_perfect_model_answer_reproduces_reference(class_name):
+    """Schemat + unwrap + derive dla prawdziwych klas odtwarzają referencje (60 przykładów)."""
+    import json
+
+    from odwolania2json.schema import unwrap
+
+    cfg = CLASSES[class_name]
+    for ref in sorted(DATA_DIR.glob(f"przyklad_*/{class_name}.json")):
+        expected = json.loads(ref.read_text(encoding="utf-8"))
+        data, _ = unwrap(_wrap(expected, cfg.fields), cfg)
+        assert data == expected, ref.parent.name
