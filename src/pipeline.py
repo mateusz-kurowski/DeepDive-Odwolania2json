@@ -7,9 +7,9 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from src.classconfig import ClassConfig
-from src.classify import UNKNOWN, classify
+from src.classify import UNKNOWN, classify, classify_by_hints
 from src.extract import Extraction, Mode, extract
-from src.llm import LLM
+from src.llm import LLM, LLMError
 from src.settings import Settings
 from src.textextract import DocText, read_pdf
 
@@ -33,7 +33,11 @@ def process_text(
     mode: Mode,
     threshold: float,
 ) -> DocResult:
-    class_name = classify(doc, classes, llm)
+    try:
+        class_name = classify(doc, classes, llm)
+    except LLMError as exc:
+        class_name = classify_by_hints(doc, classes)
+        log.warning("Klasyfikacja przez LLM nieudana (%s), klasa z hintów: %s", exc, class_name)
     if class_name == UNKNOWN:
         return DocResult(path=None, class_name=UNKNOWN, ocr_used=doc.ocr_used)
     extraction = extract(doc, classes[class_name], llm, mode, threshold)

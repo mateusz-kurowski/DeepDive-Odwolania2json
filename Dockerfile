@@ -14,6 +14,7 @@ RUN uv sync --frozen --no-dev
 ENV PATH="/opt/venv/bin:$PATH"
 COPY src ./src
 COPY classes ./classes
+COPY config ./config
 
 ENTRYPOINT ["python", "-m", "src"]
 CMD ["run"]

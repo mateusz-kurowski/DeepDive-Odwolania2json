@@ -15,6 +15,7 @@ class Settings(BaseModel):
     extraction_mode: Literal["hybrid", "llm_only"] = "hybrid"
     classes_dir: Path = Path("classes")
     citation_threshold: float = 85
+    llm_config: Path = Path("config/llm.json")
 
     @classmethod
     def from_env(cls, env: Mapping[str, str] | None = None) -> Settings:
@@ -30,5 +31,6 @@ class Settings(BaseModel):
             "extraction_mode": env.get("EXTRACTION_MODE"),
             "classes_dir": env.get("CLASSES_DIR"),
             "citation_threshold": env.get("CITATION_THRESHOLD"),
+            "llm_config": env.get("LLM_CONFIG"),
         }
         return cls(**{k: v for k, v in values.items() if v not in (None, "")})

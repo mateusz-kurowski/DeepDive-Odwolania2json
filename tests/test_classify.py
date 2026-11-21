@@ -1,5 +1,5 @@
 from src.classconfig import ClassConfig
-from src.classify import UNKNOWN, classify
+from src.classify import UNKNOWN, classify, classify_by_hints
 from src.textextract import DocText
 
 
@@ -69,3 +69,20 @@ def test_no_classes_unknown(fake_llm):
     llm = fake_llm([])
     assert classify(doc("tekst"), {}, llm) == UNKNOWN
     assert llm.calls == []
+
+
+def test_classify_by_hints_single_match():
+    assert classify_by_hints(doc("tu jest ALFA-marker"), CLASSES) == "alfa"
+
+
+def test_classify_by_hints_no_match_unknown():
+    assert classify_by_hints(doc("nic tu nie ma"), CLASSES) == UNKNOWN
+
+
+def test_classify_by_hints_prefers_more_distinct_hints_and_ties_are_unknown():
+    classes = {
+        "x": cls("x", "X", hints=["jeden", "dwa"]),
+        "y": cls("y", "Y", hints=["trzy"]),
+    }
+    assert classify_by_hints(doc("jeden dwa trzy"), classes) == "x"
+    assert classify_by_hints(doc("jeden trzy"), classes) == UNKNOWN

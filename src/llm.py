@@ -5,6 +5,8 @@ import logging
 import threading
 import time
 from collections.abc import Callable
+from dataclasses import dataclass
+from pathlib import Path
 from typing import Any, Protocol
 
 import openai
@@ -63,6 +65,51 @@ class _BadResponse(Exception):
     pass
 
 
+BACKOFF_BASE = 3.0
+BACKOFF_MAX = 30.0
+RETRY_TEMPERATURE = 0.2
+NO_CACHE = {"no-cache": True, "no-store": True}
+
+
+def load_llm_params(path: Path | None) -> dict:
+    """Wczytuje parametry zapytania z config/llm.json (sekcja "extraction").
+
+    Zwraca tylko klucze przekazywane do API: temperature, max_tokens, extra_body.
+    Brak pliku = parametry domyślne backendu.
+    """
+    if path is None or not Path(path).is_file():
+        log.info("Brak pliku konfiguracji LLM (%s), używam parametrów domyślnych", path)
+        return {}
+    raw = json.loads(Path(path).read_text(encoding="utf-8"))
+    section = raw.get("extraction", raw) if isinstance(raw, dict) else {}
+    params: dict = {}
+    for key in ("temperature", "max_tokens"):
+        if section.get(key) is not None:
+            params[key] = section[key]
+    if isinstance(section.get("extra_body"), dict) and section["extra_body"]:
+        params["extra_body"] = dict(section["extra_body"])
+    return params
+
+
+@dataclass(frozen=True)
+class Attempt:
+    """Wariant zapytania dla danej próby; każda ponowna próba różni się od poprzedniej."""
+
+    temperature: float
+    no_cache: bool
+    json_object: bool
+
+
+def attempt_plan(index: int, total: int, base_temperature: float) -> Attempt:
+    """Próba 1: parametry z konfiguracji. Kolejne: bez cache LiteLLM i z temperature>0
+    (identyczne zapytanie dawało identyczną pustą odpowiedź). Ostatnia: json_object
+    ze schematem w prompcie (omija ewentualny problem z constrained decoding)."""
+    if index == 0:
+        return Attempt(base_temperature, no_cache=False, json_object=False)
+    last = index == total - 1 and total > 2
+    return Attempt(max(base_temperature, RETRY_TEMPERATURE), no_cache=True, json_object=last)
+
+
 class OpenAICompatLLM:
     def __init__(
         self,
@@ -70,12 +117,14 @@ class OpenAICompatLLM:
         max_attempts: int = 4,
         sleep: Callable[[float], None] = time.sleep,
         client: Any = None,
+        params: dict | None = None,
     ):
         self.settings = settings
         self.max_attempts = max_attempts
         self.sleep = sleep
         self._client = client
         self._json_object_mode = False
+        self.params = dict(params) if params is not None else load_llm_params(settings.llm_config)
         self.usage = Usage()
 
     @property
@@ -91,20 +140,22 @@ class OpenAICompatLLM:
 
     def complete_json(self, system: str, user: str, schema: dict, name: str) -> dict:
         last: Exception | None = None
-        for attempt in range(self.max_attempts):
+        base_temperature = float(self.params.get("temperature", 0) or 0)
+        for index in range(self.max_attempts):
+            attempt = attempt_plan(index, self.max_attempts, base_temperature)
             try:
-                return self._call(system, user, schema, name)
+                return self._call(system, user, schema, name, attempt)
             except (*_RETRIABLE, _BadResponse) as exc:
                 last = exc
-                log.warning("Próba %d/%d nieudana: %s", attempt + 1, self.max_attempts, exc)
-                if attempt < self.max_attempts - 1:
-                    self.sleep(min(2.0**attempt, 30.0))
+                log.warning("Próba %d/%d nieudana: %s", index + 1, self.max_attempts, exc)
+                if index < self.max_attempts - 1:
+                    self.sleep(min(BACKOFF_BASE * 2.0**index, BACKOFF_MAX))
             except openai.OpenAIError as exc:
                 raise LLMError(f"Błąd modelu: {exc}") from exc
         raise LLMError(f"Model niedostępny po {self.max_attempts} próbach: {last}") from last
 
-    def _call(self, system: str, user: str, schema: dict, name: str) -> dict:
-        if not self._json_object_mode:
+    def _call(self, system: str, user: str, schema: dict, name: str, attempt: Attempt) -> dict:
+        if not self._json_object_mode and not attempt.json_object:
             try:
                 return self._request(
                     system,
@@ -113,6 +164,7 @@ class OpenAICompatLLM:
                         "type": "json_schema",
                         "json_schema": {"name": name, "schema": schema, "strict": True},
                     },
+                    attempt,
                 )
             except openai.BadRequestError as exc:
                 if not _schema_unsupported(exc):
@@ -124,18 +176,39 @@ class OpenAICompatLLM:
             f"{system}\n\nOdpowiadaj wyłącznie obiektem JSON zgodnym z tym schematem JSON Schema:\n{schema_text}",
             user,
             {"type": "json_object"},
+            attempt,
         )
 
-    def _request(self, system: str, user: str, response_format: dict) -> dict:
-        response = self.client.chat.completions.create(
-            model=self.settings.llm_model,
-            temperature=0,
-            messages=[
+    def _request(self, system: str, user: str, response_format: dict, attempt: Attempt) -> dict:
+        kwargs: dict[str, Any] = {
+            "model": self.settings.llm_model,
+            "temperature": attempt.temperature,
+            "messages": [
                 {"role": "system", "content": system},
                 {"role": "user", "content": user},
             ],
-            response_format=response_format,
-        )
+            "response_format": response_format,
+        }
+        if self.params.get("max_tokens"):
+            kwargs["max_tokens"] = self.params["max_tokens"]
+        extra_body = dict(self.params.get("extra_body") or {})
+        if attempt.no_cache:
+            extra_body["cache"] = dict(NO_CACHE)
+        if extra_body:
+            kwargs["extra_body"] = extra_body
+        try:
+            response = self.client.chat.completions.create(**kwargs)
+        except openai.BadRequestError as exc:
+            if not self.params.get("extra_body") or _schema_unsupported(exc):
+                raise
+            # Backend odrzucił parametry dostawcy z config/llm.json: działamy dalej bez nich.
+            log.warning("Backend odrzucił extra_body z konfiguracji, pomijam je: %s", exc)
+            self.params.pop("extra_body", None)
+            if attempt.no_cache:
+                kwargs["extra_body"] = {"cache": dict(NO_CACHE)}
+            else:
+                kwargs.pop("extra_body", None)
+            response = self.client.chat.completions.create(**kwargs)
         self.usage.add(response)
         content = response.choices[0].message.content
         try:

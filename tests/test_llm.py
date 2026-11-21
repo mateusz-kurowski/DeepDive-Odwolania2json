@@ -35,10 +35,16 @@ def rate_limit():
     return openai.RateLimitError("limit", response=fake_response(429), body=None)
 
 
-def make(items, **kw):
+def make(items, params=None, **kw):
     sleeps: list[float] = []
     client = FakeClient(items)
-    llm = OpenAICompatLLM(Settings(llm_model="m"), client=client, sleep=sleeps.append, **kw)
+    llm = OpenAICompatLLM(
+        Settings(llm_model="m"),
+        client=client,
+        sleep=sleeps.append,
+        params={} if params is None else params,
+        **kw,
+    )
     return llm, client, sleeps
 
 
@@ -146,3 +152,93 @@ def test_empty_response_logs_diagnostics(caplog):
     with caplog.at_level("WARNING"):
         assert llm.complete_json("s", "u", SCHEMA, "demo") == {"a": 1}
     assert "finish_reason" in caplog.text
+
+
+def test_empty_response_then_valid_succeeds_with_different_request():
+    llm, client, sleeps = make(["", '{"a": 1}'])
+    assert llm.complete_json("s", "u", SCHEMA, "demo") == {"a": 1}
+    first, second = client.kwargs
+    assert first["temperature"] == 0
+    assert "extra_body" not in first
+    assert second["temperature"] > 0
+    assert second["extra_body"]["cache"] == {"no-cache": True, "no-store": True}
+    assert second["response_format"]["type"] == "json_schema"
+    assert sleeps == [3.0]
+
+
+def test_attempts_vary_and_last_uses_json_object():
+    llm, client, sleeps = make(["", "", "", '{"a": 1}'])
+    assert llm.complete_json("sys", "u", SCHEMA, "demo") == {"a": 1}
+    formats = [kw["response_format"]["type"] for kw in client.kwargs]
+    assert formats == ["json_schema", "json_schema", "json_schema", "json_object"]
+    assert '"additionalProperties"' in client.kwargs[3]["messages"][0]["content"]
+    assert all("cache" in kw["extra_body"] for kw in client.kwargs[1:])
+    assert sleeps == [3.0, 6.0, 12.0]
+
+
+def test_attempt_plan():
+    from src.llm import attempt_plan
+
+    first = attempt_plan(0, 4, 0.0)
+    assert (first.temperature, first.no_cache, first.json_object) == (0.0, False, False)
+    second = attempt_plan(1, 4, 0.0)
+    assert second.temperature == 0.2 and second.no_cache and not second.json_object
+    assert attempt_plan(3, 4, 0.0).json_object
+    assert not attempt_plan(1, 2, 0.0).json_object
+
+
+def test_config_params_are_sent():
+    params = {"temperature": 0, "max_tokens": 8192, "extra_body": {"reasoning": {"enabled": False}}}
+    llm, client, _ = make(['{"a": 1}'], params=params)
+    llm.complete_json("s", "u", SCHEMA, "demo")
+    kw = client.kwargs[0]
+    assert kw["max_tokens"] == 8192
+    assert kw["extra_body"] == {"reasoning": {"enabled": False}}
+
+
+def test_retry_keeps_config_extra_body_and_adds_no_cache():
+    params = {"extra_body": {"reasoning": {"enabled": False}}}
+    llm, client, _ = make(["", '{"a": 1}'], params=params)
+    llm.complete_json("s", "u", SCHEMA, "demo")
+    assert client.kwargs[1]["extra_body"] == {
+        "reasoning": {"enabled": False},
+        "cache": {"no-cache": True, "no-store": True},
+    }
+    assert params == {"extra_body": {"reasoning": {"enabled": False}}}
+
+
+def test_rejected_config_extra_body_is_dropped():
+    params = {"extra_body": {"provider": {"require_parameters": True}}}
+    llm, client, _ = make(
+        [bad_request("Unrecognized request argument: provider"), '{"a": 1}'], params=params
+    )
+    assert llm.complete_json("s", "u", SCHEMA, "demo") == {"a": 1}
+    assert "extra_body" not in client.kwargs[1]
+    assert "extra_body" not in llm.params
+
+
+def test_load_llm_params_reads_extraction_section(tmp_path):
+    from src.llm import load_llm_params
+
+    path = tmp_path / "llm.json"
+    path.write_text(
+        '{"extraction": {"temperature": 0, "max_tokens": 4096, "response_format": {}, '
+        '"extra_body": {"reasoning": {"enabled": false}}, "validation": {}}}',
+        encoding="utf-8",
+    )
+    assert load_llm_params(path) == {
+        "temperature": 0,
+        "max_tokens": 4096,
+        "extra_body": {"reasoning": {"enabled": False}},
+    }
+
+
+def test_load_llm_params_missing_file_gives_defaults(tmp_path):
+    from src.llm import load_llm_params
+
+    assert load_llm_params(tmp_path / "brak.json") == {}
+
+
+def test_llm_config_path_from_env():
+    settings = Settings.from_env({"LLM_CONFIG": "inny/llm.json"})
+    assert str(settings.llm_config) == "inny/llm.json"
