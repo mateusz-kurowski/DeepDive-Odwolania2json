@@ -1,0 +1,34 @@
+[project]
+name = "odwolania2json"
+version = "0.1.0"
+description = "PDF-y spraw KIO → JSON zgodny ze schematem UZP (HackNation 2026, UZP)"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "pypdf",
+    "pydantic>=2",
+    "pyyaml",
+    "openai>=1",
+    "rapidfuzz",
+    "pytesseract",
+    "pypdfium2",
+    "python-dotenv",
+]
+
+[dependency-groups]
+dev = ["pytest", "ruff"]
+
+[tool.uv]
+package = false
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+
+[tool.ruff]
+line-length = 100
+target-version = "py313"
+
+[tool.ruff.lint]
+select = ["E", "F", "B", "UP", "SIM", "I"]
+ignore = ["E501"]

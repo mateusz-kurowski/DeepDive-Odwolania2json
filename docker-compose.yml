@@ -1,0 +1,9 @@
+services:
+  app:
+    build: .
+    env_file: .env
+    volumes:
+      - ./input:/app/input
+      - ./output:/app/output
+      - ./trace:/app/trace
+      - ./classes:/app/classes

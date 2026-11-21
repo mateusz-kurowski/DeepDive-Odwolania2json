@@ -1,0 +1,57 @@
+name: przelew
+description: >-
+  Potwierdzenie przelewu bankowego (polecenie przelewu, potwierdzenie realizacji),
+  zwykle opłaty skarbowej od pełnomocnictwa lub wpisu od odwołania do KIO.
+hints:
+  - przelew
+  - rachunek
+  - kwota
+rules:
+  - "Kwotę zapisz jako liczbę (bez waluty), np. 200.0."
+  - "Numery rachunków zapisz jako 26 cyfr, bez spacji i bez prefiksu PL. Rachunek obciążany (płatnika) to z_rachunku, rachunek odbiorcy to na_rachunek."
+  - "tytul to pełny tytuł (opis) przelewu dosłownie jak w dokumencie, bez cudzysłowów, z łączeniem złamanych wierszy spacją."
+  - "numer_transakcji to numer referencyjny operacji (np. Nr ref., Numer transakcji). Gdy dokument go nie zawiera, zwróć null."
+  - "data_operacji to data wykonania przelewu, nie data sporządzenia pisma."
+examples:
+  - text: |
+      POLECENIE PRZELEWU
+      Rachunek obciążany PL05470680287581539721455024
+      Rachunek odbiorcy PL68438223049992295262834736
+      Kwota operacji 200,00 PLN
+      Data transakcji 2026-03-21
+      Opis opłata skarbowa od pełnomocnictwa dla Aleksandra Marciniak w postępowaniu przed KIO w przetargu ZS.791.2026 CEN2604016344389
+      Nr ref. CEN2604016344389
+    output:
+      przelew_bankowy:
+        data_operacji: "2026-03-21"
+        kwota: 200.0
+        na_rachunek: "68438223049992295262834736"
+        numer_transakcji: "CEN2604016344389"
+        tytul: "opłata skarbowa od pełnomocnictwa dla Aleksandra Marciniak w postępowaniu przed KIO w przetargu ZS.791.2026 CEN2604016344389"
+        z_rachunku: "05470680287581539721455024"
+fields:
+  - name: przelew_bankowy
+    type: object
+    fields:
+      - name: data_operacji
+        type: text
+        validator: date
+        description: Data wykonania przelewu (ISO YYYY-MM-DD).
+      - name: kwota
+        type: number
+        validator: amount
+        description: Kwota przelewu jako liczba.
+      - name: na_rachunek
+        type: text
+        validator: iban
+        description: Rachunek odbiorcy (26 cyfr).
+      - name: numer_transakcji
+        type: text
+        description: Numer referencyjny transakcji, jeśli występuje.
+      - name: tytul
+        type: text
+        description: Pełny tytuł przelewu.
+      - name: z_rachunku
+        type: text
+        validator: iban
+        description: Rachunek obciążany, czyli płatnika (26 cyfr).

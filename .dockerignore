@@ -1,0 +1,12 @@
+.git
+.venv
+.superpowers
+__pycache__
+.pytest_cache
+data
+docs
+tests
+input
+output
+trace
+graphify-out
