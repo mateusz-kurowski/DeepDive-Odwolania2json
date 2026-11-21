@@ -91,3 +91,22 @@ def test_tesseract_backend_without_tesseract_explains_install(monkeypatch):
     monkeypatch.setattr(ocr, "tesseract_available", lambda: False)
     with pytest.raises(ocr.OcrUnavailable, match="README"):
         ocr.ocr_pdf(SCAN_PDF, settings(ocr_backend="tesseract"))
+
+
+def test_render_pages_is_lazy_generator():
+    import types
+
+    assert isinstance(ocr.render_pages(SCAN_PDF), types.GeneratorType)
+
+
+def test_render_pages_rejects_pdf_over_page_cap(monkeypatch):
+    monkeypatch.setattr(ocr, "MAX_OCR_PAGES", 3)
+    with pytest.raises(ocr.OcrUnavailable, match="stron"):
+        list(ocr.render_pages(SCAN_PDF))
+
+
+def test_render_scale_is_reduced_to_pixel_cap(monkeypatch):
+    monkeypatch.setattr(ocr, "MAX_PIXELS_PER_PAGE", 100_000)
+    for image in ocr.render_pages(SCAN_PDF):
+        assert image.width * image.height <= 100_000 * 1.05
+        break

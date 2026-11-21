@@ -6,6 +6,7 @@ import base64
 import io
 import logging
 import shutil
+from collections.abc import Iterator
 from pathlib import Path
 from typing import Any
 
@@ -15,6 +16,8 @@ log = logging.getLogger(__name__)
 
 OCR_SCALE = 2
 JPEG_QUALITY = 85
+MAX_OCR_PAGES = 50
+MAX_PIXELS_PER_PAGE = 20_000_000
 VLM_MAX_TOKENS = 4096
 VLM_PROMPT = (
     "Przepisz dokładnie cały tekst widoczny na tej stronie dokumentu (język polski). "
@@ -27,12 +30,23 @@ class OcrUnavailable(Exception):
     """Wybrany backend OCR nie jest skonfigurowany lub zainstalowany."""
 
 
-def render_pages(path: Path, scale: float = OCR_SCALE) -> list[Any]:
+def render_pages(path: Path, scale: float = OCR_SCALE) -> Iterator[Any]:
+    """Strony po jednej (generator). Limit stron i pikseli chroni przed PDF-ami-bombami."""
     import pypdfium2 as pdfium
 
     document = pdfium.PdfDocument(str(path))
     try:
-        return [page.render(scale=scale).to_pil() for page in document]
+        if len(document) > MAX_OCR_PAGES:
+            raise OcrUnavailable(f"PDF ma {len(document)} stron (limit OCR: {MAX_OCR_PAGES})")
+        for page in document:
+            width, height = page.get_size()
+            area = width * height * scale * scale
+            page_scale = (
+                scale
+                if area <= MAX_PIXELS_PER_PAGE
+                else scale * (MAX_PIXELS_PER_PAGE / area) ** 0.5
+            )
+            yield page.render(scale=page_scale).to_pil()
     finally:
         document.close()
 
