@@ -13,11 +13,14 @@ mode: hybrid                # hybrid | llm_only
 # vlm_model: nazwa-modelu-z-wizja
 
 variants:
-  - name: extractor-hybrid
-    model: extractor
-  - name: extractor-llm-only
-    model: extractor
-    mode: llm_only
+  - name: mistral-hybrid
+    model: mistralai/ministral-14b-2512
+    vlm_model: mistralai/ministral-14b-2512
   # - name: inny-model
   #   model: nazwa-w-litellm
   #   vlm_model: model-z-wizja   # OCR skanów tym modelem
+  # Model, który na OpenRouterze zwraca 404 "No endpoints found" przy domyślnym config/llm.json
+  # (filtry require_parameters + data_collection: deny): osobny config bez filtrów.
+  # - name: ministral
+  #   model: mistralai/ministral-14b-2512
+  #   llm_config: config/llm-no-routing-filter.json

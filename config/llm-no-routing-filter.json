@@ -1,0 +1,12 @@
+{
+  "_comment": "Wariant bez require_parameters i data_collection: deny, dla modeli, które na OpenRouterze nie mają dostawcy spełniającego te filtry (404 'No endpoints found').",
+  "model": "env:LLM_MODEL",
+  "extraction": {
+    "temperature": 0,
+    "max_tokens": 8192,
+    "extra_body": {
+      "provider": { "allow_fallbacks": true }
+    },
+    "validation": { "max_retries": 2, "retry_with_error_message": true }
+  }
+}

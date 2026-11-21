@@ -39,6 +39,7 @@ class _Common(BaseModel):
     mode: Literal["hybrid", "llm_only"] | None = None
     ocr_backend: Literal["vlm", "tesseract"] | None = None
     vlm_model: str | None = None
+    llm_config: Path | None = None
     data: Path | None = None
     limit: int | None = None
     examples: list[str] | None = None
@@ -92,6 +93,7 @@ def _run_variant(
         ("mode", "extraction_mode"),
         ("ocr_backend", "ocr_backend"),
         ("vlm_model", "vlm_model"),
+        ("llm_config", "llm_config"),
     ):
         value = _pick(variant, cfg, src_field)
         if value is not None:

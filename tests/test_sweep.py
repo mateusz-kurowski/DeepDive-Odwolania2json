@@ -160,3 +160,24 @@ def test_cli_sweep_command_exit_codes(tmp_path, data_dir, demo_classes, capsys):
     bad = tmp_path / "zly.yaml"
     bad.write_text("variants: []\nout_dir: x\n", encoding="utf-8")
     assert main(["sweep", str(bad)], env=ENV) == 2
+
+
+def test_llm_config_override_reaches_settings(tmp_path, data_dir, demo_classes):
+    cfg = write_config(
+        tmp_path,
+        data_dir,
+        demo_classes[0],
+        variants=[
+            {"name": "a", "model": "m", "llm_config": "config/llm-mistral.json"},
+            {"name": "b", "model": "n"},
+        ],
+    )
+    seen = []
+
+    def make(settings):
+        seen.append(settings.llm_config)
+        return FakeLLM(OK)
+
+    run_sweep(cfg, env=ENV, llm_factory=make)
+    assert str(seen[0]) == "config/llm-mistral.json"
+    assert str(seen[1]) == "config/llm.json"
