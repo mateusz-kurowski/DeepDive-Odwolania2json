@@ -14,16 +14,22 @@ input/case1/*.pdf  →  klasyfikacja  →  ekstrakcja modelem  →  walidacja  �
 
 ## Uruchomienie
 
-Wymagania: [uv](https://docs.astral.sh/uv/) (instaluje Python 3.13+ i zależności), Tesseract z danymi `pol` (tylko do skanów bez warstwy tekstowej; w obrazie Docker jest w środku).
+Wymagania: Python 3.13+. Instalacja przez `pip` (`requirements.txt`) albo [uv](https://docs.astral.sh/uv/) (`uv.lock`). Do skanów potrzebny jest model z wizją (VLM, patrz „OCR skanów”); Tesseract jest opcjonalny i nie instaluje się domyślnie.
 
 ```bash
-cp .env.example .env        # uzupełnij OPENAI_API_KEY, OPENAI_BASE_URL, LLM_MODEL
-uv sync                      # tworzy .venv i instaluje zależności z uv.lock
+cp .env.example .env        # uzupełnij OPENAI_API_KEY, OPENAI_BASE_URL, LLM_MODEL (+ VLM_MODEL dla skanów)
 mkdir -p input/case1 && cp "twoj plik.pdf" input/case1/
-uv run python -m src run
+
+# pip (Linux/macOS)
+python3.13 -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt
+python -m src run
+
+# uv
+uv sync && uv run python -m src run
 ```
 
-Windows: `start.bat` (przekazuje argumenty do `run`). Docker:
+Windows: `start.bat` sam tworzy `.venv`, instaluje `requirements.txt` i uruchamia `run` (argumenty są przekazywane, np. `start.bat classes`). Docker:
 
 ```bash
 cp .env.example .env
@@ -33,6 +39,27 @@ docker compose run --rm app classes    # lista wczytanych klas
 ```
 
 W kontenerze `localhost` to nie Twój komputer. Jeśli LiteLLM działa na hoście, ustaw `OPENAI_BASE_URL=http://host.docker.internal:4000/v1`.
+
+### OCR skanów
+
+PDF bez warstwy tekstowej jest czytany przez model z wizją (VLM): każda strona idzie jako obraz do API zgodnego z OpenAI, a model zwraca przepisany tekst. Ustawienia w `.env`:
+
+| Zmienna | Znaczenie |
+|---|---|
+| `OCR_BACKEND` | `vlm` (domyślnie) lub `tesseract` |
+| `VLM_MODEL` | nazwa modelu z wizją (open-weights); wymagana dla `vlm` |
+| `VLM_BASE_URL`, `VLM_API_KEY` | opcjonalnie inny endpoint i klucz niż `OPENAI_*` |
+
+Model ekstrakcji (`LLM_MODEL`) może być tekstowy. Gdy VLM zawiedzie, a Tesseract jest zainstalowany, program użyje go jako zapasowego.
+
+**Tesseract (opcjonalnie, tylko jeśli nie masz VLM).** Nie jest częścią `requirements.txt`. Zainstaluj program z danymi języka polskiego, potem pakiet Pythona:
+
+- macOS: `brew install tesseract tesseract-lang`
+- Debian/Ubuntu: `sudo apt install tesseract-ocr tesseract-ocr-pol`
+- Windows: instalator z <https://github.com/UB-Mannheim/tesseract/wiki> (zaznacz język Polish), dodaj do `PATH`
+- pakiet: `pip install pytesseract` (lub `uv sync --extra tesseract`), potem `OCR_BACKEND=tesseract`
+
+Obraz Docker nie zawiera Tesseracta (używa VLM).
 
 ### Makefile
 
@@ -104,4 +131,4 @@ Testy: `make test` (`uv run pytest`). Lint i format: `make lint`, `make format` 
 
 ## Licencje
 
-Zależności: pypdf (BSD), pydantic (MIT), PyYAML (MIT), openai SDK (Apache-2.0), RapidFuzz (MIT), pytesseract (Apache-2.0), pypdfium2 (Apache-2.0/BSD), python-dotenv (BSD). Tesseract: Apache-2.0. Licencja wybranego modelu: patrz `docs/benchmark.md` (po wyborze).
+Zależności: pypdf (BSD), pydantic (MIT), PyYAML (MIT), openai SDK (Apache-2.0), RapidFuzz (MIT), pypdfium2 (Apache-2.0/BSD), Pillow (HPND), python-dotenv (BSD). Opcjonalnie: pytesseract (Apache-2.0), Tesseract (Apache-2.0). Licencja wybranego modelu: patrz `docs/benchmark.md` (po wyborze).

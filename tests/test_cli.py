@@ -10,7 +10,9 @@ from src.textextract import DocText
 
 @pytest.fixture(autouse=True)
 def fake_pdf_reader(monkeypatch):
-    monkeypatch.setattr(pipeline, "read_pdf", lambda path: DocText(DEMO_TEXT, 1, False))
+    monkeypatch.setattr(
+        pipeline, "read_pdf", lambda path, settings=None: DocText(DEMO_TEXT, 1, False)
+    )
 
 
 def args(tmp_path, classes_dir, *extra):
@@ -173,7 +175,9 @@ def test_eval_dump_flag_writes_files(tmp_path, demo_classes, fake_llm, monkeypat
     from src import pipeline
     from src.textextract import DocText
 
-    monkeypatch.setattr(pipeline, "read_pdf", lambda path: DocText(DEMO_TEXT, 1, False))
+    monkeypatch.setattr(
+        pipeline, "read_pdf", lambda path, settings=None: DocText(DEMO_TEXT, 1, False)
+    )
     example = tmp_path / "dane" / "przyklad_01"
     example.mkdir(parents=True)
     (example / "a.pdf").write_bytes(b"%PDF")

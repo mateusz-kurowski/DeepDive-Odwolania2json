@@ -136,7 +136,9 @@ def test_evaluate_end_to_end(tmp_path, demo_classes, fake_llm, monkeypatch):
     from src import pipeline
     from src.textextract import DocText
 
-    monkeypatch.setattr(pipeline, "read_pdf", lambda path: DocText(DEMO_TEXT, 1, False))
+    monkeypatch.setattr(
+        pipeline, "read_pdf", lambda path, settings=None: DocText(DEMO_TEXT, 1, False)
+    )
     example = tmp_path / "dane" / "przyklad_01"
     example.mkdir(parents=True)
     (example / "cokolwiek.pdf").write_bytes(b"%PDF")
@@ -157,7 +159,9 @@ def test_evaluate_misclassified_counts_all_fn(tmp_path, demo_classes, fake_llm, 
     from src import pipeline
     from src.textextract import DocText
 
-    monkeypatch.setattr(pipeline, "read_pdf", lambda path: DocText(DEMO_TEXT, 1, False))
+    monkeypatch.setattr(
+        pipeline, "read_pdf", lambda path, settings=None: DocText(DEMO_TEXT, 1, False)
+    )
     example = tmp_path / "dane" / "przyklad_01"
     example.mkdir(parents=True)
     (example / "a.pdf").write_bytes(b"%PDF")
@@ -217,7 +221,9 @@ def _demo_example(tmp_path, monkeypatch, ref):
     from src import pipeline
     from src.textextract import DocText
 
-    monkeypatch.setattr(pipeline, "read_pdf", lambda path: DocText(DEMO_TEXT, 1, False))
+    monkeypatch.setattr(
+        pipeline, "read_pdf", lambda path, settings=None: DocText(DEMO_TEXT, 1, False)
+    )
     example = tmp_path / "dane" / "przyklad_01"
     example.mkdir(parents=True)
     (example / "cokolwiek.pdf").write_bytes(b"%PDF")
@@ -306,7 +312,9 @@ def test_evaluate_document_lost_to_error_excluded_from_clean_f1(
     from src.llm import LLMError
     from src.textextract import DocText
 
-    monkeypatch.setattr(pipeline, "read_pdf", lambda path: DocText(DEMO_TEXT, 1, False))
+    monkeypatch.setattr(
+        pipeline, "read_pdf", lambda path, settings=None: DocText(DEMO_TEXT, 1, False)
+    )
     example = tmp_path / "dane" / "przyklad_01"
     example.mkdir(parents=True)
     (example / "a.pdf").write_bytes(b"%PDF")
@@ -335,7 +343,9 @@ def test_evaluate_only_selected_examples(tmp_path, demo_classes, fake_llm, monke
     from src import pipeline
     from src.textextract import DocText
 
-    monkeypatch.setattr(pipeline, "read_pdf", lambda path: DocText(DEMO_TEXT, 1, False))
+    monkeypatch.setattr(
+        pipeline, "read_pdf", lambda path, settings=None: DocText(DEMO_TEXT, 1, False)
+    )
     for n in ("01", "02", "03"):
         example = tmp_path / "dane" / f"przyklad_{n}"
         example.mkdir(parents=True)
@@ -359,7 +369,9 @@ def test_evaluate_scan_layout_resolves_reference_class_by_keys(
     from src import pipeline
     from src.textextract import DocText
 
-    monkeypatch.setattr(pipeline, "read_pdf", lambda path: DocText(DEMO_TEXT, 1, False))
+    monkeypatch.setattr(
+        pipeline, "read_pdf", lambda path, settings=None: DocText(DEMO_TEXT, 1, False)
+    )
     case = tmp_path / "skany" / "demo_kind" / "0001"
     case.mkdir(parents=True)
     (case / "0001.pdf").write_bytes(b"%PDF")

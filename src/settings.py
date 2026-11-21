@@ -16,6 +16,10 @@ class Settings(BaseModel):
     classes_dir: Path = Path("classes")
     citation_threshold: float = 85
     llm_config: Path = Path("config/llm.json")
+    ocr_backend: Literal["vlm", "tesseract"] = "vlm"
+    vlm_model: str = ""
+    vlm_base_url: str = ""
+    vlm_api_key: str = ""
 
     @classmethod
     def from_env(cls, env: Mapping[str, str] | None = None) -> Settings:
@@ -32,5 +36,9 @@ class Settings(BaseModel):
             "classes_dir": env.get("CLASSES_DIR"),
             "citation_threshold": env.get("CITATION_THRESHOLD"),
             "llm_config": env.get("LLM_CONFIG"),
+            "ocr_backend": env.get("OCR_BACKEND"),
+            "vlm_model": env.get("VLM_MODEL"),
+            "vlm_base_url": env.get("VLM_BASE_URL"),
+            "vlm_api_key": env.get("VLM_API_KEY"),
         }
         return cls(**{k: v for k, v in values.items() if v not in (None, "")})

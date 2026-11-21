@@ -10,10 +10,14 @@ dependencies = [
     "pyyaml",
     "openai>=1",
     "rapidfuzz",
-    "pytesseract",
     "pypdfium2",
+    "pillow",
     "python-dotenv",
 ]
+
+[project.optional-dependencies]
+# Opcjonalny OCR lokalny (wymaga też programu Tesseract w systemie, patrz README)
+tesseract = ["pytesseract"]
 
 [dependency-groups]
 dev = ["pytest", "ruff"]

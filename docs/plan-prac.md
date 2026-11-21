@@ -6,7 +6,7 @@ Kolejność wg wpływu na punkty: preselekcja to 100% F1 na ukrytym zbiorze ze s
 
 1. **Poprawa skanów (OCR).** Skany: F1 0.929, treningowe 0.996. Główna luka na ukrytym zbiorze.
    - [ ] Prośba do administratora LiteLLM o model z wizją (open-weights, UE); przy okazji lokalizacja serwera i polityka prywatności. `extractor` (DeepSeek Flash) jest tekstowy i nie przyjmuje obrazów.
-   - [ ] Backend VLM: `OCR_BACKEND=tesseract|vlm` + `VLM_MODEL`, fallback na Tesseracta. Najpierw mock, potem pomiar na 30 skanach.
+   - [x] Backend VLM: `OCR_BACKEND=vlm|tesseract` + `VLM_MODEL` (`src/ocr.py`), VLM domyślny, Tesseract opcjonalny (extra `tesseract`, instrukcja w README), fallback gdy zainstalowany. Przetestowane na mocku; pomiar na 30 skanach czeka na model z wizją.
    - [ ] Poprawki Tesseracta (niezależnie od VLM): wyższy DPI, obróbka obrazu.
    - [ ] Walidacja sumy kontrolnej IBAN: błędny numer rachunku daje `null`.
    - [ ] Klasyfikacja: `KIO_KIO 2617-21.pdf` (wyrok KIO) wpada do `odwolanie`.
@@ -14,7 +14,7 @@ Kolejność wg wpływu na punkty: preselekcja to 100% F1 na ukrytym zbiorze ze s
    - [x] `requirements.txt`: `make requirements`, commit, test zgodności z `uv.lock`.
    - [x] Czysta instalacja w nowym venv: `pip install -r requirements.txt` + `python -m src run`.
    - [x] `start.bat`: czy robi to samo (venv, pip, run).
-   - [ ] README: instalacja Tesseracta (Windows/Linux/macOS), jeśli VLM nie wejdzie.
+   - [x] README: instalacja Tesseracta (Windows/Linux/macOS) jako opcja; Docker bez Tesseracta.
    - [ ] `docker compose build` (dotąd nieuruchomione).
 3. **Push na GitHub.**
    - [ ] Wypchnąć branch, PR do `main`, zaktualizować gitlink submodułu w repo głównym.
