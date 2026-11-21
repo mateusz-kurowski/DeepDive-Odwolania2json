@@ -67,9 +67,7 @@ def _check_derive(fields: list[FieldSpec]) -> None:
     names = {f.name for f in fields}
     for f in fields:
         if f.derive and f.derive.from_field not in names:
-            raise ValueError(
-                f"pole '{f.name}': derive.from '{f.derive.from_field}' nie istnieje"
-            )
+            raise ValueError(f"pole '{f.name}': derive.from '{f.derive.from_field}' nie istnieje")
 
 
 def load_classes(directory: Path) -> dict[str, ClassConfig]:

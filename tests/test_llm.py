@@ -38,9 +38,7 @@ def rate_limit():
 def make(items, **kw):
     sleeps: list[float] = []
     client = FakeClient(items)
-    llm = OpenAICompatLLM(
-        Settings(llm_model="m"), client=client, sleep=sleeps.append, **kw
-    )
+    llm = OpenAICompatLLM(Settings(llm_model="m"), client=client, sleep=sleeps.append, **kw)
     return llm, client, sleeps
 
 

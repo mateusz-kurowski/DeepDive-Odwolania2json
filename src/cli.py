@@ -22,7 +22,9 @@ def _parser() -> argparse.ArgumentParser:
     sub = parser.add_subparsers(dest="command", required=True)
 
     def common(p: argparse.ArgumentParser) -> None:
-        p.add_argument("--classes", type=Path, help="katalog z klasami YAML (domyślnie CLASSES_DIR)")
+        p.add_argument(
+            "--classes", type=Path, help="katalog z klasami YAML (domyślnie CLASSES_DIR)"
+        )
         p.add_argument("--mode", choices=["hybrid", "llm_only"], help="nadpisuje EXTRACTION_MODE")
         p.add_argument("--workers", type=int, default=4)
 
@@ -88,8 +90,12 @@ def main(
 
     if args.command == "eval":
         report = evaluate(
-            args.data, classes, llm or OpenAICompatLLM(settings), settings,
-            limit=args.limit, workers=args.workers,
+            args.data,
+            classes,
+            llm or OpenAICompatLLM(settings),
+            settings,
+            limit=args.limit,
+            workers=args.workers,
         )
         print(f"model: {settings.llm_model}, tryb: {settings.extraction_mode}")
         print(report.render())

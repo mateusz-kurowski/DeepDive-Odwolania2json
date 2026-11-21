@@ -85,7 +85,9 @@ def _system_prompt(cfg: ClassConfig, truncated: bool) -> str:
     return "\n".join(parts)
 
 
-def _cells(raw: dict, fields: list[FieldSpec], prefix: str = "") -> Iterator[tuple[dict, FieldSpec, str]]:
+def _cells(
+    raw: dict, fields: list[FieldSpec], prefix: str = ""
+) -> Iterator[tuple[dict, FieldSpec, str]]:
     for spec in fields:
         if spec.derive is not None:
             continue
@@ -129,9 +131,8 @@ def extract(doc: DocText, cfg: ClassConfig, llm: LLM, mode: Mode, threshold: flo
     problems = _problems(raw, cfg, text, mode, threshold)
     if problems:
         retries = 1
-        feedback = (
-            f"{text}\n\nPoprzednia odpowiedź miała problemy, popraw je:\n"
-            + "\n".join(f"- {p}" for p in problems)
+        feedback = f"{text}\n\nPoprzednia odpowiedź miała problemy, popraw je:\n" + "\n".join(
+            f"- {p}" for p in problems
         )
         try:
             raw = llm.complete_json(system, feedback, schema, cfg.name)

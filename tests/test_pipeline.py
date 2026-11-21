@@ -2,13 +2,12 @@ import json
 import logging
 
 import pytest
+from conftest import DEMO_TEXT, classification, extraction
 
 from src import pipeline
 from src.llm import LLMError
 from src.settings import Settings
 from src.textextract import DocText
-
-from conftest import DEMO_TEXT, classification, extraction
 
 SETTINGS = Settings(openai_api_key="k", llm_model="m")
 
@@ -32,7 +31,13 @@ def touch(base, *relative):
 
 def batch(tmp_path, classes, llm, settings=SETTINGS):
     return pipeline.run_batch(
-        tmp_path / "input", tmp_path / "output", tmp_path / "trace", classes, llm, settings, workers=1
+        tmp_path / "input",
+        tmp_path / "output",
+        tmp_path / "trace",
+        classes,
+        llm,
+        settings,
+        workers=1,
     )
 
 
@@ -42,7 +47,10 @@ def test_writes_json_with_same_stem_and_structure(tmp_path, demo_classes, fake_l
     results = batch(tmp_path, demo_classes[1], llm)
     out = tmp_path / "output" / "case1" / "Mój plik ąę.json"
     assert out.exists()
-    assert json.loads(out.read_text(encoding="utf-8")) == {"nip": "5270000000", "tytul": "Budowa drogi"}
+    assert json.loads(out.read_text(encoding="utf-8")) == {
+        "nip": "5270000000",
+        "tytul": "Budowa drogi",
+    }
     assert results[0].class_name == "demo" and results[0].error is None
 
 
@@ -109,7 +117,11 @@ def test_rerun_is_idempotent(tmp_path, demo_classes, fake_llm):
 def test_same_stem_in_two_cases_does_not_collide(tmp_path, demo_classes, fake_llm):
     touch(tmp_path / "input", "case1", "a.pdf")
     touch(tmp_path / "input", "case2", "a.pdf")
-    batch(tmp_path, demo_classes[1], fake_llm([classification(), extraction(), classification(), extraction()]))
+    batch(
+        tmp_path,
+        demo_classes[1],
+        fake_llm([classification(), extraction(), classification(), extraction()]),
+    )
     assert (tmp_path / "output" / "case1" / "a.json").exists()
     assert (tmp_path / "output" / "case2" / "a.json").exists()
 
@@ -118,7 +130,9 @@ def test_llm_only_mode_leaves_raw_value(tmp_path, demo_classes, fake_llm):
     touch(tmp_path / "input", "case1", "a.pdf")
     settings = SETTINGS.model_copy(update={"extraction_mode": "llm_only"})
     batch(tmp_path, demo_classes[1], fake_llm([classification(), extraction()]), settings)
-    assert json.loads((tmp_path / "output" / "case1" / "a.json").read_text())["nip"] == "527-000-00-00"
+    assert (
+        json.loads((tmp_path / "output" / "case1" / "a.json").read_text())["nip"] == "527-000-00-00"
+    )
 
 
 def test_write_json_keeps_polish_characters(tmp_path):

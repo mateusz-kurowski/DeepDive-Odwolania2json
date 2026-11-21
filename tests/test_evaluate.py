@@ -1,11 +1,10 @@
 import json
 
+from conftest import classification
 
 from src.classconfig import ClassConfig
 from src.evaluate import Counts, Report, evaluate, flatten, score_document
 from src.settings import Settings
-
-from conftest import classification
 
 CFG = ClassConfig.model_validate(
     {
@@ -132,10 +131,10 @@ def test_report_aggregates_micro_f1():
 
 
 def test_evaluate_end_to_end(tmp_path, demo_classes, fake_llm, monkeypatch):
+    from conftest import DEMO_TEXT, extraction
+
     from src import pipeline
     from src.textextract import DocText
-
-    from conftest import DEMO_TEXT, extraction
 
     monkeypatch.setattr(pipeline, "read_pdf", lambda path: DocText(DEMO_TEXT, 1, False))
     example = tmp_path / "dane" / "przyklad_01"
@@ -153,19 +152,24 @@ def test_evaluate_end_to_end(tmp_path, demo_classes, fake_llm, monkeypatch):
 
 
 def test_evaluate_misclassified_counts_all_fn(tmp_path, demo_classes, fake_llm, monkeypatch):
+    from conftest import DEMO_TEXT
+
     from src import pipeline
     from src.textextract import DocText
-
-    from conftest import DEMO_TEXT
 
     monkeypatch.setattr(pipeline, "read_pdf", lambda path: DocText(DEMO_TEXT, 1, False))
     example = tmp_path / "dane" / "przyklad_01"
     example.mkdir(parents=True)
     (example / "a.pdf").write_bytes(b"%PDF")
-    (example / "demo.json").write_text(json.dumps({"nip": "5270000000", "tytul": "T"}), encoding="utf-8")
+    (example / "demo.json").write_text(
+        json.dumps({"nip": "5270000000", "tytul": "T"}), encoding="utf-8"
+    )
     report = evaluate(
-        tmp_path / "dane", demo_classes[1], fake_llm([classification("nieznany")]),
-        Settings(llm_model="m"), workers=1,
+        tmp_path / "dane",
+        demo_classes[1],
+        fake_llm([classification("nieznany")]),
+        Settings(llm_model="m"),
+        workers=1,
     )
     assert report.classification_accuracy == 0.0
     assert report.micro_f1 == 0.0

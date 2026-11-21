@@ -68,9 +68,7 @@ def process_pdf(
 
 def _write_json(path: Path, payload: dict) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(
-        json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
-    )
+    path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
 def _trace(result: DocResult, rel: Path) -> dict:
@@ -91,9 +89,7 @@ def _trace(result: DocResult, rel: Path) -> dict:
 def find_pdfs(input_dir: Path) -> list[Path]:
     if not input_dir.is_dir():
         return []
-    return sorted(
-        p for p in input_dir.rglob("*") if p.is_file() and p.suffix.lower() == ".pdf"
-    )
+    return sorted(p for p in input_dir.rglob("*") if p.is_file() and p.suffix.lower() == ".pdf")
 
 
 def run_batch(

@@ -45,9 +45,7 @@ RAW = {
     "tytul": leaf("T"),
     "powod": leaf(4),
     "flaga": leaf(1),
-    "osoby": [
-        {"krs": leaf("0000000001"), "pelnomocnik": {"mail": leaf("a@b.pl", "mail: a@b.pl")}}
-    ],
+    "osoby": [{"krs": leaf("0000000001"), "pelnomocnik": {"mail": leaf("a@b.pl", "mail: a@b.pl")}}],
 }
 
 

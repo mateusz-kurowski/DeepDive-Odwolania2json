@@ -142,8 +142,12 @@ def _pair_items(
 
 
 def _walk_pair(
-    pred: dict, ref: dict, fields: list[FieldSpec], prefix: str,
-    out_pred: dict[str, Any], out_ref: dict[str, Any],
+    pred: dict,
+    ref: dict,
+    fields: list[FieldSpec],
+    prefix: str,
+    out_pred: dict[str, Any],
+    out_ref: dict[str, Any],
 ) -> None:
     for spec in fields:
         pv = pred.get(spec.name) if isinstance(pred, dict) else None
@@ -153,7 +157,9 @@ def _walk_pair(
             _walk_pair(pv or {}, rv or {}, spec.fields, f"{path}.", out_pred, out_ref)
         elif spec.type == "array":
             for p_item, r_item, label in _pair_items(pv or [], rv or [], spec):
-                _walk_pair(p_item or {}, r_item or {}, spec.fields, f"{path}[{label}].", out_pred, out_ref)
+                _walk_pair(
+                    p_item or {}, r_item or {}, spec.fields, f"{path}[{label}].", out_pred, out_ref
+                )
         else:
             out_pred[path] = _norm(pv, spec)
             out_ref[path] = _norm(rv, spec)
@@ -163,9 +169,7 @@ def _schema_path(path: str) -> str:
     return re.sub(r"\[[^\]]*\]", "[]", path)
 
 
-def score_document(
-    pred: dict | None, ref: dict, cfg: ClassConfig
-) -> dict[str, Counts]:
+def score_document(pred: dict | None, ref: dict, cfg: ClassConfig) -> dict[str, Counts]:
     pred_flat: dict[str, Any] = {}
     ref_flat: dict[str, Any] = {}
     _walk_pair(pred or {}, ref or {}, cfg.fields, "", pred_flat, ref_flat)
@@ -210,7 +214,14 @@ class Report:
 
     def merge(self, other: Report) -> None:
         self.add_counts(other.per_field)
-        for name in ("docs", "doc_exact", "classified_ok", "classified_total", "cited_ok", "cited_total"):
+        for name in (
+            "docs",
+            "doc_exact",
+            "classified_ok",
+            "classified_total",
+            "cited_ok",
+            "cited_total",
+        ):
             setattr(self, name, getattr(self, name) + getattr(other, name))
 
     @property
@@ -273,8 +284,14 @@ class Report:
             "citation_ok_rate": self.citation_ok_rate,
             "null_rate_on_ref_valued": self.null_rate_on_ref_valued,
             "per_field": {
-                k: {"tp": c.tp, "fp": c.fp, "fn": c.fn, "precision": c.precision,
-                    "recall": c.recall, "f1": c.f1}
+                k: {
+                    "tp": c.tp,
+                    "fp": c.fp,
+                    "fn": c.fn,
+                    "precision": c.precision,
+                    "recall": c.recall,
+                    "f1": c.f1,
+                }
                 for k, c in sorted(self.per_field.items())
             },
         }

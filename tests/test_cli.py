@@ -1,12 +1,11 @@
 import json
 
 import pytest
+from conftest import DEMO_TEXT, classification, extraction
 
 from src import pipeline
 from src.cli import main
 from src.textextract import DocText
-
-from conftest import DEMO_TEXT, classification, extraction
 
 
 @pytest.fixture(autouse=True)
@@ -17,11 +16,16 @@ def fake_pdf_reader(monkeypatch):
 def args(tmp_path, classes_dir, *extra):
     return [
         "run",
-        "--input", str(tmp_path / "input"),
-        "--output", str(tmp_path / "output"),
-        "--trace", str(tmp_path / "trace"),
-        "--classes", str(classes_dir),
-        "--workers", "1",
+        "--input",
+        str(tmp_path / "input"),
+        "--output",
+        str(tmp_path / "output"),
+        "--trace",
+        str(tmp_path / "trace"),
+        "--classes",
+        str(classes_dir),
+        "--workers",
+        "1",
         *extra,
     ]
 
@@ -48,7 +52,9 @@ def test_missing_input_dir_exit_0_with_message(tmp_path, demo_classes, fake_llm,
 
 def test_run_exit_0_on_success(tmp_path, demo_classes, fake_llm):
     make_input(tmp_path)
-    code = main(args(tmp_path, demo_classes[0]), llm=fake_llm([classification(), extraction()]), env=ENV)
+    code = main(
+        args(tmp_path, demo_classes[0]), llm=fake_llm([classification(), extraction()]), env=ENV
+    )
     assert code == 0
     assert (tmp_path / "output" / "case1" / "a.json").exists()
 
@@ -63,15 +69,20 @@ def test_exit_1_when_a_document_failed(tmp_path, demo_classes, fake_llm):
 
 def test_unknown_document_exit_0(tmp_path, demo_classes, fake_llm):
     make_input(tmp_path)
-    code = main(args(tmp_path, demo_classes[0]), llm=fake_llm([classification("nieznany")]), env=ENV)
+    code = main(
+        args(tmp_path, demo_classes[0]), llm=fake_llm([classification("nieznany")]), env=ENV
+    )
     assert code == 0
 
 
 def test_mode_flag_overrides_env(tmp_path, demo_classes, fake_llm):
     make_input(tmp_path)
     env = {**ENV, "EXTRACTION_MODE": "llm_only"}
-    main(args(tmp_path, demo_classes[0], "--mode", "hybrid"),
-         llm=fake_llm([classification(), extraction()]), env=env)
+    main(
+        args(tmp_path, demo_classes[0], "--mode", "hybrid"),
+        llm=fake_llm([classification(), extraction()]),
+        env=env,
+    )
     assert json.loads((tmp_path / "output" / "case1" / "a.json").read_text())["nip"] == "5270000000"
 
 
@@ -79,7 +90,9 @@ def test_env_mode_used_without_flag(tmp_path, demo_classes, fake_llm):
     make_input(tmp_path)
     env = {**ENV, "EXTRACTION_MODE": "llm_only"}
     main(args(tmp_path, demo_classes[0]), llm=fake_llm([classification(), extraction()]), env=env)
-    assert json.loads((tmp_path / "output" / "case1" / "a.json").read_text())["nip"] == "527-000-00-00"
+    assert (
+        json.loads((tmp_path / "output" / "case1" / "a.json").read_text())["nip"] == "527-000-00-00"
+    )
 
 
 def test_classes_command_lists_loaded_classes(tmp_path, demo_classes, capsys):
@@ -96,8 +109,21 @@ def test_eval_command_prints_report_and_writes_json(tmp_path, demo_classes, fake
     )
     out = tmp_path / "wynik.json"
     code = main(
-        ["eval", "--data", str(tmp_path / "dane"), "--classes", str(demo_classes[0]),
-         "--workers", "1", "--limit", "1", "--model", "inny-model", "--out-json", str(out)],
+        [
+            "eval",
+            "--data",
+            str(tmp_path / "dane"),
+            "--classes",
+            str(demo_classes[0]),
+            "--workers",
+            "1",
+            "--limit",
+            "1",
+            "--model",
+            "inny-model",
+            "--out-json",
+            str(out),
+        ],
         llm=fake_llm([classification(), extraction()]),
         env=ENV,
     )

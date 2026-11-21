@@ -1,4 +1,3 @@
-
 from src.classconfig import ClassConfig
 from src.extract import HEAD_RATIO, MAX_CHARS, extract, truncate
 from src.llm import LLMError
@@ -94,7 +93,9 @@ def test_null_value_has_no_citation_entry(fake_llm):
 
 
 def test_retry_failure_keeps_first_result(fake_llm):
-    llm = fake_llm([raw("527-000-00-00", tytul="T", tytul_quote="brak w tekście zupełnie"), LLMError("x")])
+    llm = fake_llm(
+        [raw("527-000-00-00", tytul="T", tytul_quote="brak w tekście zupełnie"), LLMError("x")]
+    )
     result = run(llm)
     assert result.data["tytul"] == "T"
     assert result.retries == 1

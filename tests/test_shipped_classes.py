@@ -33,7 +33,12 @@ def test_przelew_structure():
     assert root.name == "przelew_bankowy" and root.type == "object"
     fields = {f.name: f for f in root.fields}
     assert set(fields) == {
-        "data_operacji", "kwota", "na_rachunek", "numer_transakcji", "tytul", "z_rachunku"
+        "data_operacji",
+        "kwota",
+        "na_rachunek",
+        "numer_transakcji",
+        "tytul",
+        "z_rachunku",
     }
     assert fields["data_operacji"].validator == "date"
     assert fields["kwota"].validator == "amount"
@@ -111,7 +116,13 @@ def test_odwolanie_structure():
     top = {f.name: f for f in cfg.fields}
     assert set(top) == {"OdwolanieKIO", "Odwolujacy", "Zamawiajacy", "ZamowieniePubliczne"}
     info = {f.name: f for f in top["OdwolanieKIO"].fields}
-    assert set(info) == {"data", "czynnosc_dzien", "czynnosc_powod_id", "czynnosc_opis", "miejscowosc"}
+    assert set(info) == {
+        "data",
+        "czynnosc_dzien",
+        "czynnosc_powod_id",
+        "czynnosc_opis",
+        "miejscowosc",
+    }
     assert set(info["czynnosc_powod_id"].options) == set(range(1, 12))
     assert info["czynnosc_opis"].derive.from_field == "czynnosc_powod_id"
     assert set(info["czynnosc_opis"].derive.map) == set(range(1, 12))

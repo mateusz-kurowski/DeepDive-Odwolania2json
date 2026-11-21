@@ -3,6 +3,7 @@
 Użycie: python scripts/extract_czynnosc_map.py [katalog_danych]
 Kończy się błędem, gdy jeden identyfikator ma kilka różnych opisów.
 """
+
 from __future__ import annotations
 
 import json
