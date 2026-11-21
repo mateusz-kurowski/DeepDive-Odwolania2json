@@ -6,6 +6,10 @@ MODE ?=
 MODEL ?=
 LIMIT ?=
 WORKERS ?= 4
+# Wyniki każdego przebiegu: results/<timestamp>/ (raport JSON, log, dump per dokument)
+RUN_DIR := $(or $(RUN_DIR),results/$(shell date +%Y%m%d-%H%M%S))
+SHELL := /bin/bash
+.SHELLFLAGS := -o pipefail -c
 EXTRA = $(if $(MODE),--mode $(MODE)) $(if $(MODEL),--model $(MODEL)) --workers $(WORKERS)
 
 help: ## Lista komend
@@ -34,14 +38,17 @@ run: ## Przetwórz input/ do output/ (MODE=hybrid|llm_only)
 classes: ## Wypisz wczytane klasy
 	uv run python -m src classes
 
-eval: ## F1 na data/dane (MODE, MODEL, LIMIT)
-	uv run python -m src eval $(EXTRA) $(if $(LIMIT),--limit $(LIMIT))
+eval: ## F1 na data/dane (MODE, MODEL, LIMIT), wyniki do results/<timestamp>/
+	@mkdir -p $(RUN_DIR)
+	uv run python -m src eval $(EXTRA) $(if $(LIMIT),--limit $(LIMIT)) --out-json $(RUN_DIR)/report.json --dump $(RUN_DIR)/dump 2>&1 | tee $(RUN_DIR)/eval.log
 
-eval-hybrid: ## F1 w trybie hybrid, raport i dump do results/
-	uv run python -m src eval --mode hybrid --workers $(WORKERS) --out-json results/full-hybrid.json --dump results/dump-hybrid
+eval-hybrid: ## F1 w trybie hybrid, raport i dump do results/<timestamp>/
+	@mkdir -p $(RUN_DIR)
+	uv run python -m src eval --mode hybrid --workers $(WORKERS) --out-json $(RUN_DIR)/hybrid.json --dump $(RUN_DIR)/dump-hybrid 2>&1 | tee $(RUN_DIR)/hybrid.log
 
-eval-llm-only: ## F1 w trybie llm_only, raport i dump do results/
-	uv run python -m src eval --mode llm_only --workers $(WORKERS) --out-json results/full-llm_only.json --dump results/dump-llm_only
+eval-llm-only: ## F1 w trybie llm_only, raport i dump do results/<timestamp>/
+	@mkdir -p $(RUN_DIR)
+	uv run python -m src eval --mode llm_only --workers $(WORKERS) --out-json $(RUN_DIR)/llm_only.json --dump $(RUN_DIR)/dump-llm_only 2>&1 | tee $(RUN_DIR)/llm_only.log
 
 docker-build: ## Zbuduj obraz
 	docker compose build
