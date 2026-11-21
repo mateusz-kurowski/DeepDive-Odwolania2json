@@ -108,7 +108,7 @@ def run_batch(
     pdfs = find_pdfs(input_dir)
     with ThreadPoolExecutor(max_workers=max(workers, 1)) as pool:
         results = list(pool.map(lambda p: process_pdf(p, classes, llm, settings), pdfs))
-    for pdf, result in zip(pdfs, results):
+    for pdf, result in zip(pdfs, results, strict=True):
         rel = pdf.relative_to(input_dir).with_suffix(".json")
         if result.data is not None:
             _write_json(output_dir / rel, result.data)

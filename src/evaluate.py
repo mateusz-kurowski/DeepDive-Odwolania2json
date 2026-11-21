@@ -128,7 +128,7 @@ def _pair_items(
                 break
     left_ref = [i for i in range(len(ref_items)) if i not in matched]
     left_pred = [j for j in range(len(pred_items)) if j not in used]
-    for i, j in zip(left_ref, left_pred):
+    for i, j in zip(left_ref, left_pred, strict=False):
         matched[i] = j
         used.add(j)
     pairs: list[tuple[dict | None, dict | None, str]] = []

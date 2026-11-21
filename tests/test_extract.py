@@ -1,4 +1,3 @@
-import pytest
 
 from src.classconfig import ClassConfig
 from src.extract import HEAD_RATIO, MAX_CHARS, extract, truncate

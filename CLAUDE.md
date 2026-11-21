@@ -17,7 +17,7 @@ Pełny projekt: `docs/superpowers/specs/2026-11-21-odwolania2json-design.md`. **
 ## 2. Twarde ograniczenia (anty-cele)
 
 - **Wyłącznie open source, w tym modele (open-weights).** Żadnego Gemini/Claude/GPT w rozwiązaniu. Claude służy tylko do budowania kodu, nie jest zależnością działania.
-- Python 3.13+, `requirements.txt`, CLI lub `start.bat`, bez GPU na docelowej maszynie (model wołany przez API zgodne z OpenAI: LiteLLM, vLLM, Ollama).
+- Python 3.13+, zależności przez uv (`pyproject.toml`, `uv.lock`); `requirements.txt` wymagany przez organizatora w dostawie, generowany na żądanie: `make requirements`. CLI lub `start.bat`, bez GPU na docelowej maszynie (model wołany przez API zgodne z OpenAI: LiteLLM, vLLM, Ollama).
 - Logika klas **nie może** być zaszyta w kodzie: nowa klasa = nowy plik YAML w `classes/`. Jeśli coś wymaga edycji Pythona przy dodaniu klasy, to błąd projektu.
 - Nie zgadywać: gdy pole niepewne albo walidacja nie przechodzi, `null`.
 - Pilnować licencji bibliotek i modeli (przeniesienie praw autorskich).

@@ -1,8 +1,6 @@
 import json
 
-import pytest
 
-from src import evaluate as ev
 from src.classconfig import ClassConfig
 from src.evaluate import Counts, Report, evaluate, flatten, score_document
 from src.settings import Settings

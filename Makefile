@@ -1,5 +1,5 @@
 .DEFAULT_GOAL := help
-.PHONY: help install test run classes eval eval-hybrid eval-llm-only docker-build docker-run clean
+.PHONY: help install requirements test run classes eval eval-hybrid eval-llm-only docker-build docker-run clean
 
 # Parametry (nadpisz: make eval MODE=llm_only LIMIT=10 MODEL=nazwa)
 MODE ?=
@@ -13,6 +13,9 @@ help: ## Lista komend
 
 install: ## Zależności (uv sync)
 	uv sync
+
+requirements: ## Wygeneruj requirements.txt z uv.lock (wymóg dostawy organizatora)
+	uv export --no-dev --no-hashes --no-emit-project -o requirements.txt
 
 test: ## Testy (pytest)
 	uv run pytest -q
