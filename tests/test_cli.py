@@ -85,3 +85,29 @@ def test_env_mode_used_without_flag(tmp_path, demo_classes, fake_llm):
 def test_classes_command_lists_loaded_classes(tmp_path, demo_classes, capsys):
     assert main(["classes", "--classes", str(demo_classes[0])], env=ENV) == 0
     assert "demo" in capsys.readouterr().out
+
+
+def test_eval_command_prints_report_and_writes_json(tmp_path, demo_classes, fake_llm, capsys):
+    example = tmp_path / "dane" / "przyklad_01"
+    example.mkdir(parents=True)
+    (example / "a.pdf").write_bytes(b"%PDF")
+    (example / "demo.json").write_text(
+        json.dumps({"nip": "5270000000", "tytul": "Budowa drogi"}), encoding="utf-8"
+    )
+    out = tmp_path / "wynik.json"
+    code = main(
+        ["eval", "--data", str(tmp_path / "dane"), "--classes", str(demo_classes[0]),
+         "--workers", "1", "--limit", "1", "--model", "inny-model", "--out-json", str(out)],
+        llm=fake_llm([classification(), extraction()]),
+        env=ENV,
+    )
+    assert code == 0
+    assert "F1 (micro)" in capsys.readouterr().out
+    assert json.loads(out.read_text())["micro_f1"] == 1.0
+
+
+def test_model_flag_overrides_env_model():
+    from odwolania2json.cli import _parser, _settings
+
+    args = _parser().parse_args(["eval", "--model", "inny-model"])
+    assert _settings(args, ENV).llm_model == "inny-model"
