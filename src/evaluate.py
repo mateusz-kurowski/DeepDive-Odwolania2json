@@ -224,19 +224,30 @@ class Report:
     classified_total: int = 0
     cited_ok: int = 0
     cited_total: int = 0
+    # Awarie (dokument z `error`, np. model niedostępny) oddzielone od jakości ekstrakcji:
+    # per_field_clean pomija referencje, których brak wynika z awarii w danym przykładzie.
+    errors: int = 0
+    docs_lost_to_errors: int = 0
+    per_field_clean: dict[str, Counts] = field(default_factory=dict)
 
-    def add_counts(self, counts: dict[str, Counts]) -> None:
+    def add_counts(self, counts: dict[str, Counts], clean: bool = True) -> None:
         for key, c in counts.items():
             self.per_field[key] = self.per_field.get(key, Counts()) + c
+            if clean:
+                self.per_field_clean[key] = self.per_field_clean.get(key, Counts()) + c
 
-    def add_document(self, counts: dict[str, Counts]) -> None:
-        self.add_counts(counts)
+    def add_document(self, counts: dict[str, Counts], clean: bool = True) -> None:
+        self.add_counts(counts, clean)
         self.docs += 1
+        if not clean:
+            self.docs_lost_to_errors += 1
         if all(c.fp == 0 and c.fn == 0 for c in counts.values()):
             self.doc_exact += 1
 
     def merge(self, other: Report) -> None:
-        self.add_counts(other.per_field)
+        self.add_counts(other.per_field, clean=False)
+        for key, c in other.per_field_clean.items():
+            self.per_field_clean[key] = self.per_field_clean.get(key, Counts()) + c
         for name in (
             "docs",
             "doc_exact",
@@ -244,6 +255,8 @@ class Report:
             "classified_total",
             "cited_ok",
             "cited_total",
+            "errors",
+            "docs_lost_to_errors",
         ):
             setattr(self, name, getattr(self, name) + getattr(other, name))
 
@@ -251,6 +264,13 @@ class Report:
     def totals(self) -> Counts:
         out = Counts()
         for c in self.per_field.values():
+            out = out + c
+        return out
+
+    @property
+    def totals_clean(self) -> Counts:
+        out = Counts()
+        for c in self.per_field_clean.values():
             out = out + c
         return out
 
@@ -302,6 +322,11 @@ class Report:
             "micro_f1": self.micro_f1,
             "precision": self.precision,
             "recall": self.recall,
+            "errors": self.errors,
+            "docs_lost_to_errors": self.docs_lost_to_errors,
+            "micro_f1_without_errors": self.totals_clean.f1,
+            "precision_without_errors": self.totals_clean.precision,
+            "recall_without_errors": self.totals_clean.recall,
             "doc_exact_match": self.doc_exact_match,
             "classification_accuracy": self.classification_accuracy,
             "citation_ok_rate": self.citation_ok_rate,
@@ -330,6 +355,10 @@ class Report:
             f"dokumenty (z referencją):        {self.docs}",
             f"F1 (micro):                      {self.micro_f1:.4f}",
             f"precision / recall:              {self.precision:.4f} / {self.recall:.4f}",
+            f"PDF z błędem (awaria):           {self.errors}"
+            f" (referencji utraconych: {self.docs_lost_to_errors})",
+            f"F1 bez dokumentów z błędem:      {self.totals_clean.f1:.4f}"
+            f" (P {self.totals_clean.precision:.4f} / R {self.totals_clean.recall:.4f})",
             f"exact match na dokument:         {self.doc_exact_match:.4f}",
             f"poprawna klasyfikacja:           {self.classification_accuracy:.4f}",
             f"poprawne cytaty:                 {self.citation_ok_rate:.4f}",
@@ -354,6 +383,7 @@ def _evaluate_example(
     }
     scored: dict[int, dict] = {}
     missed: dict[str, dict] = {}
+    report.errors = sum(1 for r in results if r.error)
     for class_name, ref in refs.items():
         matching = [r for r in results if r.class_name == class_name and r.data is not None]
         report.classified_total += 1
@@ -367,7 +397,9 @@ def _evaluate_example(
                 "expected": ref,
                 "diffs": diff_document(None, ref, classes[class_name]),
             }
-        report.add_document(score_document(pred, ref, classes[class_name]))
+        # Brak dokumentu przy awarii w tym przykładzie: nie wliczamy do F1 „bez błędów”.
+        lost = not matching and report.errors > 0
+        report.add_document(score_document(pred, ref, classes[class_name]), clean=not lost)
     for r in results:
         if r.data is not None and id(r) not in scored:
             report.add_counts(score_document(r.data, {}, classes[r.class_name]))

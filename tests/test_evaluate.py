@@ -268,3 +268,54 @@ def test_evaluate_dump_records_unknown_and_missed_reference(
     missed = json.loads((dump / "przyklad_01" / "_missed.json").read_text(encoding="utf-8"))
     assert missed["demo"]["reason"] == "brak dokumentu tej klasy"
     assert {d["status"] for d in missed["demo"]["diffs"]} == {"missing"}
+
+
+def test_report_separates_errors_from_quality():
+    report = Report()
+    report.add_document(score_document(REF, REF, CFG))
+    report.add_document(score_document(None, REF, CFG), clean=False)
+    report.errors = 1
+    data = report.to_dict()
+    assert data["errors"] == 1
+    assert data["docs_lost_to_errors"] == 1
+    assert data["micro_f1_without_errors"] == 1.0
+    assert data["micro_f1"] < 1.0
+    assert "bez dokumentów z błędem" in report.render()
+
+
+def test_merge_keeps_clean_counts_and_errors():
+    part = Report()
+    part.add_document(score_document(REF, REF, CFG))
+    part.add_document(score_document(None, REF, CFG), clean=False)
+    part.errors = 2
+    total = Report()
+    total.merge(part)
+    total.merge(part)
+    assert total.errors == 4
+    assert total.docs_lost_to_errors == 2
+    assert total.totals_clean.f1 == 1.0
+    assert total.totals.fn > 0
+
+
+def test_evaluate_document_lost_to_error_excluded_from_clean_f1(
+    tmp_path, demo_classes, fake_llm, monkeypatch
+):
+    from conftest import DEMO_TEXT
+
+    from src import pipeline
+    from src.llm import LLMError
+    from src.textextract import DocText
+
+    monkeypatch.setattr(pipeline, "read_pdf", lambda path: DocText(DEMO_TEXT, 1, False))
+    example = tmp_path / "dane" / "przyklad_01"
+    example.mkdir(parents=True)
+    (example / "a.pdf").write_bytes(b"%PDF")
+    (example / "demo.json").write_text(
+        json.dumps({"nip": "5270000000", "tytul": "Budowa drogi"}), encoding="utf-8"
+    )
+    llm = fake_llm([classification(), LLMError("pusta odpowiedź")])
+    report = evaluate(tmp_path / "dane", demo_classes[1], llm, Settings(llm_model="m"), workers=1)
+    assert report.errors == 1
+    assert report.docs_lost_to_errors == 1
+    assert report.micro_f1 == 0.0
+    assert report.totals_clean.tp + report.totals_clean.fn == 0
