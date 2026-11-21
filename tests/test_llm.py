@@ -115,3 +115,34 @@ def test_unrelated_bad_request_is_not_swallowed():
     with pytest.raises(LLMError):
         llm.complete_json("s", "u", SCHEMA, "demo")
     assert len(client.kwargs) == 1
+
+
+def test_describe_response_reports_empty_content_diagnostics():
+    from src.llm import describe_response
+
+    response = SimpleNamespace(
+        choices=[
+            SimpleNamespace(
+                finish_reason="length",
+                message=SimpleNamespace(content="", reasoning_content="myślę...", refusal=None),
+            )
+        ],
+        usage=SimpleNamespace(
+            prompt_tokens=100,
+            completion_tokens=8192,
+            completion_tokens_details=SimpleNamespace(reasoning_tokens=8192),
+        ),
+    )
+    info = describe_response(response)
+    assert info["finish_reason"] == "length"
+    assert info["content_len"] == 0
+    assert info["reasoning_len"] == len("myślę...")
+    assert info["completion_tokens"] == 8192
+    assert info["reasoning_tokens"] == 8192
+
+
+def test_empty_response_logs_diagnostics(caplog):
+    llm, _, _ = make(["", '{"a": 1}'])
+    with caplog.at_level("WARNING"):
+        assert llm.complete_json("s", "u", SCHEMA, "demo") == {"a": 1}
+    assert "finish_reason" in caplog.text

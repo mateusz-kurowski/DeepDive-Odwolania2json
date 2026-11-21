@@ -141,7 +141,41 @@ class OpenAICompatLLM:
         try:
             parsed = json.loads(content or "")
         except json.JSONDecodeError as exc:
+            log.warning("Niepoprawna odpowiedź modelu: %s", describe_response(response))
             raise _BadResponse(f"niepoprawny JSON: {exc}") from exc
         if not isinstance(parsed, dict):
+            log.warning("Odpowiedź nie jest obiektem JSON: %s", describe_response(response))
             raise _BadResponse("odpowiedź nie jest obiektem JSON")
         return parsed
+
+
+def describe_response(response: Any) -> dict:
+    """Diagnostyka pustej lub niepoprawnej odpowiedzi (bez treści dokumentu)."""
+    choices = getattr(response, "choices", None) or [None]
+    choice = choices[0]
+    message = getattr(choice, "message", None)
+    content = getattr(message, "content", None)
+    reasoning = getattr(message, "reasoning_content", None) or getattr(message, "reasoning", None)
+    usage = getattr(response, "usage", None)
+    details = getattr(usage, "completion_tokens_details", None)
+    return {
+        "finish_reason": getattr(choice, "finish_reason", None),
+        "content_len": len(content) if isinstance(content, str) else None,
+        "content_head": content[:80] if isinstance(content, str) else None,
+        "reasoning_len": len(reasoning) if isinstance(reasoning, str) else None,
+        "refusal": getattr(message, "refusal", None),
+        "prompt_tokens": getattr(usage, "prompt_tokens", None),
+        "completion_tokens": getattr(usage, "completion_tokens", None),
+        "reasoning_tokens": getattr(details, "reasoning_tokens", None),
+        "cache_hit": _cache_hit(response),
+    }
+
+
+def _cache_hit(response: Any) -> Any:
+    hidden = getattr(response, "_hidden_params", None)
+    if isinstance(hidden, dict) and "cache_hit" in hidden:
+        return hidden["cache_hit"]
+    extra = getattr(response, "model_extra", None)
+    if isinstance(extra, dict):
+        return extra.get("cache_hit")
+    return None
