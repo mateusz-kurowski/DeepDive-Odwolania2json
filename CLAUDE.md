@@ -26,7 +26,7 @@ Pełny projekt: `docs/superpowers/specs/2026-11-21-odwolania2json-design.md`. **
 
 - Hybryda: tekst z PDF (pypdf; Tesseract z danymi `pol` tylko gdy brak tekstu) → klasyfikacja → ekstrakcja modelem ze schematu z YAML → walidatory formatów (NIP, KRS, REGON, BZP, TED, IBAN, daty ISO, kwota) → zapis JSON.
 - Cytat źródłowy dla każdego pola, weryfikowany w kodzie dopasowaniem przybliżonym do tekstu.
-- Własna cienka warstwa zamiast LangExtract (powody w dokumencie projektowym, decyzja Claude'a do zmiany przez zespół).
+- Własna cienka warstwa zamiast LangExtract (powody w dokumencie projektowym, decyzja zespołu).
 - Model: endpoint, nazwa i klucz z env. Wybór modelu **po benchmarku** 2–3 kandydatów na 60 przykładach (jeszcze nie wybrany).
 - Lokalna ewaluacja F1 per pole na `data/dane/` (komenda `eval`). Skaner organizatora nie jest opublikowany, założenia w dokumencie projektowym (sekcja 7).
 
@@ -61,6 +61,7 @@ Pełny projekt: `docs/superpowers/specs/2026-11-21-odwolania2json-design.md`. **
 1. Wagi oceny: 50/50 czy 50/30/20.
 2. Jak jury uruchamia rozwiązanie i skąd bierze model (endpoint od nas czy w Docker Compose).
 3. Jak dokładnie liczone jest F1 (pola puste, tablice, nadmiarowe pliki).
+4. Czy „wyłącznie open source, w tym modele" dopuszcza open-weights, czy wymaga licencji OSI. Zadać przed wyborem modelu.
 
 ## 8. Dziennik
 

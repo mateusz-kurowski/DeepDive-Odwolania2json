@@ -21,9 +21,11 @@ Cele:
 - Spełnienie wymagań dostawy: Python 3.13+, `requirements.txt`, CLI lub `start.bat`, Docker Compose, dokumentacja, instrukcja dodawania nowej klasy, brak GPU, on-prem.
 
 Nie-cele:
-- Interfejs graficzny. Wynik to CLI i pliki.
+- Interfejs graficzny jako element rdzenia. Wynik to CLI i pliki.
 - Wsparcie dla dokumentów innych niż wskazane trzy klasy poza mechanizmem konfiguracji.
 - Trening lub dostrajanie modeli.
+
+Opcjonalnie (Could, dopiero po spełnieniu wszystkich Must): prosta przeglądarka wyników (PDF obok JSON z podświetlonymi cytatami) na potrzeby pitchu.
 
 Anty-cele (porażka, nawet gdy „działa"):
 - Jakikolwiek komponent niezgodny z „wyłącznie open source, w tym modele" (bez modeli komercyjnych, bez Gemini/Claude/GPT w rozwiązaniu).
@@ -39,15 +41,9 @@ Anty-cele (porażka, nawet gdy „działa"):
 
 ## 4. Podejścia rozważone
 
-| Podejście | Za | Przeciw |
-|---|---|---|
-| A. Sam model open-weights | Prosty, dobrze uogólnia | Pola o sztywnym formacie (NIP, IBAN, BZP) błędne bez kontroli |
-| B. Same reguły i regexy | Deterministyczny, zgodny w pełni | Kruchy na realnych dokumentach; trudne `czynnosc_powod_id` i „pierwszy zarzut"; nowa klasa wymaga kodu |
-| **C. Hybryda (wybrane)** | Reguły i walidatory dla formatów, model dla reszty; sterowane konfiguracją | Dwa mechanizmy do spięcia |
+Wybrane przez zespół: **hybryda** (reguły i walidatory dla pól o sztywnym formacie, model open-weights dla reszty, całość sterowana konfiguracją klasy).
 
-Wybrane przez zespół: **C, modele open-weights**.
-
-Warstwa ekstrakcji: rozważono LangExtract (Google, Apache 2.0; łączy się z dowolnym endpointem zgodnym z OpenAI przez `ModelConfig(provider="openai", provider_kwargs={"base_url": ...})`). **Decyzja Claude'a (do zmiany przez zespół): własna cienka warstwa zamiast LangExtract.** Powód: LangExtract zwraca płaską listę fragmentów, a nasz wynik jest zagnieżdżony i zawiera pola wyliczane (`czynnosc_powod_id`, `przez-pelnomocnika`, daty ISO, konsorcjum → Lider). Few-shot trzymany w kodzie koliduje z „config only", a wymuszenie schematu działa tylko z Gemini. Pomysł ugruntowania źródłowego przejmujemy własnym mechanizmem.
+Warstwa ekstrakcji: własna cienka warstwa, bez LangExtract (decyzja zespołu). Powód: wynik jest zagnieżdżony i zawiera pola wyliczane, a few-shot w kodzie koliduje z „config only".
 
 ## 5. Projekt
 
@@ -57,6 +53,8 @@ Przepływ dla każdego PDF-a:
 3. **Ekstrakcja:** konfiguracja klasy (plik YAML w `classes/`) zawiera: schemat pól, opisy pól dla modelu, przykłady few-shot, walidatory formatów, reguły szczególne w języku naturalnym. Model dostaje schemat i tekst i zwraca JSON przez `response_format` (JSON schema).
 4. **Cytaty:** dla każdego pola model zwraca cytat źródłowy; kod sprawdza dopasowanie do tekstu (dopasowanie przybliżone). Niezgodność oznacza obniżone zaufanie i może uruchomić ponowną próbę.
 5. **Walidacja i normalizacja:** walidatory formatów (NIP, KRS, REGON, BZP `YYYY/BZP########`, TED `NNNNNN-YYYY`, IBAN, ISO-daty, kwota jako liczba). Błędny format: jedna ponowna próba, potem `null`.
+Tryb ekstrakcji (przełącznik): `EXTRACTION_MODE=hybrid|llm_only` w env, nadpisywany flagą CLI `--mode`. Domyślnie `hybrid`. W `llm_only` krok 5 jest pominięty, czyli żadne walidatory ani normalizacja regexem nie ingerują w wynik, a pola zwraca sam model (nadal ze schematem i weryfikacją cytatów z kroku 4). Reguły w języku naturalnym z konfiguracji klasy działają w obu trybach. Przełącznik dotyczy całej warstwy regexowej naraz, nie pojedynczych walidatorów. Komenda `eval` przyjmuje ten sam przełącznik, więc F1 obu trybów porównujemy na 60 przykładach i wybieramy lepszy (liczba na slajd).
+
 6. **Zapis:** `output/caseN/<nazwa>.json` w dokładnym kształcie z `oczekiwane-json/`.
 
 Konfiguracja klasy (kluczowa dla punktacji): nowa klasa to nowy plik w `classes/`, wykrywany automatycznie. Słownik `czynnosc_powod_id` 1–11 mieszka w konfiguracji klasy `odwolanie`. Reguły (pierwszy „Zarzut" wyznacza pola `czynnosc_*`, konsorcjum oznacza dane Lidera, `prowadzacy_postepowanie` ∈ {null,1,0}, `przez-pelnomocnika` ∈ {1,0}) są opisane w konfiguracji.
@@ -79,7 +77,7 @@ Dostawa: CLI (`python -m odwolania2json` plus `start.bat`), `requirements.txt`, 
 
 Odpowiedzi z materiałów:
 - Schematy wyjścia są w `oczekiwane-json/` repo organizatora (kształty w przykładzie 01: `OdwolanieKIO`, `Odwolujacy[]` z `pelnomocnik`, `Zamawiajacy[]`, `ZamowieniePubliczne`; `pelnomocnictwo`: `mocodawca[]` + `pelnomocnicy[]`; `przelew`: `przelew_bankowy`). Mapowanie klasy na schemat to właśnie plik klasy.
-- Skaner F1 **nie jest opublikowany** (README mówi tylko „F1 względem danych referencyjnych"). Lokalny `eval` przyjmuje założenia: porównanie po normalizacji (białe znaki, wielkość liter, format dat), pole to jednostka oceny, `null` zamiast pola brakującego jest równoważne, tablice dopasowywane po kluczu (NIP/KRS), a gdy nie da się dopasować, po kolejności. Zakładamy też, że `null` przy niepewności jest bezpieczniejszy niż zgadywanie.
+- Skaner F1 **nie jest opublikowany** (README mówi tylko „F1 względem danych referencyjnych"). Lokalny `eval` przyjmuje założenia: porównanie po normalizacji (białe znaki, wielkość liter, format dat), pole to jednostka oceny, `null` zamiast pola brakującego jest równoważne, tablice dopasowywane po kluczu (NIP/KRS), a gdy nie da się dopasować, po kolejności. Zakładamy też, że `null` przy niepewności jest bezpieczniejszy niż zgadywanie. Metryką oceny jest F1. BLEU odrzucone (mierzy podobieństwo tekstu generowanego, a porównujemy pola strukturalne). `eval` raportuje dodatkowo pomocniczo: precision i recall osobno, exact match na poziomie dokumentu, odsetek poprawnych cytatów i odsetek `null` przy polach z wartością referencyjną.
 - W 180 PDF-ach treningowych wszystkie mają warstwę tekstową (0 skanów), najdłuższy ma 11 stron. Skany w zbiorze ukrytym są możliwe, więc OCR jest wariantem awaryjnym, nie rdzeniem.
 - Endpoint modelu w czasie hackathonu: własny LiteLLM zespołu (Coolify). Nazwy modeli wybieramy w benchmarku.
 
@@ -94,6 +92,7 @@ Pytania do organizatora/mentorów (nie do rozstrzygnięcia przez nas):
 1. Wagi oceny: 50/50 (regulamin i README) czy 50/30/20 (PDF zadania).
 2. Jak jury uruchamia rozwiązanie: na własnej maszynie (wtedy musi mieć dostęp do modelu) czy u nas? Czy dostarczyć endpoint modelu, czy ma on być wewnątrz Docker Compose?
 3. Jak dokładnie liczone jest F1 (pola puste, tablice, nadmiarowe pliki).
+4. Czy „wyłącznie open source, w tym modele" dopuszcza modele open-weights (np. Qwen, Mistral na Apache 2.0, Llama na własnej licencji), czy wymaga licencji open source w rozumieniu OSI. Zadać przed wyborem modelu.
 
 ## 8. Zostaje budowniczemu
 
