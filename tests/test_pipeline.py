@@ -3,10 +3,10 @@ import logging
 
 import pytest
 
-from odwolania2json import pipeline
-from odwolania2json.llm import LLMError
-from odwolania2json.settings import Settings
-from odwolania2json.textextract import DocText
+from src import pipeline
+from src.llm import LLMError
+from src.settings import Settings
+from src.textextract import DocText
 
 from conftest import DEMO_TEXT, classification, extraction
 

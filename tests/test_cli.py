@@ -2,9 +2,9 @@ import json
 
 import pytest
 
-from odwolania2json import pipeline
-from odwolania2json.cli import main
-from odwolania2json.textextract import DocText
+from src import pipeline
+from src.cli import main
+from src.textextract import DocText
 
 from conftest import DEMO_TEXT, classification, extraction
 
@@ -54,7 +54,7 @@ def test_run_exit_0_on_success(tmp_path, demo_classes, fake_llm):
 
 
 def test_exit_1_when_a_document_failed(tmp_path, demo_classes, fake_llm):
-    from odwolania2json.llm import LLMError
+    from src.llm import LLMError
 
     make_input(tmp_path)
     code = main(args(tmp_path, demo_classes[0]), llm=fake_llm([LLMError("x")]), env=ENV)
@@ -107,7 +107,7 @@ def test_eval_command_prints_report_and_writes_json(tmp_path, demo_classes, fake
 
 
 def test_model_flag_overrides_env_model():
-    from odwolania2json.cli import _parser, _settings
+    from src.cli import _parser, _settings
 
     args = _parser().parse_args(["eval", "--model", "inny-model"])
     assert _settings(args, ENV).llm_model == "inny-model"

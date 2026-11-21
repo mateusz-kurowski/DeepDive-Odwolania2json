@@ -1,7 +1,7 @@
 import re
 from pathlib import Path
 
-PACKAGE = Path(__file__).resolve().parent.parent / "odwolania2json"
+PACKAGE = Path(__file__).resolve().parent.parent / "src"
 FORBIDDEN = re.compile(r"odwolanie|pelnomocnictwo|przelew", re.IGNORECASE)
 
 

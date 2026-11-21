@@ -3,7 +3,7 @@ from pathlib import Path
 import pytest
 from pydantic import ValidationError
 
-from odwolania2json.settings import Settings
+from src.settings import Settings
 
 
 def test_defaults():

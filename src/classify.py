@@ -1,8 +1,8 @@
 from __future__ import annotations
 
-from odwolania2json.classconfig import ClassConfig
-from odwolania2json.llm import LLM
-from odwolania2json.textextract import DocText
+from src.classconfig import ClassConfig
+from src.llm import LLM
+from src.textextract import DocText
 
 UNKNOWN = "nieznany"
 HEAD_CHARS = 3000

@@ -1,4 +1,4 @@
-from odwolania2json.citations import citation_ok, citation_score
+from src.citations import citation_ok, citation_score
 
 TEXT = (
     "Odwołanie\nwykonawcy STRABAG Sp. z o.o. wobec czynności\n"

@@ -1,6 +1,6 @@
-from odwolania2json.classconfig import ClassConfig
-from odwolania2json.classify import UNKNOWN, classify
-from odwolania2json.textextract import DocText
+from src.classconfig import ClassConfig
+from src.classify import UNKNOWN, classify
+from src.textextract import DocText
 
 
 def cls(name, description, hints=()):

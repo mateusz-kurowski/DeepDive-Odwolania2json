@@ -2,13 +2,13 @@ import hashlib
 import shutil
 from pathlib import Path
 
-from odwolania2json.cli import main
-from odwolania2json.pipeline import process_text
-from odwolania2json.classconfig import load_classes
-from odwolania2json.textextract import DocText
+from src.cli import main
+from src.pipeline import process_text
+from src.classconfig import load_classes
+from src.textextract import DocText
 
 ROOT = Path(__file__).resolve().parent.parent
-PACKAGE = ROOT / "odwolania2json"
+PACKAGE = ROOT / "src"
 
 
 def package_hash() -> str:

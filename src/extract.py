@@ -6,12 +6,12 @@ from collections.abc import Iterator
 from dataclasses import dataclass, field
 from typing import Literal
 
-from odwolania2json.citations import citation_ok
-from odwolania2json.classconfig import ClassConfig, FieldSpec
-from odwolania2json.llm import LLM, LLMError
-from odwolania2json.schema import build_response_schema, unwrap
-from odwolania2json.textextract import DocText
-from odwolania2json.validators import validate_value
+from src.citations import citation_ok
+from src.classconfig import ClassConfig, FieldSpec
+from src.llm import LLM, LLMError
+from src.schema import build_response_schema, unwrap
+from src.textextract import DocText
+from src.validators import validate_value
 
 log = logging.getLogger(__name__)
 

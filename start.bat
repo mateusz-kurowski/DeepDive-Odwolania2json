@@ -1,2 +1,2 @@
 @echo off
-python -m odwolania2json run %*
+uv run python -m src run %*

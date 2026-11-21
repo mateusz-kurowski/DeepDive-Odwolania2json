@@ -1,7 +1,7 @@
 import pytest
 
-from odwolania2json.classconfig import FieldSpec
-from odwolania2json.validators import REGISTRY, validate_value
+from src.classconfig import FieldSpec
+from src.validators import REGISTRY, validate_value
 
 
 @pytest.mark.parametrize(

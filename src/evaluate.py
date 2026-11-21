@@ -8,11 +8,11 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
-from odwolania2json.classconfig import ClassConfig, FieldSpec
-from odwolania2json.llm import LLM
-from odwolania2json.pipeline import process_pdf
-from odwolania2json.settings import Settings
-from odwolania2json.validators import date as normalize_date
+from src.classconfig import ClassConfig, FieldSpec
+from src.llm import LLM
+from src.pipeline import process_pdf
+from src.settings import Settings
+from src.validators import date as normalize_date
 
 log = logging.getLogger(__name__)
 

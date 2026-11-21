@@ -3,8 +3,8 @@ from types import SimpleNamespace
 import openai
 import pytest
 
-from odwolania2json.llm import LLMError, OpenAICompatLLM
-from odwolania2json.settings import Settings
+from src.llm import LLMError, OpenAICompatLLM
+from src.settings import Settings
 
 SCHEMA = {"type": "object", "properties": {}, "additionalProperties": False}
 

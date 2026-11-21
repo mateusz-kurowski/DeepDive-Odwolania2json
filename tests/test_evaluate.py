@@ -2,10 +2,10 @@ import json
 
 import pytest
 
-from odwolania2json import evaluate as ev
-from odwolania2json.classconfig import ClassConfig
-from odwolania2json.evaluate import Counts, Report, evaluate, flatten, score_document
-from odwolania2json.settings import Settings
+from src import evaluate as ev
+from src.classconfig import ClassConfig
+from src.evaluate import Counts, Report, evaluate, flatten, score_document
+from src.settings import Settings
 
 from conftest import classification
 
@@ -134,8 +134,8 @@ def test_report_aggregates_micro_f1():
 
 
 def test_evaluate_end_to_end(tmp_path, demo_classes, fake_llm, monkeypatch):
-    from odwolania2json import pipeline
-    from odwolania2json.textextract import DocText
+    from src import pipeline
+    from src.textextract import DocText
 
     from conftest import DEMO_TEXT, extraction
 
@@ -155,8 +155,8 @@ def test_evaluate_end_to_end(tmp_path, demo_classes, fake_llm, monkeypatch):
 
 
 def test_evaluate_misclassified_counts_all_fn(tmp_path, demo_classes, fake_llm, monkeypatch):
-    from odwolania2json import pipeline
-    from odwolania2json.textextract import DocText
+    from src import pipeline
+    from src.textextract import DocText
 
     from conftest import DEMO_TEXT
 

@@ -1,9 +1,9 @@
 import pytest
 
-from odwolania2json.classconfig import ClassConfig
-from odwolania2json.extract import HEAD_RATIO, MAX_CHARS, extract, truncate
-from odwolania2json.llm import LLMError
-from odwolania2json.textextract import DocText
+from src.classconfig import ClassConfig
+from src.extract import HEAD_RATIO, MAX_CHARS, extract, truncate
+from src.llm import LLMError
+from src.textextract import DocText
 
 CFG = ClassConfig.model_validate(
     {

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from odwolania2json.classconfig import ClassConfig, FieldSpec
+from src.classconfig import ClassConfig, FieldSpec
 
 _SCALAR_TYPES = {"text": "string", "number": "number", "integer": "integer"}
 

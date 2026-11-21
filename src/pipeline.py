@@ -6,12 +6,12 @@ from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass
 from pathlib import Path
 
-from odwolania2json.classconfig import ClassConfig
-from odwolania2json.classify import UNKNOWN, classify
-from odwolania2json.extract import Extraction, Mode, extract
-from odwolania2json.llm import LLM
-from odwolania2json.settings import Settings
-from odwolania2json.textextract import DocText, read_pdf
+from src.classconfig import ClassConfig
+from src.classify import UNKNOWN, classify
+from src.extract import Extraction, Mode, extract
+from src.llm import LLM
+from src.settings import Settings
+from src.textextract import DocText, read_pdf
 
 log = logging.getLogger(__name__)
 

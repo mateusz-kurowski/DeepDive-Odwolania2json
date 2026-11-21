@@ -39,7 +39,7 @@ DEMO_TEXT = "Wykonawca ma NIP 527-000-00-00 oraz tytuł Budowa drogi."
 
 @pytest.fixture
 def demo_classes(tmp_path):
-    from odwolania2json.classconfig import load_classes
+    from src.classconfig import load_classes
 
     directory = tmp_path / "classes"
     directory.mkdir()

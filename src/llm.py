@@ -8,7 +8,7 @@ from typing import Any, Protocol
 
 import openai
 
-from odwolania2json.settings import Settings
+from src.settings import Settings
 
 log = logging.getLogger(__name__)
 

@@ -47,7 +47,7 @@ Pełny projekt: `docs/superpowers/specs/2026-11-21-odwolania2json-design.md`. **
 - `docs/schematy/` — oczekiwane JSON-y organizatora (3 klasy).
 - `docs/zadanie/` — PDF-y `UZP - Pełna treść zadania konkursowego` i `UZP - Regulamin zadania konkursowego`, README organizatora i `PODSUMOWANIE.md`.
 - `data/dane/przyklad_01..60/` — 60 spraw (3 PDF + 3 JSON każda). `data/szablon-aplikacja/` — przykładowe `input/` i `output/` plus przykład negatywny.
-- Docelowo: `classes/` (YAML), kod w `odwolania2json/`, `Dockerfile`, `docker-compose.yml`, README i instrukcja „jak dodać klasę".
+- Docelowo: `classes/` (YAML), kod w `src/`, `Dockerfile`, `docker-compose.yml`, README i instrukcja „jak dodać klasę".
 
 ## 6. Zasady pracy w tym projekcie
 

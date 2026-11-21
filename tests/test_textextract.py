@@ -3,8 +3,8 @@ from pathlib import Path
 
 import pytest
 
-from odwolania2json import textextract
-from odwolania2json.textextract import looks_garbage, read_pdf
+from src import textextract
+from src.textextract import looks_garbage, read_pdf
 
 ROOT = Path(__file__).resolve().parent.parent
 TEXT_PDF = ROOT / "data/szablon-aplikacja/input/case1/negatywny przyklad.pdf"

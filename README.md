@@ -13,13 +13,13 @@ input/case1/*.pdf  →  klasyfikacja  →  ekstrakcja modelem  →  walidacja  �
 
 ## Uruchomienie
 
-Wymagania: Python 3.13+, Tesseract z danymi `pol` (tylko do skanów bez warstwy tekstowej; w obrazie Docker jest w środku).
+Wymagania: [uv](https://docs.astral.sh/uv/) (instaluje Python 3.13+ i zależności), Tesseract z danymi `pol` (tylko do skanów bez warstwy tekstowej; w obrazie Docker jest w środku).
 
 ```bash
 cp .env.example .env        # uzupełnij OPENAI_API_KEY, OPENAI_BASE_URL, LLM_MODEL
-python -m venv .venv && .venv/bin/pip install -r requirements.txt
+uv sync                      # tworzy .venv i instaluje zależności z uv.lock
 mkdir -p input/case1 && cp "twoj plik.pdf" input/case1/
-.venv/bin/python -m odwolania2json run
+uv run python -m src run
 ```
 
 Windows: `start.bat` (przekazuje argumenty do `run`). Docker:
@@ -63,9 +63,9 @@ Kod wyjścia to 1, gdy jakiś dokument zakończył się błędem (np. model nied
 Lokalny F1 na przykładach z referencją (`data/dane/przyklad_NN/`):
 
 ```bash
-python -m odwolania2json eval --mode hybrid
-python -m odwolania2json eval --mode llm_only --model <nazwa> --out-json wyniki.json
-python -m odwolania2json eval --limit 10        # szybki test
+uv run python -m src eval --mode hybrid
+uv run python -m src eval --mode llm_only --model <nazwa> --out-json wyniki.json
+uv run python -m src eval --limit 10        # szybki test
 ```
 
 Raport pokazuje precision, recall i F1 per pole oraz łącznie, exact match dokumentu, poprawność klasyfikacji, odsetek poprawnych cytatów i odsetek `null` przy polach z wartością referencyjną. Skaner organizatora nie jest opublikowany, więc założenia porównania są w dokumencie projektowym (sekcja 7). Wyniki pomiarów: `docs/benchmark.md`.
@@ -77,14 +77,14 @@ Nic nie edytujesz w Pythonie. Przykład: `classes_examples/faktura.yaml`.
 1. Skopiuj plik do `classes/` (nazwa pliku = `name` w środku): `cp classes_examples/faktura.yaml classes/`.
 2. Opisz klasę: `description` (model rozpoznaje po nim klasę), `hints` (słowa kontrolne, opcjonalnie), `rules` (reguły w języku naturalnym), `examples` (few-shot, opcjonalnie).
 3. Opisz pola w `fields`. Typy: `text`, `number`, `integer`, `flag` (1/0), `enum` (z `options`), `object`, `array`. Pole może mieć `validator` (`nip`, `krs`, `regon`, `bzp`, `ted`, `iban`, `date`, `amount`, `email`, `pesel`), `description` dla modelu, `nullable`. Dla `array` podaj `key` (pola identyfikujące element, używane przez `eval`). Pole wyliczane ze słownika: `derive: {from: pole, map: {...}}`.
-4. Sprawdź: `python -m odwolania2json classes`. Od tej chwili klasyfikator widzi nową klasę, a `run` zapisuje jej JSON.
+4. Sprawdź: `uv run python -m src classes`. Od tej chwili klasyfikator widzi nową klasę, a `run` zapisuje jej JSON.
 
-Nowy walidator formatu to jeden wpis w `odwolania2json/validators.py` (`REGISTRY`).
+Nowy walidator formatu to jeden wpis w `src/validators.py` (`REGISTRY`).
 
 ## Struktura
 
 ```
-odwolania2json/   kod (generyczny silnik, nie zna nazw klas)
+src/               kod (generyczny silnik, nie zna nazw klas)
 classes/          klasy dokumentów (YAML)
 classes_examples/ przykład klasy do skopiowania
 docs/             projekt, plan, schematy organizatora, benchmark
@@ -92,7 +92,7 @@ data/dane/        60 przykładów z referencją (organizator)
 tests/            testy (pytest)
 ```
 
-Testy: `.venv/bin/pip install -r requirements-dev.txt && .venv/bin/pytest`.
+Testy: `uv run pytest` (zależności deweloperskie instaluje `uv sync`).
 
 ## Licencje
 

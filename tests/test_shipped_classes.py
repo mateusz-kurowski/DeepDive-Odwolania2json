@@ -2,8 +2,8 @@ from pathlib import Path
 
 import pytest
 
-from odwolania2json.classconfig import ClassConfig, FieldSpec, load_classes
-from odwolania2json.validators import REGISTRY
+from src.classconfig import ClassConfig, FieldSpec, load_classes
+from src.validators import REGISTRY
 
 CLASSES_DIR = Path(__file__).resolve().parent.parent / "classes"
 CLASSES = load_classes(CLASSES_DIR)
@@ -61,7 +61,7 @@ def _leaves(data, fields, path=""):
 @pytest.mark.parametrize("class_name", sorted(CLASSES))
 def test_reference_values_survive_validators_unchanged(class_name):
     """Walidatory nie mogą odrzucać ani zmieniać wartości referencyjnych organizatora."""
-    from odwolania2json.validators import validate_value
+    from src.validators import validate_value
 
     cfg = CLASSES[class_name]
     refs = sorted(DATA_DIR.glob(f"przyklad_*/{class_name}.json"))
@@ -105,7 +105,7 @@ def test_pelnomocnictwo_structure():
 
 
 def test_odwolanie_structure():
-    from odwolania2json.schema import build_response_schema
+    from src.schema import build_response_schema
 
     cfg = CLASSES["odwolanie"]
     top = {f.name: f for f in cfg.fields}
@@ -155,7 +155,7 @@ def test_unwrap_of_perfect_model_answer_reproduces_reference(class_name):
     """Schemat + unwrap + derive dla prawdziwych klas odtwarzają referencje (60 przykładów)."""
     import json
 
-    from odwolania2json.schema import unwrap
+    from src.schema import unwrap
 
     cfg = CLASSES[class_name]
     for ref in sorted(DATA_DIR.glob(f"przyklad_*/{class_name}.json")):

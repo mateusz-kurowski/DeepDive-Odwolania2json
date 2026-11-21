@@ -5,7 +5,7 @@ from collections.abc import Callable
 from datetime import date as _date
 from typing import Any
 
-from odwolania2json.classconfig import FieldSpec
+from src.classconfig import FieldSpec
 
 _MONTHS = {
     "stycznia": 1, "lutego": 2, "marca": 3, "kwietnia": 4, "maja": 5, "czerwca": 6,

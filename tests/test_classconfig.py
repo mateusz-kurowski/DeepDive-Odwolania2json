@@ -2,7 +2,7 @@ from pathlib import Path
 
 import pytest
 
-from odwolania2json.classconfig import ClassConfigError, load_classes
+from src.classconfig import ClassConfigError, load_classes
 
 VALID = """
 name: demo

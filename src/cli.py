@@ -7,17 +7,17 @@ import sys
 from collections.abc import Mapping
 from pathlib import Path
 
-from odwolania2json.classconfig import ClassConfigError, load_classes
-from odwolania2json.classify import UNKNOWN
-from odwolania2json.evaluate import evaluate
-from odwolania2json.llm import LLM, OpenAICompatLLM
-from odwolania2json.pipeline import find_pdfs, run_batch
-from odwolania2json.settings import Settings
+from src.classconfig import ClassConfigError, load_classes
+from src.classify import UNKNOWN
+from src.evaluate import evaluate
+from src.llm import LLM, OpenAICompatLLM
+from src.pipeline import find_pdfs, run_batch
+from src.settings import Settings
 
 
 def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        prog="odwolania2json", description="PDF-y spraw KIO → JSON zgodny ze schematem UZP"
+        prog="python -m src", description="PDF-y spraw KIO → JSON zgodny ze schematem UZP"
     )
     sub = parser.add_subparsers(dest="command", required=True)
 

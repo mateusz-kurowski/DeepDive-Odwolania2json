@@ -1,7 +1,7 @@
 import pytest
 
-from odwolania2json.classconfig import ClassConfig
-from odwolania2json.schema import build_response_schema, unwrap
+from src.classconfig import ClassConfig
+from src.schema import build_response_schema, unwrap
 
 
 @pytest.fixture
