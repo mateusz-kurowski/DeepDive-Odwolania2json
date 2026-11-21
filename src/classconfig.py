@@ -53,6 +53,9 @@ class ClassConfig(BaseModel):
     name: str
     description: str
     hints: list[str] = []
+    # Kiedy brak hintu w tekście unieważnia wybór modelu:
+    # always (domyślnie): zawsze; other_class: tylko gdy pasują hinty innej klasy; never.
+    hint_veto: Literal["always", "other_class", "never"] = "always"
     rules: list[str] = []
     examples: list[Example] = []
     fields: list[FieldSpec]
