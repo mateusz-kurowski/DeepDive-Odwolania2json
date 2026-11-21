@@ -1,0 +1,65 @@
+{
+  "source": "0001.pdf",
+  "class": "przelew",
+  "error": null,
+  "ocr_used": true,
+  "prediction": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-09-11",
+      "kwota": 7500.0,
+      "na_rachunek": null,
+      "numer_transakcji": "CEN9057564440515",
+      "tytul": "wpis od odwołania - postępowanie nr DA.ZP.242.50.2026 CEN9057564440515",
+      "z_rachunku": null
+    }
+  },
+  "reference": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-09-11",
+      "kwota": 7500.0,
+      "na_rachunek": "60101010100081362231000000",
+      "numer_transakcji": "CEN9057564440515",
+      "tytul": "wpis od odwołania - postępowanie nr DA.ZP.242.50.2026 CEN9057564440515",
+      "z_rachunku": "PL62217000089152501756617062"
+    }
+  },
+  "diffs": [
+    {
+      "field": "przelew_bankowy.na_rachunek",
+      "predicted": null,
+      "expected": "60101010100081362231000000",
+      "status": "missing"
+    },
+    {
+      "field": "przelew_bankowy.z_rachunku",
+      "predicted": null,
+      "expected": "pl62217000089152501756617062",
+      "status": "missing"
+    }
+  ],
+  "trace": {
+    "source": "0001.pdf",
+    "class": "przelew",
+    "ocr_used": true,
+    "quotes": {
+      "przelew_bankowy.data_operacji": "Data transakcji 11.09.2026",
+      "przelew_bankowy.kwota": "Kwota 7 500,00 PLN",
+      "przelew_bankowy.na_rachunek": "Numer rachunku 60 1010 1010 0081 3622 3100 0000",
+      "przelew_bankowy.numer_transakcji": "Numer referencyjny transakcji CEN9057564440515",
+      "przelew_bankowy.tytul": "Opis wpis od odwołania - postępowanie nr DA.ZP.242.50.2026 CEN9057564440515",
+      "przelew_bankowy.z_rachunku": "Numer rachunku PL62 2170 0008 9152 5017 5661 7062"
+    },
+    "citation_ok": {
+      "przelew_bankowy.data_operacji": true,
+      "przelew_bankowy.kwota": true,
+      "przelew_bankowy.numer_transakcji": true,
+      "przelew_bankowy.tytul": true
+    },
+    "nulled": [
+      "przelew_bankowy.na_rachunek",
+      "przelew_bankowy.z_rachunku"
+    ],
+    "retries": 1,
+    "truncated": false
+  }
+}

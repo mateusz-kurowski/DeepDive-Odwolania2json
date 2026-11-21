@@ -1,0 +1,135 @@
+{
+  "source": "odwolanie.pdf",
+  "class": "odwolanie",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "OdwolanieKIO": {
+      "data": "2026-01-12",
+      "czynnosc_dzien": "2025-12-27",
+      "czynnosc_powod_id": 2,
+      "czynnosc_opis": "Ogłoszenie wyboru oferty",
+      "miejscowosc": "Poznań"
+    },
+    "Odwolujacy": [
+      {
+        "krs": "9993682204",
+        "nazwa": "Belmoria Systemy sp. j.",
+        "nip": "9999142626",
+        "regon": "999173770",
+        "przez-pelnomocnika": 1,
+        "pelnomocnik": {
+          "imie_nazwisko": "Ryszard Lipowczyk",
+          "nazwa": "Kancelaria Adwokacka Spółka z ograniczoną odpowiedzialnością",
+          "mail": "biuro@kontakt.example"
+        }
+      }
+    ],
+    "Zamawiajacy": [
+      {
+        "krs": "9995419681",
+        "nazwa": "Fjordlight Rozwiązania sp. k.",
+        "nip": "9999463425",
+        "regon": "999846878",
+        "prowadzacy_postepowanie": null
+      }
+    ],
+    "ZamowieniePubliczne": {
+      "numer_bzp": "2026/BZP00999182",
+      "numer_postepowania": "SWZ.622.2026",
+      "numer_ted": null,
+      "tytul": "Zakup i dostawa systemów telematycznych do obsługi zgłoszeń obywateli"
+    }
+  },
+  "reference": {
+    "OdwolanieKIO": {
+      "data": "2026-01-12",
+      "czynnosc_dzien": "2025-12-27",
+      "czynnosc_powod_id": 2,
+      "czynnosc_opis": "Ogłoszenie wyboru oferty",
+      "miejscowosc": "Poznań"
+    },
+    "Odwolujacy": [
+      {
+        "krs": "9993682204",
+        "nazwa": "Belmoria Systemy sp. j.",
+        "nip": "9999142626",
+        "regon": "999173770",
+        "przez-pelnomocnika": 1,
+        "pelnomocnik": {
+          "imie_nazwisko": "Ryszard Lipowczyk",
+          "nazwa": "Kancelaria Adwokacka Spółka z ograniczoną odpowiedzialnością",
+          "mail": "biuro@kontakt.example"
+        }
+      }
+    ],
+    "Zamawiajacy": [
+      {
+        "krs": "9995419681",
+        "nazwa": "Fjordlight Rozwiązania sp. k.",
+        "nip": "9999463425",
+        "regon": "999846878",
+        "prowadzacy_postepowanie": null
+      }
+    ],
+    "ZamowieniePubliczne": {
+      "numer_bzp": "2026/BZP00999182",
+      "numer_postepowania": "SWZ.622.2026",
+      "numer_ted": null,
+      "tytul": "Zakup i dostawa systemów telematycznych do obsługi zgłoszeń obywateli"
+    }
+  },
+  "diffs": [],
+  "trace": {
+    "source": "odwolanie.pdf",
+    "class": "odwolanie",
+    "ocr_used": false,
+    "quotes": {
+      "OdwolanieKIO.data": "Poznań, dnia 12 stycznia 2026 roku",
+      "OdwolanieKIO.czynnosc_dzien": "Zamawiający w dniu 27 grudnia 2025 roku ogłosił wybór oferty w postępowaniu prowadzonym na podstawie przepisów ustawy.",
+      "OdwolanieKIO.czynnosc_powod_id": "Zamawiający w dniu 27 grudnia 2025 roku ogłosił wybór oferty w postępowaniu prowadzonym na podstawie przepisów ustawy.",
+      "OdwolanieKIO.miejscowosc": "Poznań, dnia 12 stycznia 2026 roku",
+      "Odwolujacy[0].krs": "KRS: 9993682204",
+      "Odwolujacy[0].nazwa": "Belmoria Systemy sp. j.",
+      "Odwolujacy[0].nip": "NIP: 9999142626",
+      "Odwolujacy[0].regon": "REGON: 999173770",
+      "Odwolujacy[0].przez-pelnomocnika": "reprezentowana przez: adw. Ryszard Lipowczyk",
+      "Odwolujacy[0].pelnomocnik.imie_nazwisko": "adw. Ryszard Lipowczyk",
+      "Odwolujacy[0].pelnomocnik.nazwa": "adres do korespondencji: Kancelaria Adwokacka Spółka z ograniczoną odpowiedzialnością",
+      "Odwolujacy[0].pelnomocnik.mail": "biuro@kontakt.example",
+      "Zamawiajacy[0].krs": "KRS: 9995419681",
+      "Zamawiajacy[0].nazwa": "Fjordlight Rozwiązania sp. k.",
+      "Zamawiajacy[0].nip": "NIP: 9999463425",
+      "Zamawiajacy[0].regon": "REGON: 999846878",
+      "Zamawiajacy[0].prowadzacy_postepowanie": null,
+      "ZamowieniePubliczne.numer_bzp": "ogłoszenie o zamówieniu nr 2026/BZP00999182",
+      "ZamowieniePubliczne.numer_postepowania": "nr referencyjny sprawy: SWZ.622.2026",
+      "ZamowieniePubliczne.numer_ted": null,
+      "ZamowieniePubliczne.tytul": "pn. „Zakup i dostawa systemów telematycznych do obsługi zgłoszeń obywateli”"
+    },
+    "citation_ok": {
+      "OdwolanieKIO.data": true,
+      "OdwolanieKIO.czynnosc_dzien": true,
+      "OdwolanieKIO.czynnosc_powod_id": true,
+      "OdwolanieKIO.miejscowosc": true,
+      "Odwolujacy[0].krs": true,
+      "Odwolujacy[0].nazwa": true,
+      "Odwolujacy[0].nip": true,
+      "Odwolujacy[0].regon": true,
+      "Odwolujacy[0].przez-pelnomocnika": true,
+      "Odwolujacy[0].pelnomocnik.imie_nazwisko": true,
+      "Odwolujacy[0].pelnomocnik.nazwa": true,
+      "Odwolujacy[0].pelnomocnik.mail": true,
+      "Zamawiajacy[0].krs": true,
+      "Zamawiajacy[0].nazwa": true,
+      "Zamawiajacy[0].nip": true,
+      "Zamawiajacy[0].regon": true,
+      "ZamowieniePubliczne.numer_bzp": true,
+      "ZamowieniePubliczne.numer_postepowania": true,
+      "ZamowieniePubliczne.tytul": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

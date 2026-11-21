@@ -1,0 +1,81 @@
+{
+  "source": "pelnomocnictwo.pdf",
+  "class": "pelnomocnictwo",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "mocodawca": [
+      {
+        "data": {
+          "imie_nazwisko": "Maciej Jaworski",
+          "krs": null,
+          "nazwa": "BRONTEX-BUD Maciej Jaworski",
+          "nip": "9993140838",
+          "typ": "osoba_fizyczna"
+        },
+        "podpisujacy": [
+          {
+            "imie_nazwisko": "Maciej Jaworski"
+          }
+        ]
+      }
+    ],
+    "pelnomocnicy": [
+      {
+        "imie_nazwisko": "Karolina Wiśniewska",
+        "pesel": null
+      }
+    ]
+  },
+  "reference": {
+    "mocodawca": [
+      {
+        "data": {
+          "imie_nazwisko": "Maciej Jaworski",
+          "krs": null,
+          "nazwa": "BRONTEX-BUD Maciej Jaworski",
+          "nip": "9993140838",
+          "typ": "osoba_fizyczna"
+        },
+        "podpisujacy": [
+          {
+            "imie_nazwisko": "Maciej Jaworski"
+          }
+        ]
+      }
+    ],
+    "pelnomocnicy": [
+      {
+        "imie_nazwisko": "Karolina Wiśniewska",
+        "pesel": null
+      }
+    ]
+  },
+  "diffs": [],
+  "trace": {
+    "source": "pelnomocnictwo.pdf",
+    "class": "pelnomocnictwo",
+    "ocr_used": false,
+    "quotes": {
+      "mocodawca[0].data.imie_nazwisko": "Maciej Jaworski",
+      "mocodawca[0].data.krs": null,
+      "mocodawca[0].data.nazwa": "BRONTEX-BUD Maciej Jaworski",
+      "mocodawca[0].data.nip": "NIP 9993140838",
+      "mocodawca[0].data.typ": "prowadzący działalność gospodarczą",
+      "mocodawca[0].podpisujacy[0].imie_nazwisko": "Maciej Jaworski",
+      "pelnomocnicy[0].imie_nazwisko": "r. pr. Karolina Wiśniewska",
+      "pelnomocnicy[0].pesel": null
+    },
+    "citation_ok": {
+      "mocodawca[0].data.imie_nazwisko": true,
+      "mocodawca[0].data.nazwa": true,
+      "mocodawca[0].data.nip": true,
+      "mocodawca[0].data.typ": true,
+      "mocodawca[0].podpisujacy[0].imie_nazwisko": true,
+      "pelnomocnicy[0].imie_nazwisko": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

@@ -1,0 +1,136 @@
+{
+  "source": "odwolanie.pdf",
+  "class": "odwolanie",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "OdwolanieKIO": {
+      "data": "2026-09-07",
+      "czynnosc_dzien": "2026-08-28",
+      "czynnosc_powod_id": 5,
+      "czynnosc_opis": "Modyfikacja treści SWZ",
+      "miejscowosc": "Kraków"
+    },
+    "Odwolujacy": [
+      {
+        "krs": "9999233530",
+        "nazwa": "Helvix Eko-Serwis sp.k.",
+        "nip": "9995558958",
+        "regon": "999054443",
+        "przez-pelnomocnika": 1,
+        "pelnomocnik": {
+          "imie_nazwisko": "Bartosz Rutkowski",
+          "nazwa": "Rutkowski i Bąk Kancelaria Prawna sp.k.",
+          "mail": "biuro@rutkowskikancelaria.example"
+        }
+      }
+    ],
+    "Zamawiajacy": [
+      {
+        "krs": "9999865519",
+        "nazwa": "Zakład Gospodarki Komunalnej w Wrzosowie sp. z o.o.",
+        "nip": "9992432443",
+        "regon": "999221683",
+        "prowadzacy_postepowanie": null
+      }
+    ],
+    "ZamowieniePubliczne": {
+      "numer_bzp": "2026/BZP00999740",
+      "numer_postepowania": "SZP-46/2026",
+      "numer_ted": "999599-2026",
+      "tytul": "Prowadzenie Punktu Selektywnej Zbiórki Odpadów Komunalnych w latach 2027–2029"
+    }
+  },
+  "reference": {
+    "OdwolanieKIO": {
+      "data": "2026-09-07",
+      "czynnosc_dzien": "2026-08-28",
+      "czynnosc_powod_id": 5,
+      "czynnosc_opis": "Modyfikacja treści SWZ",
+      "miejscowosc": "Kraków"
+    },
+    "Odwolujacy": [
+      {
+        "krs": "9999233530",
+        "nazwa": "Helvix Eko-Serwis sp.k.",
+        "nip": "9995558958",
+        "regon": "999054443",
+        "przez-pelnomocnika": 1,
+        "pelnomocnik": {
+          "imie_nazwisko": "Bartosz Rutkowski",
+          "nazwa": "Rutkowski i Bąk Kancelaria Prawna sp.k.",
+          "mail": "biuro@rutkowskikancelaria.example"
+        }
+      }
+    ],
+    "Zamawiajacy": [
+      {
+        "krs": "9999865519",
+        "nazwa": "Zakład Gospodarki Komunalnej w Wrzosowie sp. z o.o.",
+        "nip": "9992432443",
+        "regon": "999221683",
+        "prowadzacy_postepowanie": null
+      }
+    ],
+    "ZamowieniePubliczne": {
+      "numer_bzp": "2026/BZP00999740",
+      "numer_postepowania": "SZP-46/2026",
+      "numer_ted": "999599-2026",
+      "tytul": "Prowadzenie Punktu Selektywnej Zbiórki Odpadów Komunalnych w latach 2027–2029"
+    }
+  },
+  "diffs": [],
+  "trace": {
+    "source": "odwolanie.pdf",
+    "class": "odwolanie",
+    "ocr_used": false,
+    "quotes": {
+      "OdwolanieKIO.data": "Kraków, dnia 7 września 2026 r.",
+      "OdwolanieKIO.czynnosc_dzien": "Zamawiający w dniu 28 sierpnia 2026 roku zmodyfikował treść Specyfikacji Warunków Zamówienia.",
+      "OdwolanieKIO.czynnosc_powod_id": "modyfikacji treści SWZ bez przedłużenia terminu składania ofert z dnia 28 sierpnia 2026 r.",
+      "OdwolanieKIO.miejscowosc": "Kraków, dnia 7 września 2026 r.",
+      "Odwolujacy[0].krs": "KRS: 9999233530",
+      "Odwolujacy[0].nazwa": "Lider Konsorcjum: Helvix Eko-Serwis sp.k.",
+      "Odwolujacy[0].nip": "NIP: 9995558958",
+      "Odwolujacy[0].regon": "REGON: 999054443",
+      "Odwolujacy[0].przez-pelnomocnika": "reprezentowany przez: adw. Bartosz Rutkowski, adw. Olga Bąk",
+      "Odwolujacy[0].pelnomocnik.imie_nazwisko": "adw. Bartosz Rutkowski",
+      "Odwolujacy[0].pelnomocnik.nazwa": "adres do korespondencji: Rutkowski i Bąk Kancelaria Prawna sp.k.",
+      "Odwolujacy[0].pelnomocnik.mail": "e-mail: biuro@rutkowskikancelaria.example",
+      "Zamawiajacy[0].krs": "KRS: 9999865519",
+      "Zamawiajacy[0].nazwa": "Zamawiający: Zakład Gospodarki Komunalnej w Wrzosowie sp. z o.o.",
+      "Zamawiajacy[0].nip": "NIP: 9992432443",
+      "Zamawiajacy[0].regon": "REGON: 999221683",
+      "Zamawiajacy[0].prowadzacy_postepowanie": null,
+      "ZamowieniePubliczne.numer_bzp": "ogłoszenie o zamówieniu w Biuletynie Zamówień Publicznych nr 2026/BZP 00999740",
+      "ZamowieniePubliczne.numer_postepowania": "nr referencyjny: SZP-46/2026",
+      "ZamowieniePubliczne.numer_ted": "ogłoszenie w Dzienniku Urzędowym Unii Europejskiej nr 2026/S 158-999599",
+      "ZamowieniePubliczne.tytul": "postępowania o udzielenie zamówienia publicznego prowadzonego w trybie przetargu nieograniczonego pn. \"Prowadzenie Punktu Selektywnej Zbiórki Odpadów Komunalnych w latach 2027–2029\""
+    },
+    "citation_ok": {
+      "OdwolanieKIO.data": true,
+      "OdwolanieKIO.czynnosc_dzien": true,
+      "OdwolanieKIO.czynnosc_powod_id": true,
+      "OdwolanieKIO.miejscowosc": true,
+      "Odwolujacy[0].krs": true,
+      "Odwolujacy[0].nazwa": true,
+      "Odwolujacy[0].nip": true,
+      "Odwolujacy[0].regon": true,
+      "Odwolujacy[0].przez-pelnomocnika": true,
+      "Odwolujacy[0].pelnomocnik.imie_nazwisko": true,
+      "Odwolujacy[0].pelnomocnik.nazwa": true,
+      "Odwolujacy[0].pelnomocnik.mail": true,
+      "Zamawiajacy[0].krs": true,
+      "Zamawiajacy[0].nazwa": true,
+      "Zamawiajacy[0].nip": true,
+      "Zamawiajacy[0].regon": true,
+      "ZamowieniePubliczne.numer_bzp": true,
+      "ZamowieniePubliczne.numer_postepowania": true,
+      "ZamowieniePubliczne.numer_ted": true,
+      "ZamowieniePubliczne.tytul": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

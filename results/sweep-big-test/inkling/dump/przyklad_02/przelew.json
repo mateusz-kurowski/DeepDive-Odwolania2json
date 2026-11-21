@@ -1,0 +1,51 @@
+{
+  "source": "przelew.pdf",
+  "class": "przelew",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-08-23",
+      "kwota": 50.0,
+      "na_rachunek": "91159952782597505141926044",
+      "numer_transakcji": "CEN2609035760798",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Bartosz Szymanski i Cezary Wierzbicki w postępowaniu przed KIO w przetargu ZP.431.2026 CEN2609035760798",
+      "z_rachunku": "53678424593392529814420143"
+    }
+  },
+  "reference": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-08-23",
+      "kwota": 50.0,
+      "na_rachunek": "91159952782597505141926044",
+      "numer_transakcji": "CEN2609035760798",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Bartosz Szymanski i Cezary Wierzbicki w postępowaniu przed KIO w przetargu ZP.431.2026 CEN2609035760798",
+      "z_rachunku": "53678424593392529814420143"
+    }
+  },
+  "diffs": [],
+  "trace": {
+    "source": "przelew.pdf",
+    "class": "przelew",
+    "ocr_used": false,
+    "quotes": {
+      "przelew_bankowy.data_operacji": "Data operacji 23 sierpnia 2026",
+      "przelew_bankowy.kwota": "Kwota operacji 50,00 zł",
+      "przelew_bankowy.na_rachunek": "91159952782597505141926044",
+      "przelew_bankowy.numer_transakcji": "Numer referencyjny CEN2609035760798",
+      "przelew_bankowy.tytul": "Tytuł przelewu opłata skarbowa od pełnomocnictwa dla Bartosz Szymanski i Cezary Wierzbicki w postępowaniu\nprzed KIO w przetargu ZP.431.2026 CEN2609035760798",
+      "przelew_bankowy.z_rachunku": "53678424593392529814420143"
+    },
+    "citation_ok": {
+      "przelew_bankowy.data_operacji": true,
+      "przelew_bankowy.kwota": true,
+      "przelew_bankowy.na_rachunek": true,
+      "przelew_bankowy.numer_transakcji": true,
+      "przelew_bankowy.tytul": true,
+      "przelew_bankowy.z_rachunku": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

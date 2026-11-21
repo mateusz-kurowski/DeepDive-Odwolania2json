@@ -1,0 +1,103 @@
+{
+  "source": "0005.pdf",
+  "class": "pelnomocnictwo",
+  "error": null,
+  "ocr_used": true,
+  "prediction": {
+    "mocodawca": [
+      {
+        "data": {
+          "imie_nazwisko": null,
+          "krs": "9991919038",
+          "nazwa": "Medicor IT Solutions S.A.",
+          "nip": "9992326754",
+          "typ": "osoba_prawna"
+        },
+        "podpisujacy": [
+          {
+            "imie_nazwisko": "Zbigniew Cieślak"
+          }
+        ]
+      }
+    ],
+    "pelnomocnicy": [
+      {
+        "imie_nazwisko": "Grzegorz Kaczmarek",
+        "pesel": null
+      },
+      {
+        "imie_nazwisko": "Katarzyna Sikora",
+        "pesel": null
+      },
+      {
+        "imie_nazwisko": "Karolina Baran",
+        "pesel": null
+      }
+    ]
+  },
+  "reference": {
+    "mocodawca": [
+      {
+        "data": {
+          "imie_nazwisko": null,
+          "krs": "9991919038",
+          "nazwa": "Medicor IT Solutions S.A.",
+          "nip": "9992326754",
+          "typ": "osoba_prawna"
+        },
+        "podpisujacy": [
+          {
+            "imie_nazwisko": "Zbigniew Cieślak"
+          }
+        ]
+      }
+    ],
+    "pelnomocnicy": [
+      {
+        "imie_nazwisko": "Grzegorz Kaczmarek",
+        "pesel": null
+      },
+      {
+        "imie_nazwisko": "Katarzyna Sikora",
+        "pesel": null
+      },
+      {
+        "imie_nazwisko": "Karolina Baran",
+        "pesel": null
+      }
+    ]
+  },
+  "diffs": [],
+  "trace": {
+    "source": "0005.pdf",
+    "class": "pelnomocnictwo",
+    "ocr_used": true,
+    "quotes": {
+      "mocodawca[0].data.imie_nazwisko": null,
+      "mocodawca[0].data.krs": "wpisana do rejestru przedsiębiorców Krajowego Rejestru Sądowego pod numerem KRS: 9991919038",
+      "mocodawca[0].data.nazwa": "Medicor IT Solutions S.A. z siedzibą w Gdańsk (80-386), ul. Marszałkowska 37",
+      "mocodawca[0].data.nip": "NIP: 9992326754",
+      "mocodawca[0].data.typ": "Medicor IT Solutions S.A.",
+      "mocodawca[0].podpisujacy[0].imie_nazwisko": "reprezentowana przez: Zbigniew Cieślak – Prokurent",
+      "pelnomocnicy[0].imie_nazwisko": "Grzegorz Kaczmarek (adwokat, nr wpisu PO-17476)",
+      "pelnomocnicy[0].pesel": null,
+      "pelnomocnicy[1].imie_nazwisko": "Katarzyna Sikora (radca prawny, nr wpisu WR-12316)",
+      "pelnomocnicy[1].pesel": null,
+      "pelnomocnicy[2].imie_nazwisko": "Karolina Baran (radca prawny, nr wpisu WA-13454)",
+      "pelnomocnicy[2].pesel": null
+    },
+    "citation_ok": {
+      "mocodawca[0].data.krs": true,
+      "mocodawca[0].data.nazwa": true,
+      "mocodawca[0].data.nip": true,
+      "mocodawca[0].data.typ": true,
+      "mocodawca[0].podpisujacy[0].imie_nazwisko": true,
+      "pelnomocnicy[0].imie_nazwisko": true,
+      "pelnomocnicy[1].imie_nazwisko": true,
+      "pelnomocnicy[2].imie_nazwisko": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

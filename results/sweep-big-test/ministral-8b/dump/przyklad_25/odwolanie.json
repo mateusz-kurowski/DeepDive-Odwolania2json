@@ -1,0 +1,135 @@
+{
+  "source": "odwolanie.pdf",
+  "class": "odwolanie",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "OdwolanieKIO": {
+      "data": "2026-06-27",
+      "czynnosc_dzien": "2026-06-03",
+      "czynnosc_powod_id": 6,
+      "czynnosc_opis": "Odpowiedzi/wyjaśnienia do SWZ",
+      "miejscowosc": "Warszawa"
+    },
+    "Odwolujacy": [
+      {
+        "krs": "9991240860",
+        "nazwa": "Belmoria Systemy S.A.",
+        "nip": "9992160970",
+        "regon": "999702501",
+        "przez-pelnomocnika": 1,
+        "pelnomocnik": {
+          "imie_nazwisko": "Zbigniew Górnicki",
+          "nazwa": "Kancelaria Prawna Spółka z ograniczoną odpowiedzialnością",
+          "mail": "biuro@biuro.example"
+        }
+      }
+    ],
+    "Zamawiajacy": [
+      {
+        "krs": "9996391409",
+        "nazwa": "Faronis Konsulting sp. k.",
+        "nip": "9996638835",
+        "regon": "999758909",
+        "prowadzacy_postepowanie": null
+      }
+    ],
+    "ZamowieniePubliczne": {
+      "numer_bzp": "2026/BZP00999453",
+      "numer_postepowania": "SWZ.189.2026",
+      "numer_ted": null,
+      "tytul": "Dostawa materiałów eksploatacyjnych do urządzeń biurowych"
+    }
+  },
+  "reference": {
+    "OdwolanieKIO": {
+      "data": "2026-06-27",
+      "czynnosc_dzien": "2026-06-03",
+      "czynnosc_powod_id": 6,
+      "czynnosc_opis": "Odpowiedzi/wyjaśnienia do SWZ",
+      "miejscowosc": "Warszawa"
+    },
+    "Odwolujacy": [
+      {
+        "krs": "9991240860",
+        "nazwa": "Belmoria Systemy S.A.",
+        "nip": "9992160970",
+        "regon": "999702501",
+        "przez-pelnomocnika": 1,
+        "pelnomocnik": {
+          "imie_nazwisko": "Zbigniew Górnicki",
+          "nazwa": "Kancelaria Prawna Spółka z ograniczoną odpowiedzialnością",
+          "mail": "biuro@biuro.example"
+        }
+      }
+    ],
+    "Zamawiajacy": [
+      {
+        "krs": "9996391409",
+        "nazwa": "Faronis Konsulting sp. k.",
+        "nip": "9996638835",
+        "regon": "999758909",
+        "prowadzacy_postepowanie": null
+      }
+    ],
+    "ZamowieniePubliczne": {
+      "numer_bzp": "2026/BZP00999453",
+      "numer_postepowania": "SWZ.189.2026",
+      "numer_ted": null,
+      "tytul": "Dostawa materiałów eksploatacyjnych do urządzeń biurowych"
+    }
+  },
+  "diffs": [],
+  "trace": {
+    "source": "odwolanie.pdf",
+    "class": "odwolanie",
+    "ocr_used": false,
+    "quotes": {
+      "OdwolanieKIO.data": "Warszawa, dnia 27 czerwca 2026 roku",
+      "OdwolanieKIO.czynnosc_dzien": "Zamawiający w dniu 3 czerwca 2026 roku przekazał wykonawcom odpowiedzi i wyjaśnienia do treści Specyfikacji Warunków Zamówienia.",
+      "OdwolanieKIO.czynnosc_powod_id": "Zamawiający w dniu 3 czerwca 2026 roku przekazał wykonawcom odpowiedzi i wyjaśnienia do treści Specyfikacji Warunków Zamówienia.",
+      "OdwolanieKIO.miejscowosc": "Warszawa, dnia 27 czerwca 2026 roku",
+      "Odwolujacy[0].krs": "KRS: 9991240860",
+      "Odwolujacy[0].nazwa": "Belmoria Systemy S.A.",
+      "Odwolujacy[0].nip": "NIP: 9992160970",
+      "Odwolujacy[0].regon": "REGON: 999702501",
+      "Odwolujacy[0].przez-pelnomocnika": "reprezentowana przez: adw. Zbigniew Górnicki, adw. Zbigniew Szymanski",
+      "Odwolujacy[0].pelnomocnik.imie_nazwisko": "adw. Zbigniew Górnicki",
+      "Odwolujacy[0].pelnomocnik.nazwa": "Kancelaria Prawna Spółka z ograniczoną odpowiedzialnością",
+      "Odwolujacy[0].pelnomocnik.mail": "biuro@biuro.example",
+      "Zamawiajacy[0].krs": "KRS: 9996391409",
+      "Zamawiajacy[0].nazwa": "Faronis Konsulting sp. k.",
+      "Zamawiajacy[0].nip": "NIP: 9996638835",
+      "Zamawiajacy[0].regon": "REGON: 999758909",
+      "Zamawiajacy[0].prowadzacy_postepowanie": null,
+      "ZamowieniePubliczne.numer_bzp": "numer ogłoszenia o zamówieniu w BZP: 2026/BZP00999453",
+      "ZamowieniePubliczne.numer_postepowania": "nr referencyjny sprawy: SWZ.189.2026",
+      "ZamowieniePubliczne.numer_ted": null,
+      "ZamowieniePubliczne.tytul": "postępowania o udzielenie zamówienia w trybie przetargu nieograniczonego pn. \"Dostawa materiałów eksploatacyjnych do urządzeń biurowych\""
+    },
+    "citation_ok": {
+      "OdwolanieKIO.data": true,
+      "OdwolanieKIO.czynnosc_dzien": true,
+      "OdwolanieKIO.czynnosc_powod_id": true,
+      "OdwolanieKIO.miejscowosc": true,
+      "Odwolujacy[0].krs": true,
+      "Odwolujacy[0].nazwa": true,
+      "Odwolujacy[0].nip": true,
+      "Odwolujacy[0].regon": true,
+      "Odwolujacy[0].przez-pelnomocnika": true,
+      "Odwolujacy[0].pelnomocnik.imie_nazwisko": true,
+      "Odwolujacy[0].pelnomocnik.nazwa": true,
+      "Odwolujacy[0].pelnomocnik.mail": true,
+      "Zamawiajacy[0].krs": true,
+      "Zamawiajacy[0].nazwa": true,
+      "Zamawiajacy[0].nip": true,
+      "Zamawiajacy[0].regon": true,
+      "ZamowieniePubliczne.numer_bzp": true,
+      "ZamowieniePubliczne.numer_postepowania": true,
+      "ZamowieniePubliczne.tytul": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

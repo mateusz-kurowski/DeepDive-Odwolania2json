@@ -1,0 +1,51 @@
+{
+  "source": "potwierdzenie_przelewu.pdf",
+  "class": "przelew",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-08-11",
+      "kwota": 34.0,
+      "na_rachunek": "62894698184293630570885696",
+      "numer_transakcji": "CEN2608111315943",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Leszek Jabłoński i Tadeusz Rutkowski w postępowaniu przed KIO w przetargu DAZ/PN/67/26 CEN2608111315943",
+      "z_rachunku": "88762747931540515304648250"
+    }
+  },
+  "reference": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-08-11",
+      "kwota": 34.0,
+      "na_rachunek": "62894698184293630570885696",
+      "numer_transakcji": "CEN2608111315943",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Leszek Jabłoński i Tadeusz Rutkowski w postępowaniu przed KIO w przetargu DAZ/PN/67/26 CEN2608111315943",
+      "z_rachunku": "88762747931540515304648250"
+    }
+  },
+  "diffs": [],
+  "trace": {
+    "source": "potwierdzenie_przelewu.pdf",
+    "class": "przelew",
+    "ocr_used": false,
+    "quotes": {
+      "przelew_bankowy.data_operacji": "Data operacji\n11 sierpnia 2026",
+      "przelew_bankowy.kwota": "Kwota\n34,00 PLN",
+      "przelew_bankowy.na_rachunek": "Rachunek odbiorcy\nPL62894698184293630570885696",
+      "przelew_bankowy.numer_transakcji": "Numer referencyjny\nCEN2608111315943",
+      "przelew_bankowy.tytul": "Tytuł przelewu\nopłata skarbowa od pełnomocnictwa dla Leszek Jabłoński i Tadeusz\nRutkowski w postępowaniu przed KIO w przetargu DAZ/PN/67/26\nCEN2608111315943",
+      "przelew_bankowy.z_rachunku": "Rachunek zleceniodawcy\nPL88762747931540515304648250"
+    },
+    "citation_ok": {
+      "przelew_bankowy.data_operacji": true,
+      "przelew_bankowy.kwota": true,
+      "przelew_bankowy.na_rachunek": true,
+      "przelew_bankowy.numer_transakcji": true,
+      "przelew_bankowy.tytul": true,
+      "przelew_bankowy.z_rachunku": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

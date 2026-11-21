@@ -1,0 +1,51 @@
+{
+  "source": "potwierdzenie_przelewu.pdf",
+  "class": "przelew",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-07-04",
+      "kwota": 50.0,
+      "na_rachunek": "95504884425794546508647369",
+      "numer_transakcji": "CEN2607152350299",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Cezary Walczak w postępowaniu przed KIO w przetargu ZP.388.2026 CEN2607152350299",
+      "z_rachunku": "64621719650035158366008774"
+    }
+  },
+  "reference": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-07-04",
+      "kwota": 50.0,
+      "na_rachunek": "95504884425794546508647369",
+      "numer_transakcji": "CEN2607152350299",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Cezary Walczak w postępowaniu przed KIO w przetargu ZP.388.2026 CEN2607152350299",
+      "z_rachunku": "64621719650035158366008774"
+    }
+  },
+  "diffs": [],
+  "trace": {
+    "source": "potwierdzenie_przelewu.pdf",
+    "class": "przelew",
+    "ocr_used": false,
+    "quotes": {
+      "przelew_bankowy.data_operacji": "Data operacji 04-07-2026",
+      "przelew_bankowy.kwota": "Wartość 50,00",
+      "przelew_bankowy.na_rachunek": "Rachunek uznawany PL95 5048 8442 5794 5465 0864 7369",
+      "przelew_bankowy.numer_transakcji": "Numer referencyjny CEN2607152350299",
+      "przelew_bankowy.tytul": "Tytuł opłata skarbowa od pełnomocnictwa dla Cezary Walczak w postępowaniu przed KIO w przetargu\nZP.388.2026 CEN2607152350299",
+      "przelew_bankowy.z_rachunku": "Rachunek zleceniodawcy PL64 6217 1965 0035 1583 6600 8774"
+    },
+    "citation_ok": {
+      "przelew_bankowy.data_operacji": true,
+      "przelew_bankowy.kwota": true,
+      "przelew_bankowy.na_rachunek": true,
+      "przelew_bankowy.numer_transakcji": true,
+      "przelew_bankowy.tytul": true,
+      "przelew_bankowy.z_rachunku": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

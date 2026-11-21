@@ -1,0 +1,100 @@
+{
+  "source": "pelnomocnictwo.pdf",
+  "class": "pelnomocnictwo",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "mocodawca": [
+      {
+        "data": {
+          "imie_nazwisko": null,
+          "krs": "9990929624",
+          "nazwa": "Deltawing Usługi sp. j.",
+          "nip": "9994888947",
+          "typ": "osoba_prawna"
+        },
+        "podpisujacy": [
+          {
+            "imie_nazwisko": "Oliwia Górnicki"
+          },
+          {
+            "imie_nazwisko": "Jolanta Kaczmarek"
+          }
+        ]
+      }
+    ],
+    "pelnomocnicy": [
+      {
+        "imie_nazwisko": "Ignacy Rutkiewicz",
+        "pesel": null
+      },
+      {
+        "imie_nazwisko": "Weronika Furman",
+        "pesel": null
+      }
+    ]
+  },
+  "reference": {
+    "mocodawca": [
+      {
+        "data": {
+          "imie_nazwisko": null,
+          "krs": "9990929624",
+          "nazwa": "Deltawing Usługi sp. j.",
+          "nip": "9994888947",
+          "typ": "osoba_prawna"
+        },
+        "podpisujacy": [
+          {
+            "imie_nazwisko": "Oliwia Górnicki"
+          },
+          {
+            "imie_nazwisko": "Jolanta Kaczmarek"
+          }
+        ]
+      }
+    ],
+    "pelnomocnicy": [
+      {
+        "imie_nazwisko": "Ignacy Rutkiewicz",
+        "pesel": null
+      },
+      {
+        "imie_nazwisko": "Weronika Furman",
+        "pesel": null
+      }
+    ]
+  },
+  "diffs": [],
+  "trace": {
+    "source": "pelnomocnictwo.pdf",
+    "class": "pelnomocnictwo",
+    "ocr_used": false,
+    "quotes": {
+      "mocodawca[0].data.imie_nazwisko": null,
+      "mocodawca[0].data.krs": "KRS 9990929624",
+      "mocodawca[0].data.nazwa": "Deltawing Usługi sp. j.",
+      "mocodawca[0].data.nip": "NIP 9994888947",
+      "mocodawca[0].data.typ": "Deltawing Usługi sp. j., ul. Miodowa 63, 00-427 Warszawa, KRS 9990929624",
+      "mocodawca[0].podpisujacy[0].imie_nazwisko": "Oliwia Górnicki",
+      "mocodawca[0].podpisujacy[1].imie_nazwisko": "Jolanta Kaczmarek",
+      "pelnomocnicy[0].imie_nazwisko": "adw. Ignacy Rutkiewicz",
+      "pelnomocnicy[0].pesel": null,
+      "pelnomocnicy[1].imie_nazwisko": "r. pr. Weronika Furman",
+      "pelnomocnicy[1].pesel": null
+    },
+    "citation_ok": {
+      "mocodawca[0].data.krs": true,
+      "mocodawca[0].data.nazwa": true,
+      "mocodawca[0].data.nip": true,
+      "mocodawca[0].data.typ": true,
+      "mocodawca[0].podpisujacy[0].imie_nazwisko": true,
+      "mocodawca[0].podpisujacy[1].imie_nazwisko": true,
+      "pelnomocnicy[0].imie_nazwisko": true,
+      "pelnomocnicy[1].imie_nazwisko": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

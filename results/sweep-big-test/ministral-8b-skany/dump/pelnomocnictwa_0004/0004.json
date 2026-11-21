@@ -1,0 +1,90 @@
+{
+  "source": "0004.pdf",
+  "class": "pelnomocnictwo",
+  "error": null,
+  "ocr_used": true,
+  "prediction": {
+    "mocodawca": [
+      {
+        "data": {
+          "imie_nazwisko": null,
+          "krs": "9990692039",
+          "nazwa": "Arkomed Serwis spółka akcyjna",
+          "nip": "9996494661",
+          "typ": "osoba_prawna"
+        },
+        "podpisujacy": [
+          {
+            "imie_nazwisko": "Dorota Topolska"
+          },
+          {
+            "imie_nazwisko": "Halina Baran"
+          }
+        ]
+      }
+    ],
+    "pelnomocnicy": [
+      {
+        "imie_nazwisko": "Krzysztof Jodłowski",
+        "pesel": 69102340858
+      }
+    ]
+  },
+  "reference": {
+    "mocodawca": [
+      {
+        "data": {
+          "imie_nazwisko": null,
+          "krs": "9990692039",
+          "nazwa": "Arkomed Serwis spółka akcyjna",
+          "nip": "9996494661",
+          "typ": "osoba_prawna"
+        },
+        "podpisujacy": [
+          {
+            "imie_nazwisko": "Halina Baran"
+          },
+          {
+            "imie_nazwisko": "Dorota Topolska"
+          }
+        ]
+      }
+    ],
+    "pelnomocnicy": [
+      {
+        "imie_nazwisko": "Krzysztof Jodłowski",
+        "pesel": "69102340858"
+      }
+    ]
+  },
+  "diffs": [],
+  "trace": {
+    "source": "0004.pdf",
+    "class": "pelnomocnictwo",
+    "ocr_used": true,
+    "quotes": {
+      "mocodawca[0].data.imie_nazwisko": null,
+      "mocodawca[0].data.krs": "wpisana do rejestru przedsiębiorców Krajowego Rejestru Sądowego pod numerem KRS: 9990692039",
+      "mocodawca[0].data.nazwa": "Arkomed Serwis spółka akcyjna z siedzibą w Białystok (15-629), ul. Kwiatowa 116/31",
+      "mocodawca[0].data.nip": "NIP: 999-649-46-61",
+      "mocodawca[0].data.typ": "Arkomed Serwis spółka akcyjna",
+      "mocodawca[0].podpisujacy[0].imie_nazwisko": "Dorota Topolska – Członek Zarządu",
+      "mocodawca[0].podpisujacy[1].imie_nazwisko": "Halina Baran – Prezes Zarządu",
+      "pelnomocnicy[0].imie_nazwisko": "Krzysztof Jodłowski",
+      "pelnomocnicy[0].pesel": "PESEL: 69102340858"
+    },
+    "citation_ok": {
+      "mocodawca[0].data.krs": true,
+      "mocodawca[0].data.nazwa": true,
+      "mocodawca[0].data.nip": true,
+      "mocodawca[0].data.typ": true,
+      "mocodawca[0].podpisujacy[0].imie_nazwisko": true,
+      "mocodawca[0].podpisujacy[1].imie_nazwisko": true,
+      "pelnomocnicy[0].imie_nazwisko": true,
+      "pelnomocnicy[0].pesel": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

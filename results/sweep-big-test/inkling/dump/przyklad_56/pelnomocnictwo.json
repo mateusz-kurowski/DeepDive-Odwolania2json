@@ -1,0 +1,100 @@
+{
+  "source": "pelnomocnictwo.pdf",
+  "class": "pelnomocnictwo",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "mocodawca": [
+      {
+        "data": {
+          "imie_nazwisko": null,
+          "krs": "9998339046",
+          "nazwa": "Gorlan Pojazdy sp. z o.o.",
+          "nip": "9994387323",
+          "typ": "osoba_prawna"
+        },
+        "podpisujacy": [
+          {
+            "imie_nazwisko": "Natalia Czerwińska"
+          },
+          {
+            "imie_nazwisko": "Norbert Olszewski"
+          }
+        ]
+      }
+    ],
+    "pelnomocnicy": [
+      {
+        "imie_nazwisko": "Iwona Zawadzka",
+        "pesel": null
+      },
+      {
+        "imie_nazwisko": "Kamil Olszewski",
+        "pesel": null
+      }
+    ]
+  },
+  "reference": {
+    "mocodawca": [
+      {
+        "data": {
+          "imie_nazwisko": null,
+          "krs": "9998339046",
+          "nazwa": "Gorlan Pojazdy sp. z o.o.",
+          "nip": "9994387323",
+          "typ": "osoba_prawna"
+        },
+        "podpisujacy": [
+          {
+            "imie_nazwisko": "Natalia Czerwińska"
+          },
+          {
+            "imie_nazwisko": "Norbert Olszewski"
+          }
+        ]
+      }
+    ],
+    "pelnomocnicy": [
+      {
+        "imie_nazwisko": "Iwona Zawadzka",
+        "pesel": null
+      },
+      {
+        "imie_nazwisko": "Kamil Olszewski",
+        "pesel": null
+      }
+    ]
+  },
+  "diffs": [],
+  "trace": {
+    "source": "pelnomocnictwo.pdf",
+    "class": "pelnomocnictwo",
+    "ocr_used": false,
+    "quotes": {
+      "mocodawca[0].data.imie_nazwisko": null,
+      "mocodawca[0].data.krs": "KRS 9998339046",
+      "mocodawca[0].data.nazwa": "Gorlan Pojazdy sp. z o.o.",
+      "mocodawca[0].data.nip": "NIP 9994387323",
+      "mocodawca[0].data.typ": "Gorlan Pojazdy sp. z o.o.",
+      "mocodawca[0].podpisujacy[0].imie_nazwisko": "Natalia Czerwińska",
+      "mocodawca[0].podpisujacy[1].imie_nazwisko": "Norbert Olszewski",
+      "pelnomocnicy[0].imie_nazwisko": "adw. Iwona Zawadzka",
+      "pelnomocnicy[0].pesel": null,
+      "pelnomocnicy[1].imie_nazwisko": "adw. Kamil Olszewski",
+      "pelnomocnicy[1].pesel": null
+    },
+    "citation_ok": {
+      "mocodawca[0].data.krs": true,
+      "mocodawca[0].data.nazwa": true,
+      "mocodawca[0].data.nip": true,
+      "mocodawca[0].data.typ": true,
+      "mocodawca[0].podpisujacy[0].imie_nazwisko": true,
+      "mocodawca[0].podpisujacy[1].imie_nazwisko": true,
+      "pelnomocnicy[0].imie_nazwisko": true,
+      "pelnomocnicy[1].imie_nazwisko": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

@@ -1,0 +1,307 @@
+{
+  "docs": 30,
+  "micro_f1": 0.9112227805695142,
+  "precision": 0.9444444444444444,
+  "recall": 0.8802588996763754,
+  "errors": 1,
+  "docs_lost_to_errors": 1,
+  "micro_f1_without_errors": 0.918918918918919,
+  "precision_without_errors": 0.9444444444444444,
+  "recall_without_errors": 0.8947368421052632,
+  "doc_exact_match": 0.36666666666666664,
+  "classification_accuracy": 0.9,
+  "citation_ok_rate": 0.9964028776978417,
+  "null_rate_on_ref_valued": 0.0744336569579288,
+  "per_field": {
+    "OdwolanieKIO.czynnosc_dzien": {
+      "tp": 10,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    "OdwolanieKIO.czynnosc_opis": {
+      "tp": 9,
+      "fp": 1,
+      "fn": 1,
+      "precision": 0.9,
+      "recall": 0.9,
+      "f1": 0.9
+    },
+    "OdwolanieKIO.czynnosc_powod_id": {
+      "tp": 9,
+      "fp": 1,
+      "fn": 1,
+      "precision": 0.9,
+      "recall": 0.9,
+      "f1": 0.9
+    },
+    "OdwolanieKIO.data": {
+      "tp": 10,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    "OdwolanieKIO.miejscowosc": {
+      "tp": 10,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    "Odwolujacy[].krs": {
+      "tp": 8,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    "Odwolujacy[].nazwa": {
+      "tp": 10,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    "Odwolujacy[].nip": {
+      "tp": 10,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    "Odwolujacy[].pelnomocnik.imie_nazwisko": {
+      "tp": 9,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    "Odwolujacy[].pelnomocnik.mail": {
+      "tp": 7,
+      "fp": 2,
+      "fn": 2,
+      "precision": 0.7777777777777778,
+      "recall": 0.7777777777777778,
+      "f1": 0.7777777777777778
+    },
+    "Odwolujacy[].pelnomocnik.nazwa": {
+      "tp": 9,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    "Odwolujacy[].przez-pelnomocnika": {
+      "tp": 10,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    "Odwolujacy[].regon": {
+      "tp": 6,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    "Zamawiajacy[].nazwa": {
+      "tp": 10,
+      "fp": 1,
+      "fn": 1,
+      "precision": 0.9090909090909091,
+      "recall": 0.9090909090909091,
+      "f1": 0.9090909090909091
+    },
+    "Zamawiajacy[].nip": {
+      "tp": 8,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    "Zamawiajacy[].prowadzacy_postepowanie": {
+      "tp": 2,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    "Zamawiajacy[].regon": {
+      "tp": 3,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    "ZamowieniePubliczne.numer_bzp": {
+      "tp": 5,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    "ZamowieniePubliczne.numer_postepowania": {
+      "tp": 10,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    "ZamowieniePubliczne.numer_ted": {
+      "tp": 7,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    "ZamowieniePubliczne.tytul": {
+      "tp": 9,
+      "fp": 1,
+      "fn": 1,
+      "precision": 0.9,
+      "recall": 0.9,
+      "f1": 0.9
+    },
+    "mocodawca[].data.imie_nazwisko": {
+      "tp": 0,
+      "fp": 0,
+      "fn": 1,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0
+    },
+    "mocodawca[].data.krs": {
+      "tp": 10,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    "mocodawca[].data.nazwa": {
+      "tp": 8,
+      "fp": 3,
+      "fn": 2,
+      "precision": 0.7272727272727273,
+      "recall": 0.8,
+      "f1": 0.761904761904762
+    },
+    "mocodawca[].data.nip": {
+      "tp": 11,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    "mocodawca[].data.typ": {
+      "tp": 11,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    "mocodawca[].podpisujacy[].imie_nazwisko": {
+      "tp": 14,
+      "fp": 1,
+      "fn": 0,
+      "precision": 0.9333333333333333,
+      "recall": 1.0,
+      "f1": 0.9655172413793104
+    },
+    "pelnomocnicy[].imie_nazwisko": {
+      "tp": 16,
+      "fp": 1,
+      "fn": 1,
+      "precision": 0.9411764705882353,
+      "recall": 0.9411764705882353,
+      "f1": 0.9411764705882353
+    },
+    "pelnomocnicy[].pesel": {
+      "tp": 4,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    "przelew_bankowy.data_operacji": {
+      "tp": 6,
+      "fp": 1,
+      "fn": 4,
+      "precision": 0.8571428571428571,
+      "recall": 0.6,
+      "f1": 0.7058823529411764
+    },
+    "przelew_bankowy.kwota": {
+      "tp": 7,
+      "fp": 0,
+      "fn": 3,
+      "precision": 1.0,
+      "recall": 0.7,
+      "f1": 0.8235294117647058
+    },
+    "przelew_bankowy.na_rachunek": {
+      "tp": 3,
+      "fp": 0,
+      "fn": 7,
+      "precision": 1.0,
+      "recall": 0.3,
+      "f1": 0.4615384615384615
+    },
+    "przelew_bankowy.numer_transakcji": {
+      "tp": 4,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    "przelew_bankowy.tytul": {
+      "tp": 3,
+      "fp": 4,
+      "fn": 7,
+      "precision": 0.42857142857142855,
+      "recall": 0.3,
+      "f1": 0.3529411764705882
+    },
+    "przelew_bankowy.z_rachunku": {
+      "tp": 4,
+      "fp": 0,
+      "fn": 6,
+      "precision": 1.0,
+      "recall": 0.4,
+      "f1": 0.5714285714285715
+    }
+  },
+  "model": "mistralai/ministral-8b-2512",
+  "mode": "hybrid",
+  "ocr_backend": "vlm",
+  "vlm_model": "mistralai/ministral-8b-2512",
+  "usage": {
+    "calls": 62,
+    "prompt_tokens": 175460,
+    "completion_tokens": 22335,
+    "total_tokens": 197795
+  }
+}

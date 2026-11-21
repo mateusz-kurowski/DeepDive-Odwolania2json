@@ -1,0 +1,133 @@
+{
+  "source": "odwolanie.pdf",
+  "class": "odwolanie",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "OdwolanieKIO": {
+      "data": null,
+      "czynnosc_dzien": "2026-09-19",
+      "czynnosc_powod_id": 7,
+      "czynnosc_opis": "Zaniechanie odrzucenia oferty",
+      "miejscowosc": null
+    },
+    "Odwolujacy": [
+      {
+        "krs": "9998339046",
+        "nazwa": "Gorlan Pojazdy sp. z o.o.",
+        "nip": "9994387323",
+        "regon": "999829190",
+        "przez-pelnomocnika": 1,
+        "pelnomocnik": {
+          "imie_nazwisko": "Iwona Zawadzka",
+          "nazwa": "Kancelaria Radcy Prawnego Iwona Zawadzka",
+          "mail": "sekretariat@zawadzkakancelaria.example"
+        }
+      }
+    ],
+    "Zamawiajacy": [
+      {
+        "krs": "9995063913",
+        "nazwa": "Miejskie Przedsiębiorstwo Komunikacyjne w Jodłowcu sp. z o.o.",
+        "nip": "9995459293",
+        "regon": "999758293",
+        "prowadzacy_postepowanie": null
+      }
+    ],
+    "ZamowieniePubliczne": {
+      "numer_bzp": "2026/BZP00999547",
+      "numer_postepowania": "DAZ.24.2026",
+      "numer_ted": null,
+      "tytul": "Dostawa samochodów specjalistycznych do zimowego utrzymania dróg"
+    }
+  },
+  "reference": {
+    "OdwolanieKIO": {
+      "data": null,
+      "czynnosc_dzien": "2026-09-19",
+      "czynnosc_powod_id": 7,
+      "czynnosc_opis": "Zaniechanie odrzucenia oferty",
+      "miejscowosc": null
+    },
+    "Odwolujacy": [
+      {
+        "krs": "9998339046",
+        "nazwa": "Gorlan Pojazdy sp. z o.o.",
+        "nip": "9994387323",
+        "regon": "999829190",
+        "przez-pelnomocnika": 1,
+        "pelnomocnik": {
+          "imie_nazwisko": "Iwona Zawadzka",
+          "nazwa": "Kancelaria Radcy Prawnego Iwona Zawadzka",
+          "mail": "sekretariat@zawadzkakancelaria.example"
+        }
+      }
+    ],
+    "Zamawiajacy": [
+      {
+        "krs": "9995063913",
+        "nazwa": "Miejskie Przedsiębiorstwo Komunikacyjne w Jodłowcu sp. z o.o.",
+        "nip": "9995459293",
+        "regon": "999758293",
+        "prowadzacy_postepowanie": null
+      }
+    ],
+    "ZamowieniePubliczne": {
+      "numer_bzp": "2026/BZP00999547",
+      "numer_postepowania": "DAZ.24.2026",
+      "numer_ted": null,
+      "tytul": "Dostawa samochodów specjalistycznych do zimowego utrzymania dróg"
+    }
+  },
+  "diffs": [],
+  "trace": {
+    "source": "odwolanie.pdf",
+    "class": "odwolanie",
+    "ocr_used": false,
+    "quotes": {
+      "OdwolanieKIO.data": null,
+      "OdwolanieKIO.czynnosc_dzien": "Zamawiający w dniu 19 września 2026 roku przekazał informację o wyniku postępowania",
+      "OdwolanieKIO.czynnosc_powod_id": "1) zaniechaniu odrzucenia oferty wykonawcy Kervan Mobility S.A. jako niezgodnej z warunkami zamówienia z dnia 19 września 2026 r.;",
+      "OdwolanieKIO.miejscowosc": null,
+      "Odwolujacy[0].krs": "KRS: 9998339046",
+      "Odwolujacy[0].nazwa": "Gorlan Pojazdy sp. z o.o.",
+      "Odwolujacy[0].nip": "NIP: 9994387323",
+      "Odwolujacy[0].regon": "REGON: 999829190",
+      "Odwolujacy[0].przez-pelnomocnika": "reprezentowany przez: adw. Iwona Zawadzka, adw. Kamil Olszewski",
+      "Odwolujacy[0].pelnomocnik.imie_nazwisko": "adw. Iwona Zawadzka, adw. Kamil Olszewski",
+      "Odwolujacy[0].pelnomocnik.nazwa": "adres do korespondencji: Kancelaria Radcy Prawnego Iwona Zawadzka",
+      "Odwolujacy[0].pelnomocnik.mail": "e-mail: sekretariat@zawadzkakancelaria.example",
+      "Zamawiajacy[0].krs": "KRS: 9995063913",
+      "Zamawiajacy[0].nazwa": "Miejskie Przedsiębiorstwo Komunikacyjne w Jodłowcu sp. z o.o.",
+      "Zamawiajacy[0].nip": "NIP: 9995459293",
+      "Zamawiajacy[0].regon": "REGON: 999758293",
+      "Zamawiajacy[0].prowadzacy_postepowanie": null,
+      "ZamowieniePubliczne.numer_bzp": "ogłoszenie o zamówieniu w Biuletynie Zamówień Publicznych nr 2026/BZP00999547",
+      "ZamowieniePubliczne.numer_postepowania": "nr referencyjny: DAZ.24.2026",
+      "ZamowieniePubliczne.numer_ted": null,
+      "ZamowieniePubliczne.tytul": "pn. „Dostawa samochodów specjalistycznych do zimowego utrzymania dróg”"
+    },
+    "citation_ok": {
+      "OdwolanieKIO.czynnosc_dzien": true,
+      "OdwolanieKIO.czynnosc_powod_id": true,
+      "Odwolujacy[0].krs": true,
+      "Odwolujacy[0].nazwa": true,
+      "Odwolujacy[0].nip": true,
+      "Odwolujacy[0].regon": true,
+      "Odwolujacy[0].przez-pelnomocnika": true,
+      "Odwolujacy[0].pelnomocnik.imie_nazwisko": true,
+      "Odwolujacy[0].pelnomocnik.nazwa": true,
+      "Odwolujacy[0].pelnomocnik.mail": true,
+      "Zamawiajacy[0].krs": true,
+      "Zamawiajacy[0].nazwa": true,
+      "Zamawiajacy[0].nip": true,
+      "Zamawiajacy[0].regon": true,
+      "ZamowieniePubliczne.numer_bzp": true,
+      "ZamowieniePubliczne.numer_postepowania": true,
+      "ZamowieniePubliczne.tytul": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

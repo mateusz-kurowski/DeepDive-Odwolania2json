@@ -1,0 +1,133 @@
+{
+  "source": "odwolanie.pdf",
+  "class": "odwolanie",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "OdwolanieKIO": {
+      "data": null,
+      "czynnosc_dzien": "2026-08-02",
+      "czynnosc_powod_id": 9,
+      "czynnosc_opis": "Decyzja o unieważnieniu postępowania",
+      "miejscowosc": null
+    },
+    "Odwolujacy": [
+      {
+        "krs": "9990430692",
+        "nazwa": "Prestal Dystrybucja Medyczna S.A.",
+        "nip": "9990396494",
+        "regon": "999666290",
+        "przez-pelnomocnika": 1,
+        "pelnomocnik": {
+          "imie_nazwisko": "Leszek Jabłoński",
+          "nazwa": "Kancelaria Adwokacka Jabłoński sp.p.",
+          "mail": "biuro@jablonski.example"
+        }
+      }
+    ],
+    "Zamawiajacy": [
+      {
+        "krs": "9999408455",
+        "nazwa": "Szpital Specjalistyczny im. dr. Władysława Biegańskiego w Dąbrowie Leśnej",
+        "nip": "9994579741",
+        "regon": "999479491",
+        "prowadzacy_postepowanie": null
+      }
+    ],
+    "ZamowieniePubliczne": {
+      "numer_bzp": "2026/BZP00999508",
+      "numer_postepowania": "DAZ/PN/67/26",
+      "numer_ted": null,
+      "tytul": "Sukcesywna dostawa produktów leczniczych w podziale na 12 pakietów"
+    }
+  },
+  "reference": {
+    "OdwolanieKIO": {
+      "data": null,
+      "czynnosc_dzien": "2026-08-02",
+      "czynnosc_powod_id": 9,
+      "czynnosc_opis": "Decyzja o unieważnieniu postępowania",
+      "miejscowosc": null
+    },
+    "Odwolujacy": [
+      {
+        "krs": "9990430692",
+        "nazwa": "Prestal Dystrybucja Medyczna S.A.",
+        "nip": "9990396494",
+        "regon": "999666290",
+        "przez-pelnomocnika": 1,
+        "pelnomocnik": {
+          "imie_nazwisko": "Leszek Jabłoński",
+          "nazwa": "Kancelaria Adwokacka Jabłoński sp.p.",
+          "mail": "biuro@jablonski.example"
+        }
+      }
+    ],
+    "Zamawiajacy": [
+      {
+        "krs": "9999408455",
+        "nazwa": "Szpital Specjalistyczny im. dr. Władysława Biegańskiego w Dąbrowie Leśnej",
+        "nip": "9994579741",
+        "regon": "999479491",
+        "prowadzacy_postepowanie": null
+      }
+    ],
+    "ZamowieniePubliczne": {
+      "numer_bzp": "2026/BZP00999508",
+      "numer_postepowania": "DAZ/PN/67/26",
+      "numer_ted": null,
+      "tytul": "Sukcesywna dostawa produktów leczniczych w podziale na 12 pakietów"
+    }
+  },
+  "diffs": [],
+  "trace": {
+    "source": "odwolanie.pdf",
+    "class": "odwolanie",
+    "ocr_used": false,
+    "quotes": {
+      "OdwolanieKIO.data": null,
+      "OdwolanieKIO.czynnosc_dzien": "Zamawiający w dniu 2 sierpnia 2026 roku unieważnił postępowanie.",
+      "OdwolanieKIO.czynnosc_powod_id": "1) unieważnieniu postępowania na podstawie art. 255 pkt 3 i 6 Pzp z dnia 2 sierpnia 2026 r.;",
+      "OdwolanieKIO.miejscowosc": null,
+      "Odwolujacy[0].krs": "KRS: 9990430692",
+      "Odwolujacy[0].nazwa": "Prestal Dystrybucja Medyczna S.A.",
+      "Odwolujacy[0].nip": "NIP: 9990396494",
+      "Odwolujacy[0].regon": "REGON: 999666290",
+      "Odwolujacy[0].przez-pelnomocnika": "reprezentowany przez: adw. Leszek Jabłoński, r. pr. Tadeusz Rutkowski",
+      "Odwolujacy[0].pelnomocnik.imie_nazwisko": "adw. Leszek Jabłoński",
+      "Odwolujacy[0].pelnomocnik.nazwa": "adres do korespondencji: Kancelaria Adwokacka Jabłoński sp.p.",
+      "Odwolujacy[0].pelnomocnik.mail": "e-mail: biuro@jablonski.example",
+      "Zamawiajacy[0].krs": "KRS: 9999408455",
+      "Zamawiajacy[0].nazwa": "Szpital Specjalistyczny im. dr. Władysława Biegańskiego w Dąbrowie Leśnej",
+      "Zamawiajacy[0].nip": "NIP: 9994579741",
+      "Zamawiajacy[0].regon": "REGON: 999479491",
+      "Zamawiajacy[0].prowadzacy_postepowanie": null,
+      "ZamowieniePubliczne.numer_bzp": "2026/BZP00999508",
+      "ZamowieniePubliczne.numer_postepowania": "nr referencyjny: DAZ/PN/67/26",
+      "ZamowieniePubliczne.numer_ted": null,
+      "ZamowieniePubliczne.tytul": "pn. „Sukcesywna dostawa produktów leczniczych w podziale na 12 pakietów”"
+    },
+    "citation_ok": {
+      "OdwolanieKIO.czynnosc_dzien": true,
+      "OdwolanieKIO.czynnosc_powod_id": true,
+      "Odwolujacy[0].krs": true,
+      "Odwolujacy[0].nazwa": true,
+      "Odwolujacy[0].nip": true,
+      "Odwolujacy[0].regon": true,
+      "Odwolujacy[0].przez-pelnomocnika": true,
+      "Odwolujacy[0].pelnomocnik.imie_nazwisko": true,
+      "Odwolujacy[0].pelnomocnik.nazwa": true,
+      "Odwolujacy[0].pelnomocnik.mail": true,
+      "Zamawiajacy[0].krs": true,
+      "Zamawiajacy[0].nazwa": true,
+      "Zamawiajacy[0].nip": true,
+      "Zamawiajacy[0].regon": true,
+      "ZamowieniePubliczne.numer_bzp": true,
+      "ZamowieniePubliczne.numer_postepowania": true,
+      "ZamowieniePubliczne.tytul": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

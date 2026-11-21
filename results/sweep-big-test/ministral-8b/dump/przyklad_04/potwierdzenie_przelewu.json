@@ -1,0 +1,51 @@
+{
+  "source": "potwierdzenie_przelewu.pdf",
+  "class": "przelew",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-08-12",
+      "kwota": 17.0,
+      "na_rachunek": "91363778606394934264547691",
+      "numer_transakcji": "CEN2608246932582",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Patrycja Furman i Sławomir Ostrowczyk w postępowaniu przed KIO w przetargu ZP.447.2026 CEN2608246932582",
+      "z_rachunku": "43046337661291756811869204"
+    }
+  },
+  "reference": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-08-12",
+      "kwota": 17.0,
+      "na_rachunek": "91363778606394934264547691",
+      "numer_transakcji": "CEN2608246932582",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Patrycja Furman i Sławomir Ostrowczyk w postępowaniu przed KIO w przetargu ZP.447.2026 CEN2608246932582",
+      "z_rachunku": "43046337661291756811869204"
+    }
+  },
+  "diffs": [],
+  "trace": {
+    "source": "potwierdzenie_przelewu.pdf",
+    "class": "przelew",
+    "ocr_used": false,
+    "quotes": {
+      "przelew_bankowy.data_operacji": "Data transakcji 2026-08-12",
+      "przelew_bankowy.kwota": "Kwota 17,00 PLN",
+      "przelew_bankowy.na_rachunek": "Rachunek beneficjenta: PL91 3637 7860 6394 9342 6454 7691",
+      "przelew_bankowy.numer_transakcji": "Numer referencyjny CEN2608246932582",
+      "przelew_bankowy.tytul": "Tytuł opłata skarbowa od pełnomocnictwa dla Patrycja Furman i Sławomir Ostrowczyk w postępowaniu przed KIO w przetargu ZP.447.2026 CEN2608246932582",
+      "przelew_bankowy.z_rachunku": "Rachunek zleceniodawcy: PL43 0463 3766 1291 7568 1186 9204"
+    },
+    "citation_ok": {
+      "przelew_bankowy.data_operacji": true,
+      "przelew_bankowy.kwota": true,
+      "przelew_bankowy.na_rachunek": true,
+      "przelew_bankowy.numer_transakcji": true,
+      "przelew_bankowy.tytul": true,
+      "przelew_bankowy.z_rachunku": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

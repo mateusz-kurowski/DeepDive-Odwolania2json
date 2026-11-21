@@ -1,0 +1,51 @@
+{
+  "source": "potwierdzenie_przelewu.pdf",
+  "class": "przelew",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-09-09",
+      "kwota": 17.0,
+      "na_rachunek": "38191587886680497037877080",
+      "numer_transakcji": "CEN2609288695559",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Marek Jabłoński i Norbert Rutkiewicz w postępowaniu przed KIO w przetargu ZP.869.2026 CEN2609288695559",
+      "z_rachunku": "36396491875308085660842948"
+    }
+  },
+  "reference": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-09-09",
+      "kwota": 17.0,
+      "na_rachunek": "38191587886680497037877080",
+      "numer_transakcji": "CEN2609288695559",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Marek Jabłoński i Norbert Rutkiewicz w postępowaniu przed KIO w przetargu ZP.869.2026 CEN2609288695559",
+      "z_rachunku": "36396491875308085660842948"
+    }
+  },
+  "diffs": [],
+  "trace": {
+    "source": "potwierdzenie_przelewu.pdf",
+    "class": "przelew",
+    "ocr_used": false,
+    "quotes": {
+      "przelew_bankowy.data_operacji": "Data realizacji: 9 września 2026",
+      "przelew_bankowy.kwota": "Kwota: 17,00",
+      "przelew_bankowy.na_rachunek": "Rachunek beneficjenta: PL38191587886680497037877080",
+      "przelew_bankowy.numer_transakcji": "Numer transakcji: CEN2609288695559",
+      "przelew_bankowy.tytul": "Opis: opłata skarbowa od pełnomocnictwa dla Marek Jabłoński i Norbert Rutkiewicz w postępowaniu przed KIO w przetargu ZP.869.2026 CEN2609288695559",
+      "przelew_bankowy.z_rachunku": "Rachunek nadawcy: PL36396491875308085660842948"
+    },
+    "citation_ok": {
+      "przelew_bankowy.data_operacji": true,
+      "przelew_bankowy.kwota": true,
+      "przelew_bankowy.na_rachunek": true,
+      "przelew_bankowy.numer_transakcji": true,
+      "przelew_bankowy.tytul": true,
+      "przelew_bankowy.z_rachunku": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

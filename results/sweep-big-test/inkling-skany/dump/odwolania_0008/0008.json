@@ -1,0 +1,140 @@
+{
+  "source": "0008.pdf",
+  "class": "odwolanie",
+  "error": null,
+  "ocr_used": true,
+  "prediction": {
+    "OdwolanieKIO": {
+      "data": "2026-04-20",
+      "czynnosc_dzien": "2026-04-10",
+      "czynnosc_powod_id": 3,
+      "czynnosc_opis": "Decyzja o wykluczeniu wykonawcy",
+      "miejscowosc": "Warszawa"
+    },
+    "Odwolujacy": [
+      {
+        "krs": "9994328029",
+        "nazwa": "Orbisol Budownictwo Sp. z o.o.",
+        "nip": "9999929154",
+        "regon": null,
+        "przez-pelnomocnika": 1,
+        "pelnomocnik": {
+          "imie_nazwisko": "Rafał Malinowski",
+          "nazwa": "Cieślak Gajda Kancelaria Prawna sp. p.",
+          "mail": "r.malinowski@cieslak-kancelaria.example"
+        }
+      }
+    ],
+    "Zamawiajacy": [
+      {
+        "krs": null,
+        "nazwa": "Uniwersytet Przyrodniczo-Techniczny w Mordzewcu",
+        "nip": "9993202830",
+        "regon": null,
+        "prowadzacy_postepowanie": null
+      }
+    ],
+    "ZamowieniePubliczne": {
+      "numer_bzp": "2026/BZP00239965/01",
+      "numer_postepowania": "ZP/134/2026",
+      "numer_ted": "142793-2026",
+      "tytul": "Budowa sali gimnastycznej wraz z zapleczem sanitarnym i infrastrukturą towarzyszącą"
+    }
+  },
+  "reference": {
+    "OdwolanieKIO": {
+      "data": "2026-04-20",
+      "czynnosc_dzien": "2026-04-10",
+      "czynnosc_powod_id": 3,
+      "czynnosc_opis": "Decyzja o wykluczeniu wykonawcy",
+      "miejscowosc": "Warszawa"
+    },
+    "Odwolujacy": [
+      {
+        "krs": "9994328029",
+        "nazwa": "Orbisol Budownictwo Sp. z o.o.",
+        "nip": "9999929154",
+        "regon": null,
+        "przez-pelnomocnika": 1,
+        "pelnomocnik": {
+          "imie_nazwisko": "Rafał Malinowski",
+          "nazwa": "Cieślak Gajda Kancelaria Prawna sp. p.",
+          "mail": "r.malinowski@cieslak-kancelaria.example"
+        }
+      }
+    ],
+    "Zamawiajacy": [
+      {
+        "krs": null,
+        "nazwa": "Uniwersytet Przyrodniczo-Techniczny w Modrzewcu",
+        "nip": "9993202830",
+        "regon": null,
+        "prowadzacy_postepowanie": null
+      }
+    ],
+    "ZamowieniePubliczne": {
+      "numer_bzp": "2026/BZP00239965/01",
+      "numer_postepowania": "ZP/134/2026",
+      "numer_ted": "142793-2026",
+      "tytul": "Budowa sali gimnastycznej wraz z zapleczem sanitarnym i infrastrukturą towarzyszącą"
+    }
+  },
+  "diffs": [
+    {
+      "field": "Zamawiajacy[nip=9993202830].nazwa",
+      "predicted": "uniwersytet przyrodniczo-techniczny w mordzewcu",
+      "expected": "uniwersytet przyrodniczo-techniczny w modrzewcu",
+      "status": "wrong"
+    }
+  ],
+  "trace": {
+    "source": "0008.pdf",
+    "class": "odwolanie",
+    "ocr_used": true,
+    "quotes": {
+      "OdwolanieKIO.data": "Warszawa, dnia 20 kwietnia 2026 roku",
+      "OdwolanieKIO.czynnosc_dzien": "czynności wykluczenia Odwołującego z postępowania, o której Zamawiający zawiadomił w dniu 10.04.2026 r.",
+      "OdwolanieKIO.czynnosc_powod_id": "czynności wykluczenia Odwołującego z postępowania, o której Zamawiający zawiadomił w dniu 10.04.2026 r.",
+      "OdwolanieKIO.miejscowosc": "Warszawa, dnia 20 kwietnia 2026 roku",
+      "Odwolujacy[0].krs": "KRS: 9994328029",
+      "Odwolujacy[0].nazwa": "Orbisol Budownictwo Sp. z o.o.",
+      "Odwolujacy[0].nip": "NIP: 9999929154",
+      "Odwolujacy[0].regon": null,
+      "Odwolujacy[0].przez-pelnomocnika": "reprezentowany przez pełnomocnika:",
+      "Odwolujacy[0].pelnomocnik.imie_nazwisko": "adv. Rafał Malinowski",
+      "Odwolujacy[0].pelnomocnik.nazwa": "Cieślak Gajda Kancelaria Prawna sp. p.",
+      "Odwolujacy[0].pelnomocnik.mail": "e-mail: r.malinowski@cieslak-kancelaria.example",
+      "Zamawiajacy[0].krs": null,
+      "Zamawiajacy[0].nazwa": "Uniwersytet Przyrodniczo-Techniczny w Mordzewcu",
+      "Zamawiajacy[0].nip": "NIP: 9993202830",
+      "Zamawiajacy[0].regon": null,
+      "Zamawiajacy[0].prowadzacy_postepowanie": null,
+      "ZamowieniePubliczne.numer_bzp": "ogłoszenie o zamówieniu nr 2026/BZP 00239965/01",
+      "ZamowieniePubliczne.numer_postepowania": "nr referencyjny: ZP/134/2026",
+      "ZamowieniePubliczne.numer_ted": "ogłoszenie w Dzienniku Urzędowym Unii Europejskiej nr 2026/S 048-142793",
+      "ZamowieniePubliczne.tytul": "pn. „Budowa sali gimnastycznej wraz z zapleczem sanitarnym i infrastrukturą towarzyszącą”"
+    },
+    "citation_ok": {
+      "OdwolanieKIO.data": true,
+      "OdwolanieKIO.czynnosc_dzien": true,
+      "OdwolanieKIO.czynnosc_powod_id": true,
+      "OdwolanieKIO.miejscowosc": true,
+      "Odwolujacy[0].krs": true,
+      "Odwolujacy[0].nazwa": true,
+      "Odwolujacy[0].nip": true,
+      "Odwolujacy[0].przez-pelnomocnika": true,
+      "Odwolujacy[0].pelnomocnik.imie_nazwisko": true,
+      "Odwolujacy[0].pelnomocnik.nazwa": true,
+      "Odwolujacy[0].pelnomocnik.mail": true,
+      "Zamawiajacy[0].nazwa": true,
+      "Zamawiajacy[0].nip": true,
+      "ZamowieniePubliczne.numer_bzp": true,
+      "ZamowieniePubliczne.numer_postepowania": true,
+      "ZamowieniePubliczne.numer_ted": true,
+      "ZamowieniePubliczne.tytul": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

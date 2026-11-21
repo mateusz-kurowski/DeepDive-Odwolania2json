@@ -1,0 +1,51 @@
+{
+  "source": "potwierdzenie_przelewu.pdf",
+  "class": "przelew",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-09-06",
+      "kwota": 34.0,
+      "na_rachunek": "77625847976189057973538222",
+      "numer_transakcji": "CEN2609074908518",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Bartosz Rutkowski i Olga Bąk w postępowaniu przed KIO w przetargu SZP-46/2026 CEN2609074908518",
+      "z_rachunku": "78398017670057985337584633"
+    }
+  },
+  "reference": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-09-06",
+      "kwota": 34.0,
+      "na_rachunek": "77625847976189057973538222",
+      "numer_transakcji": "CEN2609074908518",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Bartosz Rutkowski i Olga Bąk w postępowaniu przed KIO w przetargu SZP-46/2026 CEN2609074908518",
+      "z_rachunku": "78398017670057985337584633"
+    }
+  },
+  "diffs": [],
+  "trace": {
+    "source": "potwierdzenie_przelewu.pdf",
+    "class": "przelew",
+    "ocr_used": false,
+    "quotes": {
+      "przelew_bankowy.data_operacji": "2026-09-06",
+      "przelew_bankowy.kwota": "34,00 PLN",
+      "przelew_bankowy.na_rachunek": "PL77625847976189057973538222",
+      "przelew_bankowy.numer_transakcji": "CEN2609074908518",
+      "przelew_bankowy.tytul": "opłata skarbowa od pełnomocnictwa dla Bartosz Rutkowski i Olga Bąk w\npostępowaniu przed KIO w przetargu SZP-46/2026 CEN2609074908518",
+      "przelew_bankowy.z_rachunku": "PL78398017670057985337584633"
+    },
+    "citation_ok": {
+      "przelew_bankowy.data_operacji": true,
+      "przelew_bankowy.kwota": true,
+      "przelew_bankowy.na_rachunek": true,
+      "przelew_bankowy.numer_transakcji": true,
+      "przelew_bankowy.tytul": true,
+      "przelew_bankowy.z_rachunku": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

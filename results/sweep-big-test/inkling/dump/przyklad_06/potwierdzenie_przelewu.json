@@ -1,0 +1,51 @@
+{
+  "source": "potwierdzenie_przelewu.pdf",
+  "class": "przelew",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-06-04",
+      "kwota": 50.0,
+      "na_rachunek": "47138858777839172875872799",
+      "numer_transakcji": "CEN2606275613944",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Jolanta Szulc w postępowaniu przed KIO w przetargu DI.579.2026 CEN2606275613944",
+      "z_rachunku": "83857487285854133752374620"
+    }
+  },
+  "reference": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-06-04",
+      "kwota": 50.0,
+      "na_rachunek": "47138858777839172875872799",
+      "numer_transakcji": "CEN2606275613944",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Jolanta Szulc w postępowaniu przed KIO w przetargu DI.579.2026 CEN2606275613944",
+      "z_rachunku": "83857487285854133752374620"
+    }
+  },
+  "diffs": [],
+  "trace": {
+    "source": "potwierdzenie_przelewu.pdf",
+    "class": "przelew",
+    "ocr_used": false,
+    "quotes": {
+      "przelew_bankowy.data_operacji": "Data wykonania: 04.06.2026",
+      "przelew_bankowy.kwota": "Kwota operacji: 50,00",
+      "przelew_bankowy.na_rachunek": "Rachunek beneficjenta: PL47 1388 5877 7839 1728 7587 2799",
+      "przelew_bankowy.numer_transakcji": "Numer referencyjny: CEN2606275613944",
+      "przelew_bankowy.tytul": "Tytuł: opłata skarbowa od pełnomocnictwa dla Jolanta Szulc w postępowaniu przed KIO w przetargu DI.579.2026 CEN2606275613944",
+      "przelew_bankowy.z_rachunku": "Rachunek obciążany: PL83 8574 8728 5854 1337 5237 4620"
+    },
+    "citation_ok": {
+      "przelew_bankowy.data_operacji": true,
+      "przelew_bankowy.kwota": true,
+      "przelew_bankowy.na_rachunek": true,
+      "przelew_bankowy.numer_transakcji": true,
+      "przelew_bankowy.tytul": true,
+      "przelew_bankowy.z_rachunku": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

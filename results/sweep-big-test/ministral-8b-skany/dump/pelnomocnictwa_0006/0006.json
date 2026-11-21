@@ -1,0 +1,100 @@
+{
+  "source": "0006.pdf",
+  "class": "pelnomocnictwo",
+  "error": null,
+  "ocr_used": true,
+  "prediction": {
+    "mocodawca": [
+      {
+        "data": {
+          "imie_nazwisko": null,
+          "krs": "9997873010",
+          "nazwa": "Nordenix Automatyka Sp. z o.o.",
+          "nip": "9991785572",
+          "typ": "osoba_prawna"
+        },
+        "podpisujacy": [
+          {
+            "imie_nazwisko": "Dorota Szulc"
+          },
+          {
+            "imie_nazwisko": "Monika Kaczmarek"
+          }
+        ]
+      }
+    ],
+    "pelnomocnicy": [
+      {
+        "imie_nazwisko": "Sylwia Sikora",
+        "pesel": null
+      },
+      {
+        "imie_nazwisko": "Karolina Kaczmarek",
+        "pesel": null
+      }
+    ]
+  },
+  "reference": {
+    "mocodawca": [
+      {
+        "data": {
+          "imie_nazwisko": null,
+          "krs": "9997873010",
+          "nazwa": "Nordenix Automatyka Sp. z o.o.",
+          "nip": "9991785572",
+          "typ": "osoba_prawna"
+        },
+        "podpisujacy": [
+          {
+            "imie_nazwisko": "Monika Kaczmarek"
+          },
+          {
+            "imie_nazwisko": "Dorota Szulc"
+          }
+        ]
+      }
+    ],
+    "pelnomocnicy": [
+      {
+        "imie_nazwisko": "Sylwia Sikora",
+        "pesel": null
+      },
+      {
+        "imie_nazwisko": "Karolina Kaczmarek",
+        "pesel": null
+      }
+    ]
+  },
+  "diffs": [],
+  "trace": {
+    "source": "0006.pdf",
+    "class": "pelnomocnictwo",
+    "ocr_used": true,
+    "quotes": {
+      "mocodawca[0].data.imie_nazwisko": null,
+      "mocodawca[0].data.krs": "wpisana do rejestru przedsiębiorców Krajowego Rejestru Sądowego pod numerem KRS: 9997873010",
+      "mocodawca[0].data.nazwa": "Nordenix Automatyka Sp. z o.o. z siedzibą w Opole (45-037), ul. Jana Pawła II 15",
+      "mocodawca[0].data.nip": "NIP: 9991785572",
+      "mocodawca[0].data.typ": "Nordenix Automatyka Sp. z o.o.",
+      "mocodawca[0].podpisujacy[0].imie_nazwisko": "Dorota Szulc – Prezes Zarządu",
+      "mocodawca[0].podpisujacy[1].imie_nazwisko": "Monika Kaczmarek – Prezes Zarządu",
+      "pelnomocnicy[0].imie_nazwisko": "Sylwia Sikora – adwokat",
+      "pelnomocnicy[0].pesel": null,
+      "pelnomocnicy[1].imie_nazwisko": "Karolina Kaczmarek – adwokat",
+      "pelnomocnicy[1].pesel": null
+    },
+    "citation_ok": {
+      "mocodawca[0].data.krs": true,
+      "mocodawca[0].data.nazwa": true,
+      "mocodawca[0].data.nip": true,
+      "mocodawca[0].data.typ": true,
+      "mocodawca[0].podpisujacy[0].imie_nazwisko": true,
+      "mocodawca[0].podpisujacy[1].imie_nazwisko": true,
+      "pelnomocnicy[0].imie_nazwisko": true,
+      "pelnomocnicy[1].imie_nazwisko": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

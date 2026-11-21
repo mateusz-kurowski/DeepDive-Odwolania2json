@@ -1,0 +1,92 @@
+{
+  "source": "pelnomocnictwo.pdf",
+  "class": "pelnomocnictwo",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "mocodawca": [
+      {
+        "data": {
+          "imie_nazwisko": "Sebastian Tomaszewski",
+          "krs": null,
+          "nazwa": "RAVELO-BUD Sebastian Tomaszewski",
+          "nip": "9997975723",
+          "typ": "osoba_fizyczna"
+        },
+        "podpisujacy": [
+          {
+            "imie_nazwisko": "Sebastian Tomaszewski"
+          }
+        ]
+      }
+    ],
+    "pelnomocnicy": [
+      {
+        "imie_nazwisko": "Elżbieta Woźniak",
+        "pesel": null
+      },
+      {
+        "imie_nazwisko": "Iwona Kucharska",
+        "pesel": null
+      }
+    ]
+  },
+  "reference": {
+    "mocodawca": [
+      {
+        "data": {
+          "imie_nazwisko": "Sebastian Tomaszewski",
+          "krs": null,
+          "nazwa": "RAVELO-BUD Sebastian Tomaszewski",
+          "nip": "9997975723",
+          "typ": "osoba_fizyczna"
+        },
+        "podpisujacy": [
+          {
+            "imie_nazwisko": "Sebastian Tomaszewski"
+          }
+        ]
+      }
+    ],
+    "pelnomocnicy": [
+      {
+        "imie_nazwisko": "Elżbieta Woźniak",
+        "pesel": null
+      },
+      {
+        "imie_nazwisko": "Iwona Kucharska",
+        "pesel": null
+      }
+    ]
+  },
+  "diffs": [],
+  "trace": {
+    "source": "pelnomocnictwo.pdf",
+    "class": "pelnomocnictwo",
+    "ocr_used": false,
+    "quotes": {
+      "mocodawca[0].data.imie_nazwisko": "Sebastian Tomaszewski",
+      "mocodawca[0].data.krs": null,
+      "mocodawca[0].data.nazwa": "RAVELO-BUD Sebastian Tomaszewski",
+      "mocodawca[0].data.nip": "NIP 9997975723",
+      "mocodawca[0].data.typ": "prowadzący działalność gospodarczą",
+      "mocodawca[0].podpisujacy[0].imie_nazwisko": "Sebastian Tomaszewski",
+      "pelnomocnicy[0].imie_nazwisko": "adw. Elżbieta Woźniak",
+      "pelnomocnicy[0].pesel": null,
+      "pelnomocnicy[1].imie_nazwisko": "r. pr. Iwona Kucharska",
+      "pelnomocnicy[1].pesel": null
+    },
+    "citation_ok": {
+      "mocodawca[0].data.imie_nazwisko": true,
+      "mocodawca[0].data.nazwa": true,
+      "mocodawca[0].data.nip": true,
+      "mocodawca[0].data.typ": true,
+      "mocodawca[0].podpisujacy[0].imie_nazwisko": true,
+      "pelnomocnicy[0].imie_nazwisko": true,
+      "pelnomocnicy[1].imie_nazwisko": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

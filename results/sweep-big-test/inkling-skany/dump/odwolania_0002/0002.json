@@ -1,0 +1,132 @@
+{
+  "source": "0002.pdf",
+  "class": "odwolanie",
+  "error": null,
+  "ocr_used": true,
+  "prediction": {
+    "OdwolanieKIO": {
+      "data": "2026-04-10",
+      "czynnosc_dzien": "2026-04-01",
+      "czynnosc_powod_id": 1,
+      "czynnosc_opis": "Decyzja o odrzuceniu oferty",
+      "miejscowosc": "Białystok"
+    },
+    "Odwolujacy": [
+      {
+        "krs": "9994354396",
+        "nazwa": "Medicor Infrastruktura S.A.",
+        "nip": "9995090281",
+        "regon": "999368597",
+        "przez-pelnomocnika": 1,
+        "pelnomocnik": {
+          "imie_nazwisko": "Mateusz Wierzbicki",
+          "nazwa": "Kancelaria Adwokacka adw. Mateusz Wierzbicki",
+          "mail": "m.wierzbicki@wierzbicki-kancelaria.example"
+        }
+      }
+    ],
+    "Zamawiajacy": [
+      {
+        "krs": null,
+        "nazwa": "Powiatowy Zespół Szkół Technicznych w Wrzosowie",
+        "nip": null,
+        "regon": null,
+        "prowadzacy_postepowanie": null
+      }
+    ],
+    "ZamowieniePubliczne": {
+      "numer_bzp": null,
+      "numer_postepowania": "ZG.261.8.2026",
+      "numer_ted": "570628-2026",
+      "tytul": "Termomodernizacja budynków użyteczności publicznej wraz z montażem instalacji fotowoltaicznej"
+    }
+  },
+  "reference": {
+    "OdwolanieKIO": {
+      "data": "2026-04-10",
+      "czynnosc_dzien": "2026-04-01",
+      "czynnosc_powod_id": 1,
+      "czynnosc_opis": "Decyzja o odrzuceniu oferty",
+      "miejscowosc": "Białystok"
+    },
+    "Odwolujacy": [
+      {
+        "krs": "9994354396",
+        "nazwa": "Medicor Infrastruktura S.A.",
+        "nip": "9995090281",
+        "regon": "999368597",
+        "przez-pelnomocnika": 1,
+        "pelnomocnik": {
+          "imie_nazwisko": "Mateusz Wierzbicki",
+          "nazwa": "Kancelaria Adwokacka adw. Mateusz Wierzbicki",
+          "mail": "m.wierzbicki@wierzbicki-kancelaria.example"
+        }
+      }
+    ],
+    "Zamawiajacy": [
+      {
+        "krs": null,
+        "nazwa": "Powiatowy Zespół Szkół Technicznych w Wrzosowie",
+        "nip": null,
+        "regon": null,
+        "prowadzacy_postepowanie": null
+      }
+    ],
+    "ZamowieniePubliczne": {
+      "numer_bzp": null,
+      "numer_postepowania": "ZG.261.8.2026",
+      "numer_ted": "570628-2026",
+      "tytul": "Termomodernizacja budynków użyteczności publicznej wraz z montażem instalacji fotowoltaicznej"
+    }
+  },
+  "diffs": [],
+  "trace": {
+    "source": "0002.pdf",
+    "class": "odwolanie",
+    "ocr_used": true,
+    "quotes": {
+      "OdwolanieKIO.data": "Białystok, 10.04.2026 r.",
+      "OdwolanieKIO.czynnosc_dzien": "o której Odwołujący został poinformowany pismem z 1 kwietnia 2026 roku",
+      "OdwolanieKIO.czynnosc_powod_id": "czynności Zamawiającego polegającej na odrzuceniu oferty Odwołującego",
+      "OdwolanieKIO.miejscowosc": "Białystok, 10.04.2026 r.",
+      "Odwolujacy[0].krs": "KRS: 9994354396",
+      "Odwolujacy[0].nazwa": "Medicor Infrastruktura 5.A.",
+      "Odwolujacy[0].nip": "NIP: 999-509-02-81",
+      "Odwolujacy[0].regon": "REGON: 999368597",
+      "Odwolujacy[0].przez-pelnomocnika": "reprezentowany przez pełnomocnika:",
+      "Odwolujacy[0].pelnomocnik.imie_nazwisko": "adw. Mateusz Wierzbicki",
+      "Odwolujacy[0].pelnomocnik.nazwa": "Kancelaria Adwokacka adw. Mateusz Wierzbicki",
+      "Odwolujacy[0].pelnomocnik.mail": "e-mail: m.wierzbickiawierzbicki-kancelaria.example",
+      "Zamawiajacy[0].krs": null,
+      "Zamawiajacy[0].nazwa": "Powiatowy Zespół Szkół Technicznych w Wrzosowie",
+      "Zamawiajacy[0].nip": null,
+      "Zamawiajacy[0].regon": null,
+      "Zamawiajacy[0].prowadzacy_postepowanie": null,
+      "ZamowieniePubliczne.numer_bzp": null,
+      "ZamowieniePubliczne.numer_postepowania": "nr referencyjny: ZG.261.8.2026",
+      "ZamowieniePubliczne.numer_ted": "ogłoszenie w Dzienniku Urzędowym Unii Europejskiej nr 570628-2026",
+      "ZamowieniePubliczne.tytul": "pn. „Termomodernizacja budynków użyteczności publicznej wraz z montażem instalacji fotowoltaicznej”"
+    },
+    "citation_ok": {
+      "OdwolanieKIO.data": true,
+      "OdwolanieKIO.czynnosc_dzien": true,
+      "OdwolanieKIO.czynnosc_powod_id": true,
+      "OdwolanieKIO.miejscowosc": true,
+      "Odwolujacy[0].krs": true,
+      "Odwolujacy[0].nazwa": true,
+      "Odwolujacy[0].nip": true,
+      "Odwolujacy[0].regon": true,
+      "Odwolujacy[0].przez-pelnomocnika": true,
+      "Odwolujacy[0].pelnomocnik.imie_nazwisko": true,
+      "Odwolujacy[0].pelnomocnik.nazwa": true,
+      "Odwolujacy[0].pelnomocnik.mail": true,
+      "Zamawiajacy[0].nazwa": true,
+      "ZamowieniePubliczne.numer_postepowania": true,
+      "ZamowieniePubliczne.numer_ted": true,
+      "ZamowieniePubliczne.tytul": true
+    },
+    "nulled": [],
+    "retries": 1,
+    "truncated": false
+  }
+}

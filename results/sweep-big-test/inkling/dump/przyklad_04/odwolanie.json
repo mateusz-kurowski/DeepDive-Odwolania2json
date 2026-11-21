@@ -1,0 +1,135 @@
+{
+  "source": "odwolanie.pdf",
+  "class": "odwolanie",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "OdwolanieKIO": {
+      "data": "2026-08-24",
+      "czynnosc_dzien": "2026-08-11",
+      "czynnosc_powod_id": 9,
+      "czynnosc_opis": "Decyzja o unieważnieniu postępowania",
+      "miejscowosc": "Katowice"
+    },
+    "Odwolujacy": [
+      {
+        "krs": "9992397370",
+        "nazwa": "Gildentia Wyposażenie sp. z o.o.",
+        "nip": "9995126748",
+        "regon": "999165641",
+        "przez-pelnomocnika": 1,
+        "pelnomocnik": {
+          "imie_nazwisko": "Patrycja Furman",
+          "nazwa": "Kancelaria Radców Prawnych i Partnerzy",
+          "mail": "biuro@kontakt.example"
+        }
+      }
+    ],
+    "Zamawiajacy": [
+      {
+        "krs": "9997812714",
+        "nazwa": "Danevia Serwis sp. k.",
+        "nip": "9990342967",
+        "regon": "999118676",
+        "prowadzacy_postepowanie": null
+      }
+    ],
+    "ZamowieniePubliczne": {
+      "numer_bzp": null,
+      "numer_postepowania": "ZP.447.2026",
+      "numer_ted": "999512-2026",
+      "tytul": "Dostawa licencji oprogramowania do monitorowania infrastruktury i alarmowej"
+    }
+  },
+  "reference": {
+    "OdwolanieKIO": {
+      "data": "2026-08-24",
+      "czynnosc_dzien": "2026-08-11",
+      "czynnosc_powod_id": 9,
+      "czynnosc_opis": "Decyzja o unieważnieniu postępowania",
+      "miejscowosc": "Katowice"
+    },
+    "Odwolujacy": [
+      {
+        "krs": "9992397370",
+        "nazwa": "Gildentia Wyposażenie sp. z o.o.",
+        "nip": "9995126748",
+        "regon": "999165641",
+        "przez-pelnomocnika": 1,
+        "pelnomocnik": {
+          "imie_nazwisko": "Patrycja Furman",
+          "nazwa": "Kancelaria Radców Prawnych i Partnerzy",
+          "mail": "biuro@kontakt.example"
+        }
+      }
+    ],
+    "Zamawiajacy": [
+      {
+        "krs": "9997812714",
+        "nazwa": "Danevia Serwis sp. k.",
+        "nip": "9990342967",
+        "regon": "999118676",
+        "prowadzacy_postepowanie": null
+      }
+    ],
+    "ZamowieniePubliczne": {
+      "numer_bzp": null,
+      "numer_postepowania": "ZP.447.2026",
+      "numer_ted": "999512-2026",
+      "tytul": "Dostawa licencji oprogramowania do monitorowania infrastruktury i alarmowej"
+    }
+  },
+  "diffs": [],
+  "trace": {
+    "source": "odwolanie.pdf",
+    "class": "odwolanie",
+    "ocr_used": false,
+    "quotes": {
+      "OdwolanieKIO.data": "Katowice, dnia 24 sierpnia 2026 roku",
+      "OdwolanieKIO.czynnosc_dzien": "Zamawiający w dniu 11 sierpnia 2026 roku unieważniił postępowanie.",
+      "OdwolanieKIO.czynnosc_powod_id": "Zamawiający w dniu 11 sierpnia 2026 roku unieważniił postępowanie.",
+      "OdwolanieKIO.miejscowosc": "Katowice, dnia 24 sierpnia 2026 roku",
+      "Odwolujacy[0].krs": "KRS: 9992397370",
+      "Odwolujacy[0].nazwa": "Gildentia Wyposażenie sp. z o.o.",
+      "Odwolujacy[0].nip": "NIP: 9995126748",
+      "Odwolujacy[0].regon": "REGON: 999165641",
+      "Odwolujacy[0].przez-pelnomocnika": "reprezentowana przez: adw. Patrycja Furman, r. pr. Sławomir Ostrowczyk",
+      "Odwolujacy[0].pelnomocnik.imie_nazwisko": "adw. Patrycja Furman, r. pr. Sławomir Ostrowczyk",
+      "Odwolujacy[0].pelnomocnik.nazwa": "adres do korespondencji: Kancelaria Radców Prawnych i Partnerzy, ul. Rybacka 54, 20-691 Lublin",
+      "Odwolujacy[0].pelnomocnik.mail": "tel. 000 000 000, biuro@kontakt.example",
+      "Zamawiajacy[0].krs": "KRS: 9997812714",
+      "Zamawiajacy[0].nazwa": "Danevia Serwis sp. k.",
+      "Zamawiajacy[0].nip": "NIP: 9990342967",
+      "Zamawiajacy[0].regon": "REGON: 999118676",
+      "Zamawiajacy[0].prowadzacy_postepowanie": null,
+      "ZamowieniePubliczne.numer_bzp": null,
+      "ZamowieniePubliczne.numer_postepowania": "nr referencyjny sprawy: ZP.447.2026",
+      "ZamowieniePubliczne.numer_ted": "numer ogłoszenia w Dzienniku Urzędowym UE: 999512-2026",
+      "ZamowieniePubliczne.tytul": "pn. „Dostawa licencji oprogramowania do monitorowania infrastruktury i alarmowej”"
+    },
+    "citation_ok": {
+      "OdwolanieKIO.data": true,
+      "OdwolanieKIO.czynnosc_dzien": true,
+      "OdwolanieKIO.czynnosc_powod_id": true,
+      "OdwolanieKIO.miejscowosc": true,
+      "Odwolujacy[0].krs": true,
+      "Odwolujacy[0].nazwa": true,
+      "Odwolujacy[0].nip": true,
+      "Odwolujacy[0].regon": true,
+      "Odwolujacy[0].przez-pelnomocnika": true,
+      "Odwolujacy[0].pelnomocnik.imie_nazwisko": true,
+      "Odwolujacy[0].pelnomocnik.nazwa": true,
+      "Odwolujacy[0].pelnomocnik.mail": true,
+      "Zamawiajacy[0].krs": true,
+      "Zamawiajacy[0].nazwa": true,
+      "Zamawiajacy[0].nip": true,
+      "Zamawiajacy[0].regon": true,
+      "ZamowieniePubliczne.numer_postepowania": true,
+      "ZamowieniePubliczne.numer_ted": true,
+      "ZamowieniePubliczne.tytul": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

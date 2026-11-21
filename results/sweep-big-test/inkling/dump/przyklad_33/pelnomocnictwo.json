@@ -1,0 +1,92 @@
+{
+  "source": "pelnomocnictwo.pdf",
+  "class": "pelnomocnictwo",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "mocodawca": [
+      {
+        "data": {
+          "imie_nazwisko": null,
+          "krs": "9998008097",
+          "nazwa": "Fenrix Technologie S.A.",
+          "nip": "9991582308",
+          "typ": "osoba_prawna"
+        },
+        "podpisujacy": [
+          {
+            "imie_nazwisko": "Klaudia Bartoszewicz"
+          }
+        ]
+      }
+    ],
+    "pelnomocnicy": [
+      {
+        "imie_nazwisko": "Cezary Kaczmark",
+        "pesel": null
+      },
+      {
+        "imie_nazwisko": "Sławomir Sadowski",
+        "pesel": null
+      }
+    ]
+  },
+  "reference": {
+    "mocodawca": [
+      {
+        "data": {
+          "imie_nazwisko": null,
+          "krs": "9998008097",
+          "nazwa": "Fenrix Technologie S.A.",
+          "nip": "9991582308",
+          "typ": "osoba_prawna"
+        },
+        "podpisujacy": [
+          {
+            "imie_nazwisko": "Klaudia Bartoszewicz"
+          }
+        ]
+      }
+    ],
+    "pelnomocnicy": [
+      {
+        "imie_nazwisko": "Cezary Kaczmark",
+        "pesel": null
+      },
+      {
+        "imie_nazwisko": "Sławomir Sadowski",
+        "pesel": null
+      }
+    ]
+  },
+  "diffs": [],
+  "trace": {
+    "source": "pelnomocnictwo.pdf",
+    "class": "pelnomocnictwo",
+    "ocr_used": false,
+    "quotes": {
+      "mocodawca[0].data.imie_nazwisko": null,
+      "mocodawca[0].data.krs": "KRS 9998008097",
+      "mocodawca[0].data.nazwa": "Fenrix Technologie S.A.",
+      "mocodawca[0].data.nip": "NIP 9991582308",
+      "mocodawca[0].data.typ": "wpisanej do rejestru przedsiębiorców Krajowego Rejestru Sądowego",
+      "mocodawca[0].podpisujacy[0].imie_nazwisko": "Klaudia Bartoszewicz",
+      "pelnomocnicy[0].imie_nazwisko": "adw. Cezary Kaczmark",
+      "pelnomocnicy[0].pesel": null,
+      "pelnomocnicy[1].imie_nazwisko": "r. pr. Sławomir Sadowski",
+      "pelnomocnicy[1].pesel": null
+    },
+    "citation_ok": {
+      "mocodawca[0].data.krs": true,
+      "mocodawca[0].data.nazwa": true,
+      "mocodawca[0].data.nip": true,
+      "mocodawca[0].data.typ": true,
+      "mocodawca[0].podpisujacy[0].imie_nazwisko": true,
+      "pelnomocnicy[0].imie_nazwisko": true,
+      "pelnomocnicy[1].imie_nazwisko": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

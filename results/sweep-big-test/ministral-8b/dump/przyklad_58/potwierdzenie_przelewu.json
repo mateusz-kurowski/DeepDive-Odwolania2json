@@ -1,0 +1,51 @@
+{
+  "source": "potwierdzenie_przelewu.pdf",
+  "class": "przelew",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-10-11",
+      "kwota": 100.0,
+      "na_rachunek": "27313726088032820930424126",
+      "numer_transakcji": "CEN2610134500284",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Grzegorz Wiśniewski i Leszek Wieczorek w postępowaniu przed KIO w przetargu DAZ.139.2026 CEN2610134500284",
+      "z_rachunku": "52024460964788044059747207"
+    }
+  },
+  "reference": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-10-11",
+      "kwota": 100.0,
+      "na_rachunek": "27313726088032820930424126",
+      "numer_transakcji": "CEN2610134500284",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Grzegorz Wiśniewski i Leszek Wieczorek w postępowaniu przed KIO w przetargu DAZ.139.2026 CEN2610134500284",
+      "z_rachunku": "52024460964788044059747207"
+    }
+  },
+  "diffs": [],
+  "trace": {
+    "source": "potwierdzenie_przelewu.pdf",
+    "class": "przelew",
+    "ocr_used": false,
+    "quotes": {
+      "przelew_bankowy.data_operacji": "Data operacji 11 października 2026",
+      "przelew_bankowy.kwota": "Kwota 100,00 PLN",
+      "przelew_bankowy.na_rachunek": "PL27 3137 2608 8032 8209 3042 4126",
+      "przelew_bankowy.numer_transakcji": "Numer referencyjny CEN2610134500284",
+      "przelew_bankowy.tytul": "Tytuł przelewu opłata skarbowa od pełnomocnictwa dla Grzegorz Wiśniewski i Leszek Wieczorek w postępowaniu przed KIO w przetargu DAZ.139.2026 CEN2610134500284",
+      "przelew_bankowy.z_rachunku": "PL52 0244 6096 4788 0440 5974 7207"
+    },
+    "citation_ok": {
+      "przelew_bankowy.data_operacji": true,
+      "przelew_bankowy.kwota": true,
+      "przelew_bankowy.na_rachunek": true,
+      "przelew_bankowy.numer_transakcji": true,
+      "przelew_bankowy.tytul": true,
+      "przelew_bankowy.z_rachunku": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

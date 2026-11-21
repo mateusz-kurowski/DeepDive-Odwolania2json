@@ -1,0 +1,92 @@
+{
+  "source": "pelnomocnictwo.pdf",
+  "class": "pelnomocnictwo",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "mocodawca": [
+      {
+        "data": {
+          "imie_nazwisko": null,
+          "krs": "9999669444",
+          "nazwa": "Hartica Serwis S.A.",
+          "nip": "9990678035",
+          "typ": "osoba_prawna"
+        },
+        "podpisujacy": [
+          {
+            "imie_nazwisko": "Aleksandra Nowakowicz"
+          }
+        ]
+      }
+    ],
+    "pelnomocnicy": [
+      {
+        "imie_nazwisko": "Bartosz Szymanski",
+        "pesel": null
+      },
+      {
+        "imie_nazwisko": "Cezary Wierzbicki",
+        "pesel": null
+      }
+    ]
+  },
+  "reference": {
+    "mocodawca": [
+      {
+        "data": {
+          "imie_nazwisko": null,
+          "krs": "9999669444",
+          "nazwa": "Hartica Serwis S.A.",
+          "nip": "9990678035",
+          "typ": "osoba_prawna"
+        },
+        "podpisujacy": [
+          {
+            "imie_nazwisko": "Aleksandra Nowakowicz"
+          }
+        ]
+      }
+    ],
+    "pelnomocnicy": [
+      {
+        "imie_nazwisko": "Bartosz Szymanski",
+        "pesel": null
+      },
+      {
+        "imie_nazwisko": "Cezary Wierzbicki",
+        "pesel": null
+      }
+    ]
+  },
+  "diffs": [],
+  "trace": {
+    "source": "pelnomocnictwo.pdf",
+    "class": "pelnomocnictwo",
+    "ocr_used": false,
+    "quotes": {
+      "mocodawca[0].data.imie_nazwisko": null,
+      "mocodawca[0].data.krs": "KRS 9999669444",
+      "mocodawca[0].data.nazwa": "Mocodawca Hartica Serwis S.A.",
+      "mocodawca[0].data.nip": "NIP 9990678035",
+      "mocodawca[0].data.typ": "Mocodawca Hartica Serwis S.A.",
+      "mocodawca[0].podpisujacy[0].imie_nazwisko": "Aleksandra Nowakowicz",
+      "pelnomocnicy[0].imie_nazwisko": "adw. Bartosz Szymanski",
+      "pelnomocnicy[0].pesel": null,
+      "pelnomocnicy[1].imie_nazwisko": "adw. Cezary Wierzbicki",
+      "pelnomocnicy[1].pesel": null
+    },
+    "citation_ok": {
+      "mocodawca[0].data.krs": true,
+      "mocodawca[0].data.nazwa": true,
+      "mocodawca[0].data.nip": true,
+      "mocodawca[0].data.typ": true,
+      "mocodawca[0].podpisujacy[0].imie_nazwisko": true,
+      "pelnomocnicy[0].imie_nazwisko": true,
+      "pelnomocnicy[1].imie_nazwisko": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

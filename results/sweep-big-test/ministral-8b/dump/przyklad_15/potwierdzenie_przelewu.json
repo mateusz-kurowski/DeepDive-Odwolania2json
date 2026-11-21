@@ -1,0 +1,51 @@
+{
+  "source": "potwierdzenie_przelewu.pdf",
+  "class": "przelew",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "przelew_bankowy": {
+      "data_operacji": "2025-12-28",
+      "kwota": 200.0,
+      "na_rachunek": "56911076928008532465108080",
+      "numer_transakcji": "CEN2601124542889",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Ryszard Lipowczyk w postępowaniu przed KIO w przetargu SWZ.622.2026 CEN2601124542889",
+      "z_rachunku": "09570637495036186284664881"
+    }
+  },
+  "reference": {
+    "przelew_bankowy": {
+      "data_operacji": "2025-12-28",
+      "kwota": 200.0,
+      "na_rachunek": "56911076928008532465108080",
+      "numer_transakcji": "CEN2601124542889",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Ryszard Lipowczyk w postępowaniu przed KIO w przetargu SWZ.622.2026 CEN2601124542889",
+      "z_rachunku": "09570637495036186284664881"
+    }
+  },
+  "diffs": [],
+  "trace": {
+    "source": "potwierdzenie_przelewu.pdf",
+    "class": "przelew",
+    "ocr_used": false,
+    "quotes": {
+      "przelew_bankowy.data_operacji": "Data realizacji 28.12.2025",
+      "przelew_bankowy.kwota": "Kwota operacji PLN 200.00",
+      "przelew_bankowy.na_rachunek": "Rachunek uznawany 56 9110 7692 8008 5324 6510 8080",
+      "przelew_bankowy.numer_transakcji": "Identyfikator operacji CEN2601124542889",
+      "przelew_bankowy.tytul": "Tytuł opłata skarbowa od pełnomocnictwa dla Ryszard Lipowczyk w postępowaniu przed KIO w przetargu SWZ.622.2026 CEN2601124542889",
+      "przelew_bankowy.z_rachunku": "Z rachunku 09 5706 3749 5036 1862 8466 4881"
+    },
+    "citation_ok": {
+      "przelew_bankowy.data_operacji": true,
+      "przelew_bankowy.kwota": true,
+      "przelew_bankowy.na_rachunek": true,
+      "przelew_bankowy.numer_transakcji": true,
+      "przelew_bankowy.tytul": true,
+      "przelew_bankowy.z_rachunku": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

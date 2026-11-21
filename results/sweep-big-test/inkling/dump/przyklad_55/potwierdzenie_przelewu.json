@@ -1,0 +1,51 @@
+{
+  "source": "potwierdzenie_przelewu.pdf",
+  "class": "przelew",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-05-09",
+      "kwota": 100.0,
+      "na_rachunek": "89018603698791383955521169",
+      "numer_transakcji": "CEN2605112085992",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Renata Kowalczyk i Renata Jabłońska w postępowaniu przed KIO w przetargu IR.271-35/2026 CEN2605112085992",
+      "z_rachunku": "02830335668029495160782084"
+    }
+  },
+  "reference": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-05-09",
+      "kwota": 100.0,
+      "na_rachunek": "89018603698791383955521169",
+      "numer_transakcji": "CEN2605112085992",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Renata Kowalczyk i Renata Jabłońska w postępowaniu przed KIO w przetargu IR.271-35/2026 CEN2605112085992",
+      "z_rachunku": "02830335668029495160782084"
+    }
+  },
+  "diffs": [],
+  "trace": {
+    "source": "potwierdzenie_przelewu.pdf",
+    "class": "przelew",
+    "ocr_used": false,
+    "quotes": {
+      "przelew_bankowy.data_operacji": "Data operacji\n2026-05-09",
+      "przelew_bankowy.kwota": "Kwota\n100,00 PLN",
+      "przelew_bankowy.na_rachunek": "Rachunek odbiorcy\nPL89 0186 0369 8791 3839 5552 1169",
+      "przelew_bankowy.numer_transakcji": "Numer referencyjny\nCEN2605112085992",
+      "przelew_bankowy.tytul": "Tytuł przelewu\nopłata skarbowa od pełnomocnictwa dla Renata Kowalczyk i Renata\nJabłońska w postępowaniu przed KIO w przetargu IR.271-35/2026\nCEN2605112085992",
+      "przelew_bankowy.z_rachunku": "Rachunek zleceniodawcy\nPL02 8303 3566 8029 4951 6078 2084"
+    },
+    "citation_ok": {
+      "przelew_bankowy.data_operacji": true,
+      "przelew_bankowy.kwota": true,
+      "przelew_bankowy.na_rachunek": true,
+      "przelew_bankowy.numer_transakcji": true,
+      "przelew_bankowy.tytul": true,
+      "przelew_bankowy.z_rachunku": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}
