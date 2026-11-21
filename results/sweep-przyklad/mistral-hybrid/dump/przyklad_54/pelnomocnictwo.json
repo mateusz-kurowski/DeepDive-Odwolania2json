@@ -1,0 +1,100 @@
+{
+  "source": "pelnomocnictwo.pdf",
+  "class": "pelnomocnictwo",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "mocodawca": [
+      {
+        "data": {
+          "imie_nazwisko": null,
+          "krs": "9999448354",
+          "nazwa": "Calvero Gospodarka Odpadami sp.k.",
+          "nip": "9995986745",
+          "typ": "osoba_prawna"
+        },
+        "podpisujacy": [
+          {
+            "imie_nazwisko": "Natalia Kowalczyk"
+          },
+          {
+            "imie_nazwisko": "Leszek Piotrowski"
+          }
+        ]
+      }
+    ],
+    "pelnomocnicy": [
+      {
+        "imie_nazwisko": "Kamil Bąk",
+        "pesel": null
+      },
+      {
+        "imie_nazwisko": "Cezary Szewczyk",
+        "pesel": null
+      }
+    ]
+  },
+  "reference": {
+    "mocodawca": [
+      {
+        "data": {
+          "imie_nazwisko": null,
+          "krs": "9999448354",
+          "nazwa": "Calvero Gospodarka Odpadami sp.k.",
+          "nip": "9995986745",
+          "typ": "osoba_prawna"
+        },
+        "podpisujacy": [
+          {
+            "imie_nazwisko": "Natalia Kowalczyk"
+          },
+          {
+            "imie_nazwisko": "Leszek Piotrowski"
+          }
+        ]
+      }
+    ],
+    "pelnomocnicy": [
+      {
+        "imie_nazwisko": "Kamil Bąk",
+        "pesel": null
+      },
+      {
+        "imie_nazwisko": "Cezary Szewczyk",
+        "pesel": null
+      }
+    ]
+  },
+  "diffs": [],
+  "trace": {
+    "source": "pelnomocnictwo.pdf",
+    "class": "pelnomocnictwo",
+    "ocr_used": false,
+    "quotes": {
+      "mocodawca[0].data.imie_nazwisko": null,
+      "mocodawca[0].data.krs": "KRS 9999448354",
+      "mocodawca[0].data.nazwa": "Calvero Gospodarka Odpadami sp.k.",
+      "mocodawca[0].data.nip": "NIP 9995986745",
+      "mocodawca[0].data.typ": "sp.k.",
+      "mocodawca[0].podpisujacy[0].imie_nazwisko": "Natalia Kowalczyk",
+      "mocodawca[0].podpisujacy[1].imie_nazwisko": "Leszek Piotrowski",
+      "pelnomocnicy[0].imie_nazwisko": "r. pr. Kamil Bąk",
+      "pelnomocnicy[0].pesel": null,
+      "pelnomocnicy[1].imie_nazwisko": "adw. Cezary Szewczyk",
+      "pelnomocnicy[1].pesel": null
+    },
+    "citation_ok": {
+      "mocodawca[0].data.krs": true,
+      "mocodawca[0].data.nazwa": true,
+      "mocodawca[0].data.nip": true,
+      "mocodawca[0].data.typ": true,
+      "mocodawca[0].podpisujacy[0].imie_nazwisko": true,
+      "mocodawca[0].podpisujacy[1].imie_nazwisko": true,
+      "pelnomocnicy[0].imie_nazwisko": true,
+      "pelnomocnicy[1].imie_nazwisko": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

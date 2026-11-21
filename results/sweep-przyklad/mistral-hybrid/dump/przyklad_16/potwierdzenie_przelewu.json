@@ -1,0 +1,65 @@
+{
+  "source": "potwierdzenie_przelewu.pdf",
+  "class": "przelew",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-08-12",
+      "kwota": 200.0,
+      "na_rachunek": null,
+      "numer_transakcji": "CEN2608223176575",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Cezary Szymanski i Patrycja Bąkiewicz w postępowaniu przed KIO w przetargu DI.906.2026 CEN2608223176575",
+      "z_rachunku": null
+    }
+  },
+  "reference": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-08-12",
+      "kwota": 200.0,
+      "na_rachunek": "03712918442654893065427654",
+      "numer_transakcji": "CEN2608223176575",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Cezary Szymanski i Patrycja Bąkiewicz w postępowaniu przed KIO w przetargu DI.906.2026 CEN2608223176575",
+      "z_rachunku": "33880525177402263989269409"
+    }
+  },
+  "diffs": [
+    {
+      "field": "przelew_bankowy.na_rachunek",
+      "predicted": null,
+      "expected": "03712918442654893065427654",
+      "status": "missing"
+    },
+    {
+      "field": "przelew_bankowy.z_rachunku",
+      "predicted": null,
+      "expected": "33880525177402263989269409",
+      "status": "missing"
+    }
+  ],
+  "trace": {
+    "source": "potwierdzenie_przelewu.pdf",
+    "class": "przelew",
+    "ocr_used": false,
+    "quotes": {
+      "przelew_bankowy.data_operacji": "Data realizacji 12 sierpnia 2026",
+      "przelew_bankowy.kwota": "Kwota przelewu 200,00 PLN",
+      "przelew_bankowy.na_rachunek": "03 7129 1844 2654 8930 6542 7654",
+      "przelew_bankowy.numer_transakcji": "Identyfikator operacji CEN2608223176575",
+      "przelew_bankowy.tytul": "Tytułem opłata skarbowa od pełnomocnictwa dla Cezary Szymanski i Patrycja Bąkiewicz w postępowaniu przed KIO w przetargu DI.906.2026 CEN2608223176575",
+      "przelew_bankowy.z_rachunku": "33 8805 2517 7402 2639 8926 9409"
+    },
+    "citation_ok": {
+      "przelew_bankowy.data_operacji": true,
+      "przelew_bankowy.kwota": true,
+      "przelew_bankowy.numer_transakcji": true,
+      "przelew_bankowy.tytul": true
+    },
+    "nulled": [
+      "przelew_bankowy.na_rachunek",
+      "przelew_bankowy.z_rachunku"
+    ],
+    "retries": 1,
+    "truncated": false
+  }
+}

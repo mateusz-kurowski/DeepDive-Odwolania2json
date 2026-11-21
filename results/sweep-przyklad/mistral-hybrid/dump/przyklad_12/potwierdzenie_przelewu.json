@@ -1,0 +1,51 @@
+{
+  "source": "potwierdzenie_przelewu.pdf",
+  "class": "przelew",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-07-09",
+      "kwota": 200.0,
+      "na_rachunek": "57421677910972931901050689",
+      "numer_transakcji": "CEN2607206163458",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Klaudia Dobrowolski w postępowaniu przed KIO w przetargu SWZ.755.2026 CEN2607206163458",
+      "z_rachunku": "55013599139628488106435346"
+    }
+  },
+  "reference": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-07-09",
+      "kwota": 200.0,
+      "na_rachunek": "57421677910972931901050689",
+      "numer_transakcji": "CEN2607206163458",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Klaudia Dobrowolski w postępowaniu przed KIO w przetargu SWZ.755.2026 CEN2607206163458",
+      "z_rachunku": "55013599139628488106435346"
+    }
+  },
+  "diffs": [],
+  "trace": {
+    "source": "potwierdzenie_przelewu.pdf",
+    "class": "przelew",
+    "ocr_used": false,
+    "quotes": {
+      "przelew_bankowy.data_operacji": "w dniu 09-07-2026",
+      "przelew_bankowy.kwota": "200.00 PLN",
+      "przelew_bankowy.na_rachunek": "rachunek nr 57 4216 7791 0972 9319 0105 0689",
+      "przelew_bankowy.numer_transakcji": "Numer transakcji operacji: CEN2607206163458",
+      "przelew_bankowy.tytul": "„opłata skarbowa od pełnomocnictwa dla Klaudia Dobrowolski w postępowaniu przed KIO w przetargu SWZ.755.2026 CEN2607206163458”",
+      "przelew_bankowy.z_rachunku": "rachunku nr 55 0135 9913 9628 4881 0643 5346"
+    },
+    "citation_ok": {
+      "przelew_bankowy.data_operacji": true,
+      "przelew_bankowy.kwota": true,
+      "przelew_bankowy.na_rachunek": true,
+      "przelew_bankowy.numer_transakcji": true,
+      "przelew_bankowy.tytul": true,
+      "przelew_bankowy.z_rachunku": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

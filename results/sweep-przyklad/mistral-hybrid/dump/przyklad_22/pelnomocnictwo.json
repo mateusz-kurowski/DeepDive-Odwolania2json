@@ -1,0 +1,99 @@
+{
+  "source": "pelnomocnictwo.pdf",
+  "class": "pelnomocnictwo",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "mocodawca": [
+      {
+        "data": {
+          "imie_nazwisko": null,
+          "krs": "9994097527",
+          "nazwa": "Zorina Systemy sp. z o.o.",
+          "nip": "9992726100",
+          "typ": "osoba_prawna"
+        },
+        "podpisujacy": [
+          {
+            "imie_nazwisko": "Cezary Bartoszewicz"
+          }
+        ]
+      }
+    ],
+    "pelnomocnicy": [
+      {
+        "imie_nazwisko": "Dorota Sikorska",
+        "pesel": null
+      },
+      {
+        "imie_nazwisko": "Grzegorz Szulc",
+        "pesel": null
+      }
+    ]
+  },
+  "reference": {
+    "mocodawca": [
+      {
+        "data": {
+          "imie_nazwisko": null,
+          "krs": "9994097527",
+          "nazwa": "Zorina Systemy sp. z o.o.",
+          "nip": "9992726100",
+          "typ": "osoba_prawna"
+        },
+        "podpisujacy": [
+          {
+            "imie_nazwisko": "Cezary Bartoszewicz"
+          }
+        ]
+      }
+    ],
+    "pelnomocnicy": [
+      {
+        "imie_nazwisko": "Dorota Sikorski",
+        "pesel": null
+      },
+      {
+        "imie_nazwisko": "Grzegorz Szulc",
+        "pesel": null
+      }
+    ]
+  },
+  "diffs": [
+    {
+      "field": "pelnomocnicy[imie_nazwisko=dorota sikorski].imie_nazwisko",
+      "predicted": "dorota sikorska",
+      "expected": "dorota sikorski",
+      "status": "wrong"
+    }
+  ],
+  "trace": {
+    "source": "pelnomocnictwo.pdf",
+    "class": "pelnomocnictwo",
+    "ocr_used": false,
+    "quotes": {
+      "mocodawca[0].data.imie_nazwisko": null,
+      "mocodawca[0].data.krs": "KRS 9994097527",
+      "mocodawca[0].data.nazwa": "Zorina Systemy sp. z o.o.",
+      "mocodawca[0].data.nip": "NIP 9992726100",
+      "mocodawca[0].data.typ": "sp. z o.o.",
+      "mocodawca[0].podpisujacy[0].imie_nazwisko": "Cezary Bartoszewicz",
+      "pelnomocnicy[0].imie_nazwisko": "r. pr. Dorota Sikorski",
+      "pelnomocnicy[0].pesel": null,
+      "pelnomocnicy[1].imie_nazwisko": "r. pr. Grzegorz Szulc",
+      "pelnomocnicy[1].pesel": null
+    },
+    "citation_ok": {
+      "mocodawca[0].data.krs": true,
+      "mocodawca[0].data.nazwa": true,
+      "mocodawca[0].data.nip": true,
+      "mocodawca[0].data.typ": true,
+      "mocodawca[0].podpisujacy[0].imie_nazwisko": true,
+      "pelnomocnicy[0].imie_nazwisko": true,
+      "pelnomocnicy[1].imie_nazwisko": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

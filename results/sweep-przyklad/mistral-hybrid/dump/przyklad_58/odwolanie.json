@@ -1,0 +1,133 @@
+{
+  "source": "odwolanie.pdf",
+  "class": "odwolanie",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "OdwolanieKIO": {
+      "data": null,
+      "czynnosc_dzien": "2026-10-06",
+      "czynnosc_powod_id": 10,
+      "czynnosc_opis": "Zaniechanie unieważnienia postępowania",
+      "miejscowosc": null
+    },
+    "Odwolujacy": [
+      {
+        "krs": "9995522683",
+        "nazwa": "Imperon Serwis sp. z o.o.",
+        "nip": "9993124780",
+        "regon": "999513156",
+        "przez-pelnomocnika": 1,
+        "pelnomocnik": {
+          "imie_nazwisko": "Grzegorz Wiśniewski",
+          "nazwa": "Wiśniewski Legal Kancelaria Radców Prawnych sp. z o.o.",
+          "mail": "kontakt@wisniewskiprawo.example"
+        }
+      }
+    ],
+    "Zamawiajacy": [
+      {
+        "krs": null,
+        "nazwa": "Państwowa Akademia Nauk Stosowanych w Krzemienicy",
+        "nip": "9996334986",
+        "regon": "999412535",
+        "prowadzacy_postepowanie": null
+      }
+    ],
+    "ZamowieniePubliczne": {
+      "numer_bzp": "2026/BZP00999827",
+      "numer_postepowania": "DAZ.139.2026",
+      "numer_ted": "999345-2026",
+      "tytul": "Całodobowa obsługa techniczna i konserwacja instalacji budynków Zamawiającego"
+    }
+  },
+  "reference": {
+    "OdwolanieKIO": {
+      "data": null,
+      "czynnosc_dzien": "2026-10-06",
+      "czynnosc_powod_id": 10,
+      "czynnosc_opis": "Zaniechanie unieważnienia postępowania",
+      "miejscowosc": null
+    },
+    "Odwolujacy": [
+      {
+        "krs": "9995522683",
+        "nazwa": "Imperon Serwis sp. z o.o.",
+        "nip": "9993124780",
+        "regon": "999513156",
+        "przez-pelnomocnika": 1,
+        "pelnomocnik": {
+          "imie_nazwisko": "Grzegorz Wiśniewski",
+          "nazwa": "Wiśniewski Legal Kancelaria Radców Prawnych sp. z o.o.",
+          "mail": "kontakt@wisniewskiprawo.example"
+        }
+      }
+    ],
+    "Zamawiajacy": [
+      {
+        "krs": null,
+        "nazwa": "Państwowa Akademia Nauk Stosowanych w Krzemienicy",
+        "nip": "9996334986",
+        "regon": "999412535",
+        "prowadzacy_postepowanie": null
+      }
+    ],
+    "ZamowieniePubliczne": {
+      "numer_bzp": "2026/BZP00999827",
+      "numer_postepowania": "DAZ.139.2026",
+      "numer_ted": "999345-2026",
+      "tytul": "Całodobowa obsługa techniczna i konserwacja instalacji budynków Zamawiającego"
+    }
+  },
+  "diffs": [],
+  "trace": {
+    "source": "odwolanie.pdf",
+    "class": "odwolanie",
+    "ocr_used": false,
+    "quotes": {
+      "OdwolanieKIO.data": null,
+      "OdwolanieKIO.czynnosc_dzien": "Zamawiający w dniu 6 października 2026 roku przekazał informację o wyborze oferty najkorzystniejszej wykonawcy Galvex Facility sp. z o.o., zaniechawszy unieważnienia postępowania",
+      "OdwolanieKIO.czynnosc_powod_id": "zaniechaniu unieważnienia postępowania obarczonego wadą niemożliwą do usunięcia z dnia 6 października 2026 r.",
+      "OdwolanieKIO.miejscowosc": null,
+      "Odwolujacy[0].krs": "KRS: 9995522683",
+      "Odwolujacy[0].nazwa": "Imperon Serwis sp. z o.o.",
+      "Odwolujacy[0].nip": "NIP: 9993124780",
+      "Odwolujacy[0].regon": "REGON: 999513156",
+      "Odwolujacy[0].przez-pelnomocnika": "reprezentowany przez: adw. Grzegorz Wiśniewski, adw. Leszek Wieczorek",
+      "Odwolujacy[0].pelnomocnik.imie_nazwisko": "adw. Grzegorz Wiśniewski",
+      "Odwolujacy[0].pelnomocnik.nazwa": "adres do korespondencji: Wiśniewski Legal Kancelaria Radców Prawnych sp. z o.o.",
+      "Odwolujacy[0].pelnomocnik.mail": "e-mail: kontakt@wisniewskiprawo.example",
+      "Zamawiajacy[0].krs": null,
+      "Zamawiajacy[0].nazwa": "Państwowa Akademia Nauk Stosowanych w Krzemienicy",
+      "Zamawiajacy[0].nip": "NIP: 9996334986",
+      "Zamawiajacy[0].regon": "REGON: 999412535",
+      "Zamawiajacy[0].prowadzacy_postepowanie": null,
+      "ZamowieniePubliczne.numer_bzp": "ogłoszenie o zamówieniu w Biuletynie Zamówień Publicznych nr 2026/BZP 00999827",
+      "ZamowieniePubliczne.numer_postepowania": "nr referencyjny: DAZ.139.2026",
+      "ZamowieniePubliczne.numer_ted": "ogłoszenie w Dzienniku Urzędowym Unii Europejskiej nr 2026/S 168-999345",
+      "ZamowieniePubliczne.tytul": "Całodobowa obsługa techniczna i konserwacja instalacji budynków Zamawiającego"
+    },
+    "citation_ok": {
+      "OdwolanieKIO.czynnosc_dzien": true,
+      "OdwolanieKIO.czynnosc_powod_id": true,
+      "Odwolujacy[0].krs": true,
+      "Odwolujacy[0].nazwa": true,
+      "Odwolujacy[0].nip": true,
+      "Odwolujacy[0].regon": true,
+      "Odwolujacy[0].przez-pelnomocnika": true,
+      "Odwolujacy[0].pelnomocnik.imie_nazwisko": true,
+      "Odwolujacy[0].pelnomocnik.nazwa": true,
+      "Odwolujacy[0].pelnomocnik.mail": true,
+      "Zamawiajacy[0].nazwa": true,
+      "Zamawiajacy[0].nip": true,
+      "Zamawiajacy[0].regon": true,
+      "ZamowieniePubliczne.numer_bzp": true,
+      "ZamowieniePubliczne.numer_postepowania": true,
+      "ZamowieniePubliczne.numer_ted": true,
+      "ZamowieniePubliczne.tytul": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

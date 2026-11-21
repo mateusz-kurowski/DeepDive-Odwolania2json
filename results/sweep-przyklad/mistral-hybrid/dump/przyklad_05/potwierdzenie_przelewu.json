@@ -1,0 +1,51 @@
+{
+  "source": "potwierdzenie_przelewu.pdf",
+  "class": "przelew",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-10-26",
+      "kwota": 17.0,
+      "na_rachunek": "10386393618709740848534519",
+      "numer_transakcji": "CEN2611091860728",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Ignacy Sadowski w postępowaniu przed KIO w przetargu SWZ.780.2026 CEN2611091860728",
+      "z_rachunku": "66211180801009882857081733"
+    }
+  },
+  "reference": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-10-26",
+      "kwota": 17.0,
+      "na_rachunek": "10386393618709740848534519",
+      "numer_transakcji": "CEN2611091860728",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Ignacy Sadowski w postępowaniu przed KIO w przetargu SWZ.780.2026 CEN2611091860728",
+      "z_rachunku": "66211180801009882857081733"
+    }
+  },
+  "diffs": [],
+  "trace": {
+    "source": "potwierdzenie_przelewu.pdf",
+    "class": "przelew",
+    "ocr_used": false,
+    "quotes": {
+      "przelew_bankowy.data_operacji": "w dniu 2026-10-26",
+      "przelew_bankowy.kwota": "17.00 PLN",
+      "przelew_bankowy.na_rachunek": "PL10 3863 9361 8709 7408 4853 4519",
+      "przelew_bankowy.numer_transakcji": "Numer transakcji operacji: CEN2611091860728.",
+      "przelew_bankowy.tytul": "„opłata skarbowa od pełnomocnictwa dla Ignacy Sadowski w postępowaniu przed KIO w przetargu SWZ.780.2026 CEN2611091860728”",
+      "przelew_bankowy.z_rachunku": "PL66 2111 8080 1009 8828 5708 1733"
+    },
+    "citation_ok": {
+      "przelew_bankowy.data_operacji": true,
+      "przelew_bankowy.kwota": true,
+      "przelew_bankowy.na_rachunek": true,
+      "przelew_bankowy.numer_transakcji": true,
+      "przelew_bankowy.tytul": true,
+      "przelew_bankowy.z_rachunku": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

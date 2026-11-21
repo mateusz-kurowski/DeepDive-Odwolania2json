@@ -1,0 +1,144 @@
+{
+  "source": "0009.pdf",
+  "class": "odwolanie",
+  "error": null,
+  "ocr_used": true,
+  "prediction": {
+    "OdwolanieKIO": {
+      "data": "2026-06-05",
+      "czynnosc_dzien": "2026-06-02",
+      "czynnosc_powod_id": 6,
+      "czynnosc_opis": "Odpowiedzi/wyjaśnienia do SWZ",
+      "miejscowosc": "Łódź"
+    },
+    "Odwolujacy": [
+      {
+        "krs": "9996316141",
+        "nazwa": "Asterion Drogi i Mosty Sp. z o.o.",
+        "nip": "9994295420",
+        "regon": null,
+        "przez-pelnomocnika": 0,
+        "pelnomocnik": {
+          "imie_nazwisko": "Żaneta Rybak",
+          "nazwa": null,
+          "mail": "biuro@asterion.example"
+        }
+      }
+    ],
+    "Zamawiajacy": [
+      {
+        "krs": null,
+        "nazwa": "Miejski Ośrodek Sportu i Rekreacji w Olszanowie",
+        "nip": "9991408384",
+        "regon": null,
+        "prowadzacy_postepowanie": null
+      }
+    ],
+    "ZamowieniePubliczne": {
+      "numer_bzp": "2026/BZP00692455/03",
+      "numer_postepowania": "DA.ZP.242.13.2026",
+      "numer_ted": null,
+      "tytul": "Rozbudowa oczyszczalni ścieków wraz z modernizacją sieci kanalizacyjnej"
+    }
+  },
+  "reference": {
+    "OdwolanieKIO": {
+      "data": "2026-06-05",
+      "czynnosc_dzien": "2026-06-02",
+      "czynnosc_powod_id": 6,
+      "czynnosc_opis": "Odpowiedzi/wyjaśnienia do SWZ",
+      "miejscowosc": "Łódź"
+    },
+    "Odwolujacy": [
+      {
+        "krs": "9996316141",
+        "nazwa": "Asterion Drogi i Mosty Sp. z o.o.",
+        "nip": "9994295420",
+        "regon": null,
+        "przez-pelnomocnika": 0,
+        "pelnomocnik": {
+          "imie_nazwisko": null,
+          "nazwa": null,
+          "mail": null
+        }
+      }
+    ],
+    "Zamawiajacy": [
+      {
+        "krs": null,
+        "nazwa": "Miejski Ośrodek Sportu i Rekreacji w Olszanowie",
+        "nip": "9991408384",
+        "regon": null,
+        "prowadzacy_postepowanie": null
+      }
+    ],
+    "ZamowieniePubliczne": {
+      "numer_bzp": "2026/BZP00692455/03",
+      "numer_postepowania": "DA.ZP.242.13.2026",
+      "numer_ted": null,
+      "tytul": "Rozbudowa oczyszczalni ścieków wraz z modernizacją sieci kanalizacyjnej"
+    }
+  },
+  "diffs": [
+    {
+      "field": "Odwolujacy[krs=9996316141].pelnomocnik.imie_nazwisko",
+      "predicted": "żaneta rybak",
+      "expected": null,
+      "status": "extra"
+    },
+    {
+      "field": "Odwolujacy[krs=9996316141].pelnomocnik.mail",
+      "predicted": "biuro@asterion.example",
+      "expected": null,
+      "status": "extra"
+    }
+  ],
+  "trace": {
+    "source": "0009.pdf",
+    "class": "odwolanie",
+    "ocr_used": true,
+    "quotes": {
+      "OdwolanieKIO.data": "Łódź 05.06.2026r.",
+      "OdwolanieKIO.czynnosc_dzien": "Informacja o zaskarżonej czynności została przekazana Odwołującemu w dniu 02.06.2026 r.",
+      "OdwolanieKIO.czynnosc_powod_id": "treści wyjaśnień SWZ (odpowiedzi na pytania wykonawców) udzielonych przez Zamawiającego w dniu 2 czerwca 2026 r.",
+      "OdwolanieKIO.miejscowosc": "Łódź 05.06.2026r.",
+      "Odwolujacy[0].krs": "KRS: 9996316141",
+      "Odwolujacy[0].nazwa": "Asterion Drogi i Mosty Sp. z o.o.",
+      "Odwolujacy[0].nip": "NIP: 9994295420",
+      "Odwolujacy[0].regon": null,
+      "Odwolujacy[0].przez-pelnomocnika": null,
+      "Odwolujacy[0].pelnomocnik.imie_nazwisko": "W imieniu Odwołującego:\n[Podpis]\n\nŻaneta Rybak – Wiceprezes Zarządu",
+      "Odwolujacy[0].pelnomocnik.nazwa": null,
+      "Odwolujacy[0].pelnomocnik.mail": "e-mail: biuro@asterion.example",
+      "Zamawiajacy[0].krs": null,
+      "Zamawiajacy[0].nazwa": "Miejski Ośrodek Sportu i Rekreacji w Olszanowie",
+      "Zamawiajacy[0].nip": "NIP: 9991408384",
+      "Zamawiajacy[0].regon": null,
+      "Zamawiajacy[0].prowadzacy_postepowanie": null,
+      "ZamowieniePubliczne.numer_bzp": "ogłoszenie o zamówieniu nr 2026/BZP 00692455/03",
+      "ZamowieniePubliczne.numer_postepowania": "nr referencyjny: DA.ZP.242.13.2026",
+      "ZamowieniePubliczne.numer_ted": null,
+      "ZamowieniePubliczne.tytul": "pn. \"Rozbudowa oczyszczalni ścieków wraz z modernizacją sieci kanalizacyjnej\""
+    },
+    "citation_ok": {
+      "OdwolanieKIO.data": true,
+      "OdwolanieKIO.czynnosc_dzien": true,
+      "OdwolanieKIO.czynnosc_powod_id": true,
+      "OdwolanieKIO.miejscowosc": true,
+      "Odwolujacy[0].krs": true,
+      "Odwolujacy[0].nazwa": true,
+      "Odwolujacy[0].nip": true,
+      "Odwolujacy[0].przez-pelnomocnika": false,
+      "Odwolujacy[0].pelnomocnik.imie_nazwisko": true,
+      "Odwolujacy[0].pelnomocnik.mail": true,
+      "Zamawiajacy[0].nazwa": true,
+      "Zamawiajacy[0].nip": true,
+      "ZamowieniePubliczne.numer_bzp": true,
+      "ZamowieniePubliczne.numer_postepowania": true,
+      "ZamowieniePubliczne.tytul": true
+    },
+    "nulled": [],
+    "retries": 1,
+    "truncated": false
+  }
+}

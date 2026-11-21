@@ -1,0 +1,141 @@
+{
+  "source": "odwolanie.pdf",
+  "class": "odwolanie",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "OdwolanieKIO": {
+      "data": "2026-10-27",
+      "czynnosc_dzien": "2026-10-10",
+      "czynnosc_powod_id": 7,
+      "czynnosc_opis": "Zaniechanie odrzucenia oferty",
+      "miejscowosc": "Lublin"
+    },
+    "Odwolujacy": [
+      {
+        "krs": "9999008184",
+        "nazwa": "Kavendis Infrastruktura sp. z o.o.",
+        "nip": "9999892540",
+        "regon": "999263852",
+        "przez-pelnomocnika": 1,
+        "pelnomocnik": {
+          "imie_nazwisko": "Norbert Milewski",
+          "nazwa": "Kancelaria Prawna i Partnerzy",
+          "mail": null
+        }
+      }
+    ],
+    "Zamawiajacy": [
+      {
+        "krs": "9998618920",
+        "nazwa": "Ypsilon Usługi sp. j.",
+        "nip": "9994288070",
+        "regon": "999461865",
+        "prowadzacy_postepowanie": null
+      }
+    ],
+    "ZamowieniePubliczne": {
+      "numer_bzp": "2026/BZP00999352",
+      "numer_postepowania": "DI.356.2026",
+      "numer_ted": null,
+      "tytul": "Świadczenie usług pocztowych i kurierskich na potrzeby urzędu"
+    }
+  },
+  "reference": {
+    "OdwolanieKIO": {
+      "data": "2026-10-27",
+      "czynnosc_dzien": "2026-10-10",
+      "czynnosc_powod_id": 7,
+      "czynnosc_opis": "Zaniechanie odrzucenia oferty",
+      "miejscowosc": "Lublin"
+    },
+    "Odwolujacy": [
+      {
+        "krs": "9999008184",
+        "nazwa": "Kavendis Infrastruktura sp. z o.o.",
+        "nip": "9999892540",
+        "regon": "999263852",
+        "przez-pelnomocnika": 1,
+        "pelnomocnik": {
+          "imie_nazwisko": "Norbert Milewski",
+          "nazwa": "Kancelaria Prawna i Partnerzy",
+          "mail": "biuro@sekretariat.example"
+        }
+      }
+    ],
+    "Zamawiajacy": [
+      {
+        "krs": "9998618920",
+        "nazwa": "Ypsilon Usługi sp. j.",
+        "nip": "9994288070",
+        "regon": "999461865",
+        "prowadzacy_postepowanie": null
+      }
+    ],
+    "ZamowieniePubliczne": {
+      "numer_bzp": "2026/BZP00999352",
+      "numer_postepowania": "DI.356.2026",
+      "numer_ted": null,
+      "tytul": "Świadczenie usług pocztowych i kurierskich na potrzeby urzędu"
+    }
+  },
+  "diffs": [
+    {
+      "field": "Odwolujacy[krs=9999008184].pelnomocnik.mail",
+      "predicted": null,
+      "expected": "biuro@sekretariat.example",
+      "status": "missing"
+    }
+  ],
+  "trace": {
+    "source": "odwolanie.pdf",
+    "class": "odwolanie",
+    "ocr_used": false,
+    "quotes": {
+      "OdwolanieKIO.data": "Lublin, dnia 27 października 2026 roku",
+      "OdwolanieKIO.czynnosc_dzien": "Zamawiający w dniu 10 października 2026 roku nie odrzucił oferty złożonej przez Odwołującego.",
+      "OdwolanieKIO.czynnosc_powod_id": "nie odrzucił oferty",
+      "OdwolanieKIO.miejscowosc": "Lublin, dnia 27 października 2026 roku",
+      "Odwolujacy[0].krs": "KRS: 9999008184",
+      "Odwolujacy[0].nazwa": "Kavendis Infrastruktura sp. z o.o.",
+      "Odwolujacy[0].nip": "NIP: 9999892540",
+      "Odwolujacy[0].regon": "REGON: 999263852",
+      "Odwolujacy[0].przez-pelnomocnika": "reprezentowana przez: adw. Norbert Milewski",
+      "Odwolujacy[0].pelnomocnik.imie_nazwisko": "adw. Norbert Milewski",
+      "Odwolujacy[0].pelnomocnik.nazwa": "Kancelaria Prawna i Partnerzy",
+      "Odwolujacy[0].pelnomocnik.mail": null,
+      "Zamawiajacy[0].krs": "KRS: 9998618920",
+      "Zamawiajacy[0].nazwa": "Ypsilon Usługi sp. j.",
+      "Zamawiajacy[0].nip": "NIP: 9994288070",
+      "Zamawiajacy[0].regon": "REGON: 999461865",
+      "Zamawiajacy[0].prowadzacy_postepowanie": null,
+      "ZamowieniePubliczne.numer_bzp": "numer ogłoszenia o zamówieniu w BZP: 2026/BZP00999352",
+      "ZamowieniePubliczne.numer_postepowania": "nr referencyjny sprawy: DI.356.2026",
+      "ZamowieniePubliczne.numer_ted": null,
+      "ZamowieniePubliczne.tytul": "postępowania o udzielenie zamówienia w trybie przetargu ograniczonego pn. \"Świadczenie usług pocztowych i kurierskich na potrzeby urzędu\""
+    },
+    "citation_ok": {
+      "OdwolanieKIO.data": true,
+      "OdwolanieKIO.czynnosc_dzien": true,
+      "OdwolanieKIO.czynnosc_powod_id": true,
+      "OdwolanieKIO.miejscowosc": true,
+      "Odwolujacy[0].krs": true,
+      "Odwolujacy[0].nazwa": true,
+      "Odwolujacy[0].nip": true,
+      "Odwolujacy[0].regon": true,
+      "Odwolujacy[0].przez-pelnomocnika": true,
+      "Odwolujacy[0].pelnomocnik.imie_nazwisko": true,
+      "Odwolujacy[0].pelnomocnik.nazwa": true,
+      "Zamawiajacy[0].krs": true,
+      "Zamawiajacy[0].nazwa": true,
+      "Zamawiajacy[0].nip": true,
+      "Zamawiajacy[0].regon": true,
+      "ZamowieniePubliczne.numer_bzp": true,
+      "ZamowieniePubliczne.numer_postepowania": true,
+      "ZamowieniePubliczne.tytul": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

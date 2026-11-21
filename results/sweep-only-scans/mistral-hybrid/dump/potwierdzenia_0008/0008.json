@@ -1,0 +1,57 @@
+{
+  "source": "0008.pdf",
+  "class": "przelew",
+  "error": null,
+  "ocr_used": true,
+  "prediction": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-04-20",
+      "kwota": 17.0,
+      "na_rachunek": "25103015089486503556221675",
+      "numer_transakcji": null,
+      "tytul": "opłata skarbowa od pełnomocnictwa dla adw. Rafał Makowski w postępowaniu przed KIO w przetargu ZP/134/2026",
+      "z_rachunku": "11124011119078857050000455"
+    }
+  },
+  "reference": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-04-20",
+      "kwota": 17.0,
+      "na_rachunek": "25103015089486503556221675",
+      "numer_transakcji": null,
+      "tytul": "opłata skarbowa od pełnomocnictwa dla adw. Rafał Malinowski w postępowaniu przed KIO w przetargu ZP/134/2026",
+      "z_rachunku": "11124011119078857050000455"
+    }
+  },
+  "diffs": [
+    {
+      "field": "przelew_bankowy.tytul",
+      "predicted": "opłata skarbowa od pełnomocnictwa dla adw. rafał makowski w postępowaniu przed kio w przetargu zp/134/2026",
+      "expected": "opłata skarbowa od pełnomocnictwa dla adw. rafał malinowski w postępowaniu przed kio w przetargu zp/134/2026",
+      "status": "wrong"
+    }
+  ],
+  "trace": {
+    "source": "0008.pdf",
+    "class": "przelew",
+    "ocr_used": true,
+    "quotes": {
+      "przelew_bankowy.data_operacji": "Zlecona data wykonania: 20.04.2026",
+      "przelew_bankowy.kwota": "Kwota: 17.00 PLN",
+      "przelew_bankowy.na_rachunek": "Rachunek kontrahenta: 25 1030 1508 9486 5035 5622 1675",
+      "przelew_bankowy.numer_transakcji": null,
+      "przelew_bankowy.tytul": "Szczegóły płatności: opłata skarbowa od pełnomocnictwa dla adw. Rafał Makowski w postępowaniu przed KIO w przetargu ZP/134/2026",
+      "przelew_bankowy.z_rachunku": "Rachunek zleceniodawcy: 11 1240 1111 9078 8570 5000 0455"
+    },
+    "citation_ok": {
+      "przelew_bankowy.data_operacji": true,
+      "przelew_bankowy.kwota": true,
+      "przelew_bankowy.na_rachunek": true,
+      "przelew_bankowy.tytul": true,
+      "przelew_bankowy.z_rachunku": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

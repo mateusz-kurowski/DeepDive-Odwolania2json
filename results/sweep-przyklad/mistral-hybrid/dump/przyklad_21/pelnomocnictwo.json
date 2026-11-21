@@ -1,0 +1,81 @@
+{
+  "source": "pelnomocnictwo.pdf",
+  "class": "pelnomocnictwo",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "mocodawca": [
+      {
+        "data": {
+          "imie_nazwisko": null,
+          "krs": "9991500432",
+          "nazwa": "Corvella Rozwiązania S.A.",
+          "nip": "9990271196",
+          "typ": "osoba_prawna"
+        },
+        "podpisujacy": [
+          {
+            "imie_nazwisko": "Zbigniew Lewandowski"
+          }
+        ]
+      }
+    ],
+    "pelnomocnicy": [
+      {
+        "imie_nazwisko": "Marek Sikorski",
+        "pesel": null
+      }
+    ]
+  },
+  "reference": {
+    "mocodawca": [
+      {
+        "data": {
+          "imie_nazwisko": null,
+          "krs": "9991500432",
+          "nazwa": "Corvella Rozwiązania S.A.",
+          "nip": "9990271196",
+          "typ": "osoba_prawna"
+        },
+        "podpisujacy": [
+          {
+            "imie_nazwisko": "Zbigniew Lewandowski"
+          }
+        ]
+      }
+    ],
+    "pelnomocnicy": [
+      {
+        "imie_nazwisko": "Marek Sikorski",
+        "pesel": null
+      }
+    ]
+  },
+  "diffs": [],
+  "trace": {
+    "source": "pelnomocnictwo.pdf",
+    "class": "pelnomocnictwo",
+    "ocr_used": false,
+    "quotes": {
+      "mocodawca[0].data.imie_nazwisko": null,
+      "mocodawca[0].data.krs": "pod numerem KRS 9991500432",
+      "mocodawca[0].data.nazwa": "Corvella Rozwiązania S.A.",
+      "mocodawca[0].data.nip": "posiadającej NIP 9990271196",
+      "mocodawca[0].data.typ": null,
+      "mocodawca[0].podpisujacy[0].imie_nazwisko": "Zbigniew Lewandowski",
+      "pelnomocnicy[0].imie_nazwisko": "adw. Marek Sikorski",
+      "pelnomocnicy[0].pesel": null
+    },
+    "citation_ok": {
+      "mocodawca[0].data.krs": true,
+      "mocodawca[0].data.nazwa": true,
+      "mocodawca[0].data.nip": true,
+      "mocodawca[0].data.typ": false,
+      "mocodawca[0].podpisujacy[0].imie_nazwisko": true,
+      "pelnomocnicy[0].imie_nazwisko": true
+    },
+    "nulled": [],
+    "retries": 1,
+    "truncated": false
+  }
+}

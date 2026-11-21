@@ -1,0 +1,136 @@
+{
+  "source": "odwolanie.pdf",
+  "class": "odwolanie",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "OdwolanieKIO": {
+      "data": "2026-05-14",
+      "czynnosc_dzien": "2026-05-05",
+      "czynnosc_powod_id": 3,
+      "czynnosc_opis": "Decyzja o wykluczeniu wykonawcy",
+      "miejscowosc": "Wrocław"
+    },
+    "Odwolujacy": [
+      {
+        "krs": "9992671408",
+        "nazwa": "Elmontex Energetyka sp. z o.o.",
+        "nip": "9996380214",
+        "regon": "999528307",
+        "przez-pelnomocnika": 1,
+        "pelnomocnik": {
+          "imie_nazwisko": "Katarzyna Michalak",
+          "nazwa": "Michalak Legal Kancelaria Radcy Prawnego",
+          "mail": "k.michalak@michalaklegal.example"
+        }
+      }
+    ],
+    "Zamawiajacy": [
+      {
+        "krs": "9990983326",
+        "nazwa": "Dolnośląskie Sieci Ciepłownicze S.A.",
+        "nip": "9993067418",
+        "regon": "999140592",
+        "prowadzacy_postepowanie": null
+      }
+    ],
+    "ZamowieniePubliczne": {
+      "numer_bzp": "2026/BZP00999846",
+      "numer_postepowania": "DSC/PN/2026/011",
+      "numer_ted": "999408-2026",
+      "tytul": "Modernizacja sieci ciepłowniczej wraz z budową węzłów cieplnych w rejonie ulic Hallera i Powstańców Śląskich we Wrocławiu"
+    }
+  },
+  "reference": {
+    "OdwolanieKIO": {
+      "data": "2026-05-14",
+      "czynnosc_dzien": "2026-05-05",
+      "czynnosc_powod_id": 3,
+      "czynnosc_opis": "Decyzja o wykluczeniu wykonawcy",
+      "miejscowosc": "Wrocław"
+    },
+    "Odwolujacy": [
+      {
+        "krs": "9992671408",
+        "nazwa": "Elmontex Energetyka sp. z o.o.",
+        "nip": "9996380214",
+        "regon": "999528307",
+        "przez-pelnomocnika": 1,
+        "pelnomocnik": {
+          "imie_nazwisko": "Katarzyna Michalak",
+          "nazwa": "Michalak Legal Kancelaria Radcy Prawnego",
+          "mail": "k.michalak@michalaklegal.example"
+        }
+      }
+    ],
+    "Zamawiajacy": [
+      {
+        "krs": "9990983326",
+        "nazwa": "Dolnośląskie Sieci Ciepłownicze S.A.",
+        "nip": "9993067418",
+        "regon": "999140592",
+        "prowadzacy_postepowanie": null
+      }
+    ],
+    "ZamowieniePubliczne": {
+      "numer_bzp": "2026/BZP00999846",
+      "numer_postepowania": "DSC/PN/2026/011",
+      "numer_ted": "999408-2026",
+      "tytul": "Modernizacja sieci ciepłowniczej wraz z budową węzłów cieplnych w rejonie ulic Hallera i Powstańców Śląskich we Wrocławiu"
+    }
+  },
+  "diffs": [],
+  "trace": {
+    "source": "odwolanie.pdf",
+    "class": "odwolanie",
+    "ocr_used": false,
+    "quotes": {
+      "OdwolanieKIO.data": "Wrocław, dnia 14 maja 2026 roku",
+      "OdwolanieKIO.czynnosc_dzien": "Zamawiający w dniu 5 maja 2026 roku wykluczył Odwołującego z postępowania",
+      "OdwolanieKIO.czynnosc_powod_id": "wykluczeniu Odwołującego z postępowania na podstawie art. 109 ust. 1 pkt 7 i pkt 10 Pzp",
+      "OdwolanieKIO.miejscowosc": "Wrocław, dnia 14 maja 2026 roku",
+      "Odwolujacy[0].krs": "KRS: 9992671408",
+      "Odwolujacy[0].nazwa": "Elmontex Energetyka sp. z o.o.",
+      "Odwolujacy[0].nip": "NIP: 9996380214",
+      "Odwolujacy[0].regon": "REGON: 999528307",
+      "Odwolujacy[0].przez-pelnomocnika": "reprezentowany przez: r. pr. Katarzyna Michalak",
+      "Odwolujacy[0].pelnomocnik.imie_nazwisko": "r. pr. Katarzyna Michalak",
+      "Odwolujacy[0].pelnomocnik.nazwa": "adres do korespondencji: Michalak Legal Kancelaria Radcy Prawnego",
+      "Odwolujacy[0].pelnomocnik.mail": "e-mail: k.michalak@michalaklegal.example",
+      "Zamawiajacy[0].krs": "KRS: 9990983326",
+      "Zamawiajacy[0].nazwa": "Dolnośląskie Sieci Ciepłownicze S.A.",
+      "Zamawiajacy[0].nip": "NIP: 9993067418",
+      "Zamawiajacy[0].regon": "REGON: 999140592",
+      "Zamawiajacy[0].prowadzacy_postepowanie": null,
+      "ZamowieniePubliczne.numer_bzp": "ogłoszenie o zamówieniu w Biuletynie Zamówień Publicznych nr 2026/BZP 00999846",
+      "ZamowieniePubliczne.numer_postepowania": "nr referencyjny: DSC/PN/2026/011",
+      "ZamowieniePubliczne.numer_ted": "ogłoszenie w Dzienniku Urzędowym Unii Europejskiej nr 2026/S 061-999408",
+      "ZamowieniePubliczne.tytul": "postępowania o udzielenie zamówienia publicznego prowadzonego w trybie sektorowym – przetargu nieograniczonego pn. \"Modernizacja sieci ciepłowniczej wraz z budową węzłów cieplnych w rejonie ulic Hallera i Powstańców Śląskich we Wrocławiu\""
+    },
+    "citation_ok": {
+      "OdwolanieKIO.data": true,
+      "OdwolanieKIO.czynnosc_dzien": true,
+      "OdwolanieKIO.czynnosc_powod_id": true,
+      "OdwolanieKIO.miejscowosc": true,
+      "Odwolujacy[0].krs": true,
+      "Odwolujacy[0].nazwa": true,
+      "Odwolujacy[0].nip": true,
+      "Odwolujacy[0].regon": true,
+      "Odwolujacy[0].przez-pelnomocnika": true,
+      "Odwolujacy[0].pelnomocnik.imie_nazwisko": true,
+      "Odwolujacy[0].pelnomocnik.nazwa": true,
+      "Odwolujacy[0].pelnomocnik.mail": true,
+      "Zamawiajacy[0].krs": true,
+      "Zamawiajacy[0].nazwa": true,
+      "Zamawiajacy[0].nip": true,
+      "Zamawiajacy[0].regon": true,
+      "ZamowieniePubliczne.numer_bzp": true,
+      "ZamowieniePubliczne.numer_postepowania": true,
+      "ZamowieniePubliczne.numer_ted": true,
+      "ZamowieniePubliczne.tytul": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

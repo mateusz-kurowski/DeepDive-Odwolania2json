@@ -1,0 +1,58 @@
+{
+  "source": "0005.pdf",
+  "class": "przelew",
+  "error": null,
+  "ocr_used": true,
+  "prediction": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-03-26",
+      "kwota": 10000.0,
+      "na_rachunek": "60101010100081362231000000",
+      "numer_transakcji": "305494",
+      "tytul": "Wpis odwołania, ZP/12/2026, REGIONALNE CENTRUM ZDROWIA PUBLICZNEGO W DEBNICY GÓRNEJ",
+      "z_rachunku": "68109015051005244171243731"
+    }
+  },
+  "reference": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-03-26",
+      "kwota": 10000.0,
+      "na_rachunek": "60101010100081362231000000",
+      "numer_transakcji": "305494",
+      "tytul": "Wpis od odwołania, ZP/12/2026, REGIONALNE CENTRUM ZDROWIA PUBLICZNEGO W DĘBNICY GÓRNEJ",
+      "z_rachunku": "68109015051005244171243731"
+    }
+  },
+  "diffs": [
+    {
+      "field": "przelew_bankowy.tytul",
+      "predicted": "wpis odwołania, zp/12/2026, regionalne centrum zdrowia publicznego w debnicy górnej",
+      "expected": "wpis od odwołania, zp/12/2026, regionalne centrum zdrowia publicznego w dębnicy górnej",
+      "status": "wrong"
+    }
+  ],
+  "trace": {
+    "source": "0005.pdf",
+    "class": "przelew",
+    "ocr_used": true,
+    "quotes": {
+      "przelew_bankowy.data_operacji": "Data wykonania 2026-03-26",
+      "przelew_bankowy.kwota": "Kwota przelewu 10 000,00 PLN",
+      "przelew_bankowy.na_rachunek": "Na rachunek 60 1010 1010 0081 3622 3100 0000",
+      "przelew_bankowy.numer_transakcji": "Numer transakcji 305494",
+      "przelew_bankowy.tytul": "Tytułem Wpis odwołania, ZP/12/2026, REGIONALNE CENTRUM ZDROWIA PUBLICZNEGO W DEBNICY GÓRNEJ",
+      "przelew_bankowy.z_rachunku": "Z rachunku 68 1090 1505 1005 2441 7124 3731"
+    },
+    "citation_ok": {
+      "przelew_bankowy.data_operacji": true,
+      "przelew_bankowy.kwota": true,
+      "przelew_bankowy.na_rachunek": true,
+      "przelew_bankowy.numer_transakcji": true,
+      "przelew_bankowy.tytul": true,
+      "przelew_bankowy.z_rachunku": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

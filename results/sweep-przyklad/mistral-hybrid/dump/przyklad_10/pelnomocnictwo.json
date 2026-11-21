@@ -1,0 +1,107 @@
+{
+  "source": "pelnomocnictwo.pdf",
+  "class": "pelnomocnictwo",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "mocodawca": [
+      {
+        "data": {
+          "imie_nazwisko": null,
+          "krs": "9998577437",
+          "nazwa": "Meridian Konsulting spółka jawna",
+          "nip": "9992049237",
+          "typ": "osoba_prawna"
+        },
+        "podpisujacy": [
+          {
+            "imie_nazwisko": "Halina Przybylski"
+          },
+          {
+            "imie_nazwisko": "Ignacy Milewski"
+          }
+        ]
+      }
+    ],
+    "pelnomocnicy": [
+      {
+        "imie_nazwisko": "Patrycja Rutkiewicz",
+        "pesel": null
+      },
+      {
+        "imie_nazwisko": "Marek Łukaszewski",
+        "pesel": null
+      }
+    ]
+  },
+  "reference": {
+    "mocodawca": [
+      {
+        "data": {
+          "imie_nazwisko": null,
+          "krs": "9998577437",
+          "nazwa": "Meridian Konsulting sp. j.",
+          "nip": "9992049237",
+          "typ": "osoba_prawna"
+        },
+        "podpisujacy": [
+          {
+            "imie_nazwisko": "Halina Przybylski"
+          },
+          {
+            "imie_nazwisko": "Ignacy Milewski"
+          }
+        ]
+      }
+    ],
+    "pelnomocnicy": [
+      {
+        "imie_nazwisko": "Patrycja Rutkiewicz",
+        "pesel": null
+      },
+      {
+        "imie_nazwisko": "Marek Łukaszewski",
+        "pesel": null
+      }
+    ]
+  },
+  "diffs": [
+    {
+      "field": "mocodawca[data.krs=9998577437].data.nazwa",
+      "predicted": "meridian konsulting spółka jawna",
+      "expected": "meridian konsulting sp. j.",
+      "status": "wrong"
+    }
+  ],
+  "trace": {
+    "source": "pelnomocnictwo.pdf",
+    "class": "pelnomocnictwo",
+    "ocr_used": false,
+    "quotes": {
+      "mocodawca[0].data.imie_nazwisko": null,
+      "mocodawca[0].data.krs": "KRS 9998577437",
+      "mocodawca[0].data.nazwa": "Meridian Konsulting sp. j.",
+      "mocodawca[0].data.nip": "NIP 9992049237",
+      "mocodawca[0].data.typ": "sp. j.",
+      "mocodawca[0].podpisujacy[0].imie_nazwisko": "Halina Przybylski",
+      "mocodawca[0].podpisujacy[1].imie_nazwisko": "Ignacy Milewski",
+      "pelnomocnicy[0].imie_nazwisko": "adw. Patrycja Rutkiewicz",
+      "pelnomocnicy[0].pesel": null,
+      "pelnomocnicy[1].imie_nazwisko": "r. pr. Marek Łukaszewski",
+      "pelnomocnicy[1].pesel": null
+    },
+    "citation_ok": {
+      "mocodawca[0].data.krs": true,
+      "mocodawca[0].data.nazwa": true,
+      "mocodawca[0].data.nip": true,
+      "mocodawca[0].data.typ": true,
+      "mocodawca[0].podpisujacy[0].imie_nazwisko": true,
+      "mocodawca[0].podpisujacy[1].imie_nazwisko": true,
+      "pelnomocnicy[0].imie_nazwisko": true,
+      "pelnomocnicy[1].imie_nazwisko": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

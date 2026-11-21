@@ -1,0 +1,51 @@
+{
+  "source": "potwierdzenie_przelewu.pdf",
+  "class": "przelew",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-08-27",
+      "kwota": 100.0,
+      "na_rachunek": "33237021642224014358154704",
+      "numer_transakcji": "CEN2608281325159",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Elżbieta Woźniak i Iwona Kucharska w postępowaniu przed KIO w przetargu ZP.271/130/2026 CEN2608281325159",
+      "z_rachunku": "22147553851780849966673534"
+    }
+  },
+  "reference": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-08-27",
+      "kwota": 100.0,
+      "na_rachunek": "33237021642224014358154704",
+      "numer_transakcji": "CEN2608281325159",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Elżbieta Woźniak i Iwona Kucharska w postępowaniu przed KIO w przetargu ZP.271/130/2026 CEN2608281325159",
+      "z_rachunku": "22147553851780849966673534"
+    }
+  },
+  "diffs": [],
+  "trace": {
+    "source": "potwierdzenie_przelewu.pdf",
+    "class": "przelew",
+    "ocr_used": false,
+    "quotes": {
+      "przelew_bankowy.data_operacji": "Data operacji 2026-08-27",
+      "przelew_bankowy.kwota": "Kwota 100,00 PLN",
+      "przelew_bankowy.na_rachunek": "Rachunek odbiorcy PL33237021642224014358154704",
+      "przelew_bankowy.numer_transakcji": "Numer referencyjny CEN2608281325159",
+      "przelew_bankowy.tytul": "Tytuł przelewu opłata skarbowa od pełnomocnictwa dla Elżbieta Woźniak i Iwona Kucharska w postępowaniu przed KIO w przetargu ZP.271/130/2026 CEN2608281325159",
+      "przelew_bankowy.z_rachunku": "Rachunek zleceniodawcy PL22147553851780849966673534"
+    },
+    "citation_ok": {
+      "przelew_bankowy.data_operacji": true,
+      "przelew_bankowy.kwota": true,
+      "przelew_bankowy.na_rachunek": true,
+      "przelew_bankowy.numer_transakcji": true,
+      "przelew_bankowy.tytul": true,
+      "przelew_bankowy.z_rachunku": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

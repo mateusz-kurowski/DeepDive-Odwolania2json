@@ -1,0 +1,65 @@
+{
+  "source": "potwierdzenie_przelewu.pdf",
+  "class": "przelew",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-07-25",
+      "kwota": 100.0,
+      "na_rachunek": "24349910802892920457205135",
+      "numer_transakcji": "CEN2608087095658",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Cezary Marciniak w postępowaniu przed KIO w przetargu ZS.520.2026",
+      "z_rachunku": null
+    }
+  },
+  "reference": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-07-25",
+      "kwota": 100.0,
+      "na_rachunek": "24349910802892920457205135",
+      "numer_transakcji": "CEN2608087095658",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Cezary Marciniak w postępowaniu przed KIO w przetargu ZS.520.2026 CEN2608087095658",
+      "z_rachunku": "96679868575223702120767677"
+    }
+  },
+  "diffs": [
+    {
+      "field": "przelew_bankowy.tytul",
+      "predicted": "opłata skarbowa od pełnomocnictwa dla cezary marciniak w postępowaniu przed kio w przetargu zs.520.2026",
+      "expected": "opłata skarbowa od pełnomocnictwa dla cezary marciniak w postępowaniu przed kio w przetargu zs.520.2026 cen2608087095658",
+      "status": "wrong"
+    },
+    {
+      "field": "przelew_bankowy.z_rachunku",
+      "predicted": null,
+      "expected": "96679868575223702120767677",
+      "status": "missing"
+    }
+  ],
+  "trace": {
+    "source": "potwierdzenie_przelewu.pdf",
+    "class": "przelew",
+    "ocr_used": false,
+    "quotes": {
+      "przelew_bankowy.data_operacji": "25 lipca 2026",
+      "przelew_bankowy.kwota": "100,00 zł",
+      "przelew_bankowy.na_rachunek": "24 3499 1080 2892 9204 5720 5135",
+      "przelew_bankowy.numer_transakcji": "CEN2608087095658",
+      "przelew_bankowy.tytul": "opłata skarbowa od pełnomocnictwa dla Cezary Marciniak w postępowaniu przed KIO w przetargu ZS.520.2026",
+      "przelew_bankowy.z_rachunku": "96 6798 6857 5223 7021 2076 7677"
+    },
+    "citation_ok": {
+      "przelew_bankowy.data_operacji": true,
+      "przelew_bankowy.kwota": true,
+      "przelew_bankowy.na_rachunek": true,
+      "przelew_bankowy.numer_transakcji": true,
+      "przelew_bankowy.tytul": true
+    },
+    "nulled": [
+      "przelew_bankowy.z_rachunku"
+    ],
+    "retries": 1,
+    "truncated": false
+  }
+}

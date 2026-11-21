@@ -1,0 +1,51 @@
+{
+  "source": "0010.pdf",
+  "class": "przelew",
+  "error": null,
+  "ocr_used": true,
+  "prediction": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-03-29",
+      "kwota": 34.0,
+      "na_rachunek": "19103015087429563393788811",
+      "numer_transakcji": "801140",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla radca prawny Andrzej Wróbel i adwokat Monika Zawadzka w postępowaniu przed KIO w przetargu ZP/107/2026",
+      "z_rachunku": "02109015051725741870448046"
+    }
+  },
+  "reference": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-03-29",
+      "kwota": 34.0,
+      "na_rachunek": "19103015087429563393788811",
+      "numer_transakcji": "801140",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla radca prawny Andrzej Wróbel i adwokat Monika Zawadzka w postępowaniu przed KIO w przetargu ZP/107/2026",
+      "z_rachunku": "02109015051725741870448046"
+    }
+  },
+  "diffs": [],
+  "trace": {
+    "source": "0010.pdf",
+    "class": "przelew",
+    "ocr_used": true,
+    "quotes": {
+      "przelew_bankowy.data_operacji": "Data wykonania 2026-03-29",
+      "przelew_bankowy.kwota": "Kwota przelewu 34,00 PLN",
+      "przelew_bankowy.na_rachunek": "Na rachunek 19 1030 1508 7429 5633 9378 8811",
+      "przelew_bankowy.numer_transakcji": "Numer transakcji 801140",
+      "przelew_bankowy.tytul": "Tytułem opłata skarbowa od pełnomocnictwa dla radca prawny Andrzej Wróbel i adwokat Monika Zawadzka w postępowaniu przed KIO w przetargu ZP/107/2026",
+      "przelew_bankowy.z_rachunku": "Z rachunku 02 1090 1505 1725 7418 7044 8046"
+    },
+    "citation_ok": {
+      "przelew_bankowy.data_operacji": true,
+      "przelew_bankowy.kwota": true,
+      "przelew_bankowy.na_rachunek": true,
+      "przelew_bankowy.numer_transakcji": true,
+      "przelew_bankowy.tytul": true,
+      "przelew_bankowy.z_rachunku": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

@@ -1,0 +1,134 @@
+{
+  "source": "odwolanie.pdf",
+  "class": "odwolanie",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "OdwolanieKIO": {
+      "data": null,
+      "czynnosc_dzien": "2026-01-23",
+      "czynnosc_powod_id": 11,
+      "czynnosc_opis": "Opis przedmiotu zamówienia (OPZ)",
+      "miejscowosc": null
+    },
+    "Odwolujacy": [
+      {
+        "krs": "9995831483",
+        "nazwa": "Rubiconis Technologie S.A.",
+        "nip": "9998174794",
+        "regon": "999481460",
+        "przez-pelnomocnika": 1,
+        "pelnomocnik": {
+          "imie_nazwisko": "Dorota Siedlecki",
+          "nazwa": "Kancelaria Prawna Spółka z ograniczoną odpowiedzialnością",
+          "mail": "biuro@kontakt.example"
+        }
+      }
+    ],
+    "Zamawiajacy": [
+      {
+        "krs": "9991219631",
+        "nazwa": "Rubiconis Technologie sp. z o.o.",
+        "nip": "9997495013",
+        "regon": "999604307",
+        "prowadzacy_postepowanie": null
+      }
+    ],
+    "ZamowieniePubliczne": {
+      "numer_bzp": "2026/BZP00999063",
+      "numer_postepowania": "SWZ.120.2026",
+      "numer_ted": "999477-2026",
+      "tytul": "Dostawa licencji oprogramowania do monitorowania infrastruktury i alarmowej"
+    }
+  },
+  "reference": {
+    "OdwolanieKIO": {
+      "data": null,
+      "czynnosc_dzien": "2026-01-23",
+      "czynnosc_powod_id": 11,
+      "czynnosc_opis": "Opis przedmiotu zamówienia (OPZ)",
+      "miejscowosc": null
+    },
+    "Odwolujacy": [
+      {
+        "krs": "9995831483",
+        "nazwa": "Rubiconis Technologie S.A.",
+        "nip": "9998174794",
+        "regon": "999481460",
+        "przez-pelnomocnika": 1,
+        "pelnomocnik": {
+          "imie_nazwisko": "Dorota Siedlecki",
+          "nazwa": "Kancelaria Prawna Spółka z ograniczoną odpowiedzialnością",
+          "mail": "biuro@kontakt.example"
+        }
+      }
+    ],
+    "Zamawiajacy": [
+      {
+        "krs": "9991219631",
+        "nazwa": "Rubiconis Technologie sp. z o.o.",
+        "nip": "9997495013",
+        "regon": "999604307",
+        "prowadzacy_postepowanie": null
+      }
+    ],
+    "ZamowieniePubliczne": {
+      "numer_bzp": "2026/BZP00999063",
+      "numer_postepowania": "SWZ.120.2026",
+      "numer_ted": "999477-2026",
+      "tytul": "Dostawa licencji oprogramowania do monitorowania infrastruktury i alarmowej"
+    }
+  },
+  "diffs": [],
+  "trace": {
+    "source": "odwolanie.pdf",
+    "class": "odwolanie",
+    "ocr_used": false,
+    "quotes": {
+      "OdwolanieKIO.data": null,
+      "OdwolanieKIO.czynnosc_dzien": "Zamawiający w dniu 23 stycznia 2026 roku udostępnił Opis Przedmiotu Zamówienia.",
+      "OdwolanieKIO.czynnosc_powod_id": "Zamawiający w dniu 23 stycznia 2026 roku udostępnił Opis Przedmiotu Zamówienia.",
+      "OdwolanieKIO.miejscowosc": null,
+      "Odwolujacy[0].krs": "KRS: 9995831483",
+      "Odwolujacy[0].nazwa": "Rubiconis Technologie S.A.",
+      "Odwolujacy[0].nip": "NIP: 9998174794",
+      "Odwolujacy[0].regon": "REGON: 999481460",
+      "Odwolujacy[0].przez-pelnomocnika": "reprezentowana przez: adw. Dorota Siedlecki, r. pr. Ryszard Jabłończyk",
+      "Odwolujacy[0].pelnomocnik.imie_nazwisko": "adw. Dorota Siedlecki",
+      "Odwolujacy[0].pelnomocnik.nazwa": "Kancelaria Prawna Spółka z ograniczoną odpowiedzialnością",
+      "Odwolujacy[0].pelnomocnik.mail": "biuro@kontakt.example",
+      "Zamawiajacy[0].krs": "KRS: 9991219631",
+      "Zamawiajacy[0].nazwa": "Rubiconis Technologie sp. z o.o.",
+      "Zamawiajacy[0].nip": "NIP: 9997495013",
+      "Zamawiajacy[0].regon": "REGON: 999604307",
+      "Zamawiajacy[0].prowadzacy_postepowanie": null,
+      "ZamowieniePubliczne.numer_bzp": "numer ogłoszenia o zamówieniu w BZP: 2026/BZP00999063",
+      "ZamowieniePubliczne.numer_postepowania": "nr referencyjny sprawy: SWZ.120.2026",
+      "ZamowieniePubliczne.numer_ted": "numer ogłoszenia w Dzienniku Urzędowym UE: 2026/S241-999477",
+      "ZamowieniePubliczne.tytul": "postępowania o udzielenie zamówienia w trybie negocjacji z ogłoszeniem pn. \"Dostawa licencji oprogramowania do monitorowania infrastruktury i alarmowej\""
+    },
+    "citation_ok": {
+      "OdwolanieKIO.czynnosc_dzien": true,
+      "OdwolanieKIO.czynnosc_powod_id": true,
+      "Odwolujacy[0].krs": true,
+      "Odwolujacy[0].nazwa": true,
+      "Odwolujacy[0].nip": true,
+      "Odwolujacy[0].regon": true,
+      "Odwolujacy[0].przez-pelnomocnika": true,
+      "Odwolujacy[0].pelnomocnik.imie_nazwisko": true,
+      "Odwolujacy[0].pelnomocnik.nazwa": true,
+      "Odwolujacy[0].pelnomocnik.mail": true,
+      "Zamawiajacy[0].krs": true,
+      "Zamawiajacy[0].nazwa": true,
+      "Zamawiajacy[0].nip": true,
+      "Zamawiajacy[0].regon": true,
+      "ZamowieniePubliczne.numer_bzp": true,
+      "ZamowieniePubliczne.numer_postepowania": true,
+      "ZamowieniePubliczne.numer_ted": true,
+      "ZamowieniePubliczne.tytul": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

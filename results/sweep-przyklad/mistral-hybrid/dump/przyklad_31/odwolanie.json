@@ -1,0 +1,136 @@
+{
+  "source": "odwolanie.pdf",
+  "class": "odwolanie",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "OdwolanieKIO": {
+      "data": "2026-04-09",
+      "czynnosc_dzien": "2026-03-27",
+      "czynnosc_powod_id": 8,
+      "czynnosc_opis": "Zaniechanie wykluczenia wykonawcy",
+      "miejscowosc": "Kraków"
+    },
+    "Odwolujacy": [
+      {
+        "krs": "9997648224",
+        "nazwa": "Zorina Rozwiązania S.A.",
+        "nip": "9996669445",
+        "regon": "999481164",
+        "przez-pelnomocnika": 1,
+        "pelnomocnik": {
+          "imie_nazwisko": "Halina Ostrowczyk",
+          "nazwa": "Kancelaria Adwokacka i Partnerzy",
+          "mail": "biuro@poczta.example"
+        }
+      }
+    ],
+    "Zamawiajacy": [
+      {
+        "krs": "9996153090",
+        "nazwa": "Balttec Rozwiązania sp. z o.o.",
+        "nip": "9991086101",
+        "regon": "999948691",
+        "prowadzacy_postepowanie": null
+      }
+    ],
+    "ZamowieniePubliczne": {
+      "numer_bzp": "2026/BZP00999719/04",
+      "numer_postepowania": "ZS.568.2026",
+      "numer_ted": "999344-2026",
+      "tytul": "Świadczenie usług pocztowych i kurierskich na potrzeby urzędu"
+    }
+  },
+  "reference": {
+    "OdwolanieKIO": {
+      "data": "2026-04-09",
+      "czynnosc_dzien": "2026-03-27",
+      "czynnosc_powod_id": 8,
+      "czynnosc_opis": "Zaniechanie wykluczenia wykonawcy",
+      "miejscowosc": "Kraków"
+    },
+    "Odwolujacy": [
+      {
+        "krs": "9997648224",
+        "nazwa": "Zorina Rozwiązania S.A.",
+        "nip": "9996669445",
+        "regon": "999481164",
+        "przez-pelnomocnika": 1,
+        "pelnomocnik": {
+          "imie_nazwisko": "Halina Ostrowczyk",
+          "nazwa": "Kancelaria Adwokacka i Partnerzy",
+          "mail": "biuro@poczta.example"
+        }
+      }
+    ],
+    "Zamawiajacy": [
+      {
+        "krs": "9996153090",
+        "nazwa": "Balttec Rozwiązania sp. z o.o.",
+        "nip": "9991086101",
+        "regon": "999948691",
+        "prowadzacy_postepowanie": null
+      }
+    ],
+    "ZamowieniePubliczne": {
+      "numer_bzp": "2026/BZP00999719/04",
+      "numer_postepowania": "ZS.568.2026",
+      "numer_ted": "999344-2026",
+      "tytul": "Świadczenie usług pocztowych i kurierskich na potrzeby urzędu"
+    }
+  },
+  "diffs": [],
+  "trace": {
+    "source": "odwolanie.pdf",
+    "class": "odwolanie",
+    "ocr_used": false,
+    "quotes": {
+      "OdwolanieKIO.data": "Kraków, dnia 9 kwietnia 2026 roku",
+      "OdwolanieKIO.czynnosc_dzien": "Zamawiający w dniu 27 marca 2026 roku nie wykluczył z postępowania podmiotu działającego wspólnie z Odwołującym.",
+      "OdwolanieKIO.czynnosc_powod_id": "Zamawiający w dniu 27 marca 2026 roku nie wykluczył z postępowania podmiotu działającego wspólnie z Odwołującym.",
+      "OdwolanieKIO.miejscowosc": "Kraków, dnia 9 kwietnia 2026 roku",
+      "Odwolujacy[0].krs": "KRS: 9997648224",
+      "Odwolujacy[0].nazwa": "Zorina Rozwiązania S.A.",
+      "Odwolujacy[0].nip": "NIP: 9996669445",
+      "Odwolujacy[0].regon": "REGON: 999481164",
+      "Odwolujacy[0].przez-pelnomocnika": "reprezentowana przez: r. pr. Halina Ostrowczyk, r. pr. Grzegorz Dudek",
+      "Odwolujacy[0].pelnomocnik.imie_nazwisko": "Halina Ostrowczyk, r. pr.",
+      "Odwolujacy[0].pelnomocnik.nazwa": "adres do korespondencji: Kancelaria Adwokacka i Partnerzy",
+      "Odwolujacy[0].pelnomocnik.mail": "biuro@poczta.example",
+      "Zamawiajacy[0].krs": "KRS: 9996153090",
+      "Zamawiajacy[0].nazwa": "Balttec Rozwiązania sp. z o.o.",
+      "Zamawiajacy[0].nip": "NIP: 9991086101",
+      "Zamawiajacy[0].regon": "REGON: 999948691",
+      "Zamawiajacy[0].prowadzacy_postepowanie": null,
+      "ZamowieniePubliczne.numer_bzp": "ogłoszenie o zamówieniu nr 2026/BZP00999719/04",
+      "ZamowieniePubliczne.numer_postepowania": "nr referencyjny sprawy: ZS.568.2026",
+      "ZamowieniePubliczne.numer_ted": "numer ogłoszenia w Dzienniku Urzędowym UE: 999344-2026",
+      "ZamowieniePubliczne.tytul": "pn. „Świadczenie usług pocztowych i kurierskich na potrzeby urzędu”"
+    },
+    "citation_ok": {
+      "OdwolanieKIO.data": true,
+      "OdwolanieKIO.czynnosc_dzien": true,
+      "OdwolanieKIO.czynnosc_powod_id": true,
+      "OdwolanieKIO.miejscowosc": true,
+      "Odwolujacy[0].krs": true,
+      "Odwolujacy[0].nazwa": true,
+      "Odwolujacy[0].nip": true,
+      "Odwolujacy[0].regon": true,
+      "Odwolujacy[0].przez-pelnomocnika": true,
+      "Odwolujacy[0].pelnomocnik.imie_nazwisko": true,
+      "Odwolujacy[0].pelnomocnik.nazwa": true,
+      "Odwolujacy[0].pelnomocnik.mail": true,
+      "Zamawiajacy[0].krs": true,
+      "Zamawiajacy[0].nazwa": true,
+      "Zamawiajacy[0].nip": true,
+      "Zamawiajacy[0].regon": true,
+      "ZamowieniePubliczne.numer_bzp": true,
+      "ZamowieniePubliczne.numer_postepowania": true,
+      "ZamowieniePubliczne.numer_ted": true,
+      "ZamowieniePubliczne.tytul": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

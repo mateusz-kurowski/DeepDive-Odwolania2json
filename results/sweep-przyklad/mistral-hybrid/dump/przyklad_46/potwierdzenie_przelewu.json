@@ -1,0 +1,51 @@
+{
+  "source": "potwierdzenie_przelewu.pdf",
+  "class": "przelew",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-06-15",
+      "kwota": 34.0,
+      "na_rachunek": "79916201094425032653608131",
+      "numer_transakcji": "CEN2606178126865",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Rafał Piotrowski i Rafał Czajka w postępowaniu przed KIO w przetargu IR.271.99.2026 CEN2606178126865",
+      "z_rachunku": "92519989692164733475215500"
+    }
+  },
+  "reference": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-06-15",
+      "kwota": 34.0,
+      "na_rachunek": "79916201094425032653608131",
+      "numer_transakcji": "CEN2606178126865",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Rafał Piotrowski i Rafał Czajka w postępowaniu przed KIO w przetargu IR.271.99.2026 CEN2606178126865",
+      "z_rachunku": "92519989692164733475215500"
+    }
+  },
+  "diffs": [],
+  "trace": {
+    "source": "potwierdzenie_przelewu.pdf",
+    "class": "przelew",
+    "ocr_used": false,
+    "quotes": {
+      "przelew_bankowy.data_operacji": "Data operacji 2026-06-15",
+      "przelew_bankowy.kwota": "Kwota 34,00 PLN",
+      "przelew_bankowy.na_rachunek": "Rachunek odbiorcy PL79 9162 0109 4425 0326 5360 8131",
+      "przelew_bankowy.numer_transakcji": "Numer referencyjny CEN2606178126865",
+      "przelew_bankowy.tytul": "Tytuł przelewu opłata skarbowa od pełnomocnictwa dla Rafał Piotrowski i Rafał Czajka w postępowaniu przed KIO w przetargu IR.271.99.2026 CEN2606178126865",
+      "przelew_bankowy.z_rachunku": "Rachunek zleceniodawcy PL92 5199 8969 2164 7334 7521 5500"
+    },
+    "citation_ok": {
+      "przelew_bankowy.data_operacji": true,
+      "przelew_bankowy.kwota": true,
+      "przelew_bankowy.na_rachunek": true,
+      "przelew_bankowy.numer_transakcji": true,
+      "przelew_bankowy.tytul": true,
+      "przelew_bankowy.z_rachunku": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "source": "potwierdzenie_przelewu.pdf",
+  "class": "przelew",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-09-24",
+      "kwota": 34.0,
+      "na_rachunek": "06510316256707769064068190",
+      "numer_transakcji": "CEN2609245970027",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Iwona Zawadzka i Kamil Olszewski w postępowaniu przed KIO w przetargu DAZ.24.2026 CEN2609245970027",
+      "z_rachunku": "56983284333958978368019827"
+    }
+  },
+  "reference": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-09-24",
+      "kwota": 34.0,
+      "na_rachunek": "06510316256707769064068190",
+      "numer_transakcji": "CEN2609245970027",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Iwona Zawadzka i Kamil Olszewski w postępowaniu przed KIO w przetargu DAZ.24.2026 CEN2609245970027",
+      "z_rachunku": "56983284333958978368019827"
+    }
+  },
+  "diffs": [],
+  "trace": {
+    "source": "potwierdzenie_przelewu.pdf",
+    "class": "przelew",
+    "ocr_used": false,
+    "quotes": {
+      "przelew_bankowy.data_operacji": "Data operacji 24 września 2026",
+      "przelew_bankowy.kwota": "Kwota 34,00 PLN",
+      "przelew_bankowy.na_rachunek": "Rachunek odbiorcy PL06510316256707769064068190",
+      "przelew_bankowy.numer_transakcji": "Numer referencyjny CEN2609245970027",
+      "przelew_bankowy.tytul": "Tytuł przelewu opłata skarbowa od pełnomocnictwa dla Iwona Zawadzka i Kamil Olszewski w postępowaniu przed KIO w przetargu DAZ.24.2026 CEN2609245970027",
+      "przelew_bankowy.z_rachunku": "Rachunek zleceniodawcy PL56983284333958978368019827"
+    },
+    "citation_ok": {
+      "przelew_bankowy.data_operacji": true,
+      "przelew_bankowy.kwota": true,
+      "przelew_bankowy.na_rachunek": true,
+      "przelew_bankowy.numer_transakcji": true,
+      "przelew_bankowy.tytul": true,
+      "przelew_bankowy.z_rachunku": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

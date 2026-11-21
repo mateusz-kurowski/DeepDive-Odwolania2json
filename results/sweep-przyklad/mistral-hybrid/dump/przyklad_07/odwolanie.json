@@ -1,0 +1,135 @@
+{
+  "source": "odwolanie.pdf",
+  "class": "odwolanie",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "OdwolanieKIO": {
+      "data": "2026-07-15",
+      "czynnosc_dzien": "2026-07-03",
+      "czynnosc_powod_id": 4,
+      "czynnosc_opis": "Publikacja specyfikacji warunków zamówienia (SWZ)",
+      "miejscowosc": "Warszawa"
+    },
+    "Odwolujacy": [
+      {
+        "krs": "9999063951",
+        "nazwa": "Zarendel Automatyka sp. j.",
+        "nip": "9995283985",
+        "regon": "999485311",
+        "przez-pelnomocnika": 1,
+        "pelnomocnik": {
+          "imie_nazwisko": "Cezary Walczak",
+          "nazwa": "Kancelaria Adwokacka Spółka z ograniczoną odpowiedzialnością",
+          "mail": "biuro@kontakt.example"
+        }
+      }
+    ],
+    "Zamawiajacy": [
+      {
+        "krs": "9993983774",
+        "nazwa": "Ilystera Automatyka sp. k.",
+        "nip": "9992131944",
+        "regon": "999136289",
+        "prowadzacy_postepowanie": null
+      }
+    ],
+    "ZamowieniePubliczne": {
+      "numer_bzp": "2026/BZP00999042",
+      "numer_postepowania": "ZP.388.2026",
+      "numer_ted": null,
+      "tytul": "Zakup i dostawa systemów telematycznych do obsługi zgłoszeń obywateli"
+    }
+  },
+  "reference": {
+    "OdwolanieKIO": {
+      "data": "2026-07-15",
+      "czynnosc_dzien": "2026-07-03",
+      "czynnosc_powod_id": 4,
+      "czynnosc_opis": "Publikacja specyfikacji warunków zamówienia (SWZ)",
+      "miejscowosc": "Warszawa"
+    },
+    "Odwolujacy": [
+      {
+        "krs": "9999063951",
+        "nazwa": "Zarendel Automatyka sp. j.",
+        "nip": "9995283985",
+        "regon": "999485311",
+        "przez-pelnomocnika": 1,
+        "pelnomocnik": {
+          "imie_nazwisko": "Cezary Walczak",
+          "nazwa": "Kancelaria Adwokacka Spółka z ograniczoną odpowiedzialnością",
+          "mail": "biuro@kontakt.example"
+        }
+      }
+    ],
+    "Zamawiajacy": [
+      {
+        "krs": "9993983774",
+        "nazwa": "Ilystera Automatyka sp. k.",
+        "nip": "9992131944",
+        "regon": "999136289",
+        "prowadzacy_postepowanie": null
+      }
+    ],
+    "ZamowieniePubliczne": {
+      "numer_bzp": "2026/BZP00999042",
+      "numer_postepowania": "ZP.388.2026",
+      "numer_ted": null,
+      "tytul": "Zakup i dostawa systemów telematycznych do obsługi zgłoszeń obywateli"
+    }
+  },
+  "diffs": [],
+  "trace": {
+    "source": "odwolanie.pdf",
+    "class": "odwolanie",
+    "ocr_used": false,
+    "quotes": {
+      "OdwolanieKIO.data": "Warszawa, dnia 15 lipca 2026 roku",
+      "OdwolanieKIO.czynnosc_dzien": "Zamawiający w dniu 3 lipca 2026 roku opublikował Specyfikację Warunków Zamówienia.",
+      "OdwolanieKIO.czynnosc_powod_id": "Zamawiający w dniu 3 lipca 2026 roku opublikował Specyfikację Warunków Zamówienia.",
+      "OdwolanieKIO.miejscowosc": "Warszawa, dnia 15 lipca 2026 roku",
+      "Odwolujacy[0].krs": "KRS: 9999063951",
+      "Odwolujacy[0].nazwa": "Zarendel Automatyka sp. j.",
+      "Odwolujacy[0].nip": "NIP: 9995283985",
+      "Odwolujacy[0].regon": "REGON: 999485311",
+      "Odwolujacy[0].przez-pelnomocnika": "reprezentowana przez: r. pr. Cezary Walczak",
+      "Odwolujacy[0].pelnomocnik.imie_nazwisko": "r. pr. Cezary Walczak",
+      "Odwolujacy[0].pelnomocnik.nazwa": "adres do korespondencji: Kancelaria Adwokacka Spółka z ograniczoną odpowiedzialnością",
+      "Odwolujacy[0].pelnomocnik.mail": "biuro@kontakt.example",
+      "Zamawiajacy[0].krs": "KRS: 9993983774",
+      "Zamawiajacy[0].nazwa": "Ilystera Automatyka sp. k.",
+      "Zamawiajacy[0].nip": "NIP: 9992131944",
+      "Zamawiajacy[0].regon": "REGON: 999136289",
+      "Zamawiajacy[0].prowadzacy_postepowanie": null,
+      "ZamowieniePubliczne.numer_bzp": "numer ogłoszenia o zamówieniu w BZP: 2026/BZP00999042",
+      "ZamowieniePubliczne.numer_postepowania": "nr referencyjny sprawy: ZP.388.2026",
+      "ZamowieniePubliczne.numer_ted": null,
+      "ZamowieniePubliczne.tytul": "postępowania o udzielenie zamówienia w trybie przetargu ograniczonego pn. \"Zakup i dostawa systemów telematycznych do obsługi zgłoszeń obywateli\""
+    },
+    "citation_ok": {
+      "OdwolanieKIO.data": true,
+      "OdwolanieKIO.czynnosc_dzien": true,
+      "OdwolanieKIO.czynnosc_powod_id": true,
+      "OdwolanieKIO.miejscowosc": true,
+      "Odwolujacy[0].krs": true,
+      "Odwolujacy[0].nazwa": true,
+      "Odwolujacy[0].nip": true,
+      "Odwolujacy[0].regon": true,
+      "Odwolujacy[0].przez-pelnomocnika": true,
+      "Odwolujacy[0].pelnomocnik.imie_nazwisko": true,
+      "Odwolujacy[0].pelnomocnik.nazwa": true,
+      "Odwolujacy[0].pelnomocnik.mail": true,
+      "Zamawiajacy[0].krs": true,
+      "Zamawiajacy[0].nazwa": true,
+      "Zamawiajacy[0].nip": true,
+      "Zamawiajacy[0].regon": true,
+      "ZamowieniePubliczne.numer_bzp": true,
+      "ZamowieniePubliczne.numer_postepowania": true,
+      "ZamowieniePubliczne.tytul": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

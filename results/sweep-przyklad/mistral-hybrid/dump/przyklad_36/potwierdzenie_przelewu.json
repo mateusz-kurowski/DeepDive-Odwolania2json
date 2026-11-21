@@ -1,0 +1,51 @@
+{
+  "source": "potwierdzenie_przelewu.pdf",
+  "class": "przelew",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-01-24",
+      "kwota": 100.0,
+      "na_rachunek": "38118266656359421255248248",
+      "numer_transakcji": "CEN2602082113108",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Dorota Siedlecki i Ryszard Jabłończyk w postępowaniu przed KIO w przetargu SWZ.120.2026 CEN2602082113108",
+      "z_rachunku": "72391514288643289982152746"
+    }
+  },
+  "reference": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-01-24",
+      "kwota": 100.0,
+      "na_rachunek": "38118266656359421255248248",
+      "numer_transakcji": "CEN2602082113108",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Dorota Siedlecki i Ryszard Jabłończyk w postępowaniu przed KIO w przetargu SWZ.120.2026 CEN2602082113108",
+      "z_rachunku": "72391514288643289982152746"
+    }
+  },
+  "diffs": [],
+  "trace": {
+    "source": "potwierdzenie_przelewu.pdf",
+    "class": "przelew",
+    "ocr_used": false,
+    "quotes": {
+      "przelew_bankowy.data_operacji": "Data transakcji 24.01.2026",
+      "przelew_bankowy.kwota": "Kwota operacji 100,00",
+      "przelew_bankowy.na_rachunek": "Rachunek odbiorcy PL38 1182 6665 6359 4212 5524 8248",
+      "przelew_bankowy.numer_transakcji": "Numer referencyjny CEN2602082113108",
+      "przelew_bankowy.tytul": "Opis opłata skarbowa od pełnomocnictwa dla Dorota Siedlecki i Ryszard Jabłończyk w postępowaniu przed KIO w przetargu SWZ.120.2026 CEN2602082113108",
+      "przelew_bankowy.z_rachunku": "Rachunek nadawcy PL72 3915 1428 8643 2899 8215 2746"
+    },
+    "citation_ok": {
+      "przelew_bankowy.data_operacji": true,
+      "przelew_bankowy.kwota": true,
+      "przelew_bankowy.na_rachunek": true,
+      "przelew_bankowy.numer_transakcji": true,
+      "przelew_bankowy.tytul": true,
+      "przelew_bankowy.z_rachunku": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

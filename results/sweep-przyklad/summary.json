@@ -1,0 +1,20 @@
+[
+  {
+    "name": "mistral-hybrid",
+    "model": "mistralai/ministral-14b-2512",
+    "error": null,
+    "micro_f1": 0.9876421156697973,
+    "precision": 0.9920556107249255,
+    "recall": 0.9832677165354331,
+    "docs": 180,
+    "errors": 0,
+    "citation_ok_rate": 0.9907881269191402,
+    "mode": "hybrid",
+    "usage": {
+      "calls": 392,
+      "prompt_tokens": 927965,
+      "completion_tokens": 134398,
+      "total_tokens": 1062363
+    }
+  }
+]

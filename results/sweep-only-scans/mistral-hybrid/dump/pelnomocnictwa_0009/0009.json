@@ -1,0 +1,102 @@
+{
+  "source": "0009.pdf",
+  "class": "pelnomocnictwo",
+  "error": null,
+  "ocr_used": true,
+  "prediction": {
+    "mocodawca": [
+      {
+        "data": {
+          "imie_nazwisko": null,
+          "krs": "9996316141",
+          "nazwa": "Asterion Drogi i Mosty Spółka z ograniczoną odpowiedzialnością",
+          "nip": "9994295420",
+          "typ": "osoba_prawna"
+        },
+        "podpisujacy": [
+          {
+            "imie_nazwisko": "Jakub Zawadzki"
+          },
+          {
+            "imie_nazwisko": "Żaneta Rybak"
+          }
+        ]
+      }
+    ],
+    "pelnomocnicy": [
+      {
+        "imie_nazwisko": "Anna Topolska",
+        "pesel": 68091502944
+      },
+      {
+        "imie_nazwisko": "Piotr Wróbel",
+        "pesel": 82070226436
+      }
+    ]
+  },
+  "reference": {
+    "mocodawca": [
+      {
+        "data": {
+          "imie_nazwisko": null,
+          "krs": "9996316141",
+          "nazwa": "Asterion Drogi i Mosty Spółka z ograniczoną odpowiedzialnością",
+          "nip": "9994295420",
+          "typ": "osoba_prawna"
+        },
+        "podpisujacy": [
+          {
+            "imie_nazwisko": "Żaneta Rybak"
+          },
+          {
+            "imie_nazwisko": "Jakub Zawadzki"
+          }
+        ]
+      }
+    ],
+    "pelnomocnicy": [
+      {
+        "imie_nazwisko": "Anna Topolska",
+        "pesel": "68091502944"
+      },
+      {
+        "imie_nazwisko": "Piotr Wróbel",
+        "pesel": "82070226436"
+      }
+    ]
+  },
+  "diffs": [],
+  "trace": {
+    "source": "0009.pdf",
+    "class": "pelnomocnictwo",
+    "ocr_used": true,
+    "quotes": {
+      "mocodawca[0].data.imie_nazwisko": null,
+      "mocodawca[0].data.krs": "KRS: 9996316141",
+      "mocodawca[0].data.nazwa": "Asterion Drogi i Mosty Spółka z ograniczoną odpowiedzialnością",
+      "mocodawca[0].data.nip": "NIP: 999-429-54-20",
+      "mocodawca[0].data.typ": "Spółka z ograniczoną odpowiedzialnością",
+      "mocodawca[0].podpisujacy[0].imie_nazwisko": "Jakub Zawadzki – Członek Zarządu",
+      "mocodawca[0].podpisujacy[1].imie_nazwisko": "Żaneta Rybak – Wiceprezes Zarządu",
+      "pelnomocnicy[0].imie_nazwisko": "Anna Topolska",
+      "pelnomocnicy[0].pesel": "PESEL: 68091502944",
+      "pelnomocnicy[1].imie_nazwisko": "Piotr Wróbel",
+      "pelnomocnicy[1].pesel": "PESEL: 82070226436"
+    },
+    "citation_ok": {
+      "mocodawca[0].data.krs": true,
+      "mocodawca[0].data.nazwa": true,
+      "mocodawca[0].data.nip": true,
+      "mocodawca[0].data.typ": true,
+      "mocodawca[0].podpisujacy[0].imie_nazwisko": true,
+      "mocodawca[0].podpisujacy[1].imie_nazwisko": true,
+      "pelnomocnicy[0].imie_nazwisko": true,
+      "pelnomocnicy[0].pesel": true,
+      "pelnomocnicy[1].imie_nazwisko": true,
+      "pelnomocnicy[1].pesel": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

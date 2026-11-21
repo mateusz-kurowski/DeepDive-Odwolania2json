@@ -1,0 +1,50 @@
+{
+  "source": "0002.pdf",
+  "class": "przelew",
+  "error": null,
+  "ocr_used": true,
+  "prediction": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-04-09",
+      "kwota": 17.0,
+      "na_rachunek": "43103015086563666671799331",
+      "numer_transakcji": null,
+      "tytul": "opłata skarbowa od pełnomocnictwa dla adw. Mateusz Wierzbicki w postępowaniu przed KIO w przetargu ZG.261.8.2026",
+      "z_rachunku": "50109010985413569910373779"
+    }
+  },
+  "reference": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-04-09",
+      "kwota": 17.0,
+      "na_rachunek": "43103015086563666671799331",
+      "numer_transakcji": null,
+      "tytul": "opłata skarbowa od pełnomocnictwa dla adw. Mateusz Wierzbicki w postępowaniu przed KIO w przetargu ZG.261.8.2026",
+      "z_rachunku": "50109010985413569910373779"
+    }
+  },
+  "diffs": [],
+  "trace": {
+    "source": "0002.pdf",
+    "class": "przelew",
+    "ocr_used": true,
+    "quotes": {
+      "przelew_bankowy.data_operacji": "2026-04-09",
+      "przelew_bankowy.kwota": "-17,00 PLN",
+      "przelew_bankowy.na_rachunek": "43 1030 1508 6563 6666 7179 9331",
+      "przelew_bankowy.numer_transakcji": null,
+      "przelew_bankowy.tytul": "Tytuł: opłata skarbowa od pełnomocnictwa dla adw. Mateusz Wierzbicki w postępowaniu przed KIO w przetargu ZG.261.8.2026",
+      "przelew_bankowy.z_rachunku": "50 1090 1098 5413 5699 1037 3779"
+    },
+    "citation_ok": {
+      "przelew_bankowy.data_operacji": true,
+      "przelew_bankowy.kwota": true,
+      "przelew_bankowy.na_rachunek": true,
+      "przelew_bankowy.tytul": true,
+      "przelew_bankowy.z_rachunku": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

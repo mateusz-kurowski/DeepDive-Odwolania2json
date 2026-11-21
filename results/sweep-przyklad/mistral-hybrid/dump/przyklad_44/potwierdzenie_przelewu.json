@@ -1,0 +1,51 @@
+{
+  "source": "potwierdzenie_przelewu.pdf",
+  "class": "przelew",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-03-16",
+      "kwota": 34.0,
+      "na_rachunek": "15579766762935613532768366",
+      "numer_transakcji": "CEN2603185520647",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Natalia Górecka i Łukasz Sikora w postępowaniu przed KIO w przetargu LPWiK/ZP/2026/09 CEN2603185520647",
+      "z_rachunku": "47269273749064185992641235"
+    }
+  },
+  "reference": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-03-16",
+      "kwota": 34.0,
+      "na_rachunek": "15579766762935613532768366",
+      "numer_transakcji": "CEN2603185520647",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Natalia Górecka i Łukasz Sikora w postępowaniu przed KIO w przetargu LPWiK/ZP/2026/09 CEN2603185520647",
+      "z_rachunku": "47269273749064185992641235"
+    }
+  },
+  "diffs": [],
+  "trace": {
+    "source": "potwierdzenie_przelewu.pdf",
+    "class": "przelew",
+    "ocr_used": false,
+    "quotes": {
+      "przelew_bankowy.data_operacji": "16 marca 2026",
+      "przelew_bankowy.kwota": "34,00 PLN",
+      "przelew_bankowy.na_rachunek": "PL15 5797 6676 2935 6135 3276 8366",
+      "przelew_bankowy.numer_transakcji": "CEN2603185520647",
+      "przelew_bankowy.tytul": "opłata skarbowa od pełnomocnictwa dla Natalia Górecka i Łukasz Sikora w postępowaniu przed KIO w przetargu LPWiK/ZP/2026/09 CEN2603185520647",
+      "przelew_bankowy.z_rachunku": "PL47 2692 7374 9064 1859 9264 1235"
+    },
+    "citation_ok": {
+      "przelew_bankowy.data_operacji": true,
+      "przelew_bankowy.kwota": true,
+      "przelew_bankowy.na_rachunek": true,
+      "przelew_bankowy.numer_transakcji": true,
+      "przelew_bankowy.tytul": true,
+      "przelew_bankowy.z_rachunku": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

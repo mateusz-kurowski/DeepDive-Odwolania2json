@@ -1,0 +1,51 @@
+{
+  "source": "potwierdzenie_przelewu.pdf",
+  "class": "przelew",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-10-30",
+      "kwota": 34.0,
+      "na_rachunek": "12554514138889709724946266",
+      "numer_transakcji": "CEN2611069913502",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Aleksander Kubiak i Weronika Jabłońska w postępowaniu przed KIO w przetargu PCZS/D/112/2026 CEN2611069913502",
+      "z_rachunku": "29092750115425706326733826"
+    }
+  },
+  "reference": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-10-30",
+      "kwota": 34.0,
+      "na_rachunek": "12554514138889709724946266",
+      "numer_transakcji": "CEN2611069913502",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Aleksander Kubiak i Weronika Jabłońska w postępowaniu przed KIO w przetargu PCZS/D/112/2026 CEN2611069913502",
+      "z_rachunku": "29092750115425706326733826"
+    }
+  },
+  "diffs": [],
+  "trace": {
+    "source": "potwierdzenie_przelewu.pdf",
+    "class": "przelew",
+    "ocr_used": false,
+    "quotes": {
+      "przelew_bankowy.data_operacji": "Data operacji 30.10.2026",
+      "przelew_bankowy.kwota": "Kwota 34,00 PLN",
+      "przelew_bankowy.na_rachunek": "Rachunek odbiorcy PL12554514138889709724946266",
+      "przelew_bankowy.numer_transakcji": "Numer referencyjny CEN2611069913502",
+      "przelew_bankowy.tytul": "Tytuł przelewu opłata skarbowa od pełnomocnictwa dla Aleksander Kubiak i Weronika Jabłońska w postępowaniu przed KIO w przetargu PCZS/D/112/2026 CEN2611069913502",
+      "przelew_bankowy.z_rachunku": "Rachunek zleceniodawcy PL29092750115425706326733826"
+    },
+    "citation_ok": {
+      "przelew_bankowy.data_operacji": true,
+      "przelew_bankowy.kwota": true,
+      "przelew_bankowy.na_rachunek": true,
+      "przelew_bankowy.numer_transakcji": true,
+      "przelew_bankowy.tytul": true,
+      "przelew_bankowy.z_rachunku": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

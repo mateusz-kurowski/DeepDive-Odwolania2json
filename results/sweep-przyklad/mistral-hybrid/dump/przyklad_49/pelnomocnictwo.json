@@ -1,0 +1,139 @@
+{
+  "source": "pelnomocnictwo.pdf",
+  "class": "pelnomocnictwo",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "mocodawca": [
+      {
+        "data": {
+          "imie_nazwisko": null,
+          "krs": "9998920417",
+          "nazwa": "Altrona Farmacja sp.k.",
+          "nip": "9994895854",
+          "typ": "osoba_prawna"
+        },
+        "podpisujacy": [
+          {
+            "imie_nazwisko": "Iwona Rutkowska"
+          }
+        ]
+      },
+      {
+        "data": {
+          "imie_nazwisko": null,
+          "krs": "9996965616",
+          "nazwa": "Polvent Aparatura Medyczna sp. z o.o.",
+          "nip": "9994023484",
+          "typ": "osoba_prawna"
+        },
+        "podpisujacy": [
+          {
+            "imie_nazwisko": "Sebastian Adamczyk"
+          },
+          {
+            "imie_nazwisko": "Damian Tomaszewski"
+          }
+        ]
+      }
+    ],
+    "pelnomocnicy": [
+      {
+        "imie_nazwisko": "Cezary Sikorski",
+        "pesel": null
+      },
+      {
+        "imie_nazwisko": "Igor Majewski",
+        "pesel": null
+      }
+    ]
+  },
+  "reference": {
+    "mocodawca": [
+      {
+        "data": {
+          "imie_nazwisko": null,
+          "krs": "9998920417",
+          "nazwa": "Altrona Farmacja sp.k.",
+          "nip": "9994895854",
+          "typ": "osoba_prawna"
+        },
+        "podpisujacy": [
+          {
+            "imie_nazwisko": "Iwona Rutkowska"
+          }
+        ]
+      },
+      {
+        "data": {
+          "imie_nazwisko": null,
+          "krs": "9996965616",
+          "nazwa": "Polvent Aparatura Medyczna sp. z o.o.",
+          "nip": "9994023484",
+          "typ": "osoba_prawna"
+        },
+        "podpisujacy": [
+          {
+            "imie_nazwisko": "Sebastian Adamczyk"
+          },
+          {
+            "imie_nazwisko": "Damian Tomaszewski"
+          }
+        ]
+      }
+    ],
+    "pelnomocnicy": [
+      {
+        "imie_nazwisko": "Cezary Sikorski",
+        "pesel": null
+      },
+      {
+        "imie_nazwisko": "Igor Majewski",
+        "pesel": null
+      }
+    ]
+  },
+  "diffs": [],
+  "trace": {
+    "source": "pelnomocnictwo.pdf",
+    "class": "pelnomocnictwo",
+    "ocr_used": false,
+    "quotes": {
+      "mocodawca[0].data.imie_nazwisko": null,
+      "mocodawca[0].data.krs": "KRS 9998920417",
+      "mocodawca[0].data.nazwa": "Altrona Farmacja sp.k.",
+      "mocodawca[0].data.nip": "NIP 9994895854",
+      "mocodawca[0].data.typ": "sp.k.",
+      "mocodawca[0].podpisujacy[0].imie_nazwisko": "Iwona Rutkowska",
+      "mocodawca[1].data.imie_nazwisko": null,
+      "mocodawca[1].data.krs": "KRS 9996965616",
+      "mocodawca[1].data.nazwa": "Polvent Aparatura Medyczna sp. z o.o.",
+      "mocodawca[1].data.nip": "NIP 9994023484",
+      "mocodawca[1].data.typ": "sp. z o.o.",
+      "mocodawca[1].podpisujacy[0].imie_nazwisko": "Sebastian Adamczyk",
+      "mocodawca[1].podpisujacy[1].imie_nazwisko": "Damian Tomaszewski",
+      "pelnomocnicy[0].imie_nazwisko": "r. pr. Cezary Sikorski",
+      "pelnomocnicy[0].pesel": null,
+      "pelnomocnicy[1].imie_nazwisko": "adw. Igor Majewski",
+      "pelnomocnicy[1].pesel": null
+    },
+    "citation_ok": {
+      "mocodawca[0].data.krs": true,
+      "mocodawca[0].data.nazwa": true,
+      "mocodawca[0].data.nip": true,
+      "mocodawca[0].data.typ": true,
+      "mocodawca[0].podpisujacy[0].imie_nazwisko": true,
+      "mocodawca[1].data.krs": true,
+      "mocodawca[1].data.nazwa": true,
+      "mocodawca[1].data.nip": true,
+      "mocodawca[1].data.typ": true,
+      "mocodawca[1].podpisujacy[0].imie_nazwisko": true,
+      "mocodawca[1].podpisujacy[1].imie_nazwisko": true,
+      "pelnomocnicy[0].imie_nazwisko": true,
+      "pelnomocnicy[1].imie_nazwisko": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

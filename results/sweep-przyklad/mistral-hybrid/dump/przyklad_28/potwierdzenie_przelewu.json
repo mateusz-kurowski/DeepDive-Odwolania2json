@@ -1,0 +1,51 @@
+{
+  "source": "potwierdzenie_przelewu.pdf",
+  "class": "przelew",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-04-05",
+      "kwota": 17.0,
+      "na_rachunek": "02985526938978681496365038",
+      "numer_transakcji": "CEN2604265178263",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Zbigniew Dobrowolski w postępowaniu przed KIO w przetargu SWZ.668.2026 CEN2604265178263",
+      "z_rachunku": "34214818386561206921524195"
+    }
+  },
+  "reference": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-04-05",
+      "kwota": 17.0,
+      "na_rachunek": "02985526938978681496365038",
+      "numer_transakcji": "CEN2604265178263",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Zbigniew Dobrowolski w postępowaniu przed KIO w przetargu SWZ.668.2026 CEN2604265178263",
+      "z_rachunku": "34214818386561206921524195"
+    }
+  },
+  "diffs": [],
+  "trace": {
+    "source": "potwierdzenie_przelewu.pdf",
+    "class": "przelew",
+    "ocr_used": false,
+    "quotes": {
+      "przelew_bankowy.data_operacji": "Data transakcji 05.04.2026",
+      "przelew_bankowy.kwota": "Kwota przelewu 17,00",
+      "przelew_bankowy.na_rachunek": "Rachunek beneficjenta PL02 9855 2693 8978 6814 9636 5038",
+      "przelew_bankowy.numer_transakcji": "Identyfikator operacji CEN2604265178263",
+      "przelew_bankowy.tytul": "Tytuł przelewu opłata skarbowa od pełnomocnictwa dla Zbigniew Dobrowolski w postępowaniu przed KIO w przetargu SWZ.668.2026 CEN2604265178263",
+      "przelew_bankowy.z_rachunku": "Rachunek nadawcy PL34 2148 1838 6561 2069 2152 4195"
+    },
+    "citation_ok": {
+      "przelew_bankowy.data_operacji": true,
+      "przelew_bankowy.kwota": true,
+      "przelew_bankowy.na_rachunek": true,
+      "przelew_bankowy.numer_transakcji": true,
+      "przelew_bankowy.tytul": true,
+      "przelew_bankowy.z_rachunku": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

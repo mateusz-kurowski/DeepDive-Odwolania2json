@@ -1,0 +1,168 @@
+{
+  "source": "0004.pdf",
+  "class": "odwolanie",
+  "error": null,
+  "ocr_used": true,
+  "prediction": {
+    "OdwolanieKIO": {
+      "data": "2026-02-13",
+      "czynnosc_dzien": "2026-02-04",
+      "czynnosc_powod_id": 9,
+      "czynnosc_opis": "Decyzja o unieważnieniu postępowania",
+      "miejscowosc": "Wrocław"
+    },
+    "Odwolujacy": [
+      {
+        "krs": "9990692039",
+        "nazwa": "Arkomed Serwis S.A.",
+        "nip": "9996494661",
+        "regon": null,
+        "przez-pelnomocnika": 1,
+        "pelnomocnik": {
+          "imie_nazwisko": "Krzysztof Jodłowski",
+          "nazwa": "Kancelaria Radcy Prawnego Krzysztofa Jodłowskiego",
+          "mail": "k.jodlowski@jodlowski-kancelaria.example"
+        }
+      }
+    ],
+    "Zamawiajacy": [
+      {
+        "krs": null,
+        "nazwa": "Zarząd Dróg Powiatowych w Brzozowie",
+        "nip": "9992398073",
+        "regon": null,
+        "prowadzacy_postepowanie": 1
+      },
+      {
+        "krs": null,
+        "nazwa": "Zakład Gospodarki Komunalnej w Zielonkowie",
+        "nip": null,
+        "regon": "999806152",
+        "prowadzacy_postepowanie": 0
+      }
+    ],
+    "ZamowieniePubliczne": {
+      "numer_bzp": "2026/BZP00993292/01",
+      "numer_postepowania": "DZP.260.69.2026",
+      "numer_ted": null,
+      "tytul": "Rozbudowa oczyszczalni ścieków wraz z modernizacją sieci kanalizacyjnej"
+    }
+  },
+  "reference": {
+    "OdwolanieKIO": {
+      "data": "2026-02-13",
+      "czynnosc_dzien": "2026-02-04",
+      "czynnosc_powod_id": 9,
+      "czynnosc_opis": "Decyzja o unieważnieniu postępowania",
+      "miejscowosc": "Wrocław"
+    },
+    "Odwolujacy": [
+      {
+        "krs": "9990692039",
+        "nazwa": "Arkomed Serwis S.A.",
+        "nip": "9996494661",
+        "regon": null,
+        "przez-pelnomocnika": 1,
+        "pelnomocnik": {
+          "imie_nazwisko": "Krzysztof Jodłowski",
+          "nazwa": "Kancelaria Radcy Prawnego Krzysztof Jodłowski",
+          "mail": "k.jodlowski@jodlowski-kancelaria.example"
+        }
+      }
+    ],
+    "Zamawiajacy": [
+      {
+        "krs": null,
+        "nazwa": "Zarząd Dróg Powiatowych w Brzozowcu",
+        "nip": "9992398073",
+        "regon": null,
+        "prowadzacy_postepowanie": 1
+      },
+      {
+        "krs": null,
+        "nazwa": "Zakład Gospodarki Komunalnej w Zielonkowie",
+        "nip": null,
+        "regon": "999806152",
+        "prowadzacy_postepowanie": 0
+      }
+    ],
+    "ZamowieniePubliczne": {
+      "numer_bzp": "2026/BZP00993292/01",
+      "numer_postepowania": "DZP.260.69.2026",
+      "numer_ted": null,
+      "tytul": "Rozbudowa oczyszczalni ścieków wraz z modernizacją sieci kanalizacyjnej"
+    }
+  },
+  "diffs": [
+    {
+      "field": "Odwolujacy[krs=9990692039].pelnomocnik.nazwa",
+      "predicted": "kancelaria radcy prawnego krzysztofa jodłowskiego",
+      "expected": "kancelaria radcy prawnego krzysztof jodłowski",
+      "status": "wrong"
+    },
+    {
+      "field": "Zamawiajacy[nip=9992398073].nazwa",
+      "predicted": "zarząd dróg powiatowych w brzozowie",
+      "expected": "zarząd dróg powiatowych w brzozowcu",
+      "status": "wrong"
+    }
+  ],
+  "trace": {
+    "source": "0004.pdf",
+    "class": "odwolanie",
+    "ocr_used": true,
+    "quotes": {
+      "OdwolanieKIO.data": "Wrocław, 13.02.2026 r.",
+      "OdwolanieKIO.czynnosc_dzien": "o której Zamawiający poinformował wykonawców w dniu 4 lutego 2026 roku",
+      "OdwolanieKIO.czynnosc_powod_id": "czynności unieważnienia postępowania o udzielenie zamówienia",
+      "OdwolanieKIO.miejscowosc": "Wrocław, 13.02.2026 r.",
+      "Odwolujacy[0].krs": "KRS: 9990692039",
+      "Odwolujacy[0].nazwa": "Odwołujący: Arkomed Serwis S.A.",
+      "Odwolujacy[0].nip": "NIP: 999-649-46-61",
+      "Odwolujacy[0].regon": null,
+      "Odwolujacy[0].przez-pelnomocnika": "reprezentowany przez pełnomocnika:",
+      "Odwolujacy[0].pelnomocnik.imie_nazwisko": "radca prawny Krzysztof Jodłowski",
+      "Odwolujacy[0].pelnomocnik.nazwa": "adres do korespondencji:\nKancelaria Radcy Prawnego Krzysztofa Jodłowskiego",
+      "Odwolujacy[0].pelnomocnik.mail": "e-mail: k.jodlowski@jodlowski-kancelaria.example",
+      "Zamawiajacy[0].krs": null,
+      "Zamawiajacy[0].nazwa": "Zamawiający: Zamawiający wspólnie udzielający zamówienia:\n1) Zarząd Dróg Powiatowych w Brzozowie",
+      "Zamawiajacy[0].nip": "NIP: 999-239-80-73",
+      "Zamawiajacy[0].regon": null,
+      "Zamawiajacy[0].prowadzacy_postepowanie": "- Zamawiający prowadzący postępowanie",
+      "Zamawiajacy[1].krs": null,
+      "Zamawiajacy[1].nazwa": "2) Zakład Gospodarki Komunalnej w Zielonkowie",
+      "Zamawiajacy[1].nip": null,
+      "Zamawiajacy[1].regon": "REGON: 999806152",
+      "Zamawiajacy[1].prowadzacy_postepowanie": null,
+      "ZamowieniePubliczne.numer_bzp": "ogłoszenie o zamówieniu nr 2026/BZP 00993292/01",
+      "ZamowieniePubliczne.numer_postepowania": "nr referencyjny: DZP.260.69.2026",
+      "ZamowieniePubliczne.numer_ted": null,
+      "ZamowieniePubliczne.tytul": "postępowania o udzielenie zamówienia publicznego prowadzonego w trybie przetargu nieograniczonego pn. \"Rozbudowa oczyszczalni ścieków wraz z modernizacją sieci kanalizacyjnej\""
+    },
+    "citation_ok": {
+      "OdwolanieKIO.data": true,
+      "OdwolanieKIO.czynnosc_dzien": true,
+      "OdwolanieKIO.czynnosc_powod_id": true,
+      "OdwolanieKIO.miejscowosc": true,
+      "Odwolujacy[0].krs": true,
+      "Odwolujacy[0].nazwa": true,
+      "Odwolujacy[0].nip": true,
+      "Odwolujacy[0].przez-pelnomocnika": true,
+      "Odwolujacy[0].pelnomocnik.imie_nazwisko": true,
+      "Odwolujacy[0].pelnomocnik.nazwa": true,
+      "Odwolujacy[0].pelnomocnik.mail": true,
+      "Zamawiajacy[0].nazwa": true,
+      "Zamawiajacy[0].nip": true,
+      "Zamawiajacy[0].prowadzacy_postepowanie": true,
+      "Zamawiajacy[1].nazwa": true,
+      "Zamawiajacy[1].regon": true,
+      "Zamawiajacy[1].prowadzacy_postepowanie": false,
+      "ZamowieniePubliczne.numer_bzp": true,
+      "ZamowieniePubliczne.numer_postepowania": true,
+      "ZamowieniePubliczne.tytul": true
+    },
+    "nulled": [],
+    "retries": 1,
+    "truncated": false
+  }
+}

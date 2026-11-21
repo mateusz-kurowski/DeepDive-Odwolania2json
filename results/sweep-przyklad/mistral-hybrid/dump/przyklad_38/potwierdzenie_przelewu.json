@@ -1,0 +1,51 @@
+{
+  "source": "potwierdzenie_przelewu.pdf",
+  "class": "przelew",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-07-23",
+      "kwota": 17.0,
+      "na_rachunek": "74731826432991037523980996",
+      "numer_transakcji": "CEN2608122277227",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Oliwia Wierzbicka i Jolanta Jabłończyk w postępowaniu przed KIO w przetargu SWZ.702.2026 CEN2608122277227",
+      "z_rachunku": "83946066034690104112344871"
+    }
+  },
+  "reference": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-07-23",
+      "kwota": 17.0,
+      "na_rachunek": "74731826432991037523980996",
+      "numer_transakcji": "CEN2608122277227",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Oliwia Wierzbicka i Jolanta Jabłończyk w postępowaniu przed KIO w przetargu SWZ.702.2026 CEN2608122277227",
+      "z_rachunku": "83946066034690104112344871"
+    }
+  },
+  "diffs": [],
+  "trace": {
+    "source": "potwierdzenie_przelewu.pdf",
+    "class": "przelew",
+    "ocr_used": false,
+    "quotes": {
+      "przelew_bankowy.data_operacji": "DATA TRANSAKCJI ........................... 23.07.2026",
+      "przelew_bankowy.kwota": "KWOTA PRZELEWU .............................. 17,00 zł",
+      "przelew_bankowy.na_rachunek": "PL74 7318 2643 2991 0375 2398 0996",
+      "przelew_bankowy.numer_transakcji": "NR REF. ............................. CEN2608122277227",
+      "przelew_bankowy.tytul": "OPIS:\nopłata skarbowa od pełnomocnictwa dla Oliwia\nWierzbicka i Jolanta Jabłończyk w postępowaniu przed\nKIO w przetargu SWZ.702.2026 CEN2608122277227",
+      "przelew_bankowy.z_rachunku": "PL83 9460 6603 4690 1041 1234 4871"
+    },
+    "citation_ok": {
+      "przelew_bankowy.data_operacji": true,
+      "przelew_bankowy.kwota": true,
+      "przelew_bankowy.na_rachunek": true,
+      "przelew_bankowy.numer_transakcji": true,
+      "przelew_bankowy.tytul": true,
+      "przelew_bankowy.z_rachunku": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

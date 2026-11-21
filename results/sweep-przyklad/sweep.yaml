@@ -1,0 +1,26 @@
+# Seria ewaluacji: python -m src sweep sweeps/przyklad.yaml   (lub: make sweep CONFIG=sweeps/przyklad.yaml)
+# Klucz API i adres z .env (OPENAI_API_KEY, OPENAI_BASE_URL); warianty zmieniają model i ustawienia.
+out_dir: results/sweep-przyklad   # pełne wyniki: <out_dir>/<wariant>/{report.json,report.txt,dump/}, zbiorczo summary.{md,json}
+data: data/dane
+workers: 4
+# cache: .cache/llm        # opcjonalnie: cache odpowiedzi LLM (klucz zawiera nazwę modelu)
+# classes: classes
+# Wartości domyślne dla wszystkich wariantów (każdy wariant może je nadpisać):
+mode: hybrid                # hybrid | llm_only
+# limit: 10
+# examples: ["01", "02"]
+# ocr_backend: vlm          # vlm | tesseract
+# vlm_model: nazwa-modelu-z-wizja
+
+variants:
+  - name: mistral-hybrid
+    model: mistralai/ministral-14b-2512
+    vlm_model: mistralai/ministral-14b-2512
+  # - name: inny-model
+  #   model: nazwa-w-litellm
+  #   vlm_model: model-z-wizja   # OCR skanów tym modelem
+  # Model, który na OpenRouterze zwraca 404 "No endpoints found" przy domyślnym config/llm.json
+  # (filtry require_parameters + data_collection: deny): osobny config bez filtrów.
+  # - name: ministral
+  #   model: mistralai/ministral-14b-2512
+  #   llm_config: config/llm-no-routing-filter.json

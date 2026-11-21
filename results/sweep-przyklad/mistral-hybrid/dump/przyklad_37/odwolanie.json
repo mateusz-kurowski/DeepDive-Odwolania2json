@@ -1,0 +1,134 @@
+{
+  "source": "odwolanie.pdf",
+  "class": "odwolanie",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "OdwolanieKIO": {
+      "data": null,
+      "czynnosc_dzien": "2026-02-20",
+      "czynnosc_powod_id": 9,
+      "czynnosc_opis": "Decyzja o unieważnieniu postępowania",
+      "miejscowosc": null
+    },
+    "Odwolujacy": [
+      {
+        "krs": "9994481774",
+        "nazwa": "Belmoria Technologie sp. j.",
+        "nip": "9998805059",
+        "regon": "999647305",
+        "przez-pelnomocnika": 1,
+        "pelnomocnik": {
+          "imie_nazwisko": "Halina Niedźwiecki",
+          "nazwa": "Kancelaria Adwokacka Spółka z ograniczoną odpowiedzialnością",
+          "mail": "biuro@sekretariat.example"
+        }
+      }
+    ],
+    "Zamawiajacy": [
+      {
+        "krs": "9995815812",
+        "nazwa": "Corvantis Serwis sp. k.",
+        "nip": "9998984352",
+        "regon": "999756827",
+        "prowadzacy_postepowanie": null
+      }
+    ],
+    "ZamowieniePubliczne": {
+      "numer_bzp": "2026/BZP00999441",
+      "numer_postepowania": "DI.106.2026",
+      "numer_ted": "999032-2026",
+      "tytul": "Dostawa licencji oprogramowania do monitorowania infrastruktury i alarmowej"
+    }
+  },
+  "reference": {
+    "OdwolanieKIO": {
+      "data": null,
+      "czynnosc_dzien": "2026-02-20",
+      "czynnosc_powod_id": 9,
+      "czynnosc_opis": "Decyzja o unieważnieniu postępowania",
+      "miejscowosc": null
+    },
+    "Odwolujacy": [
+      {
+        "krs": "9994481774",
+        "nazwa": "Belmoria Technologie sp. j.",
+        "nip": "9998805059",
+        "regon": "999647305",
+        "przez-pelnomocnika": 1,
+        "pelnomocnik": {
+          "imie_nazwisko": "Halina Niedźwiecki",
+          "nazwa": "Kancelaria Adwokacka Spółka z ograniczoną odpowiedzialnością",
+          "mail": "biuro@sekretariat.example"
+        }
+      }
+    ],
+    "Zamawiajacy": [
+      {
+        "krs": "9995815812",
+        "nazwa": "Corvantis Serwis sp. k.",
+        "nip": "9998984352",
+        "regon": "999756827",
+        "prowadzacy_postepowanie": null
+      }
+    ],
+    "ZamowieniePubliczne": {
+      "numer_bzp": "2026/BZP00999441",
+      "numer_postepowania": "DI.106.2026",
+      "numer_ted": "999032-2026",
+      "tytul": "Dostawa licencji oprogramowania do monitorowania infrastruktury i alarmowej"
+    }
+  },
+  "diffs": [],
+  "trace": {
+    "source": "odwolanie.pdf",
+    "class": "odwolanie",
+    "ocr_used": false,
+    "quotes": {
+      "OdwolanieKIO.data": null,
+      "OdwolanieKIO.czynnosc_dzien": "Zamawiający w dniu 20 lutego 2026 roku unieważnił postępowanie.",
+      "OdwolanieKIO.czynnosc_powod_id": "Zamawiający w dniu 20 lutego 2026 roku unieważnił postępowanie.",
+      "OdwolanieKIO.miejscowosc": null,
+      "Odwolujacy[0].krs": "KRS: 9994481774",
+      "Odwolujacy[0].nazwa": "Belmoria Technologie sp. j.",
+      "Odwolujacy[0].nip": "NIP: 9998805059",
+      "Odwolujacy[0].regon": "REGON: 999647305",
+      "Odwolujacy[0].przez-pelnomocnika": "reprezentowana przez: adw. Halina Niedźwiecki",
+      "Odwolujacy[0].pelnomocnik.imie_nazwisko": "adw. Halina Niedźwiecki",
+      "Odwolujacy[0].pelnomocnik.nazwa": "Kancelaria Adwokacka Spółka z ograniczoną odpowiedzialnością",
+      "Odwolujacy[0].pelnomocnik.mail": "biuro@sekretariat.example",
+      "Zamawiajacy[0].krs": "KRS: 9995815812",
+      "Zamawiajacy[0].nazwa": "Corvantis Serwis sp. k.",
+      "Zamawiajacy[0].nip": "NIP: 9998984352",
+      "Zamawiajacy[0].regon": "REGON: 999756827",
+      "Zamawiajacy[0].prowadzacy_postepowanie": null,
+      "ZamowieniePubliczne.numer_bzp": "ogłoszenie o zamówieniu nr 2026/BZP00999441",
+      "ZamowieniePubliczne.numer_postepowania": "nr referencyjny sprawy: DI.106.2026",
+      "ZamowieniePubliczne.numer_ted": "numer ogłoszenia TED: 999032-2026",
+      "ZamowieniePubliczne.tytul": "postępowania o udzielenie zamówienia w trybie przetargu nieograniczonego pn. Dostawa licencji oprogramowania do monitorowania infrastruktury i alarmowej"
+    },
+    "citation_ok": {
+      "OdwolanieKIO.czynnosc_dzien": true,
+      "OdwolanieKIO.czynnosc_powod_id": true,
+      "Odwolujacy[0].krs": true,
+      "Odwolujacy[0].nazwa": true,
+      "Odwolujacy[0].nip": true,
+      "Odwolujacy[0].regon": true,
+      "Odwolujacy[0].przez-pelnomocnika": true,
+      "Odwolujacy[0].pelnomocnik.imie_nazwisko": true,
+      "Odwolujacy[0].pelnomocnik.nazwa": true,
+      "Odwolujacy[0].pelnomocnik.mail": true,
+      "Zamawiajacy[0].krs": true,
+      "Zamawiajacy[0].nazwa": true,
+      "Zamawiajacy[0].nip": true,
+      "Zamawiajacy[0].regon": true,
+      "ZamowieniePubliczne.numer_bzp": true,
+      "ZamowieniePubliczne.numer_postepowania": true,
+      "ZamowieniePubliczne.numer_ted": true,
+      "ZamowieniePubliczne.tytul": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

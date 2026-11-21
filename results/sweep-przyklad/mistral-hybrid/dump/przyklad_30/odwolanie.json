@@ -1,0 +1,136 @@
+{
+  "source": "odwolanie.pdf",
+  "class": "odwolanie",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "OdwolanieKIO": {
+      "data": "2026-06-27",
+      "czynnosc_dzien": "2026-06-13",
+      "czynnosc_powod_id": 9,
+      "czynnosc_opis": "Decyzja o unieważnieniu postępowania",
+      "miejscowosc": "Łódź"
+    },
+    "Odwolujacy": [
+      {
+        "krs": "9999145542",
+        "nazwa": "Kadmos Rozwiązania sp. k.",
+        "nip": "9991006421",
+        "regon": "999692205",
+        "przez-pelnomocnika": 1,
+        "pelnomocnik": {
+          "imie_nazwisko": "Grzegorz Rutkiewicz",
+          "nazwa": "Kancelaria Prawna i Partnerzy",
+          "mail": "biuro@poczta.example"
+        }
+      }
+    ],
+    "Zamawiajacy": [
+      {
+        "krs": "9995127514",
+        "nazwa": "Veltra Infrastruktura sp. z o.o.",
+        "nip": "9995031700",
+        "regon": "999331996",
+        "prowadzacy_postepowanie": null
+      }
+    ],
+    "ZamowieniePubliczne": {
+      "numer_bzp": "2026/BZP00999748",
+      "numer_postepowania": "DI.123.2026",
+      "numer_ted": "999486-2026",
+      "tytul": "Świadczenie usług utrzymania infrastruktury sieciowej w budynkach administracyjnych"
+    }
+  },
+  "reference": {
+    "OdwolanieKIO": {
+      "data": "2026-06-27",
+      "czynnosc_dzien": "2026-06-13",
+      "czynnosc_powod_id": 9,
+      "czynnosc_opis": "Decyzja o unieważnieniu postępowania",
+      "miejscowosc": "Łódź"
+    },
+    "Odwolujacy": [
+      {
+        "krs": "9999145542",
+        "nazwa": "Kadmos Rozwiązania sp. k.",
+        "nip": "9991006421",
+        "regon": "999692205",
+        "przez-pelnomocnika": 1,
+        "pelnomocnik": {
+          "imie_nazwisko": "Grzegorz Rutkiewicz",
+          "nazwa": "Kancelaria Prawna i Partnerzy",
+          "mail": "biuro@poczta.example"
+        }
+      }
+    ],
+    "Zamawiajacy": [
+      {
+        "krs": "9995127514",
+        "nazwa": "Veltra Infrastruktura sp. z o.o.",
+        "nip": "9995031700",
+        "regon": "999331996",
+        "prowadzacy_postepowanie": null
+      }
+    ],
+    "ZamowieniePubliczne": {
+      "numer_bzp": "2026/BZP00999748",
+      "numer_postepowania": "DI.123.2026",
+      "numer_ted": "999486-2026",
+      "tytul": "Świadczenie usług utrzymania infrastruktury sieciowej w budynkach administracyjnych"
+    }
+  },
+  "diffs": [],
+  "trace": {
+    "source": "odwolanie.pdf",
+    "class": "odwolanie",
+    "ocr_used": false,
+    "quotes": {
+      "OdwolanieKIO.data": "Łódź, dnia 27 czerwca 2026 roku",
+      "OdwolanieKIO.czynnosc_dzien": "Zamawiający w dniu 13 czerwca 2026 roku unieważnił postępowanie.",
+      "OdwolanieKIO.czynnosc_powod_id": "Zamawiający w dniu 13 czerwca 2026 roku unieważnił postępowanie.",
+      "OdwolanieKIO.miejscowosc": "Łódź, dnia 27 czerwca 2026 roku",
+      "Odwolujacy[0].krs": "KRS: 9999145542",
+      "Odwolujacy[0].nazwa": "Kadmos Rozwiązania sp. k.",
+      "Odwolujacy[0].nip": "NIP: 9991006421",
+      "Odwolujacy[0].regon": "REGON: 999692205",
+      "Odwolujacy[0].przez-pelnomocnika": "reprezentowana przez: r. pr. Grzegorz Rutkiewicz",
+      "Odwolujacy[0].pelnomocnik.imie_nazwisko": "Grzegorz Rutkiewicz, r. pr.",
+      "Odwolujacy[0].pelnomocnik.nazwa": "adres do korespondencji: Kancelaria Prawna i Partnerzy",
+      "Odwolujacy[0].pelnomocnik.mail": "biuro@poczta.example",
+      "Zamawiajacy[0].krs": "KRS: 9995127514",
+      "Zamawiajacy[0].nazwa": "Veltra Infrastruktura sp. z o.o.",
+      "Zamawiajacy[0].nip": "NIP: 9995031700",
+      "Zamawiajacy[0].regon": "REGON: 999331996",
+      "Zamawiajacy[0].prowadzacy_postepowanie": null,
+      "ZamowieniePubliczne.numer_bzp": "numer BZP: 2026/BZP00999748",
+      "ZamowieniePubliczne.numer_postepowania": "nr referencyjny sprawy: DI.123.2026",
+      "ZamowieniePubliczne.numer_ted": "numer ogłoszenia w Dzienniku Urzędowym UE: 999486-2026",
+      "ZamowieniePubliczne.tytul": "postępowania o udzielenie zamówienia w trybie przetargu ograniczonego pn. \"Świadczenie usług utrzymania infrastruktury sieciowej w budynkach administracyjnych\""
+    },
+    "citation_ok": {
+      "OdwolanieKIO.data": true,
+      "OdwolanieKIO.czynnosc_dzien": true,
+      "OdwolanieKIO.czynnosc_powod_id": true,
+      "OdwolanieKIO.miejscowosc": true,
+      "Odwolujacy[0].krs": true,
+      "Odwolujacy[0].nazwa": true,
+      "Odwolujacy[0].nip": true,
+      "Odwolujacy[0].regon": true,
+      "Odwolujacy[0].przez-pelnomocnika": true,
+      "Odwolujacy[0].pelnomocnik.imie_nazwisko": true,
+      "Odwolujacy[0].pelnomocnik.nazwa": true,
+      "Odwolujacy[0].pelnomocnik.mail": true,
+      "Zamawiajacy[0].krs": true,
+      "Zamawiajacy[0].nazwa": true,
+      "Zamawiajacy[0].nip": true,
+      "Zamawiajacy[0].regon": true,
+      "ZamowieniePubliczne.numer_bzp": true,
+      "ZamowieniePubliczne.numer_postepowania": true,
+      "ZamowieniePubliczne.numer_ted": true,
+      "ZamowieniePubliczne.tytul": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

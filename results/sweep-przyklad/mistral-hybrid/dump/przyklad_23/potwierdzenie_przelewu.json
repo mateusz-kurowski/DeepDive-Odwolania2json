@@ -1,0 +1,65 @@
+{
+  "source": "potwierdzenie_przelewu.pdf",
+  "class": "przelew",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-03-10",
+      "kwota": 50.0,
+      "na_rachunek": null,
+      "numer_transakcji": "CEN2603275403103",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Halina Walczak i Bartosz Bartoszewicz w postępowaniu przed KIO w przetargu ZS.209.2026 CEN2603275403103",
+      "z_rachunku": null
+    }
+  },
+  "reference": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-03-10",
+      "kwota": 50.0,
+      "na_rachunek": "31263692113897855587588527",
+      "numer_transakcji": "CEN2603275403103",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Halina Walczak i Bartosz Bartoszewicz w postępowaniu przed KIO w przetargu ZS.209.2026 CEN2603275403103",
+      "z_rachunku": "40507561379331317832598717"
+    }
+  },
+  "diffs": [
+    {
+      "field": "przelew_bankowy.na_rachunek",
+      "predicted": null,
+      "expected": "31263692113897855587588527",
+      "status": "missing"
+    },
+    {
+      "field": "przelew_bankowy.z_rachunku",
+      "predicted": null,
+      "expected": "40507561379331317832598717",
+      "status": "missing"
+    }
+  ],
+  "trace": {
+    "source": "potwierdzenie_przelewu.pdf",
+    "class": "przelew",
+    "ocr_used": false,
+    "quotes": {
+      "przelew_bankowy.data_operacji": "Data wykonania 10.03.2026",
+      "przelew_bankowy.kwota": "Kwota przelewu 50,00 PLN",
+      "przelew_bankowy.na_rachunek": "PL31 2636 9211 3897 8555 8758 8527",
+      "przelew_bankowy.numer_transakcji": "Nr ref. CEN2603275403103",
+      "przelew_bankowy.tytul": "Tytułem opłata skarbowa od pełnomocnictwa dla Halina Walczak i Bartosz Bartoszewicz w postępowaniu przed KIO w przetargu ZS.209.2026 CEN2603275403103",
+      "przelew_bankowy.z_rachunku": "PL40 5075 6137 9331 3178 3259 8717"
+    },
+    "citation_ok": {
+      "przelew_bankowy.data_operacji": true,
+      "przelew_bankowy.kwota": true,
+      "przelew_bankowy.numer_transakcji": true,
+      "przelew_bankowy.tytul": true
+    },
+    "nulled": [
+      "przelew_bankowy.na_rachunek",
+      "przelew_bankowy.z_rachunku"
+    ],
+    "retries": 1,
+    "truncated": false
+  }
+}

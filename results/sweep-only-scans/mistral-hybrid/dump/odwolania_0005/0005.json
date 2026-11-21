@@ -1,0 +1,158 @@
+{
+  "source": "0005.pdf",
+  "class": "odwolanie",
+  "error": null,
+  "ocr_used": true,
+  "prediction": {
+    "OdwolanieKIO": {
+      "data": "2026-03-27",
+      "czynnosc_dzien": "2026-03-19",
+      "czynnosc_powod_id": 7,
+      "czynnosc_opis": "Zaniechanie odrzucenia oferty",
+      "miejscowosc": "Wrocław"
+    },
+    "Odwolujacy": [
+      {
+        "krs": null,
+        "nazwa": "Medicor IT Solutions S.A.",
+        "nip": "9992326754",
+        "regon": "999749508",
+        "przez-pelnomocnika": 1,
+        "pelnomocnik": {
+          "imie_nazwisko": "Grzegorz Kaczmarek",
+          "nazwa": "Kancelaria Adwokacka adw. Grzegorz Kaczmarek",
+          "mail": "g.kaczmarek@kaczmarek-kancelaria.example"
+        }
+      }
+    ],
+    "Zamawiajacy": [
+      {
+        "krs": null,
+        "nazwa": "Regionalne Centrum Zdrowia Publicznego w Dębicy Górnej",
+        "nip": "9996245053",
+        "regon": null,
+        "prowadzacy_postepowanie": null
+      }
+    ],
+    "ZamowieniePubliczne": {
+      "numer_bzp": "2026/BZP00879135/03",
+      "numer_postepowania": "ZP/12/2026",
+      "numer_ted": "429185-2026",
+      "tytul": "Rozbudowa oczyszczalni ścieków wraz z modernizacją sieci kanalizacyjnej"
+    }
+  },
+  "reference": {
+    "OdwolanieKIO": {
+      "data": "2026-03-27",
+      "czynnosc_dzien": "2026-03-23",
+      "czynnosc_powod_id": 11,
+      "czynnosc_opis": "Opis przedmiotu zamówienia (OPZ)",
+      "miejscowosc": "Wrocław"
+    },
+    "Odwolujacy": [
+      {
+        "krs": null,
+        "nazwa": "Medicor IT Solutions S.A.",
+        "nip": "9992326754",
+        "regon": "999749508",
+        "przez-pelnomocnika": 1,
+        "pelnomocnik": {
+          "imie_nazwisko": "Grzegorz Kaczmarek",
+          "nazwa": "Kancelaria Adwokacka adw. Grzegorz Kaczmarek",
+          "mail": "g.kaczmarek@kaczmarek-kancelaria.example"
+        }
+      }
+    ],
+    "Zamawiajacy": [
+      {
+        "krs": null,
+        "nazwa": "Regionalne Centrum Zdrowia Publicznego w Dębnicy Górnej",
+        "nip": "9996245053",
+        "regon": null,
+        "prowadzacy_postepowanie": null
+      }
+    ],
+    "ZamowieniePubliczne": {
+      "numer_bzp": "2026/BZP00879135/03",
+      "numer_postepowania": "ZP/12/2026",
+      "numer_ted": "429185-2026",
+      "tytul": "Rozbudowa oczyszczalni ścieków wraz z modernizacją sieci kanalizacyjnej"
+    }
+  },
+  "diffs": [
+    {
+      "field": "OdwolanieKIO.czynnosc_dzien",
+      "predicted": "2026-03-19",
+      "expected": "2026-03-23",
+      "status": "wrong"
+    },
+    {
+      "field": "OdwolanieKIO.czynnosc_opis",
+      "predicted": "zaniechanie odrzucenia oferty",
+      "expected": "opis przedmiotu zamówienia (opz)",
+      "status": "wrong"
+    },
+    {
+      "field": "OdwolanieKIO.czynnosc_powod_id",
+      "predicted": 7.0,
+      "expected": 11.0,
+      "status": "wrong"
+    },
+    {
+      "field": "Zamawiajacy[nip=9996245053].nazwa",
+      "predicted": "regionalne centrum zdrowia publicznego w dębicy górnej",
+      "expected": "regionalne centrum zdrowia publicznego w dębnicy górnej",
+      "status": "wrong"
+    }
+  ],
+  "trace": {
+    "source": "0005.pdf",
+    "class": "odwolanie",
+    "ocr_used": true,
+    "quotes": {
+      "OdwolanieKIO.data": "Wrocław, dnia 27.03.2026 r.",
+      "OdwolanieKIO.czynnosc_dzien": "WPŁYNĘŁO dnia 19.02.2026 L.dz. 202",
+      "OdwolanieKIO.czynnosc_powod_id": "zaniechanie odrzucenia oferty",
+      "OdwolanieKIO.miejscowosc": "Wrocław, dnia 27.03.2026 r.",
+      "Odwolujacy[0].krs": null,
+      "Odwolujacy[0].nazwa": "Medicor IT Solutions S.A.",
+      "Odwolujacy[0].nip": "NIP: 999-232-67-54",
+      "Odwolujacy[0].regon": "REGON: 999749508",
+      "Odwolujacy[0].przez-pelnomocnika": "reprezentowany przez pełnomocnika",
+      "Odwolujacy[0].pelnomocnik.imie_nazwisko": "adw. Grzegorz Kaczmarek",
+      "Odwolujacy[0].pelnomocnik.nazwa": "Kancelaria Adwokacka adw. Grzegorz Kaczmarek",
+      "Odwolujacy[0].pelnomocnik.mail": "e-mail: g.kaczmarek@kaczmarek-kancelaria.example",
+      "Zamawiajacy[0].krs": null,
+      "Zamawiajacy[0].nazwa": "Regionalne Centrum Zdrowia Publicznego w Dębicy Górnej",
+      "Zamawiajacy[0].nip": "NIP: 999-624-50-53",
+      "Zamawiajacy[0].regon": null,
+      "Zamawiajacy[0].prowadzacy_postepowanie": null,
+      "ZamowieniePubliczne.numer_bzp": "ogłoszenie o zamówieniu nr 2026/BZP 00879135/03",
+      "ZamowieniePubliczne.numer_postepowania": "nr referencyjny: ZP/12/2026",
+      "ZamowieniePubliczne.numer_ted": "ogłoszenie w Dzienniku Urzędowym Unii Europejskiej nr 2026/S 224-429185",
+      "ZamowieniePubliczne.tytul": "pn. „Rozbudowa oczyszczalni ścieków wraz z modernizacją sieci kanalizacyjnej”"
+    },
+    "citation_ok": {
+      "OdwolanieKIO.data": true,
+      "OdwolanieKIO.czynnosc_dzien": true,
+      "OdwolanieKIO.czynnosc_powod_id": true,
+      "OdwolanieKIO.miejscowosc": true,
+      "Odwolujacy[0].nazwa": true,
+      "Odwolujacy[0].nip": true,
+      "Odwolujacy[0].regon": true,
+      "Odwolujacy[0].przez-pelnomocnika": true,
+      "Odwolujacy[0].pelnomocnik.imie_nazwisko": true,
+      "Odwolujacy[0].pelnomocnik.nazwa": true,
+      "Odwolujacy[0].pelnomocnik.mail": true,
+      "Zamawiajacy[0].nazwa": true,
+      "Zamawiajacy[0].nip": true,
+      "ZamowieniePubliczne.numer_bzp": true,
+      "ZamowieniePubliczne.numer_postepowania": true,
+      "ZamowieniePubliczne.numer_ted": true,
+      "ZamowieniePubliczne.tytul": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

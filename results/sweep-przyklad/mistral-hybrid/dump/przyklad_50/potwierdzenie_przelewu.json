@@ -1,0 +1,51 @@
+{
+  "source": "potwierdzenie_przelewu.pdf",
+  "class": "przelew",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-09-29",
+      "kwota": 17.0,
+      "na_rachunek": "22852526068135315833910119",
+      "numer_transakcji": "CEN2609291392007",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Rafał Pawłowski w postępowaniu przed KIO w przetargu DAZ/131/2026 CEN2609291392007",
+      "z_rachunku": "75453558525577057053270723"
+    }
+  },
+  "reference": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-09-29",
+      "kwota": 17.0,
+      "na_rachunek": "22852526068135315833910119",
+      "numer_transakcji": "CEN2609291392007",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Rafał Pawłowski w postępowaniu przed KIO w przetargu DAZ/131/2026 CEN2609291392007",
+      "z_rachunku": "75453558525577057053270723"
+    }
+  },
+  "diffs": [],
+  "trace": {
+    "source": "potwierdzenie_przelewu.pdf",
+    "class": "przelew",
+    "ocr_used": false,
+    "quotes": {
+      "przelew_bankowy.data_operacji": "Data operacji 2026-09-29",
+      "przelew_bankowy.kwota": "Kwota 17,00 PLN",
+      "przelew_bankowy.na_rachunek": "Rachunek odbiorcy PL22 8525 2606 8135 3158 3391 0119",
+      "przelew_bankowy.numer_transakcji": "Numer referencyjny CEN2609291392007",
+      "przelew_bankowy.tytul": "Tytuł przelewu opłata skarbowa od pełnomocnictwa dla Rafał Pawłowski w postępowaniu przed KIO w przetargu DAZ/131/2026 CEN2609291392007",
+      "przelew_bankowy.z_rachunku": "Rachunek zleceniodawcy PL75 4535 5852 5577 0570 5327 0723"
+    },
+    "citation_ok": {
+      "przelew_bankowy.data_operacji": true,
+      "przelew_bankowy.kwota": true,
+      "przelew_bankowy.na_rachunek": true,
+      "przelew_bankowy.numer_transakcji": true,
+      "przelew_bankowy.tytul": true,
+      "przelew_bankowy.z_rachunku": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

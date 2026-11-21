@@ -1,0 +1,51 @@
+{
+  "source": "przelew.pdf",
+  "class": "przelew",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-03-21",
+      "kwota": 200.0,
+      "na_rachunek": "68438223049992295262834736",
+      "numer_transakcji": "CEN2604016344389",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Aleksandra Marciniak i Jolanta Zajkowski w postępowaniu przed KIO w przetargu ZS.791.2026 CEN2604016344389",
+      "z_rachunku": "05470680287581539721455024"
+    }
+  },
+  "reference": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-03-21",
+      "kwota": 200.0,
+      "na_rachunek": "68438223049992295262834736",
+      "numer_transakcji": "CEN2604016344389",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Aleksandra Marciniak i Jolanta Zajkowski w postępowaniu przed KIO w przetargu ZS.791.2026 CEN2604016344389",
+      "z_rachunku": "05470680287581539721455024"
+    }
+  },
+  "diffs": [],
+  "trace": {
+    "source": "przelew.pdf",
+    "class": "przelew",
+    "ocr_used": false,
+    "quotes": {
+      "przelew_bankowy.data_operacji": "Data transakcji 2026-03-21",
+      "przelew_bankowy.kwota": "200,00 PLN",
+      "przelew_bankowy.na_rachunek": "PL68438223049992295262834736",
+      "przelew_bankowy.numer_transakcji": "Nr ref. CEN2604016344389",
+      "przelew_bankowy.tytul": "opłata skarbowa od pełnomocnictwa dla Aleksandra Marciniak i Jolanta Zajkowski w postępowaniu przed KIO w przetargu ZS.791.2026 CEN2604016344389",
+      "przelew_bankowy.z_rachunku": "PL05470680287581539721455024"
+    },
+    "citation_ok": {
+      "przelew_bankowy.data_operacji": true,
+      "przelew_bankowy.kwota": true,
+      "przelew_bankowy.na_rachunek": true,
+      "przelew_bankowy.numer_transakcji": true,
+      "przelew_bankowy.tytul": true,
+      "przelew_bankowy.z_rachunku": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

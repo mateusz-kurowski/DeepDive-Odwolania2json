@@ -1,0 +1,99 @@
+{
+  "source": "pelnomocnictwo.pdf",
+  "class": "pelnomocnictwo",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "mocodawca": [
+      {
+        "data": {
+          "imie_nazwisko": "Jarosław Dudek",
+          "krs": null,
+          "nazwa": "DUDEK-TECH",
+          "nip": "9994150873",
+          "typ": "osoba_fizyczna"
+        },
+        "podpisujacy": [
+          {
+            "imie_nazwisko": "Jarosław Dudek"
+          }
+        ]
+      }
+    ],
+    "pelnomocnicy": [
+      {
+        "imie_nazwisko": "Natalia Górecka",
+        "pesel": null
+      },
+      {
+        "imie_nazwisko": "Łukasz Sikora",
+        "pesel": null
+      }
+    ]
+  },
+  "reference": {
+    "mocodawca": [
+      {
+        "data": {
+          "imie_nazwisko": "Jarosław Dudek",
+          "krs": null,
+          "nazwa": "DUDEK-TECH Jarosław Dudek",
+          "nip": "9994150873",
+          "typ": "osoba_fizyczna"
+        },
+        "podpisujacy": [
+          {
+            "imie_nazwisko": "Jarosław Dudek"
+          }
+        ]
+      }
+    ],
+    "pelnomocnicy": [
+      {
+        "imie_nazwisko": "Natalia Górecka",
+        "pesel": null
+      },
+      {
+        "imie_nazwisko": "Łukasz Sikora",
+        "pesel": null
+      }
+    ]
+  },
+  "diffs": [
+    {
+      "field": "mocodawca[data.nip=9994150873].data.nazwa",
+      "predicted": "dudek-tech",
+      "expected": "dudek-tech jarosław dudek",
+      "status": "wrong"
+    }
+  ],
+  "trace": {
+    "source": "pelnomocnictwo.pdf",
+    "class": "pelnomocnictwo",
+    "ocr_used": false,
+    "quotes": {
+      "mocodawca[0].data.imie_nazwisko": "Jarosław Dudek",
+      "mocodawca[0].data.krs": null,
+      "mocodawca[0].data.nazwa": "DUDEK-TECH",
+      "mocodawca[0].data.nip": "NIP 9994150873",
+      "mocodawca[0].data.typ": "prowadzący działalność gospodarczą pod firmą DUDEK-TECH",
+      "mocodawca[0].podpisujacy[0].imie_nazwisko": "Jarosław Dudek",
+      "pelnomocnicy[0].imie_nazwisko": "Natalia Górecka",
+      "pelnomocnicy[0].pesel": null,
+      "pelnomocnicy[1].imie_nazwisko": "Łukasz Sikora",
+      "pelnomocnicy[1].pesel": null
+    },
+    "citation_ok": {
+      "mocodawca[0].data.imie_nazwisko": true,
+      "mocodawca[0].data.nazwa": true,
+      "mocodawca[0].data.nip": true,
+      "mocodawca[0].data.typ": true,
+      "mocodawca[0].podpisujacy[0].imie_nazwisko": true,
+      "pelnomocnicy[0].imie_nazwisko": true,
+      "pelnomocnicy[1].imie_nazwisko": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

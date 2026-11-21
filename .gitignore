@@ -9,4 +9,6 @@ __pycache__/
 input/
 output/
 trace/
-results/
+results/*
+!results/sweep-only-scans/
+!results/sweep-przyklad/
