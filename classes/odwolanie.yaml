@@ -18,7 +18,7 @@ rules:
   - "pelnomocnik.imie_nazwisko: gdy jest kilku pełnomocników, pierwszy wymieniony. pelnomocnik.nazwa to nazwa podmiotu zatrudniającego pełnomocnika (np. kancelarii), a mail to adres kontaktowy pełnomocnika odwołującego, nie zamawiającego."
   - "Zamawiajacy: dane NIP, KRS, REGON podaj tylko jeśli są jawnie przy zamawiającym. Każdy zamawiający to osobny element tablicy."
   - "prowadzacy_postepowanie: null, gdy jest jeden zamawiający lub brak informacji. Gdy zamawiających jest więcej: 1 dla oznaczonego jako prowadzący postępowanie lub lider postępowania, 0 dla pozostałych."
-  - "numer_bzp w formacie YYYY/BZP########, bez spacji, tylko numer ogłoszenia BZP (nie TED). numer_ted w formacie NNNNNN-YYYY, a zapis „YYYY/S ###-NNNNNN” zamień na NNNNNN-YYYY."
+  - "numer_bzp przepisz w całości, tak jak w dokumencie, bez spacji: YYYY/BZP######## razem z końcówką /NN, jeśli występuje (np. 2026/BZP00123456/03 zostaje 2026/BZP00123456/03, nie obcinaj /03). Tylko numer ogłoszenia BZP (nie TED). numer_ted w formacie NNNNNN-YYYY, a zapis „YYYY/S ###-NNNNNN” zamień na NNNNNN-YYYY."
   - "numer_postepowania to numer referencyjny sprawy (np. ZP.039.2025). tytul to tytuł zamówienia bez cudzysłowów."
 examples:
   - text: |
@@ -173,7 +173,7 @@ fields:
       - name: numer_bzp
         type: text
         validator: bzp
-        description: Numer ogłoszenia w BZP (nie TED).
+        description: Numer ogłoszenia w BZP (nie TED), w całości, z końcówką /NN, jeśli jest.
       - name: numer_postepowania
         type: text
         description: Numer referencyjny lub numer postępowania.
