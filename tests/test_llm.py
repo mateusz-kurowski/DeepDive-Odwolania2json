@@ -242,3 +242,12 @@ def test_load_llm_params_missing_file_gives_defaults(tmp_path):
 def test_llm_config_path_from_env():
     settings = Settings.from_env({"LLM_CONFIG": "inny/llm.json"})
     assert str(settings.llm_config) == "inny/llm.json"
+
+
+def test_unrelated_bad_request_keeps_config_extra_body():
+    params = {"extra_body": {"reasoning": {"enabled": False}}}
+    llm, client, _ = make([bad_request("context length exceeded")], params=params)
+    with pytest.raises(LLMError):
+        llm.complete_json("s", "u", SCHEMA, "demo")
+    assert llm.params["extra_body"] == {"reasoning": {"enabled": False}}
+    assert len(client.kwargs) == 1

@@ -199,7 +199,9 @@ class OpenAICompatLLM:
         try:
             response = self.client.chat.completions.create(**kwargs)
         except openai.BadRequestError as exc:
-            if not self.params.get("extra_body") or _schema_unsupported(exc):
+            config_body = self.params.get("extra_body") or {}
+            mentioned = any(str(key).lower() in str(exc).lower() for key in config_body)
+            if not mentioned or _schema_unsupported(exc):
                 raise
             # Backend odrzucił parametry dostawcy z config/llm.json: działamy dalej bez nich.
             log.warning("Backend odrzucił extra_body z konfiguracji, pomijam je: %s", exc)
