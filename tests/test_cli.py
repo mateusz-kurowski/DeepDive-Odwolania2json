@@ -224,3 +224,33 @@ def test_run_writes_summary_with_unknown_and_errors(tmp_path, demo_classes, fake
     assert summary["files"][0]["source"] == "case1/a.pdf"
     assert summary["files"][0]["class"] == "nieznany"
     assert summary["files"][0]["output"] is None
+
+
+def test_eval_examples_and_cache_flags(tmp_path, demo_classes, fake_llm, capsys):
+    for n in ("01", "02"):
+        example = tmp_path / "dane" / f"przyklad_{n}"
+        example.mkdir(parents=True)
+        (example / "a.pdf").write_bytes(b"%PDF")
+        (example / "demo.json").write_text(
+            json.dumps({"nip": "5270000000", "tytul": "Budowa drogi"}), encoding="utf-8"
+        )
+    args = [
+        "eval",
+        "--data",
+        str(tmp_path / "dane"),
+        "--classes",
+        str(demo_classes[0]),
+        "--workers",
+        "1",
+        "--examples",
+        "02",
+        "--cache",
+        str(tmp_path / "cache"),
+    ]
+    assert main(args, llm=fake_llm([classification(), extraction()]), env=ENV) == 0
+    first = capsys.readouterr().out
+    assert "dokumenty (z referencją):        1" in first
+    assert "cache:" in first
+    # drugi przebieg w całości z cache: FakeLLM bez odpowiedzi nie zostanie wywołany
+    assert main(args, llm=fake_llm([]), env=ENV) == 0
+    assert "'hits': 2" in capsys.readouterr().out

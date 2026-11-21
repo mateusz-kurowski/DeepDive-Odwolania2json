@@ -71,6 +71,8 @@ uv run python -m src eval --mode hybrid
 uv run python -m src eval --mode llm_only --model <nazwa> --out-json wyniki.json
 uv run python -m src eval --limit 10        # szybki test
 uv run python -m src eval --dump results/dump   # predykcja, referencja i różnice per dokument
+uv run python -m src eval --examples 01,02,13   # tylko wybrane przykłady (make eval EXAMPLES=01,02,13)
+uv run python -m src eval --cache results/cache  # cache odpowiedzi LLM na dysku (domyślnie wyłączony; też w run)
 ```
 
 Raport pokazuje precision, recall i F1 per pole oraz łącznie, exact match dokumentu, poprawność klasyfikacji, odsetek poprawnych cytatów i odsetek `null` przy polach z wartością referencyjną. Skaner organizatora nie jest opublikowany, więc założenia porównania są w dokumencie projektowym (sekcja 7). `--dump` zapisuje dla każdego PDF-a predykcję, referencję, listę różnic i ślad cytatów (`<dump>/<przyklad>/<plik>.json`; `_missed.json` dla klas bez dokumentu). `run` zapisuje dodatkowo `trace/_summary.json` (klasa, błąd, plik wyjściowy, tokeny per plik). Wyniki pomiarów: `docs/benchmark.md`.

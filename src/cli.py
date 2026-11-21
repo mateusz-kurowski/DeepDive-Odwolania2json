@@ -11,6 +11,7 @@ from src.classconfig import ClassConfigError, load_classes
 from src.classify import UNKNOWN
 from src.evaluate import evaluate
 from src.llm import LLM, OpenAICompatLLM
+from src.llmcache import DiskCachedLLM
 from src.pipeline import find_pdfs, run_batch
 from src.settings import Settings
 
@@ -27,6 +28,11 @@ def _parser() -> argparse.ArgumentParser:
         )
         p.add_argument("--mode", choices=["hybrid", "llm_only"], help="nadpisuje EXTRACTION_MODE")
         p.add_argument("--workers", type=int, default=4)
+        p.add_argument(
+            "--cache",
+            type=Path,
+            help="katalog cache odpowiedzi LLM na dysku (domyślnie wyłączony)",
+        )
 
     run = sub.add_parser("run", help="przetwórz input/ do output/")
     run.add_argument("--input", type=Path, default=Path("input"))
@@ -38,6 +44,10 @@ def _parser() -> argparse.ArgumentParser:
     ev.add_argument("--data", type=Path, default=Path("data/dane"))
     ev.add_argument("--model", help="nadpisuje LLM_MODEL")
     ev.add_argument("--limit", type=int)
+    ev.add_argument(
+        "--examples",
+        help="tylko wybrane przykłady, po przecinku (np. 01,02,13 albo przyklad_01)",
+    )
     ev.add_argument("--dump", type=Path, help="zapisz predykcje, referencje i różnice per dokument")
     ev.add_argument("--out-json", type=Path, help="zapisz raport jako JSON")
     common(ev)
@@ -57,6 +67,17 @@ def _settings(args: argparse.Namespace, env: Mapping[str, str] | None) -> Settin
     if args.classes:
         update["classes_dir"] = args.classes
     return settings.model_copy(update=update)
+
+
+def _with_cache(llm: LLM, args: argparse.Namespace, settings: Settings) -> LLM:
+    if not getattr(args, "cache", None):
+        return llm
+    return DiskCachedLLM(llm, args.cache, model=settings.llm_model)
+
+
+def _print_cache_stats(llm: LLM) -> None:
+    if isinstance(llm, DiskCachedLLM):
+        print("cache:", llm.stats())
 
 
 def _write_summary(args, results, settings, llm) -> None:
@@ -118,7 +139,8 @@ def main(
         return 2
 
     if args.command == "eval":
-        llm = llm or OpenAICompatLLM(settings)
+        llm = _with_cache(llm or OpenAICompatLLM(settings), args, settings)
+        only = [x for x in args.examples.split(",") if x.strip()] if args.examples else None
         report = evaluate(
             args.data,
             classes,
@@ -127,12 +149,14 @@ def main(
             limit=args.limit,
             workers=args.workers,
             dump_dir=args.dump,
+            only=only,
         )
         print(f"model: {settings.llm_model}, tryb: {settings.extraction_mode}")
         print(report.render())
         usage = getattr(llm, "usage", None)
         if usage:
             print("tokeny:", usage.to_dict())
+        _print_cache_stats(llm)
         if args.out_json:
             args.out_json.parent.mkdir(parents=True, exist_ok=True)
             args.out_json.write_text(
@@ -154,7 +178,7 @@ def main(
     if not find_pdfs(args.input):
         print(f"Brak plików PDF w {args.input}")
         return 0
-    llm = llm or OpenAICompatLLM(settings)
+    llm = _with_cache(llm or OpenAICompatLLM(settings), args, settings)
     results = run_batch(
         args.input, args.output, args.trace, classes, llm, settings, workers=args.workers
     )
@@ -168,4 +192,5 @@ def main(
     usage = getattr(llm, "usage", None)
     if usage:
         print("tokeny:", usage.to_dict())
+    _print_cache_stats(llm)
     return 1 if errors else 0

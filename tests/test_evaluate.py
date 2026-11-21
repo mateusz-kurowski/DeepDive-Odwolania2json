@@ -319,3 +319,33 @@ def test_evaluate_document_lost_to_error_excluded_from_clean_f1(
     assert report.docs_lost_to_errors == 1
     assert report.micro_f1 == 0.0
     assert report.totals_clean.tp + report.totals_clean.fn == 0
+
+
+def test_example_name_accepts_number_or_name():
+    from src.evaluate import example_name
+
+    assert example_name("1") == "przyklad_01"
+    assert example_name("13") == "przyklad_13"
+    assert example_name("przyklad_02") == "przyklad_02"
+
+
+def test_evaluate_only_selected_examples(tmp_path, demo_classes, fake_llm, monkeypatch):
+    from conftest import DEMO_TEXT, extraction
+
+    from src import pipeline
+    from src.textextract import DocText
+
+    monkeypatch.setattr(pipeline, "read_pdf", lambda path: DocText(DEMO_TEXT, 1, False))
+    for n in ("01", "02", "03"):
+        example = tmp_path / "dane" / f"przyklad_{n}"
+        example.mkdir(parents=True)
+        (example / "a.pdf").write_bytes(b"%PDF")
+        (example / "demo.json").write_text(
+            json.dumps({"nip": "5270000000", "tytul": "Budowa drogi"}), encoding="utf-8"
+        )
+    llm = fake_llm([classification(), extraction()])
+    report = evaluate(
+        tmp_path / "dane", demo_classes[1], llm, Settings(llm_model="m"), workers=1, only=["2"]
+    )
+    assert report.docs == 1
+    assert len(llm.calls) == 2

@@ -435,6 +435,12 @@ def _dump_result(
     )
 
 
+def example_name(value: str) -> str:
+    """„1”, „01” albo „przyklad_01” → „przyklad_01”."""
+    value = value.strip()
+    return f"przyklad_{int(value):02d}" if value.isdigit() else value
+
+
 def evaluate(
     data_dir: Path,
     classes: dict[str, ClassConfig],
@@ -443,8 +449,15 @@ def evaluate(
     limit: int | None = None,
     workers: int = 4,
     dump_dir: Path | None = None,
+    only: list[str] | None = None,
 ) -> Report:
     examples = sorted(p for p in Path(data_dir).glob("przyklad_*") if p.is_dir())
+    if only:
+        wanted = {example_name(x) for x in only}
+        examples = [e for e in examples if e.name in wanted]
+        missing = wanted - {e.name for e in examples}
+        if missing:
+            log.warning("Nie znaleziono przykładów: %s", ", ".join(sorted(missing)))
     if limit is not None:
         examples = examples[:limit]
     total = Report()
