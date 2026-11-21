@@ -12,9 +12,43 @@ input/case1/*.pdf  →  klasyfikacja  →  ekstrakcja modelem  →  walidacja  �
 - Tylko open source, w tym modele open-weights. Model jest wołany przez API zgodne z OpenAI (LiteLLM, vLLM, Ollama). Kod nie wymaga GPU. Wymagania organizatora (FAQ): model da się zainstalować lokalnie, a API jest hostowane w UE przez dostawcę z polityką prywatności; klucz API do używanej usługi dostarcza zespół.
 - Imiona i nazwiska są zwracane w mianowniku („Mateusz Szymański”), brak informacji to `null`.
 
+## Architektura
+
+```mermaid
+flowchart LR
+    A["PDF<br/>input/caseN/*.pdf"] --> B{"Warstwa tekstowa?"}
+    B -- tak --> C["Tekst (pypdf)"]
+    B -- "nie (skan)" --> D["OCR: model z wizją (VLM)"]
+    D --> C
+    C --> E["Klasyfikacja<br/>LLM (hinty z YAML jako awaria)"]
+    E -- nieznany --> N["{} + wpis w logu"]
+    E -- "klasa z classes/*.yaml" --> F["Ekstrakcja LLM<br/>schemat JSON z YAML, wartość + cytat"]
+    F --> G["Weryfikacja cytatów<br/>dopasowanie przybliżone"]
+    G --> H["Walidatory i normalizacja<br/>NIP, KRS, IBAN, daty... (hybrid)"]
+    H --> I["output/caseN/*.json"]
+    G -.-> T["trace/ (cytaty, tokeny)"]
+    Y[("classes/*.yaml<br/>schemat, prompty, hinty")] -.-> E
+    Y -.-> F
+    Y -.-> H
+```
+
+- Klasy opisuje wyłącznie konfiguracja YAML (schemat pól, opis, hinty, reguły), dlatego nowa klasa nie wymaga zmian w kodzie.
+- Cytaty są weryfikowane w kodzie (cytat spoza tekstu wywołuje ponowną próbę, wynik trafia do `trace/`). Wartość o błędnym formacie po ponownej próbie dostaje `null`; program nie zgaduje.
+- Model (ekstrakcja) i VLM (OCR) są wołane przez API zgodne z OpenAI (LiteLLM, vLLM, Ollama), więc maszyna docelowa nie potrzebuje GPU.
+
 ## Uruchomienie
 
-Wymagania: Python 3.13+. Instalacja przez `pip` (`requirements.txt`) albo [uv](https://docs.astral.sh/uv/) (`uv.lock`). Do skanów potrzebny jest model z wizją (VLM, patrz „OCR skanów”); Tesseract jest opcjonalny i nie instaluje się domyślnie.
+Trzy sposoby, każdy wymaga pliku `.env` (klucz i adres API) oraz PDF-ów w `input/caseN/`; wynik trafia do `output/caseN/`.
+
+| Sposób | Komenda | Wymagania |
+|---|---|---|
+| pip (Linux/macOS) | `pip install -r requirements.txt && python -m src run` w venv | Python 3.13+ |
+| Windows | `start.bat` (venv, pip i `run` w jednym kroku) | Python 3.13+ |
+| Docker | `docker compose run --rm app` | Docker |
+
+Lokalne API i interfejs graficzny: wkrótce.
+
+Szczegóły poniżej. Wymagania: Python 3.13+. Instalacja przez `pip` (`requirements.txt`) albo [uv](https://docs.astral.sh/uv/) (`uv.lock`). Do skanów potrzebny jest model z wizją (VLM, patrz „OCR skanów”); Tesseract jest opcjonalny i nie instaluje się domyślnie.
 
 ```bash
 cp .env.example .env        # uzupełnij OPENAI_API_KEY, OPENAI_BASE_URL, LLM_MODEL (+ VLM_MODEL dla skanów)

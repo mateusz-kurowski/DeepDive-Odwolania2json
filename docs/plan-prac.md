@@ -5,16 +5,14 @@ Kolejność wg wpływu na punkty: preselekcja to 100% F1 na ukrytym zbiorze ze s
 ## P0: wynik F1 i wymagania twarde (bez tego nie ma zgłoszenia)
 
 1. **Poprawa skanów (OCR).** Skany: F1 0.929, treningowe 0.996. Główna luka na ukrytym zbiorze.
-   - [ ] Prośba do administratora LiteLLM o model z wizją (open-weights, UE); przy okazji lokalizacja serwera i polityka prywatności. `extractor` (DeepSeek Flash) jest tekstowy i nie przyjmuje obrazów.
-   - [x] Backend VLM: `OCR_BACKEND=vlm|tesseract` + `VLM_MODEL` (`src/ocr.py`), VLM domyślny, Tesseract opcjonalny (extra `tesseract`, instrukcja w README), fallback gdy zainstalowany. Przetestowane na mocku; pomiar na 30 skanach czeka na model z wizją.
-   - [ ] Poprawki Tesseracta (opcjonalny backend): wyższy DPI, obróbka obrazu. Nisko priorytetowe po przejściu na VLM; mierzyć dopiero z uruchomioną ewaluacją.
+   - [x] Prośba do administratora LiteLLM o model z wizją (open-weights, UE); przy okazji lokalizacja serwera i polityka prywatności. `extractor` (DeepSeek Flash) jest tekstowy i nie przyjmuje obrazów.
+   - [x] Backend VLM: `OCR_BACKEND=vlm` + `VLM_MODEL` (`src/ocr.py`), VLM domyślny. Przetestowane na mocku; pomiar na 30 skanach czeka na model z wizją.
    - [x] ~~Walidacja sumy kontrolnej IBAN~~ odrzucone: 77 z 140 numerów w referencjach (dane syntetyczne) nie przechodzi mod 97, więc `null` obniżyłby F1.
    - [ ] Klasyfikacja: `KIO_KIO 2617-21.pdf` (wyrok KIO) wpada do `odwolanie`.
 2. **Instalacja i uruchomienie jak chce organizator.**
    - [x] `requirements.txt`: `make requirements`, commit, test zgodności z `uv.lock`.
    - [x] Czysta instalacja w nowym venv: `pip install -r requirements.txt` + `python -m src run`.
    - [x] `start.bat`: czy robi to samo (venv, pip, run).
-   - [x] README: instalacja Tesseracta (Windows/Linux/macOS) jako opcja; Docker bez Tesseracta.
    - [ ] `docker compose build` (dotąd nieuruchomione; daemon Dockera wyłączony, Dockerfile bez Tesseracta).
 3. **Push na GitHub.**
    - [ ] Wypchnąć branch, PR do `main`, zaktualizować gitlink submodułu w repo głównym.
@@ -35,9 +33,9 @@ Kolejność wg wpływu na punkty: preselekcja to 100% F1 na ukrytym zbiorze ze s
 
 ## P2: dokumentacja i prezentacja
 
-7. [ ] Diagram architektury w README (Mermaid): PDF → tekst/OCR → klasyfikacja → ekstrakcja → weryfikacja cytatów → walidatory → JSON.
+7. [x] Diagram architektury w README (Mermaid): PDF → tekst/OCR → klasyfikacja → ekstrakcja → weryfikacja cytatów → walidatory → JSON.
 8. [ ] Screeny UI w README (po punkcie 5), najlepiej skan z podświetlonymi polami.
-9. [ ] Instrukcje uruchomienia w README: CLI pip, `start.bat`, Docker, lokalne API + UI.
+9. [x] Instrukcje uruchomienia w README: CLI pip, `start.bat`, Docker. Lokalne API + UI: do dopisania po punkcie 5.
 10. [ ] Wypełnić `docs/benchmark.md`: wiersz „po wszystkich”, hybrid vs llm_only, skany, negatywne.
 
 ## P3: pomiary i porządki
