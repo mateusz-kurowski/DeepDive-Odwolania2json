@@ -103,6 +103,62 @@ def flatten(data: dict, cfg: ClassConfig) -> dict[str, Any]:
     return out
 
 
+def _labels(item: dict, spec: FieldSpec) -> set[str]:
+    labels = set()
+    for key in spec.key:
+        value = _lookup(item, key)
+        if value not in (None, ""):
+            labels.add(f"{key}={_norm(value, FieldSpec(name=key, type='text'))}")
+    return labels
+
+
+def _pair_items(
+    pred_items: list, ref_items: list, spec: FieldSpec
+) -> list[tuple[dict | None, dict | None, str]]:
+    """Paruje elementy tablicy: najpierw po wspólnej wartości klucza, resztę po kolejności."""
+    ref_labels = [_labels(r, spec) for r in ref_items]
+    pred_labels = [_labels(p, spec) for p in pred_items]
+    matched: dict[int, int] = {}
+    used: set[int] = set()
+    for i, rl in enumerate(ref_labels):
+        for j, pl in enumerate(pred_labels):
+            if j not in used and rl & pl:
+                matched[i] = j
+                used.add(j)
+                break
+    left_ref = [i for i in range(len(ref_items)) if i not in matched]
+    left_pred = [j for j in range(len(pred_items)) if j not in used]
+    for i, j in zip(left_ref, left_pred):
+        matched[i] = j
+        used.add(j)
+    pairs: list[tuple[dict | None, dict | None, str]] = []
+    for i, ref_item in enumerate(ref_items):
+        pred_item = pred_items[matched[i]] if i in matched else None
+        pairs.append((pred_item, ref_item, _item_label(ref_item, spec, i)))
+    for j, pred_item in enumerate(pred_items):
+        if j not in used:
+            pairs.append((pred_item, None, "+" + _item_label(pred_item, spec, j)))
+    return pairs
+
+
+def _walk_pair(
+    pred: dict, ref: dict, fields: list[FieldSpec], prefix: str,
+    out_pred: dict[str, Any], out_ref: dict[str, Any],
+) -> None:
+    for spec in fields:
+        pv = pred.get(spec.name) if isinstance(pred, dict) else None
+        rv = ref.get(spec.name) if isinstance(ref, dict) else None
+        path = f"{prefix}{spec.name}"
+        if spec.type == "object":
+            _walk_pair(pv or {}, rv or {}, spec.fields, f"{path}.", out_pred, out_ref)
+        elif spec.type == "array":
+            for p_item, r_item, label in _pair_items(pv or [], rv or [], spec):
+                _walk_pair(p_item or {}, r_item or {}, spec.fields, f"{path}[{label}].", out_pred, out_ref)
+        else:
+            out_pred[path] = _norm(pv, spec)
+            out_ref[path] = _norm(rv, spec)
+
+
 def _schema_path(path: str) -> str:
     return re.sub(r"\[[^\]]*\]", "[]", path)
 
@@ -110,8 +166,9 @@ def _schema_path(path: str) -> str:
 def score_document(
     pred: dict | None, ref: dict, cfg: ClassConfig
 ) -> dict[str, Counts]:
-    pred_flat = flatten(pred, cfg) if pred is not None else {}
-    ref_flat = flatten(ref, cfg)
+    pred_flat: dict[str, Any] = {}
+    ref_flat: dict[str, Any] = {}
+    _walk_pair(pred or {}, ref or {}, cfg.fields, "", pred_flat, ref_flat)
     result: dict[str, Counts] = {}
     for path in sorted(set(pred_flat) | set(ref_flat)):
         p, r = pred_flat.get(path), ref_flat.get(path)

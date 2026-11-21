@@ -111,3 +111,31 @@ def test_model_flag_overrides_env_model():
 
     args = _parser().parse_args(["eval", "--model", "inny-model"])
     assert _settings(args, ENV).llm_model == "inny-model"
+
+
+def test_empty_classes_dir_fails_fast(tmp_path, fake_llm, capsys):
+    make_input(tmp_path)
+    empty = tmp_path / "puste"
+    empty.mkdir()
+    assert main(args(tmp_path, empty), llm=fake_llm([]), env=ENV) == 2
+    assert "klas" in capsys.readouterr().err
+
+
+def test_missing_classes_dir_fails_fast(tmp_path, fake_llm):
+    make_input(tmp_path)
+    assert main(args(tmp_path, tmp_path / "nie-ma"), llm=fake_llm([]), env=ENV) == 2
+
+
+def test_broken_class_yaml_reports_readable_error(tmp_path, fake_llm, capsys):
+    make_input(tmp_path)
+    broken = tmp_path / "zle"
+    broken.mkdir()
+    (broken / "x.yaml").write_text("name: x\nfields: [", encoding="utf-8")
+    assert main(args(tmp_path, broken), llm=fake_llm([]), env=ENV) == 2
+    assert "x.yaml" in capsys.readouterr().err
+
+
+def test_missing_model_name_fails_fast(tmp_path, demo_classes, capsys):
+    make_input(tmp_path)
+    assert main(args(tmp_path, demo_classes[0]), env={"OPENAI_API_KEY": "k"}) == 2
+    assert "LLM_MODEL" in capsys.readouterr().err

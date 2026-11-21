@@ -92,3 +92,28 @@ def test_sends_json_schema_response_format():
         {"role": "system", "content": "sys"},
         {"role": "user", "content": "usr"},
     ]
+
+
+def bad_request(message):
+    return openai.BadRequestError(message, response=fake_response(400), body=None)
+
+
+def test_falls_back_to_json_object_when_json_schema_unsupported():
+    llm, client, _ = make(
+        [bad_request("response_format json_schema is not supported"), '{"a": 1}', '{"a": 2}']
+    )
+    assert llm.complete_json("sys", "usr", SCHEMA, "demo") == {"a": 1}
+    fallback = client.kwargs[1]
+    assert fallback["response_format"] == {"type": "json_object"}
+    assert '"additionalProperties"' in fallback["messages"][0]["content"]
+    assert fallback["messages"][0]["content"].startswith("sys")
+    # kolejne wywołania od razu w trybie json_object
+    assert llm.complete_json("sys", "usr", SCHEMA, "demo") == {"a": 2}
+    assert client.kwargs[2]["response_format"] == {"type": "json_object"}
+
+
+def test_unrelated_bad_request_is_not_swallowed():
+    llm, client, _ = make([bad_request("context length exceeded"), '{"a": 1}'])
+    with pytest.raises(LLMError):
+        llm.complete_json("s", "u", SCHEMA, "demo")
+    assert len(client.kwargs) == 1

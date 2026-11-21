@@ -28,6 +28,11 @@ class LLMError(Exception):
     """Model nie zwrócił poprawnej odpowiedzi mimo ponowień."""
 
 
+def _schema_unsupported(exc: Exception) -> bool:
+    text = str(exc).lower()
+    return any(word in text for word in ("response_format", "json_schema", "schema"))
+
+
 class _BadResponse(Exception):
     pass
 
@@ -44,6 +49,7 @@ class OpenAICompatLLM:
         self.max_attempts = max_attempts
         self.sleep = sleep
         self._client = client
+        self._json_object_mode = False
 
     @property
     def client(self) -> Any:
@@ -71,6 +77,29 @@ class OpenAICompatLLM:
         raise LLMError(f"Model niedostępny po {self.max_attempts} próbach: {last}") from last
 
     def _call(self, system: str, user: str, schema: dict, name: str) -> dict:
+        if not self._json_object_mode:
+            try:
+                return self._request(
+                    system,
+                    user,
+                    {
+                        "type": "json_schema",
+                        "json_schema": {"name": name, "schema": schema, "strict": True},
+                    },
+                )
+            except openai.BadRequestError as exc:
+                if not _schema_unsupported(exc):
+                    raise
+                log.warning("Backend nie obsługuje json_schema, przechodzę na json_object: %s", exc)
+                self._json_object_mode = True
+        schema_text = json.dumps(schema, ensure_ascii=False)
+        return self._request(
+            f"{system}\n\nOdpowiadaj wyłącznie obiektem JSON zgodnym z tym schematem JSON Schema:\n{schema_text}",
+            user,
+            {"type": "json_object"},
+        )
+
+    def _request(self, system: str, user: str, response_format: dict) -> dict:
         response = self.client.chat.completions.create(
             model=self.settings.llm_model,
             temperature=0,
@@ -78,10 +107,7 @@ class OpenAICompatLLM:
                 {"role": "system", "content": system},
                 {"role": "user", "content": user},
             ],
-            response_format={
-                "type": "json_schema",
-                "json_schema": {"name": name, "schema": schema, "strict": True},
-            },
+            response_format=response_format,
         )
         content = response.choices[0].message.content
         try:

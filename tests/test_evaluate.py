@@ -177,3 +177,33 @@ def test_evaluate_misclassified_counts_all_fn(tmp_path, demo_classes, fake_llm, 
 def test_numeric_string_equals_number_for_numeric_fields():
     ref = {**REF, "kwota": "10000"}
     assert score_document(REF, ref, CFG)["kwota"].tp == 1
+
+
+def _person(krs, nip, nazwa="Alfa"):
+    return {"krs": krs, "nazwa": nazwa, "dane": {"nip": nip}}
+
+
+def test_missing_key_still_pairs_item_by_other_key():
+    ref = {"osoby": [_person("0000000001", "5270000000")]}
+    pred = {"osoby": [_person(None, "5270000000")]}
+    counts = score_document(pred, ref, CFG)
+    assert counts["osoby[].krs"].fn == 1 and counts["osoby[].krs"].fp == 0
+    assert counts["osoby[].nazwa"].tp == 1
+    assert counts["osoby[].dane.nip"].tp == 1
+    assert total(counts).fp == 0 and total(counts).fn == 1
+
+
+def test_items_with_no_shared_key_paired_by_order():
+    ref = {"osoby": [_person("0000000001", None)]}
+    pred = {"osoby": [_person("0000000009", None)]}
+    counts = score_document(pred, ref, CFG)
+    assert counts["osoby[].krs"].wrong == 1
+    assert counts["osoby[].nazwa"].tp == 1
+
+
+def test_extra_predicted_item_counts_fp_only():
+    ref = {"osoby": [_person("0000000001", None)]}
+    pred = {"osoby": [_person("0000000001", None), _person("0000000002", None, "Gamma")]}
+    counts = score_document(pred, ref, CFG)
+    assert counts["osoby[].nazwa"].tp == 1 and counts["osoby[].nazwa"].fp == 1
+    assert total(counts).fn == 0

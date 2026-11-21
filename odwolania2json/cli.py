@@ -7,7 +7,7 @@ import sys
 from collections.abc import Mapping
 from pathlib import Path
 
-from odwolania2json.classconfig import load_classes
+from odwolania2json.classconfig import ClassConfigError, load_classes
 from odwolania2json.classify import UNKNOWN
 from odwolania2json.evaluate import evaluate
 from odwolania2json.llm import LLM, OpenAICompatLLM
@@ -64,12 +64,27 @@ def main(
     logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s", stream=sys.stderr)
     args = _parser().parse_args(argv)
     settings = _settings(args, env)
-    classes = load_classes(settings.classes_dir)
+    try:
+        classes = load_classes(settings.classes_dir)
+    except ClassConfigError as exc:
+        print(f"Błąd konfiguracji klasy: {exc}", file=sys.stderr)
+        return 2
+    if not classes:
+        print(
+            f"Nie znaleziono klas w '{settings.classes_dir}' (oczekiwane pliki *.yaml). "
+            "Sprawdź katalog roboczy, --classes lub CLASSES_DIR.",
+            file=sys.stderr,
+        )
+        return 2
 
     if args.command == "classes":
         for name, cfg in classes.items():
             print(f"{name}: {cfg.description}")
         return 0
+
+    if llm is None and not settings.llm_model:
+        print("Brak nazwy modelu: ustaw LLM_MODEL (lub --model).", file=sys.stderr)
+        return 2
 
     if args.command == "eval":
         report = evaluate(
