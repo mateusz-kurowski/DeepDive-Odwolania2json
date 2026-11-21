@@ -165,3 +165,92 @@ def test_missing_model_name_fails_fast(tmp_path, demo_classes, capsys):
     make_input(tmp_path)
     assert main(args(tmp_path, demo_classes[0]), env={"OPENAI_API_KEY": "k"}) == 2
     assert "LLM_MODEL" in capsys.readouterr().err
+
+
+def test_eval_dump_flag_writes_files(tmp_path, demo_classes, fake_llm, monkeypatch):
+    from conftest import DEMO_TEXT
+
+    from src import pipeline
+    from src.textextract import DocText
+
+    monkeypatch.setattr(pipeline, "read_pdf", lambda path: DocText(DEMO_TEXT, 1, False))
+    example = tmp_path / "dane" / "przyklad_01"
+    example.mkdir(parents=True)
+    (example / "a.pdf").write_bytes(b"%PDF")
+    (example / "demo.json").write_text(json.dumps({"tytul": "Budowa drogi"}), encoding="utf-8")
+    dump = tmp_path / "dump"
+    code = main(
+        [
+            "eval",
+            "--data",
+            str(tmp_path / "dane"),
+            "--classes",
+            str(demo_classes[0]),
+            "--workers",
+            "1",
+            "--dump",
+            str(dump),
+        ],
+        llm=fake_llm([classification(), extraction()]),
+        env=ENV,
+    )
+    assert code == 0
+    assert (dump / "przyklad_01" / "a.json").exists()
+
+
+def test_run_writes_summary_with_unknown_and_errors(tmp_path, demo_classes, fake_llm):
+    inp = tmp_path / "input" / "case1"
+    inp.mkdir(parents=True)
+    (inp / "a.pdf").write_bytes(b"%PDF")
+    trace = tmp_path / "trace"
+    main(
+        [
+            "run",
+            "--input",
+            str(tmp_path / "input"),
+            "--output",
+            str(tmp_path / "out"),
+            "--trace",
+            str(trace),
+            "--classes",
+            str(demo_classes[0]),
+            "--workers",
+            "1",
+        ],
+        llm=fake_llm([classification("nieznany")]),
+        env=ENV,
+    )
+    summary = json.loads((trace / "_summary.json").read_text(encoding="utf-8"))
+    assert summary["files"][0]["source"] == "case1/a.pdf"
+    assert summary["files"][0]["class"] == "nieznany"
+    assert summary["files"][0]["output"] is None
+
+
+def test_eval_examples_and_cache_flags(tmp_path, demo_classes, fake_llm, capsys):
+    for n in ("01", "02"):
+        example = tmp_path / "dane" / f"przyklad_{n}"
+        example.mkdir(parents=True)
+        (example / "a.pdf").write_bytes(b"%PDF")
+        (example / "demo.json").write_text(
+            json.dumps({"nip": "5270000000", "tytul": "Budowa drogi"}), encoding="utf-8"
+        )
+    args = [
+        "eval",
+        "--data",
+        str(tmp_path / "dane"),
+        "--classes",
+        str(demo_classes[0]),
+        "--workers",
+        "1",
+        "--examples",
+        "02",
+        "--cache",
+        str(tmp_path / "cache"),
+    ]
+    assert main(args, llm=fake_llm([classification(), extraction()]), env=ENV) == 0
+    first = capsys.readouterr().out
+    assert "dokumenty (z referencją):        1" in first
+    assert "cache:" in first
+    # drugi przebieg w całości z cache: FakeLLM bez odpowiedzi nie zostanie wywołany
+    assert main(args, llm=fake_llm([]), env=ENV) == 0
+    assert "'hits': 2" in capsys.readouterr().out

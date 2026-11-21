@@ -10,7 +10,7 @@ from typing import Any
 
 from src.classconfig import ClassConfig, FieldSpec
 from src.llm import LLM
-from src.pipeline import process_pdf
+from src.pipeline import DocResult, _trace, process_pdf
 from src.settings import Settings
 from src.validators import date as normalize_date
 
@@ -192,6 +192,29 @@ def score_document(pred: dict | None, ref: dict, cfg: ClassConfig) -> dict[str, 
     return result
 
 
+def diff_document(pred: dict | None, ref: dict | None, cfg: ClassConfig) -> list[dict]:
+    """Różnice pole po polu (to, co score_document zlicza jako FP/FN).
+
+    Wartości są w postaci znormalizowanej, tak jak porównuje eval.
+    """
+    pred_flat: dict[str, Any] = {}
+    ref_flat: dict[str, Any] = {}
+    _walk_pair(pred or {}, ref or {}, cfg.fields, "", pred_flat, ref_flat)
+    diffs = []
+    for path in sorted(set(pred_flat) | set(ref_flat)):
+        p, r = pred_flat.get(path), ref_flat.get(path)
+        if p == r:
+            continue
+        status = "wrong" if p is not None and r is not None else "missing" if p is None else "extra"
+        diffs.append({"field": path, "predicted": p, "expected": r, "status": status})
+    return diffs
+
+
+def _dump_json(path: Path, payload: Any) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+
 @dataclass
 class Report:
     per_field: dict[str, Counts] = field(default_factory=dict)
@@ -201,19 +224,30 @@ class Report:
     classified_total: int = 0
     cited_ok: int = 0
     cited_total: int = 0
+    # Awarie (dokument z `error`, np. model niedostępny) oddzielone od jakości ekstrakcji:
+    # per_field_clean pomija referencje, których brak wynika z awarii w danym przykładzie.
+    errors: int = 0
+    docs_lost_to_errors: int = 0
+    per_field_clean: dict[str, Counts] = field(default_factory=dict)
 
-    def add_counts(self, counts: dict[str, Counts]) -> None:
+    def add_counts(self, counts: dict[str, Counts], clean: bool = True) -> None:
         for key, c in counts.items():
             self.per_field[key] = self.per_field.get(key, Counts()) + c
+            if clean:
+                self.per_field_clean[key] = self.per_field_clean.get(key, Counts()) + c
 
-    def add_document(self, counts: dict[str, Counts]) -> None:
-        self.add_counts(counts)
+    def add_document(self, counts: dict[str, Counts], clean: bool = True) -> None:
+        self.add_counts(counts, clean)
         self.docs += 1
+        if not clean:
+            self.docs_lost_to_errors += 1
         if all(c.fp == 0 and c.fn == 0 for c in counts.values()):
             self.doc_exact += 1
 
     def merge(self, other: Report) -> None:
-        self.add_counts(other.per_field)
+        self.add_counts(other.per_field, clean=False)
+        for key, c in other.per_field_clean.items():
+            self.per_field_clean[key] = self.per_field_clean.get(key, Counts()) + c
         for name in (
             "docs",
             "doc_exact",
@@ -221,6 +255,8 @@ class Report:
             "classified_total",
             "cited_ok",
             "cited_total",
+            "errors",
+            "docs_lost_to_errors",
         ):
             setattr(self, name, getattr(self, name) + getattr(other, name))
 
@@ -228,6 +264,13 @@ class Report:
     def totals(self) -> Counts:
         out = Counts()
         for c in self.per_field.values():
+            out = out + c
+        return out
+
+    @property
+    def totals_clean(self) -> Counts:
+        out = Counts()
+        for c in self.per_field_clean.values():
             out = out + c
         return out
 
@@ -279,6 +322,11 @@ class Report:
             "micro_f1": self.micro_f1,
             "precision": self.precision,
             "recall": self.recall,
+            "errors": self.errors,
+            "docs_lost_to_errors": self.docs_lost_to_errors,
+            "micro_f1_without_errors": self.totals_clean.f1,
+            "precision_without_errors": self.totals_clean.precision,
+            "recall_without_errors": self.totals_clean.recall,
             "doc_exact_match": self.doc_exact_match,
             "classification_accuracy": self.classification_accuracy,
             "citation_ok_rate": self.citation_ok_rate,
@@ -307,6 +355,10 @@ class Report:
             f"dokumenty (z referencją):        {self.docs}",
             f"F1 (micro):                      {self.micro_f1:.4f}",
             f"precision / recall:              {self.precision:.4f} / {self.recall:.4f}",
+            f"PDF z błędem (awaria):           {self.errors}"
+            f" (referencji utraconych: {self.docs_lost_to_errors})",
+            f"F1 bez dokumentów z błędem:      {self.totals_clean.f1:.4f}"
+            f" (P {self.totals_clean.precision:.4f} / R {self.totals_clean.recall:.4f})",
             f"exact match na dokument:         {self.doc_exact_match:.4f}",
             f"poprawna klasyfikacja:           {self.classification_accuracy:.4f}",
             f"poprawne cytaty:                 {self.citation_ok_rate:.4f}",
@@ -316,7 +368,11 @@ class Report:
 
 
 def _evaluate_example(
-    example: Path, classes: dict[str, ClassConfig], llm: LLM, settings: Settings
+    example: Path,
+    classes: dict[str, ClassConfig],
+    llm: LLM,
+    settings: Settings,
+    dump_dir: Path | None = None,
 ) -> Report:
     report = Report()
     results = [process_pdf(p, classes, llm, settings) for p in sorted(example.glob("*.pdf"))]
@@ -325,15 +381,25 @@ def _evaluate_example(
         for p in sorted(example.glob("*.json"))
         if p.stem in classes
     }
-    scored: set[int] = set()
+    scored: dict[int, dict] = {}
+    missed: dict[str, dict] = {}
+    report.errors = sum(1 for r in results if r.error)
     for class_name, ref in refs.items():
         matching = [r for r in results if r.class_name == class_name and r.data is not None]
         report.classified_total += 1
         report.classified_ok += bool(matching)
         pred = matching[0].data if matching else None
         if matching:
-            scored.add(id(matching[0]))
-        report.add_document(score_document(pred, ref, classes[class_name]))
+            scored[id(matching[0])] = ref
+        else:
+            missed[class_name] = {
+                "reason": "brak dokumentu tej klasy",
+                "expected": ref,
+                "diffs": diff_document(None, ref, classes[class_name]),
+            }
+        # Brak dokumentu przy awarii w tym przykładzie: nie wliczamy do F1 „bez błędów”.
+        lost = not matching and report.errors > 0
+        report.add_document(score_document(pred, ref, classes[class_name]), clean=not lost)
     for r in results:
         if r.data is not None and id(r) not in scored:
             report.add_counts(score_document(r.data, {}, classes[r.class_name]))
@@ -342,7 +408,37 @@ def _evaluate_example(
             report.cited_ok += sum(r.extraction.citation_ok.values())
         if r.error:
             log.warning("%s: %s", r.path, r.error)
+        if dump_dir is not None and r.path is not None:
+            _dump_result(dump_dir / example.name, r, scored.get(id(r)), classes)
+    if dump_dir is not None and missed:
+        _dump_json(dump_dir / example.name / "_missed.json", missed)
     return report
+
+
+def _dump_result(
+    out_dir: Path, r: DocResult, ref: dict | None, classes: dict[str, ClassConfig]
+) -> None:
+    assert r.path is not None
+    diffs = diff_document(r.data, ref or {}, classes[r.class_name]) if r.data is not None else []
+    _dump_json(
+        out_dir / f"{r.path.stem}.json",
+        {
+            "source": r.path.name,
+            "class": r.class_name,
+            "error": r.error,
+            "ocr_used": r.ocr_used,
+            "prediction": r.data,
+            "reference": ref,
+            "diffs": diffs,
+            "trace": _trace(r, Path(r.path.name)) if r.extraction is not None else None,
+        },
+    )
+
+
+def example_name(value: str) -> str:
+    """„1”, „01” albo „przyklad_01” → „przyklad_01”."""
+    value = value.strip()
+    return f"przyklad_{int(value):02d}" if value.isdigit() else value
 
 
 def evaluate(
@@ -352,14 +448,22 @@ def evaluate(
     settings: Settings,
     limit: int | None = None,
     workers: int = 4,
+    dump_dir: Path | None = None,
+    only: list[str] | None = None,
 ) -> Report:
     examples = sorted(p for p in Path(data_dir).glob("przyklad_*") if p.is_dir())
+    if only:
+        wanted = {example_name(x) for x in only}
+        examples = [e for e in examples if e.name in wanted]
+        missing = wanted - {e.name for e in examples}
+        if missing:
+            log.warning("Nie znaleziono przykładów: %s", ", ".join(sorted(missing)))
     if limit is not None:
         examples = examples[:limit]
     total = Report()
     with ThreadPoolExecutor(max_workers=max(workers, 1)) as pool:
         for i, part in enumerate(
-            pool.map(lambda e: _evaluate_example(e, classes, llm, settings), examples), 1
+            pool.map(lambda e: _evaluate_example(e, classes, llm, settings, dump_dir), examples), 1
         ):
             total.merge(part)
             log.info("eval %d/%d", i, len(examples))

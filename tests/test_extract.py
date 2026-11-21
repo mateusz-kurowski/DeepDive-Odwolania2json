@@ -141,3 +141,69 @@ def test_extract_long_doc_sets_truncated_and_no_exception(fake_llm):
 def test_short_doc_not_truncated(fake_llm):
     result = run(fake_llm([raw("527-000-00-00")]))
     assert result.truncated is False
+
+
+REQ_CFG = ClassConfig.model_validate(
+    {
+        "name": "demo",
+        "description": "Dokument demonstracyjny",
+        "requires": [{"when": "sekcja.kod", "then": ["sekcja.dzien"], "message": "WSKAZÓWKA-X"}],
+        "fields": [
+            {
+                "name": "sekcja",
+                "type": "object",
+                "fields": [
+                    {"name": "kod", "type": "integer"},
+                    {"name": "dzien", "type": "text", "validator": "date"},
+                ],
+            }
+        ],
+    }
+)
+REQ_TEXT = "Zamawiający w dniu 2026-05-15 dokonał czynności o kodzie 7."
+
+
+def req_raw(kod, dzien):
+    return {
+        "sekcja": {
+            "kod": {"value": kod, "quote": "kodzie 7" if kod is not None else None},
+            "dzien": {"value": dzien, "quote": "2026-05-15" if dzien else None},
+        }
+    }
+
+
+def test_requires_violation_triggers_retry_with_message(fake_llm):
+    llm = fake_llm([req_raw(7, None), req_raw(7, "2026-05-15")])
+    result = extract(doc(REQ_TEXT), REQ_CFG, llm, "hybrid", 85)
+    assert result.retries == 1
+    assert "sekcja.dzien" in llm.calls[1]["user"]
+    assert "WSKAZÓWKA-X" in llm.calls[1]["user"]
+    assert result.data["sekcja"]["dzien"] == "2026-05-15"
+
+
+def test_requires_satisfied_or_when_empty_no_retry(fake_llm):
+    ok = extract(doc(REQ_TEXT), REQ_CFG, fake_llm([req_raw(7, "2026-05-15")]), "hybrid", 85)
+    assert ok.retries == 0
+    empty = extract(doc(REQ_TEXT), REQ_CFG, fake_llm([req_raw(None, None)]), "hybrid", 85)
+    assert empty.retries == 0
+
+
+def test_requires_not_checked_in_llm_only(fake_llm):
+    result = extract(doc(REQ_TEXT), REQ_CFG, fake_llm([req_raw(7, None)]), "llm_only", 85)
+    assert result.retries == 0
+    assert result.data["sekcja"]["dzien"] is None
+
+
+def test_requires_unknown_path_rejected():
+    import pytest
+    from pydantic import ValidationError
+
+    with pytest.raises(ValidationError):
+        ClassConfig.model_validate(
+            {
+                "name": "demo",
+                "description": "x",
+                "requires": [{"when": "brak.pola", "then": ["nip"]}],
+                "fields": [{"name": "nip", "type": "text"}],
+            }
+        )

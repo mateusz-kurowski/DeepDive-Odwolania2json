@@ -74,7 +74,7 @@ def test_non_pdf_ignored(tmp_path, demo_classes, fake_llm):
 def test_llm_failure_on_one_file_does_not_stop_batch(tmp_path, demo_classes, fake_llm):
     touch(tmp_path / "input", "case1", "a.pdf")
     touch(tmp_path / "input", "case1", "b.pdf")
-    llm = fake_llm([LLMError("429"), classification(), extraction()])
+    llm = fake_llm([classification(), LLMError("429"), classification(), extraction()])
     results = batch(tmp_path, demo_classes[1], llm)
     assert results[0].error is not None and "429" in results[0].error
     assert results[1].error is None
@@ -139,3 +139,36 @@ def test_write_json_keeps_polish_characters(tmp_path):
     target = tmp_path / "x" / "a.json"
     pipeline._write_json(target, {"nazwa": "Zażółć gęślą jaźń"})
     assert "Zażółć gęślą jaźń" in target.read_text(encoding="utf-8")
+
+
+HINTED_CLASSES_YAML = {
+    "alfa": "name: alfa\ndescription: Dokument alfa\nhints: [ALFA]\nfields:\n  - {name: nip, type: text}\n",
+    "beta": "name: beta\ndescription: Dokument beta\nhints: [BETA]\nfields:\n  - {name: nip, type: text}\n",
+}
+
+
+def hinted_classes(tmp_path):
+    from src.classconfig import load_classes
+
+    directory = tmp_path / "hinted"
+    directory.mkdir()
+    for name, body in HINTED_CLASSES_YAML.items():
+        (directory / f"{name}.yaml").write_text(body, encoding="utf-8")
+    return load_classes(directory)
+
+
+def test_classification_failure_falls_back_to_hints(tmp_path, fake_llm):
+    classes = hinted_classes(tmp_path)
+    doc = DocText(text="ALFA dokument, NIP 527-000-00-00", pages=1, ocr_used=False)
+    llm = fake_llm([LLMError("pusta odpowiedź"), {"nip": {"value": None, "quote": None}}])
+    result = pipeline.process_text(doc, classes, llm, "hybrid", 85)
+    assert result.class_name == "alfa"
+    assert result.error is None
+    assert len(llm.calls) == 2
+
+
+def test_classification_failure_with_ambiguous_hints_stays_an_error(tmp_path, fake_llm):
+    classes = hinted_classes(tmp_path)
+    doc = DocText(text="ALFA i BETA naraz", pages=1, ocr_used=False)
+    with pytest.raises(LLMError):
+        pipeline.process_text(doc, classes, fake_llm([LLMError("x")]), "hybrid", 85)

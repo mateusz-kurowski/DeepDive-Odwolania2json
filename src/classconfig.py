@@ -44,6 +44,18 @@ class FieldSpec(BaseModel):
         return self
 
 
+class Requirement(BaseModel):
+    """Kontrola spójności: gdy pole `when` ma wartość, pola z `then` też powinny ją mieć.
+
+    Ścieżki z kropkami przez obiekty (bez tablic), np. Sekcja.pole. Naruszenie nie zeruje
+    wartości: trafia do listy problemów i wywołuje jedną ponowną próbę ekstrakcji.
+    """
+
+    when: str
+    then: list[str]
+    message: str = ""
+
+
 class Example(BaseModel):
     text: str
     output: dict
@@ -53,14 +65,38 @@ class ClassConfig(BaseModel):
     name: str
     description: str
     hints: list[str] = []
+    # Kiedy brak hintu w tekście unieważnia wybór modelu:
+    # always (domyślnie): zawsze; other_class: tylko gdy pasują hinty innej klasy; never.
+    hint_veto: Literal["always", "other_class", "never"] = "always"
     rules: list[str] = []
     examples: list[Example] = []
+    requires: list[Requirement] = []
     fields: list[FieldSpec]
 
     @model_validator(mode="after")
     def _check_derive(self) -> ClassConfig:
         _check_derive(self.fields)
+        for req in self.requires:
+            for path in (req.when, *req.then):
+                if field_at(self.fields, path) is None:
+                    raise ValueError(f"requires: pole '{path}' nie istnieje (lub jest w tablicy)")
         return self
+
+
+def field_at(fields: list[FieldSpec], dotted: str) -> FieldSpec | None:
+    """Pole liścia pod ścieżką z kropkami przez obiekty; None, gdy brak lub tablica po drodze."""
+    parts = dotted.split(".")
+    current = fields
+    for i, part in enumerate(parts):
+        spec = next((f for f in current if f.name == part), None)
+        if spec is None:
+            return None
+        if i == len(parts) - 1:
+            return spec if spec.type not in ("object", "array") else None
+        if spec.type != "object":
+            return None
+        current = spec.fields
+    return None
 
 
 def _check_derive(fields: list[FieldSpec]) -> None:

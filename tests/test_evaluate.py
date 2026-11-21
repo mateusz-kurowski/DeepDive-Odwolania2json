@@ -209,3 +209,143 @@ def test_extra_predicted_item_counts_fp_only():
     counts = score_document(pred, ref, CFG)
     assert counts["osoby[].nazwa"].tp == 1 and counts["osoby[].nazwa"].fp == 1
     assert total(counts).fn == 0
+
+
+def _demo_example(tmp_path, monkeypatch, ref):
+    from conftest import DEMO_TEXT
+
+    from src import pipeline
+    from src.textextract import DocText
+
+    monkeypatch.setattr(pipeline, "read_pdf", lambda path: DocText(DEMO_TEXT, 1, False))
+    example = tmp_path / "dane" / "przyklad_01"
+    example.mkdir(parents=True)
+    (example / "cokolwiek.pdf").write_bytes(b"%PDF")
+    (example / "demo.json").write_text(json.dumps(ref), encoding="utf-8")
+    return tmp_path / "dane"
+
+
+def test_evaluate_dump_writes_prediction_reference_and_diffs(
+    tmp_path, demo_classes, fake_llm, monkeypatch
+):
+    from conftest import extraction
+
+    data = _demo_example(tmp_path, monkeypatch, {"nip": "5270000000", "tytul": "Inny tytuł"})
+    dump = tmp_path / "dump"
+    evaluate(
+        data,
+        demo_classes[1],
+        fake_llm([classification(), extraction()]),
+        Settings(llm_model="m"),
+        workers=1,
+        dump_dir=dump,
+    )
+    doc = json.loads((dump / "przyklad_01" / "cokolwiek.json").read_text(encoding="utf-8"))
+    assert doc["class"] == "demo" and doc["error"] is None
+    assert doc["prediction"]["tytul"] == "Budowa drogi"
+    assert doc["reference"] == {"nip": "5270000000", "tytul": "Inny tytuł"}
+    assert doc["trace"]["citation_ok"]
+    assert doc["diffs"] == [
+        {"field": "tytul", "predicted": "budowa drogi", "expected": "inny tytuł", "status": "wrong"}
+    ]
+
+
+def test_evaluate_dump_records_unknown_and_missed_reference(
+    tmp_path, demo_classes, fake_llm, monkeypatch
+):
+    data = _demo_example(tmp_path, monkeypatch, {"nip": "5270000000", "tytul": "T"})
+    dump = tmp_path / "dump"
+    evaluate(
+        data,
+        demo_classes[1],
+        fake_llm([classification("nieznany")]),
+        Settings(llm_model="m"),
+        workers=1,
+        dump_dir=dump,
+    )
+    doc = json.loads((dump / "przyklad_01" / "cokolwiek.json").read_text(encoding="utf-8"))
+    assert doc["class"] == "nieznany" and doc["prediction"] is None
+    missed = json.loads((dump / "przyklad_01" / "_missed.json").read_text(encoding="utf-8"))
+    assert missed["demo"]["reason"] == "brak dokumentu tej klasy"
+    assert {d["status"] for d in missed["demo"]["diffs"]} == {"missing"}
+
+
+def test_report_separates_errors_from_quality():
+    report = Report()
+    report.add_document(score_document(REF, REF, CFG))
+    report.add_document(score_document(None, REF, CFG), clean=False)
+    report.errors = 1
+    data = report.to_dict()
+    assert data["errors"] == 1
+    assert data["docs_lost_to_errors"] == 1
+    assert data["micro_f1_without_errors"] == 1.0
+    assert data["micro_f1"] < 1.0
+    assert "bez dokumentów z błędem" in report.render()
+
+
+def test_merge_keeps_clean_counts_and_errors():
+    part = Report()
+    part.add_document(score_document(REF, REF, CFG))
+    part.add_document(score_document(None, REF, CFG), clean=False)
+    part.errors = 2
+    total = Report()
+    total.merge(part)
+    total.merge(part)
+    assert total.errors == 4
+    assert total.docs_lost_to_errors == 2
+    assert total.totals_clean.f1 == 1.0
+    assert total.totals.fn > 0
+
+
+def test_evaluate_document_lost_to_error_excluded_from_clean_f1(
+    tmp_path, demo_classes, fake_llm, monkeypatch
+):
+    from conftest import DEMO_TEXT
+
+    from src import pipeline
+    from src.llm import LLMError
+    from src.textextract import DocText
+
+    monkeypatch.setattr(pipeline, "read_pdf", lambda path: DocText(DEMO_TEXT, 1, False))
+    example = tmp_path / "dane" / "przyklad_01"
+    example.mkdir(parents=True)
+    (example / "a.pdf").write_bytes(b"%PDF")
+    (example / "demo.json").write_text(
+        json.dumps({"nip": "5270000000", "tytul": "Budowa drogi"}), encoding="utf-8"
+    )
+    llm = fake_llm([classification(), LLMError("pusta odpowiedź")])
+    report = evaluate(tmp_path / "dane", demo_classes[1], llm, Settings(llm_model="m"), workers=1)
+    assert report.errors == 1
+    assert report.docs_lost_to_errors == 1
+    assert report.micro_f1 == 0.0
+    assert report.totals_clean.tp + report.totals_clean.fn == 0
+
+
+def test_example_name_accepts_number_or_name():
+    from src.evaluate import example_name
+
+    assert example_name("1") == "przyklad_01"
+    assert example_name("13") == "przyklad_13"
+    assert example_name("przyklad_02") == "przyklad_02"
+
+
+def test_evaluate_only_selected_examples(tmp_path, demo_classes, fake_llm, monkeypatch):
+    from conftest import DEMO_TEXT, extraction
+
+    from src import pipeline
+    from src.textextract import DocText
+
+    monkeypatch.setattr(pipeline, "read_pdf", lambda path: DocText(DEMO_TEXT, 1, False))
+    for n in ("01", "02", "03"):
+        example = tmp_path / "dane" / f"przyklad_{n}"
+        example.mkdir(parents=True)
+        (example / "a.pdf").write_bytes(b"%PDF")
+        (example / "demo.json").write_text(
+            json.dumps({"nip": "5270000000", "tytul": "Budowa drogi"}), encoding="utf-8"
+        )
+    llm = fake_llm([classification(), extraction()])
+    report = evaluate(
+        tmp_path / "dane", demo_classes[1], llm, Settings(llm_model="m"), workers=1, only=["2"]
+    )
+    assert report.docs == 1
+    assert len(llm.calls) == 2

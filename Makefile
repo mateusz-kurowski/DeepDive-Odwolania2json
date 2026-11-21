@@ -5,8 +5,16 @@
 MODE ?=
 MODEL ?=
 LIMIT ?=
+# Wybrane przykłady po przecinku, np. EXAMPLES=01,02,13; CACHE=katalog włącza cache odpowiedzi LLM
+EXAMPLES ?=
+CACHE ?=
 WORKERS ?= 4
-EXTRA = $(if $(MODE),--mode $(MODE)) $(if $(MODEL),--model $(MODEL)) --workers $(WORKERS)
+# Wyniki każdego przebiegu: results/<timestamp>/ (raport JSON, log, dump per dokument)
+RUN_DIR := $(or $(RUN_DIR),results/$(shell date +%Y%m%d-%H%M%S))
+SHELL := /bin/bash
+.SHELLFLAGS := -o pipefail -c
+EXTRA = $(if $(MODE),--mode $(MODE)) $(if $(MODEL),--model $(MODEL)) --workers $(WORKERS) $(if $(CACHE),--cache $(CACHE))
+EVAL_EXTRA = $(if $(LIMIT),--limit $(LIMIT)) $(if $(EXAMPLES),--examples $(EXAMPLES)) $(if $(CACHE),--cache $(CACHE))
 
 help: ## Lista komend
 	@grep -E '^[a-zA-Z_-]+:.*?## ' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "} {printf "  %-16s %s\n", $$1, $$2}'
@@ -34,14 +42,17 @@ run: ## Przetwórz input/ do output/ (MODE=hybrid|llm_only)
 classes: ## Wypisz wczytane klasy
 	uv run python -m src classes
 
-eval: ## F1 na data/dane (MODE, MODEL, LIMIT)
-	uv run python -m src eval $(EXTRA) $(if $(LIMIT),--limit $(LIMIT))
+eval: ## F1 na data/dane (MODE, MODEL, LIMIT, EXAMPLES, CACHE), wyniki do results/<timestamp>/
+	@mkdir -p $(RUN_DIR)
+	uv run python -m src eval $(EXTRA) $(if $(LIMIT),--limit $(LIMIT)) $(if $(EXAMPLES),--examples $(EXAMPLES)) --out-json $(RUN_DIR)/report.json --dump $(RUN_DIR)/dump 2>&1 | tee $(RUN_DIR)/eval.log
 
-eval-hybrid: ## F1 w trybie hybrid, raport do docs/bench/
-	uv run python -m src eval --mode hybrid --workers $(WORKERS) --out-json docs/bench/hybrid.json
+eval-hybrid: ## F1 w trybie hybrid, raport i dump do results/<timestamp>/
+	@mkdir -p $(RUN_DIR)
+	uv run python -m src eval --mode hybrid --workers $(WORKERS) $(EVAL_EXTRA) --out-json $(RUN_DIR)/hybrid.json --dump $(RUN_DIR)/dump-hybrid 2>&1 | tee $(RUN_DIR)/hybrid.log
 
-eval-llm-only: ## F1 w trybie llm_only, raport do docs/bench/
-	uv run python -m src eval --mode llm_only --workers $(WORKERS) --out-json docs/bench/llm_only.json
+eval-llm-only: ## F1 w trybie llm_only, raport i dump do results/<timestamp>/
+	@mkdir -p $(RUN_DIR)
+	uv run python -m src eval --mode llm_only --workers $(WORKERS) $(EVAL_EXTRA) --out-json $(RUN_DIR)/llm_only.json --dump $(RUN_DIR)/dump-llm_only 2>&1 | tee $(RUN_DIR)/llm_only.log
 
 docker-build: ## Zbuduj obraz
 	docker compose build

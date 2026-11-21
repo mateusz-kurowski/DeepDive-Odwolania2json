@@ -102,8 +102,32 @@ def _cells(
             yield value, spec, path
 
 
-def _problems(raw: dict, cfg: ClassConfig, text: str, mode: Mode, threshold: float) -> list[str]:
+def _raw_value(raw: dict, dotted: str) -> object:
+    node: object = raw
+    for part in dotted.split("."):
+        if not isinstance(node, dict):
+            return None
+        node = node.get(part)
+    return node.get("value") if isinstance(node, dict) else None
+
+
+def _consistency_problems(raw: dict, cfg: ClassConfig) -> list[str]:
     problems = []
+    for req in cfg.requires:
+        if _raw_value(raw, req.when) is None:
+            continue
+        for path in req.then:
+            if _raw_value(raw, path) is None:
+                hint = f" {req.message}" if req.message else ""
+                problems.append(
+                    f"{path}: brak wartości, choć {req.when} jest wypełnione; "
+                    f"sprawdź tekst ponownie (null tylko gdy naprawdę brak).{hint}"
+                )
+    return problems
+
+
+def _problems(raw: dict, cfg: ClassConfig, text: str, mode: Mode, threshold: float) -> list[str]:
+    problems = _consistency_problems(raw, cfg) if mode == "hybrid" else []
     for cell, spec, path in _cells(raw, cfg.fields):
         value = cell.get("value")
         if value is None:
