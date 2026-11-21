@@ -1,0 +1,51 @@
+{
+  "source": "potwierdzenie_przelewu.pdf",
+  "class": "przelew",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-02-21",
+      "kwota": 100.0,
+      "na_rachunek": "76778604877565429038327479",
+      "numer_transakcji": "CEN2603035366536",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Klaudia Szymanski i Norbert Sadowski w postępowaniu przed KIO w przetargu ZP.169.2026 CEN2603035366536",
+      "z_rachunku": "97285156811608656469159276"
+    }
+  },
+  "reference": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-02-21",
+      "kwota": 100.0,
+      "na_rachunek": "76778604877565429038327479",
+      "numer_transakcji": "CEN2603035366536",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Klaudia Szymanski i Norbert Sadowski w postępowaniu przed KIO w przetargu ZP.169.2026 CEN2603035366536",
+      "z_rachunku": "97285156811608656469159276"
+    }
+  },
+  "diffs": [],
+  "trace": {
+    "source": "potwierdzenie_przelewu.pdf",
+    "class": "przelew",
+    "ocr_used": false,
+    "quotes": {
+      "przelew_bankowy.data_operacji": "Data operacji 21.02.2026",
+      "przelew_bankowy.kwota": "Wartość 100,00",
+      "przelew_bankowy.na_rachunek": "Rachunek beneficjenta PL76 7786 0487 7565 4290 3832 7479",
+      "przelew_bankowy.numer_transakcji": "Numer transakcji CEN2603035366536",
+      "przelew_bankowy.tytul": "Tytuł przelewu opłata skarbowa od pełnomocnictwa dla Klaudia Szymanski i Norbert Sadowski w postępowaniu przed KIO w przetargu ZP.169.2026 CEN2603035366536",
+      "przelew_bankowy.z_rachunku": "Rachunek nadawcy PL97 2851 5681 1608 6564 6915 9276"
+    },
+    "citation_ok": {
+      "przelew_bankowy.data_operacji": true,
+      "przelew_bankowy.kwota": true,
+      "przelew_bankowy.na_rachunek": true,
+      "przelew_bankowy.numer_transakcji": true,
+      "przelew_bankowy.tytul": true,
+      "przelew_bankowy.z_rachunku": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

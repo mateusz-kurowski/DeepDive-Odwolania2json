@@ -1,0 +1,92 @@
+{
+  "source": "pelnomocnictwo.pdf",
+  "class": "pelnomocnictwo",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "mocodawca": [
+      {
+        "data": {
+          "imie_nazwisko": null,
+          "krs": "9993307745",
+          "nazwa": "Nordelia Facility Services S.A.",
+          "nip": "9995519382",
+          "typ": "osoba_prawna"
+        },
+        "podpisujacy": [
+          {
+            "imie_nazwisko": "Dariusz Pietrzak"
+          }
+        ]
+      }
+    ],
+    "pelnomocnicy": [
+      {
+        "imie_nazwisko": "Joanna Stępień",
+        "pesel": null
+      },
+      {
+        "imie_nazwisko": "Michał Borkowski",
+        "pesel": null
+      }
+    ]
+  },
+  "reference": {
+    "mocodawca": [
+      {
+        "data": {
+          "imie_nazwisko": null,
+          "krs": "9993307745",
+          "nazwa": "Nordelia Facility Services S.A.",
+          "nip": "9995519382",
+          "typ": "osoba_prawna"
+        },
+        "podpisujacy": [
+          {
+            "imie_nazwisko": "Dariusz Pietrzak"
+          }
+        ]
+      }
+    ],
+    "pelnomocnicy": [
+      {
+        "imie_nazwisko": "Joanna Stępień",
+        "pesel": null
+      },
+      {
+        "imie_nazwisko": "Michał Borkowski",
+        "pesel": null
+      }
+    ]
+  },
+  "diffs": [],
+  "trace": {
+    "source": "pelnomocnictwo.pdf",
+    "class": "pelnomocnictwo",
+    "ocr_used": false,
+    "quotes": {
+      "mocodawca[0].data.imie_nazwisko": null,
+      "mocodawca[0].data.krs": "KRS 9993307745",
+      "mocodawca[0].data.nazwa": "Nordelia Facility Services S.A., ul. Wielicka 250, 30-663 Kraków",
+      "mocodawca[0].data.nip": "NIP 9995519382",
+      "mocodawca[0].data.typ": "Nordelia Facility Services S.A.",
+      "mocodawca[0].podpisujacy[0].imie_nazwisko": "Dariusz Pietrzak",
+      "pelnomocnicy[0].imie_nazwisko": "r. pr. Joanna Stępień",
+      "pelnomocnicy[0].pesel": null,
+      "pelnomocnicy[1].imie_nazwisko": "adw. Michał Borkowski",
+      "pelnomocnicy[1].pesel": null
+    },
+    "citation_ok": {
+      "mocodawca[0].data.krs": true,
+      "mocodawca[0].data.nazwa": true,
+      "mocodawca[0].data.nip": true,
+      "mocodawca[0].data.typ": true,
+      "mocodawca[0].podpisujacy[0].imie_nazwisko": true,
+      "pelnomocnicy[0].imie_nazwisko": true,
+      "pelnomocnicy[1].imie_nazwisko": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

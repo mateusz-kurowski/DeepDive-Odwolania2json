@@ -1,0 +1,110 @@
+{
+  "source": "0001.pdf",
+  "class": "pelnomocnictwo",
+  "error": null,
+  "ocr_used": true,
+  "prediction": {
+    "mocodawca": [
+      {
+        "data": {
+          "imie_nazwisko": null,
+          "krs": "9991022552",
+          "nazwa": "Asterion Budownictwo sp. k.",
+          "nip": "9992956550",
+          "typ": "osoba_prawna"
+        },
+        "podpisujacy": [
+          {
+            "imie_nazwisko": "Szymon Brzozowski"
+          }
+        ]
+      }
+    ],
+    "pelnomocnicy": [
+      {
+        "imie_nazwisko": "Aleksander Rybak",
+        "pesel": null
+      },
+      {
+        "imie_nazwisko": "Halina Jodłowska",
+        "pesel": null
+      },
+      {
+        "imie_nazwisko": "Wojciech Kaczmarek",
+        "pesel": null
+      }
+    ]
+  },
+  "reference": {
+    "mocodawca": [
+      {
+        "data": {
+          "imie_nazwisko": null,
+          "krs": "9991022552",
+          "nazwa": "Asterion Budownictwo sp. k.",
+          "nip": "9992956550",
+          "typ": "osoba_prawna"
+        },
+        "podpisujacy": [
+          {
+            "imie_nazwisko": "Szymon Brzozowski"
+          }
+        ]
+      }
+    ],
+    "pelnomocnicy": [
+      {
+        "imie_nazwisko": "Aleksandra Rybak",
+        "pesel": null
+      },
+      {
+        "imie_nazwisko": "Halina Jodłowska",
+        "pesel": null
+      },
+      {
+        "imie_nazwisko": "Wojciech Kaczmarek",
+        "pesel": null
+      }
+    ]
+  },
+  "diffs": [
+    {
+      "field": "pelnomocnicy[imie_nazwisko=aleksandra rybak].imie_nazwisko",
+      "predicted": "aleksander rybak",
+      "expected": "aleksandra rybak",
+      "status": "wrong"
+    }
+  ],
+  "trace": {
+    "source": "0001.pdf",
+    "class": "pelnomocnictwo",
+    "ocr_used": true,
+    "quotes": {
+      "mocodawca[0].data.imie_nazwisko": null,
+      "mocodawca[0].data.krs": "wpisana do rejestru przedsiębiorców Krajowego Rejestru Sądowego pod numerem KRS: 9991022552",
+      "mocodawca[0].data.nazwa": "Asterion Budownictwo sp. k. z siedzibą w Lublin (20-380), ul. Jana Pawła II 11A/15",
+      "mocodawca[0].data.nip": "NIP: 999-295-65-50",
+      "mocodawca[0].data.typ": "sp. k.",
+      "mocodawca[0].podpisujacy[0].imie_nazwisko": "reprezentowana przez Szymona Brzozowskiego - Wiceprezesa Zarządu",
+      "pelnomocnicy[0].imie_nazwisko": "Aleksandra Rybak",
+      "pelnomocnicy[0].pesel": null,
+      "pelnomocnicy[1].imie_nazwisko": "Halina Jodłowska",
+      "pelnomocnicy[1].pesel": null,
+      "pelnomocnicy[2].imie_nazwisko": "Wojciech Kaczmarek",
+      "pelnomocnicy[2].pesel": null
+    },
+    "citation_ok": {
+      "mocodawca[0].data.krs": true,
+      "mocodawca[0].data.nazwa": true,
+      "mocodawca[0].data.nip": true,
+      "mocodawca[0].data.typ": true,
+      "mocodawca[0].podpisujacy[0].imie_nazwisko": true,
+      "pelnomocnicy[0].imie_nazwisko": true,
+      "pelnomocnicy[1].imie_nazwisko": true,
+      "pelnomocnicy[2].imie_nazwisko": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

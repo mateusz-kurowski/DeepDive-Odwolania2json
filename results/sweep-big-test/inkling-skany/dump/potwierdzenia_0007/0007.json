@@ -1,0 +1,10 @@
+{
+  "source": "0007.pdf",
+  "class": "nieznany",
+  "error": "brak czytelnego tekstu w PDF",
+  "ocr_used": false,
+  "prediction": null,
+  "reference": null,
+  "diffs": [],
+  "trace": null
+}

@@ -1,0 +1,51 @@
+{
+  "source": "potwierdzenie_przelewu.pdf",
+  "class": "przelew",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-10-15",
+      "kwota": 34.0,
+      "na_rachunek": "78716648769620797224712970",
+      "numer_transakcji": "CEN2610198812045",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Magdalena Wróblewska i Tomasz Kędzierski w postępowaniu przed KIO w przetargu ZP/PN/48/2026 CEN2610198812045",
+      "z_rachunku": "54716496752472114180714012"
+    }
+  },
+  "reference": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-10-15",
+      "kwota": 34.0,
+      "na_rachunek": "78716648769620797224712970",
+      "numer_transakcji": "CEN2610198812045",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Magdalena Wróblewska i Tomasz Kędzierski w postępowaniu przed KIO w przetargu ZP/PN/48/2026 CEN2610198812045",
+      "z_rachunku": "54716496752472114180714012"
+    }
+  },
+  "diffs": [],
+  "trace": {
+    "source": "potwierdzenie_przelewu.pdf",
+    "class": "przelew",
+    "ocr_used": false,
+    "quotes": {
+      "przelew_bankowy.data_operacji": "Data operacji 15.10.2026",
+      "przelew_bankowy.kwota": "Kwota 34,00 PLN",
+      "przelew_bankowy.na_rachunek": "PL78 7166 4876 9620 7972 2471 2970",
+      "przelew_bankowy.numer_transakcji": "Numer referencyjny CEN2610198812045",
+      "przelew_bankowy.tytul": "Tytuł przelewu opłata skarbowa od pełnomocnictwa dla Magdalena Wróblewska i Tomasz Kędzierski w postępowaniu przed KIO w przetargu ZP/PN/48/2026 CEN2610198812045",
+      "przelew_bankowy.z_rachunku": "PL54 7164 9675 2472 1141 8071 4012"
+    },
+    "citation_ok": {
+      "przelew_bankowy.data_operacji": true,
+      "przelew_bankowy.kwota": true,
+      "przelew_bankowy.na_rachunek": true,
+      "przelew_bankowy.numer_transakcji": true,
+      "przelew_bankowy.tytul": true,
+      "przelew_bankowy.z_rachunku": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

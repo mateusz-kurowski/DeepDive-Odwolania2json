@@ -1,0 +1,51 @@
+{
+  "source": "potwierdzenie_przelewu.pdf",
+  "class": "przelew",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "przelew_bankowy": {
+      "data_operacji": "2025-12-27",
+      "kwota": 100.0,
+      "na_rachunek": "58656248409487934466157204",
+      "numer_transakcji": "CEN2601077049872",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Aleksandra Bartoszewicz i Halina Różański w postępowaniu przed KIO w przetargu ZS.550.2026 CEN2601077049872",
+      "z_rachunku": "39181690323502914558043298"
+    }
+  },
+  "reference": {
+    "przelew_bankowy": {
+      "data_operacji": "2025-12-27",
+      "kwota": 100.0,
+      "na_rachunek": "58656248409487934466157204",
+      "numer_transakcji": "CEN2601077049872",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Aleksandra Bartoszewicz i Halina Różański w postępowaniu przed KIO w przetargu ZS.550.2026 CEN2601077049872",
+      "z_rachunku": "39181690323502914558043298"
+    }
+  },
+  "diffs": [],
+  "trace": {
+    "source": "potwierdzenie_przelewu.pdf",
+    "class": "przelew",
+    "ocr_used": false,
+    "quotes": {
+      "przelew_bankowy.data_operacji": "Data transakcji\n27 grudnia 2025",
+      "przelew_bankowy.kwota": "Wartość\n100,00 PLN",
+      "przelew_bankowy.na_rachunek": "Na rachunek: PL58 6562 4840 9487 9344 6615 7204",
+      "przelew_bankowy.numer_transakcji": "Numer referencyjny\nCEN2601077049872",
+      "przelew_bankowy.tytul": "Tytułem\nopłata skarbowa od pełnomocnictwa dla Aleksandra Bartoszewicz i Halina Różański w postępowaniu przed KIO w przetargu ZS.550.2026\nCEN2601077049872",
+      "przelew_bankowy.z_rachunku": "Z rachunku: PL39 1816 9032 3502 9145 5804 3298"
+    },
+    "citation_ok": {
+      "przelew_bankowy.data_operacji": true,
+      "przelew_bankowy.kwota": true,
+      "przelew_bankowy.na_rachunek": true,
+      "przelew_bankowy.numer_transakcji": true,
+      "przelew_bankowy.tytul": true,
+      "przelew_bankowy.z_rachunku": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

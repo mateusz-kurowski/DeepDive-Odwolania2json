@@ -1,0 +1,51 @@
+{
+  "source": "potwierdzenie_przelewu.pdf",
+  "class": "przelew",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-07-25",
+      "kwota": 100.0,
+      "na_rachunek": "24349910802892920457205135",
+      "numer_transakcji": "CEN2608087095658",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Cezary Marciniak w postępowaniu przed KIO w przetargu ZS.520.2026 CEN2608087095658",
+      "z_rachunku": "96679868575223702120767677"
+    }
+  },
+  "reference": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-07-25",
+      "kwota": 100.0,
+      "na_rachunek": "24349910802892920457205135",
+      "numer_transakcji": "CEN2608087095658",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Cezary Marciniak w postępowaniu przed KIO w przetargu ZS.520.2026 CEN2608087095658",
+      "z_rachunku": "96679868575223702120767677"
+    }
+  },
+  "diffs": [],
+  "trace": {
+    "source": "potwierdzenie_przelewu.pdf",
+    "class": "przelew",
+    "ocr_used": false,
+    "quotes": {
+      "przelew_bankowy.data_operacji": "Data transakcji\n25 lipca 2026",
+      "przelew_bankowy.kwota": "Wartość\n100,00 zł",
+      "przelew_bankowy.na_rachunek": "Rachunek odbiorcy: 24 3499 1080 2892 9204 5720 5135",
+      "przelew_bankowy.numer_transakcji": "Numer transakcji\nCEN2608087095658",
+      "przelew_bankowy.tytul": "opłata skarbowa od pełnomocnictwa dla Cezary Marciniak w postępowaniu przed KIO w przetargu ZS.520.2026\nCEN2608087095658",
+      "przelew_bankowy.z_rachunku": "Z rachunku: 96 6798 6857 5223 7021 2076 7677"
+    },
+    "citation_ok": {
+      "przelew_bankowy.data_operacji": true,
+      "przelew_bankowy.kwota": true,
+      "przelew_bankowy.na_rachunek": true,
+      "przelew_bankowy.numer_transakcji": true,
+      "przelew_bankowy.tytul": true,
+      "przelew_bankowy.z_rachunku": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

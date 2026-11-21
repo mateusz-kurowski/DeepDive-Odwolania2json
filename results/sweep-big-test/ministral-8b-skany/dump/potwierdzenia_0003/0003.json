@@ -1,0 +1,64 @@
+{
+  "source": "0003.pdf",
+  "class": "przelew",
+  "error": null,
+  "ocr_used": true,
+  "prediction": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-07-15",
+      "kwota": 10000.0,
+      "na_rachunek": null,
+      "numer_transakcji": null,
+      "tytul": "WPIS OD ODW., ZAM: KOMENDA WOJEWÓDZKA PAŃSTWOWEJ STRAŻY POŻARNEJ W JA, PN/58/2026/DOS",
+      "z_rachunku": null
+    }
+  },
+  "reference": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-07-15",
+      "kwota": 10000.0,
+      "na_rachunek": "60101010100081362231000000",
+      "numer_transakcji": null,
+      "tytul": "WPIS OD ODW., ZAM: KOMENDA WOJEWÓDZKA PAŃSTWOWEJ STRAŻY POŻARNEJ W JA, PN/58/2026/DOS",
+      "z_rachunku": "34124011110246356613822453"
+    }
+  },
+  "diffs": [
+    {
+      "field": "przelew_bankowy.na_rachunek",
+      "predicted": null,
+      "expected": "60101010100081362231000000",
+      "status": "missing"
+    },
+    {
+      "field": "przelew_bankowy.z_rachunku",
+      "predicted": null,
+      "expected": "34124011110246356613822453",
+      "status": "missing"
+    }
+  ],
+  "trace": {
+    "source": "0003.pdf",
+    "class": "przelew",
+    "ocr_used": true,
+    "quotes": {
+      "przelew_bankowy.data_operacji": "Data wykonania: 15.07.2026",
+      "przelew_bankowy.kwota": "Kwota: 10 000,00 PLN",
+      "przelew_bankowy.na_rachunek": "Rachunek kontrahenta: 60 1010 1010 0081 3622 3100 0000",
+      "przelew_bankowy.numer_transakcji": null,
+      "przelew_bankowy.tytul": "Szczegóły płatności: WPIS OD ODW., ZAM: KOMENDA WOJEWÓDZKA PAŃSTWOWEJ STRAŻY POŻARNEJ W JA, PN/58/2026/DOS",
+      "przelew_bankowy.z_rachunku": "Rachunek zleceniodawcy: 34 1240 1111 0246 3566 1382 2453"
+    },
+    "citation_ok": {
+      "przelew_bankowy.data_operacji": true,
+      "przelew_bankowy.kwota": true,
+      "przelew_bankowy.tytul": true
+    },
+    "nulled": [
+      "przelew_bankowy.na_rachunek",
+      "przelew_bankowy.z_rachunku"
+    ],
+    "retries": 1,
+    "truncated": false
+  }
+}

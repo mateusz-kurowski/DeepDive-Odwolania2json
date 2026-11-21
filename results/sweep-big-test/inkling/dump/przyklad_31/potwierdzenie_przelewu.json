@@ -1,0 +1,51 @@
+{
+  "source": "potwierdzenie_przelewu.pdf",
+  "class": "przelew",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-03-28",
+      "kwota": 34.0,
+      "na_rachunek": "33112511501590528916014892",
+      "numer_transakcji": "CEN2604095639258",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Halina Ostrowczyk i Grzegorz Dudek w postępowaniu przed KIO w przetargu ZS.568.2026 CEN2604095639258",
+      "z_rachunku": "93865881321456168889527298"
+    }
+  },
+  "reference": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-03-28",
+      "kwota": 34.0,
+      "na_rachunek": "33112511501590528916014892",
+      "numer_transakcji": "CEN2604095639258",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Halina Ostrowczyk i Grzegorz Dudek w postępowaniu przed KIO w przetargu ZS.568.2026 CEN2604095639258",
+      "z_rachunku": "93865881321456168889527298"
+    }
+  },
+  "diffs": [],
+  "trace": {
+    "source": "potwierdzenie_przelewu.pdf",
+    "class": "przelew",
+    "ocr_used": false,
+    "quotes": {
+      "przelew_bankowy.data_operacji": "DATA TRANSAKCJI ......................................... 28.03.2026",
+      "przelew_bankowy.kwota": "KWOTA PRZELEWU ........................................... PLN 34.00",
+      "przelew_bankowy.na_rachunek": "RACHUNEK ODBIORCY\nPL33 1125 1150 1590 5289 1601 4892",
+      "przelew_bankowy.numer_transakcji": "NR REF. ........................................... CEN2604095639258",
+      "przelew_bankowy.tytul": "opłata skarbowa od pełnomocnictwa dla Halina Ostrowczyk i Grzegorz\nDudek w postępowaniu przed KIO w przetargu ZS.568.2026\nCEN2604095639258",
+      "przelew_bankowy.z_rachunku": "Z RACHUNKU\nPL93 8658 8132 1456 1688 8952 7298"
+    },
+    "citation_ok": {
+      "przelew_bankowy.data_operacji": true,
+      "przelew_bankowy.kwota": true,
+      "przelew_bankowy.na_rachunek": true,
+      "przelew_bankowy.numer_transakcji": true,
+      "przelew_bankowy.tytul": true,
+      "przelew_bankowy.z_rachunku": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

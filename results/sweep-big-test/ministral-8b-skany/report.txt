@@ -1,0 +1,46 @@
+pole                                             TP    FP    FN      P      R     F1
+OdwolanieKIO.czynnosc_dzien                      10     0     0  1.000  1.000  1.000
+OdwolanieKIO.czynnosc_opis                        9     1     1  0.900  0.900  0.900
+OdwolanieKIO.czynnosc_powod_id                    9     1     1  0.900  0.900  0.900
+OdwolanieKIO.data                                10     0     0  1.000  1.000  1.000
+OdwolanieKIO.miejscowosc                         10     0     0  1.000  1.000  1.000
+Odwolujacy[].krs                                  8     0     0  1.000  1.000  1.000
+Odwolujacy[].nazwa                               10     0     0  1.000  1.000  1.000
+Odwolujacy[].nip                                 10     0     0  1.000  1.000  1.000
+Odwolujacy[].pelnomocnik.imie_nazwisko            9     0     0  1.000  1.000  1.000
+Odwolujacy[].pelnomocnik.mail                     7     2     2  0.778  0.778  0.778
+Odwolujacy[].pelnomocnik.nazwa                    9     0     0  1.000  1.000  1.000
+Odwolujacy[].przez-pelnomocnika                  10     0     0  1.000  1.000  1.000
+Odwolujacy[].regon                                6     0     0  1.000  1.000  1.000
+Zamawiajacy[].nazwa                              10     1     1  0.909  0.909  0.909
+Zamawiajacy[].nip                                 8     0     0  1.000  1.000  1.000
+Zamawiajacy[].prowadzacy_postepowanie             2     0     0  1.000  1.000  1.000
+Zamawiajacy[].regon                               3     0     0  1.000  1.000  1.000
+ZamowieniePubliczne.numer_bzp                     5     0     0  1.000  1.000  1.000
+ZamowieniePubliczne.numer_postepowania           10     0     0  1.000  1.000  1.000
+ZamowieniePubliczne.numer_ted                     7     0     0  1.000  1.000  1.000
+ZamowieniePubliczne.tytul                         9     1     1  0.900  0.900  0.900
+mocodawca[].data.imie_nazwisko                    0     0     1  0.000  0.000  0.000
+mocodawca[].data.krs                             10     0     0  1.000  1.000  1.000
+mocodawca[].data.nazwa                            8     3     2  0.727  0.800  0.762
+mocodawca[].data.nip                             11     0     0  1.000  1.000  1.000
+mocodawca[].data.typ                             11     0     0  1.000  1.000  1.000
+mocodawca[].podpisujacy[].imie_nazwisko          14     1     0  0.933  1.000  0.966
+pelnomocnicy[].imie_nazwisko                     16     1     1  0.941  0.941  0.941
+pelnomocnicy[].pesel                              4     0     0  1.000  1.000  1.000
+przelew_bankowy.data_operacji                     6     1     4  0.857  0.600  0.706
+przelew_bankowy.kwota                             7     0     3  1.000  0.700  0.824
+przelew_bankowy.na_rachunek                       3     0     7  1.000  0.300  0.462
+przelew_bankowy.numer_transakcji                  4     0     0  1.000  1.000  1.000
+przelew_bankowy.tytul                             3     4     7  0.429  0.300  0.353
+przelew_bankowy.z_rachunku                        4     0     6  1.000  0.400  0.571
+
+dokumenty (z referencją):        30
+F1 (micro):                      0.9112
+precision / recall:              0.9444 / 0.8803
+PDF z błędem (awaria):           1 (referencji utraconych: 1)
+F1 bez dokumentów z błędem:      0.9189 (P 0.9444 / R 0.8947)
+exact match na dokument:         0.3667
+poprawna klasyfikacja:           0.9000
+poprawne cytaty:                 0.9964
+null przy polach z referencją:   0.0744

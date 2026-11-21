@@ -1,0 +1,51 @@
+{
+  "source": "potwierdzenie_przelewu.pdf",
+  "class": "przelew",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-06-04",
+      "kwota": 100.0,
+      "na_rachunek": "26435909972191537905850420",
+      "numer_transakcji": "CEN2606275668655",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Zbigniew Górnicki i Zbigniew Szymanski w postępowaniu przed KIO w przetargu SWZ.189.2026 CEN2606275668655",
+      "z_rachunku": "92476215236332523894371099"
+    }
+  },
+  "reference": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-06-04",
+      "kwota": 100.0,
+      "na_rachunek": "26435909972191537905850420",
+      "numer_transakcji": "CEN2606275668655",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Zbigniew Górnicki i Zbigniew Szymanski w postępowaniu przed KIO w przetargu SWZ.189.2026 CEN2606275668655",
+      "z_rachunku": "92476215236332523894371099"
+    }
+  },
+  "diffs": [],
+  "trace": {
+    "source": "potwierdzenie_przelewu.pdf",
+    "class": "przelew",
+    "ocr_used": false,
+    "quotes": {
+      "przelew_bankowy.data_operacji": "4 czerwca 2026",
+      "przelew_bankowy.kwota": "100,00",
+      "przelew_bankowy.na_rachunek": "PL26 4359 0997 2191 5379 0585 0420",
+      "przelew_bankowy.numer_transakcji": "CEN2606275668655",
+      "przelew_bankowy.tytul": "opłata skarbowa od pełnomocnictwa dla Zbigniew Górnicki i Zbigniew Szymanski w postępowaniu przed\nKIO w przetargu SWZ.189.2026 CEN2606275668655",
+      "przelew_bankowy.z_rachunku": "PL92 4762 1523 6332 5238 9437 1099"
+    },
+    "citation_ok": {
+      "przelew_bankowy.data_operacji": true,
+      "przelew_bankowy.kwota": true,
+      "przelew_bankowy.na_rachunek": true,
+      "przelew_bankowy.numer_transakcji": true,
+      "przelew_bankowy.tytul": true,
+      "przelew_bankowy.z_rachunku": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

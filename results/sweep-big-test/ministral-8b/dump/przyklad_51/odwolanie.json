@@ -1,0 +1,159 @@
+{
+  "source": "odwolanie.pdf",
+  "class": "odwolanie",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "OdwolanieKIO": {
+      "data": "2026-03-07",
+      "czynnosc_dzien": "2026-02-26",
+      "czynnosc_powod_id": 1,
+      "czynnosc_opis": "Decyzja o odrzuceniu oferty",
+      "miejscowosc": "Zielona Góra"
+    },
+    "Odwolujacy": [
+      {
+        "krs": null,
+        "nazwa": "BOMARK-BUD Olga Baran",
+        "nip": "9996203312",
+        "regon": "999039007",
+        "przez-pelnomocnika": 1,
+        "pelnomocnik": {
+          "imie_nazwisko": "Tadeusz Nowak",
+          "nazwa": "Kancelaria Prawa Zamówień Publicznych Nowak Zielińska s.c.",
+          "mail": "nowak@nowakkancelaria.example"
+        }
+      }
+    ],
+    "Zamawiajacy": [
+      {
+        "krs": null,
+        "nazwa": "Zarząd Transportu Miejskiego w Modrzewie",
+        "nip": "9991117247",
+        "regon": "999731997",
+        "prowadzacy_postepowanie": 1
+      },
+      {
+        "krs": "9992028336",
+        "nazwa": "Miejskie Przedsiębiorstwo Komunikacyjne w Sosnowej Woli sp. z o.o.",
+        "nip": "9998400266",
+        "regon": "999862962",
+        "prowadzacy_postepowanie": 0
+      }
+    ],
+    "ZamowieniePubliczne": {
+      "numer_bzp": "2026/BZP00999374",
+      "numer_postepowania": "IR.271.103.2026",
+      "numer_ted": "999682-2026",
+      "tytul": "Świadczenie usług przewozu uczniów do szkół w roku szkolnym 2026/2027"
+    }
+  },
+  "reference": {
+    "OdwolanieKIO": {
+      "data": "2026-03-07",
+      "czynnosc_dzien": "2026-02-26",
+      "czynnosc_powod_id": 1,
+      "czynnosc_opis": "Decyzja o odrzuceniu oferty",
+      "miejscowosc": "Zielona Góra"
+    },
+    "Odwolujacy": [
+      {
+        "krs": null,
+        "nazwa": "BOMARK-BUD Olga Baran",
+        "nip": "9996203312",
+        "regon": "999039007",
+        "przez-pelnomocnika": 1,
+        "pelnomocnik": {
+          "imie_nazwisko": "Tadeusz Nowak",
+          "nazwa": "Kancelaria Prawa Zamówień Publicznych Nowak Zielińska s.c.",
+          "mail": "nowak@nowakkancelaria.example"
+        }
+      }
+    ],
+    "Zamawiajacy": [
+      {
+        "krs": null,
+        "nazwa": "Zarząd Transportu Miejskiego w Modrzewie",
+        "nip": "9991117247",
+        "regon": "999731997",
+        "prowadzacy_postepowanie": 1
+      },
+      {
+        "krs": "9992028336",
+        "nazwa": "Miejskie Przedsiębiorstwo Komunikacyjne w Sosnowej Woli sp. z o.o.",
+        "nip": "9998400266",
+        "regon": "999862962",
+        "prowadzacy_postepowanie": 0
+      }
+    ],
+    "ZamowieniePubliczne": {
+      "numer_bzp": "2026/BZP00999374",
+      "numer_postepowania": "IR.271.103.2026",
+      "numer_ted": "999682-2026",
+      "tytul": "Świadczenie usług przewozu uczniów do szkół w roku szkolnym 2026/2027"
+    }
+  },
+  "diffs": [],
+  "trace": {
+    "source": "odwolanie.pdf",
+    "class": "odwolanie",
+    "ocr_used": false,
+    "quotes": {
+      "OdwolanieKIO.data": "Zielona Góra, 7 marca 2026 roku",
+      "OdwolanieKIO.czynnosc_dzien": "Zamawiający w dniu 26 lutego 2026 roku poinformował o odrzuceniu oferty złożonej przez Odwołującego.",
+      "OdwolanieKIO.czynnosc_powod_id": "odrzuceniu oferty Odwołującego z dnia 26 lutego 2026 r.",
+      "OdwolanieKIO.miejscowosc": "Zielona Góra, 7 marca 2026 roku",
+      "Odwolujacy[0].krs": null,
+      "Odwolujacy[0].nazwa": "BOMARK-BUD Olga Baran",
+      "Odwolujacy[0].nip": "NIP: 9996203312",
+      "Odwolujacy[0].regon": "REGON: 999039007",
+      "Odwolujacy[0].przez-pelnomocnika": "reprezentowany przez: adw. Tadeusz Nowak, adw. Grażyna Zielińska",
+      "Odwolujacy[0].pelnomocnik.imie_nazwisko": "adw. Tadeusz Nowak",
+      "Odwolujacy[0].pelnomocnik.nazwa": "adres do korespondencji: Kancelaria Prawa Zamówień Publicznych Nowak Zielińska s.c.",
+      "Odwolujacy[0].pelnomocnik.mail": "e-mail: nowak@nowakkancelaria.example",
+      "Zamawiajacy[0].krs": null,
+      "Zamawiajacy[0].nazwa": "Zarząd Transportu Miejskiego w Modrzewie",
+      "Zamawiajacy[0].nip": "NIP: 9991117247",
+      "Zamawiajacy[0].regon": "REGON: 999731997",
+      "Zamawiajacy[0].prowadzacy_postepowanie": "Zamawiający (zamawiający wspólnie przeprowadzający postępowanie na podstawie art. 38 ust. 1 Pzp): 1) Zamawiający – Lider, prowadzący postępowanie:",
+      "Zamawiajacy[1].krs": "KRS: 9992028336",
+      "Zamawiajacy[1].nazwa": "Miejskie Przedsiębiorstwo Komunikacyjne w Sosnowej Woli sp. z o.o.",
+      "Zamawiajacy[1].nip": "NIP: 9998400266",
+      "Zamawiajacy[1].regon": "REGON: 999862962",
+      "Zamawiajacy[1].prowadzacy_postepowanie": null,
+      "ZamowieniePubliczne.numer_bzp": "ogłoszenie o zamówieniu w Biuletynie Zamówień Publicznych nr 2026/BZP 00999374",
+      "ZamowieniePubliczne.numer_postepowania": "nr referencyjny: IR.271.103.2026",
+      "ZamowieniePubliczne.numer_ted": "ogłoszenie w Dzienniku Urzędowym Unii Europejskiej nr 2026/S 160-999682",
+      "ZamowieniePubliczne.tytul": "postępowania o udzielenie zamówienia publicznego prowadzonego w trybie negocjacji z ogłoszeniem pn. \"Świadczenie usług przewozu uczniów do szkół w roku szkolnym 2026/2027\""
+    },
+    "citation_ok": {
+      "OdwolanieKIO.data": true,
+      "OdwolanieKIO.czynnosc_dzien": true,
+      "OdwolanieKIO.czynnosc_powod_id": true,
+      "OdwolanieKIO.miejscowosc": true,
+      "Odwolujacy[0].nazwa": true,
+      "Odwolujacy[0].nip": true,
+      "Odwolujacy[0].regon": true,
+      "Odwolujacy[0].przez-pelnomocnika": true,
+      "Odwolujacy[0].pelnomocnik.imie_nazwisko": true,
+      "Odwolujacy[0].pelnomocnik.nazwa": true,
+      "Odwolujacy[0].pelnomocnik.mail": true,
+      "Zamawiajacy[0].nazwa": true,
+      "Zamawiajacy[0].nip": true,
+      "Zamawiajacy[0].regon": true,
+      "Zamawiajacy[0].prowadzacy_postepowanie": true,
+      "Zamawiajacy[1].krs": true,
+      "Zamawiajacy[1].nazwa": true,
+      "Zamawiajacy[1].nip": true,
+      "Zamawiajacy[1].regon": true,
+      "Zamawiajacy[1].prowadzacy_postepowanie": false,
+      "ZamowieniePubliczne.numer_bzp": true,
+      "ZamowieniePubliczne.numer_postepowania": true,
+      "ZamowieniePubliczne.numer_ted": true,
+      "ZamowieniePubliczne.tytul": true
+    },
+    "nulled": [],
+    "retries": 1,
+    "truncated": false
+  }
+}

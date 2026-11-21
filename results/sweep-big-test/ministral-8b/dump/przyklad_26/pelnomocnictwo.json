@@ -1,0 +1,92 @@
+{
+  "source": "pelnomocnictwo.pdf",
+  "class": "pelnomocnictwo",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "mocodawca": [
+      {
+        "data": {
+          "imie_nazwisko": null,
+          "krs": "9999035670",
+          "nazwa": "Uldaris Wyposażenie sp. j.",
+          "nip": "9997688539",
+          "typ": "osoba_prawna"
+        },
+        "podpisujacy": [
+          {
+            "imie_nazwisko": "Ryszard Chalupowicz"
+          }
+        ]
+      }
+    ],
+    "pelnomocnicy": [
+      {
+        "imie_nazwisko": "Ryszard Mazurkiewicz",
+        "pesel": null
+      },
+      {
+        "imie_nazwisko": "Patrycja Głowacz",
+        "pesel": null
+      }
+    ]
+  },
+  "reference": {
+    "mocodawca": [
+      {
+        "data": {
+          "imie_nazwisko": null,
+          "krs": "9999035670",
+          "nazwa": "Uldaris Wyposażenie sp. j.",
+          "nip": "9997688539",
+          "typ": "osoba_prawna"
+        },
+        "podpisujacy": [
+          {
+            "imie_nazwisko": "Ryszard Chalupowicz"
+          }
+        ]
+      }
+    ],
+    "pelnomocnicy": [
+      {
+        "imie_nazwisko": "Ryszard Mazurkiewicz",
+        "pesel": null
+      },
+      {
+        "imie_nazwisko": "Patrycja Głowacz",
+        "pesel": null
+      }
+    ]
+  },
+  "diffs": [],
+  "trace": {
+    "source": "pelnomocnictwo.pdf",
+    "class": "pelnomocnictwo",
+    "ocr_used": false,
+    "quotes": {
+      "mocodawca[0].data.imie_nazwisko": null,
+      "mocodawca[0].data.krs": "Dane rejestrowe KRS 9999035670",
+      "mocodawca[0].data.nazwa": "Mocodawca Uldaris Wyposażenie sp. j.",
+      "mocodawca[0].data.nip": "NIP 9997688539",
+      "mocodawca[0].data.typ": null,
+      "mocodawca[0].podpisujacy[0].imie_nazwisko": "Ryszard Chalupowicz",
+      "pelnomocnicy[0].imie_nazwisko": "adw. Ryszard Mazurkiewicz",
+      "pelnomocnicy[0].pesel": null,
+      "pelnomocnicy[1].imie_nazwisko": "adw. Patrycja Głowacz",
+      "pelnomocnicy[1].pesel": null
+    },
+    "citation_ok": {
+      "mocodawca[0].data.krs": true,
+      "mocodawca[0].data.nazwa": true,
+      "mocodawca[0].data.nip": true,
+      "mocodawca[0].data.typ": false,
+      "mocodawca[0].podpisujacy[0].imie_nazwisko": true,
+      "pelnomocnicy[0].imie_nazwisko": true,
+      "pelnomocnicy[1].imie_nazwisko": true
+    },
+    "nulled": [],
+    "retries": 1,
+    "truncated": false
+  }
+}

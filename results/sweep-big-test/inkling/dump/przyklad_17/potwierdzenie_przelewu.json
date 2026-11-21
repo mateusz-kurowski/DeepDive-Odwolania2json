@@ -1,0 +1,51 @@
+{
+  "source": "potwierdzenie_przelewu.pdf",
+  "class": "przelew",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-10-11",
+      "kwota": 200.0,
+      "na_rachunek": "40948702352746681959149838",
+      "numer_transakcji": "CEN2610271073361",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Norbert Milewski w postępowaniu przed KIO w przetargu DI.356.2026 CEN2610271073361",
+      "z_rachunku": "21671392196881757429472751"
+    }
+  },
+  "reference": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-10-11",
+      "kwota": 200.0,
+      "na_rachunek": "40948702352746681959149838",
+      "numer_transakcji": "CEN2610271073361",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Norbert Milewski w postępowaniu przed KIO w przetargu DI.356.2026 CEN2610271073361",
+      "z_rachunku": "21671392196881757429472751"
+    }
+  },
+  "diffs": [],
+  "trace": {
+    "source": "potwierdzenie_przelewu.pdf",
+    "class": "przelew",
+    "ocr_used": false,
+    "quotes": {
+      "przelew_bankowy.data_operacji": "DATA TRANSAKCJI ..................................... 11-10-2026",
+      "przelew_bankowy.kwota": "WARTOŚĆ .............................................. 200,00 zł",
+      "przelew_bankowy.na_rachunek": "RACHUNEK ODBIORCY\nPL40948702352746681959149838",
+      "przelew_bankowy.numer_transakcji": "NR REF. ....................................... CEN2610271073361",
+      "przelew_bankowy.tytul": "TYTUŁ PRZELEWU:\nopłata skarbowa od pełnomocnictwa dla Norbert Milewski w\npostępowaniu przed KIO w przetargu DI.356.2026 CEN2610271073361",
+      "przelew_bankowy.z_rachunku": "Z RACHUNKU\nPL21671392196881757429472751"
+    },
+    "citation_ok": {
+      "przelew_bankowy.data_operacji": true,
+      "przelew_bankowy.kwota": true,
+      "przelew_bankowy.na_rachunek": true,
+      "przelew_bankowy.numer_transakcji": true,
+      "przelew_bankowy.tytul": true,
+      "przelew_bankowy.z_rachunku": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

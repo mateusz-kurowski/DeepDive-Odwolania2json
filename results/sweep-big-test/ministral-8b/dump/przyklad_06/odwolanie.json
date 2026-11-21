@@ -1,0 +1,135 @@
+{
+  "source": "odwolanie.pdf",
+  "class": "odwolanie",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "OdwolanieKIO": {
+      "data": "2026-06-27",
+      "czynnosc_dzien": "2026-06-03",
+      "czynnosc_powod_id": 4,
+      "czynnosc_opis": "Publikacja specyfikacji warunków zamówienia (SWZ)",
+      "miejscowosc": "Bydgoszcz"
+    },
+    "Odwolujacy": [
+      {
+        "krs": "9999360925",
+        "nazwa": "Silvatica Technologie sp. z o.o.",
+        "nip": "9998966348",
+        "regon": "999450212",
+        "przez-pelnomocnika": 1,
+        "pelnomocnik": {
+          "imie_nazwisko": "Jolanta Szulc",
+          "nazwa": "Kancelaria Radców Prawnych Spółka z ograniczoną odpowiedzialnością",
+          "mail": "biuro@biuro.example"
+        }
+      }
+    ],
+    "Zamawiajacy": [
+      {
+        "krs": "9995664683",
+        "nazwa": "Aurelink Sieci sp. k.",
+        "nip": "9993074480",
+        "regon": "999279238",
+        "prowadzacy_postepowanie": null
+      }
+    ],
+    "ZamowieniePubliczne": {
+      "numer_bzp": null,
+      "numer_postepowania": "DI.579.2026",
+      "numer_ted": "999687-2026",
+      "tytul": "Świadczenie usług pocztowych i kurierskich na potrzeby urzędu"
+    }
+  },
+  "reference": {
+    "OdwolanieKIO": {
+      "data": "2026-06-27",
+      "czynnosc_dzien": "2026-06-03",
+      "czynnosc_powod_id": 4,
+      "czynnosc_opis": "Publikacja specyfikacji warunków zamówienia (SWZ)",
+      "miejscowosc": "Bydgoszcz"
+    },
+    "Odwolujacy": [
+      {
+        "krs": "9999360925",
+        "nazwa": "Silvatica Technologie sp. z o.o.",
+        "nip": "9998966348",
+        "regon": "999450212",
+        "przez-pelnomocnika": 1,
+        "pelnomocnik": {
+          "imie_nazwisko": "Jolanta Szulc",
+          "nazwa": "Kancelaria Radców Prawnych Spółka z ograniczoną odpowiedzialnością",
+          "mail": "biuro@biuro.example"
+        }
+      }
+    ],
+    "Zamawiajacy": [
+      {
+        "krs": "9995664683",
+        "nazwa": "Aurelink Sieci sp. k.",
+        "nip": "9993074480",
+        "regon": "999279238",
+        "prowadzacy_postepowanie": null
+      }
+    ],
+    "ZamowieniePubliczne": {
+      "numer_bzp": null,
+      "numer_postepowania": "DI.579.2026",
+      "numer_ted": "999687-2026",
+      "tytul": "Świadczenie usług pocztowych i kurierskich na potrzeby urzędu"
+    }
+  },
+  "diffs": [],
+  "trace": {
+    "source": "odwolanie.pdf",
+    "class": "odwolanie",
+    "ocr_used": false,
+    "quotes": {
+      "OdwolanieKIO.data": "Bydgoszcz, dnia 27 czerwca 2026 roku",
+      "OdwolanieKIO.czynnosc_dzien": "Zamawiający w dniu 3 czerwca 2026 roku opublikował Specyfikację Warunków Zamówienia.",
+      "OdwolanieKIO.czynnosc_powod_id": "Zamawiający w dniu 3 czerwca 2026 roku opublikował Specyfikację Warunków Zamówienia.",
+      "OdwolanieKIO.miejscowosc": "Bydgoszcz, dnia 27 czerwca 2026 roku",
+      "Odwolujacy[0].krs": "KRS: 9999360925",
+      "Odwolujacy[0].nazwa": "Silvatica Technologie sp. z o.o.",
+      "Odwolujacy[0].nip": "NIP: 9998966348",
+      "Odwolujacy[0].regon": "REGON: 999450212",
+      "Odwolujacy[0].przez-pelnomocnika": "reprezentowana przez: r. pr. Jolanta Szulc",
+      "Odwolujacy[0].pelnomocnik.imie_nazwisko": "Jolanta Szulc, r. pr.",
+      "Odwolujacy[0].pelnomocnik.nazwa": "Kancelaria Radców Prawnych Spółka z ograniczoną odpowiedzialnością",
+      "Odwolujacy[0].pelnomocnik.mail": "biuro@biuro.example",
+      "Zamawiajacy[0].krs": "KRS: 9995664683",
+      "Zamawiajacy[0].nazwa": "Zamawiający: Aurelink Sieci sp. k.",
+      "Zamawiajacy[0].nip": "NIP: 9993074480",
+      "Zamawiajacy[0].regon": "REGON: 999279238",
+      "Zamawiajacy[0].prowadzacy_postepowanie": null,
+      "ZamowieniePubliczne.numer_bzp": null,
+      "ZamowieniePubliczne.numer_postepowania": "nr referencyjny sprawy: DI.579.2026",
+      "ZamowieniePubliczne.numer_ted": "TED: 2026/S202-999687",
+      "ZamowieniePubliczne.tytul": "postępowania o udzielenie zamówienia w trybie negocjacji z ogłoszeniem pn. \"Świadczenie usług pocztowych i kurierskich na potrzeby urzędu\""
+    },
+    "citation_ok": {
+      "OdwolanieKIO.data": true,
+      "OdwolanieKIO.czynnosc_dzien": true,
+      "OdwolanieKIO.czynnosc_powod_id": true,
+      "OdwolanieKIO.miejscowosc": true,
+      "Odwolujacy[0].krs": true,
+      "Odwolujacy[0].nazwa": true,
+      "Odwolujacy[0].nip": true,
+      "Odwolujacy[0].regon": true,
+      "Odwolujacy[0].przez-pelnomocnika": true,
+      "Odwolujacy[0].pelnomocnik.imie_nazwisko": true,
+      "Odwolujacy[0].pelnomocnik.nazwa": true,
+      "Odwolujacy[0].pelnomocnik.mail": true,
+      "Zamawiajacy[0].krs": true,
+      "Zamawiajacy[0].nazwa": true,
+      "Zamawiajacy[0].nip": true,
+      "Zamawiajacy[0].regon": true,
+      "ZamowieniePubliczne.numer_postepowania": true,
+      "ZamowieniePubliczne.numer_ted": true,
+      "ZamowieniePubliczne.tytul": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

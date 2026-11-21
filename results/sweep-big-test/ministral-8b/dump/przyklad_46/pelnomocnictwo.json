@@ -1,0 +1,139 @@
+{
+  "source": "pelnomocnictwo.pdf",
+  "class": "pelnomocnictwo",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "mocodawca": [
+      {
+        "data": {
+          "imie_nazwisko": null,
+          "krs": "9997450782",
+          "nazwa": "Korvel Serwis sp. z o.o. sp.k.",
+          "nip": "9996998288",
+          "typ": "osoba_prawna"
+        },
+        "podpisujacy": [
+          {
+            "imie_nazwisko": "Wojciech Zieliński"
+          },
+          {
+            "imie_nazwisko": "Natalia Maciejewska"
+          }
+        ]
+      },
+      {
+        "data": {
+          "imie_nazwisko": null,
+          "krs": "9990093297",
+          "nazwa": "Lumerio Facility sp.j.",
+          "nip": "9999917794",
+          "typ": "osoba_prawna"
+        },
+        "podpisujacy": [
+          {
+            "imie_nazwisko": "Wojciech Majewski"
+          }
+        ]
+      }
+    ],
+    "pelnomocnicy": [
+      {
+        "imie_nazwisko": "Rafał Piotrowski",
+        "pesel": null
+      },
+      {
+        "imie_nazwisko": "Rafał Czajka",
+        "pesel": null
+      }
+    ]
+  },
+  "reference": {
+    "mocodawca": [
+      {
+        "data": {
+          "imie_nazwisko": null,
+          "krs": "9997450782",
+          "nazwa": "Korvel Serwis sp. z o.o. sp.k.",
+          "nip": "9996998288",
+          "typ": "osoba_prawna"
+        },
+        "podpisujacy": [
+          {
+            "imie_nazwisko": "Wojciech Zieliński"
+          },
+          {
+            "imie_nazwisko": "Natalia Maciejewska"
+          }
+        ]
+      },
+      {
+        "data": {
+          "imie_nazwisko": null,
+          "krs": "9990093297",
+          "nazwa": "Lumerio Facility sp.j.",
+          "nip": "9999917794",
+          "typ": "osoba_prawna"
+        },
+        "podpisujacy": [
+          {
+            "imie_nazwisko": "Wojciech Majewski"
+          }
+        ]
+      }
+    ],
+    "pelnomocnicy": [
+      {
+        "imie_nazwisko": "Rafał Piotrowski",
+        "pesel": null
+      },
+      {
+        "imie_nazwisko": "Rafał Czajka",
+        "pesel": null
+      }
+    ]
+  },
+  "diffs": [],
+  "trace": {
+    "source": "pelnomocnictwo.pdf",
+    "class": "pelnomocnictwo",
+    "ocr_used": false,
+    "quotes": {
+      "mocodawca[0].data.imie_nazwisko": null,
+      "mocodawca[0].data.krs": "KRS 9997450782",
+      "mocodawca[0].data.nazwa": "Korvel Serwis sp. z o.o. sp.k.",
+      "mocodawca[0].data.nip": "NIP 9996998288",
+      "mocodawca[0].data.typ": "sp. z o.o. sp.k.",
+      "mocodawca[0].podpisujacy[0].imie_nazwisko": "Wojciech Zieliński",
+      "mocodawca[0].podpisujacy[1].imie_nazwisko": "Natalia Maciejewska",
+      "mocodawca[1].data.imie_nazwisko": null,
+      "mocodawca[1].data.krs": "KRS 9990093297",
+      "mocodawca[1].data.nazwa": "Lumerio Facility sp.j.",
+      "mocodawca[1].data.nip": "NIP 9999917794",
+      "mocodawca[1].data.typ": "sp.j.",
+      "mocodawca[1].podpisujacy[0].imie_nazwisko": "Wojciech Majewski",
+      "pelnomocnicy[0].imie_nazwisko": "r. pr. Rafał Piotrowski",
+      "pelnomocnicy[0].pesel": null,
+      "pelnomocnicy[1].imie_nazwisko": "r. pr. Rafał Czajka",
+      "pelnomocnicy[1].pesel": null
+    },
+    "citation_ok": {
+      "mocodawca[0].data.krs": true,
+      "mocodawca[0].data.nazwa": true,
+      "mocodawca[0].data.nip": true,
+      "mocodawca[0].data.typ": true,
+      "mocodawca[0].podpisujacy[0].imie_nazwisko": true,
+      "mocodawca[0].podpisujacy[1].imie_nazwisko": true,
+      "mocodawca[1].data.krs": true,
+      "mocodawca[1].data.nazwa": true,
+      "mocodawca[1].data.nip": true,
+      "mocodawca[1].data.typ": true,
+      "mocodawca[1].podpisujacy[0].imie_nazwisko": true,
+      "pelnomocnicy[0].imie_nazwisko": true,
+      "pelnomocnicy[1].imie_nazwisko": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

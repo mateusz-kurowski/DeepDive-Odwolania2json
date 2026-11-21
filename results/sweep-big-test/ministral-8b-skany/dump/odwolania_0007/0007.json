@@ -1,0 +1,153 @@
+{
+  "source": "0007.pdf",
+  "class": "odwolanie",
+  "error": null,
+  "ocr_used": true,
+  "prediction": {
+    "OdwolanieKIO": {
+      "data": "2026-03-19",
+      "czynnosc_dzien": "2026-03-14",
+      "czynnosc_powod_id": 4,
+      "czynnosc_opis": "Publikacja specyfikacji warunków zamówienia (SWZ)",
+      "miejscowosc": "Gdynia"
+    },
+    "Odwolujacy": [
+      {
+        "krs": "9998767758",
+        "nazwa": "Tervana Systemy Informatyczne sp. k.",
+        "nip": "9993437059",
+        "regon": "999211631",
+        "przez-pelnomocnika": 1,
+        "pelnomocnik": {
+          "imie_nazwisko": "Dorota Kubiak",
+          "nazwa": "Kancelaria Radcy Prawnego Dorota Kubiak",
+          "mail": "biuro@kubiak-kancelaria.example"
+        }
+      }
+    ],
+    "Zamawiajacy": [
+      {
+        "krs": null,
+        "nazwa": "Muzeum Regionalne w Olszanowie",
+        "nip": "9997788146",
+        "regon": "999568882",
+        "prowadzacy_postepowanie": null
+      }
+    ],
+    "ZamowieniePubliczne": {
+      "numer_bzp": null,
+      "numer_postepowania": "ZP.271.59.2026",
+      "numer_ted": "706707-2026",
+      "tytul": "Usługa ochrony fizycznej osób i mienia w obiektach Zamawiającego"
+    }
+  },
+  "reference": {
+    "OdwolanieKIO": {
+      "data": "2026-03-19",
+      "czynnosc_dzien": "2026-03-14",
+      "czynnosc_powod_id": 12,
+      "czynnosc_opis": "Projektowane postanowienia umowy",
+      "miejscowosc": "Gdynia"
+    },
+    "Odwolujacy": [
+      {
+        "krs": "9998767758",
+        "nazwa": "Tervana Systemy Informatyczne sp. k.",
+        "nip": "9993437059",
+        "regon": "999211631",
+        "przez-pelnomocnika": 1,
+        "pelnomocnik": {
+          "imie_nazwisko": "Dorota Kubiak",
+          "nazwa": "Kancelaria Radcy Prawnego Dorota Kubiak",
+          "mail": "d.kubiak@kubiak-kancelaria.example"
+        }
+      }
+    ],
+    "Zamawiajacy": [
+      {
+        "krs": null,
+        "nazwa": "Muzeum Regionalne w Olszanowie",
+        "nip": "9997788146",
+        "regon": "999568882",
+        "prowadzacy_postepowanie": null
+      }
+    ],
+    "ZamowieniePubliczne": {
+      "numer_bzp": null,
+      "numer_postepowania": "ZP.271.59.2026",
+      "numer_ted": "706707-2026",
+      "tytul": "Usługa ochrony fizycznej osób i mienia w obiektach Zamawiającego"
+    }
+  },
+  "diffs": [
+    {
+      "field": "OdwolanieKIO.czynnosc_opis",
+      "predicted": "publikacja specyfikacji warunków zamówienia (swz)",
+      "expected": "projektowane postanowienia umowy",
+      "status": "wrong"
+    },
+    {
+      "field": "OdwolanieKIO.czynnosc_powod_id",
+      "predicted": 4.0,
+      "expected": 12.0,
+      "status": "wrong"
+    },
+    {
+      "field": "Odwolujacy[krs=9998767758].pelnomocnik.mail",
+      "predicted": "biuro@kubiak-kancelaria.example",
+      "expected": "d.kubiak@kubiak-kancelaria.example",
+      "status": "wrong"
+    }
+  ],
+  "trace": {
+    "source": "0007.pdf",
+    "class": "odwolanie",
+    "ocr_used": true,
+    "quotes": {
+      "OdwolanieKIO.data": "Gdynia, 19.03.2026 r.",
+      "OdwolanieKIO.czynnosc_dzien": "projektowanych postanowień umowy (PPU), stanowiąących załącznik nr 4 do SWZ, opublikowanych w dniu 14.03.2026 r.",
+      "OdwolanieKIO.czynnosc_powod_id": "projektowanych postanowień umowy (PPU), stanowiąących załącznik nr 4 do SWZ, opublikowanych w dniu 14.03.2026 r.",
+      "OdwolanieKIO.miejscowosc": "Gdynia, 19.03.2026 r.",
+      "Odwolujacy[0].krs": "KRS: 9998767758",
+      "Odwolujacy[0].nazwa": "Tervana Systemy Informatyczne sp. k. (Lider Konsorcjum)",
+      "Odwolujacy[0].nip": "NIP: 9993437059",
+      "Odwolujacy[0].regon": "REGON: 999211631",
+      "Odwolujacy[0].przez-pelnomocnika": "reprezentowany przez pełnomocnika: radca prawny Dorota Kubiak",
+      "Odwolujacy[0].pelnomocnik.imie_nazwisko": "radca prawny Dorota Kubiak",
+      "Odwolujacy[0].pelnomocnik.nazwa": "adres do korespondencji: Kancelaria Radcy Prawnego Dorota Kubiak",
+      "Odwolujacy[0].pelnomocnik.mail": "e-mail: d.kubiak@kubiak-kancelaria.example",
+      "Zamawiajacy[0].krs": null,
+      "Zamawiajacy[0].nazwa": "Zamawiający: Muzeum Regionalne w Olszanowie",
+      "Zamawiajacy[0].nip": "NIP: 9997788146",
+      "Zamawiajacy[0].regon": "REGON: 999568882",
+      "Zamawiajacy[0].prowadzacy_postepowanie": null,
+      "ZamowieniePubliczne.numer_bzp": null,
+      "ZamowieniePubliczne.numer_postepowania": "nr referencyjny: ZP.271.59.2026",
+      "ZamowieniePubliczne.numer_ted": "ogłoszenie w Dzienniku Urzędowym Unii Europejskiej nr 2026/S 153-706707",
+      "ZamowieniePubliczne.tytul": "pn. \"Usługa ochrony fizycznej osób i mienia w obiektach Zamawiającego\""
+    },
+    "citation_ok": {
+      "OdwolanieKIO.data": true,
+      "OdwolanieKIO.czynnosc_dzien": true,
+      "OdwolanieKIO.czynnosc_powod_id": true,
+      "OdwolanieKIO.miejscowosc": true,
+      "Odwolujacy[0].krs": true,
+      "Odwolujacy[0].nazwa": true,
+      "Odwolujacy[0].nip": true,
+      "Odwolujacy[0].regon": true,
+      "Odwolujacy[0].przez-pelnomocnika": true,
+      "Odwolujacy[0].pelnomocnik.imie_nazwisko": true,
+      "Odwolujacy[0].pelnomocnik.nazwa": true,
+      "Odwolujacy[0].pelnomocnik.mail": true,
+      "Zamawiajacy[0].nazwa": true,
+      "Zamawiajacy[0].nip": true,
+      "Zamawiajacy[0].regon": true,
+      "ZamowieniePubliczne.numer_postepowania": true,
+      "ZamowieniePubliczne.numer_ted": true,
+      "ZamowieniePubliczne.tytul": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

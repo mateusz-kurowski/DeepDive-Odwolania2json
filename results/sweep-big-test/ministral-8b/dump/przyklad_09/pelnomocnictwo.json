@@ -1,0 +1,92 @@
+{
+  "source": "pelnomocnictwo.pdf",
+  "class": "pelnomocnictwo",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "mocodawca": [
+      {
+        "data": {
+          "imie_nazwisko": null,
+          "krs": "9996772331",
+          "nazwa": "Iberis Sieci sp. z o.o.",
+          "nip": "9990796243",
+          "typ": "osoba_prawna"
+        },
+        "podpisujacy": [
+          {
+            "imie_nazwisko": "Dorota Borkowski"
+          }
+        ]
+      }
+    ],
+    "pelnomocnicy": [
+      {
+        "imie_nazwisko": "Weronika Kaczmarek",
+        "pesel": null
+      },
+      {
+        "imie_nazwisko": "Weronika Chmielewski",
+        "pesel": null
+      }
+    ]
+  },
+  "reference": {
+    "mocodawca": [
+      {
+        "data": {
+          "imie_nazwisko": null,
+          "krs": "9996772331",
+          "nazwa": "Iberis Sieci sp. z o.o.",
+          "nip": "9990796243",
+          "typ": "osoba_prawna"
+        },
+        "podpisujacy": [
+          {
+            "imie_nazwisko": "Dorota Borkowski"
+          }
+        ]
+      }
+    ],
+    "pelnomocnicy": [
+      {
+        "imie_nazwisko": "Weronika Kaczmarek",
+        "pesel": null
+      },
+      {
+        "imie_nazwisko": "Weronika Chmielewski",
+        "pesel": null
+      }
+    ]
+  },
+  "diffs": [],
+  "trace": {
+    "source": "pelnomocnictwo.pdf",
+    "class": "pelnomocnictwo",
+    "ocr_used": false,
+    "quotes": {
+      "mocodawca[0].data.imie_nazwisko": null,
+      "mocodawca[0].data.krs": "wpisanej do rejestru przedsiębiorców Krajowego Rejestru Sądowego pod numerem KRS 9996772331",
+      "mocodawca[0].data.nazwa": "Działając w imieniu Iberis Sieci sp. z o.o. (dalej: \"Wykonawca\")",
+      "mocodawca[0].data.nip": "posiadającej NIP 9990796243",
+      "mocodawca[0].data.typ": "Działając w imieniu Iberis Sieci sp. z o.o.",
+      "mocodawca[0].podpisujacy[0].imie_nazwisko": "Dorota Borkowski",
+      "pelnomocnicy[0].imie_nazwisko": "r. pr. Weronika Kaczmarek",
+      "pelnomocnicy[0].pesel": null,
+      "pelnomocnicy[1].imie_nazwisko": "r. pr. Weronika Chmielewski",
+      "pelnomocnicy[1].pesel": null
+    },
+    "citation_ok": {
+      "mocodawca[0].data.krs": true,
+      "mocodawca[0].data.nazwa": true,
+      "mocodawca[0].data.nip": true,
+      "mocodawca[0].data.typ": true,
+      "mocodawca[0].podpisujacy[0].imie_nazwisko": true,
+      "pelnomocnicy[0].imie_nazwisko": true,
+      "pelnomocnicy[1].imie_nazwisko": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "source": "potwierdzenie_przelewu.pdf",
+  "class": "przelew",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-01-08",
+      "kwota": 17.0,
+      "na_rachunek": "63103194523130599171696203",
+      "numer_transakcji": "CEN2601189988232",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Dorota Sikorski i Grzegorz Szulc w postępowaniu przed KIO w przetargu ZP.246.2026 CEN2601189988232",
+      "z_rachunku": "56702530386174513642995059"
+    }
+  },
+  "reference": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-01-08",
+      "kwota": 17.0,
+      "na_rachunek": "63103194523130599171696203",
+      "numer_transakcji": "CEN2601189988232",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Dorota Sikorski i Grzegorz Szulc w postępowaniu przed KIO w przetargu ZP.246.2026 CEN2601189988232",
+      "z_rachunku": "56702530386174513642995059"
+    }
+  },
+  "diffs": [],
+  "trace": {
+    "source": "potwierdzenie_przelewu.pdf",
+    "class": "przelew",
+    "ocr_used": false,
+    "quotes": {
+      "przelew_bankowy.data_operacji": "Data wykonania",
+      "przelew_bankowy.kwota": "Wartość 17.00 PLN",
+      "przelew_bankowy.na_rachunek": "Rachunek odbiorcy 63103194523130599171696203",
+      "przelew_bankowy.numer_transakcji": "Identyfikator operacji CEN2601189988232",
+      "przelew_bankowy.tytul": "Tytułem opłata skarbowa od pełnomocnictwa dla Dorota Sikorski i Grzegorz Szulc w postępowaniu przed KIO w przetargu ZP.246.2026 CEN2601189988232",
+      "przelew_bankowy.z_rachunku": "Rachunek zleceniodawcy 56702530386174513642995059"
+    },
+    "citation_ok": {
+      "przelew_bankowy.data_operacji": true,
+      "przelew_bankowy.kwota": true,
+      "przelew_bankowy.na_rachunek": true,
+      "przelew_bankowy.numer_transakcji": true,
+      "przelew_bankowy.tytul": true,
+      "przelew_bankowy.z_rachunku": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

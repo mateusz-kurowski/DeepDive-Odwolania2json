@@ -1,0 +1,44 @@
+{
+  "source": "prowadzenie_postepowania_odwolawczego.pdf",
+  "class": "odwolanie",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "OdwolanieKIO": {
+      "data": null,
+      "czynnosc_dzien": null,
+      "czynnosc_powod_id": null,
+      "czynnosc_opis": null,
+      "miejscowosc": null
+    },
+    "Odwolujacy": [],
+    "Zamawiajacy": [],
+    "ZamowieniePubliczne": {
+      "numer_bzp": null,
+      "numer_postepowania": null,
+      "numer_ted": null,
+      "tytul": null
+    }
+  },
+  "reference": null,
+  "diffs": [],
+  "trace": {
+    "source": "prowadzenie_postepowania_odwolawczego.pdf",
+    "class": "odwolanie",
+    "ocr_used": false,
+    "quotes": {
+      "OdwolanieKIO.data": null,
+      "OdwolanieKIO.czynnosc_dzien": null,
+      "OdwolanieKIO.czynnosc_powod_id": null,
+      "OdwolanieKIO.miejscowosc": null,
+      "ZamowieniePubliczne.numer_bzp": null,
+      "ZamowieniePubliczne.numer_postepowania": null,
+      "ZamowieniePubliczne.numer_ted": null,
+      "ZamowieniePubliczne.tytul": null
+    },
+    "citation_ok": {},
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

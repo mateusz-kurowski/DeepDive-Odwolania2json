@@ -1,0 +1,100 @@
+{
+  "source": "pelnomocnictwo.pdf",
+  "class": "pelnomocnictwo",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "mocodawca": [
+      {
+        "data": {
+          "imie_nazwisko": null,
+          "krs": "9995831483",
+          "nazwa": "Rubiconis Technologie S.A.",
+          "nip": "9998174794",
+          "typ": "osoba_prawna"
+        },
+        "podpisujacy": [
+          {
+            "imie_nazwisko": "Zbigniew Mazurkiewicz"
+          },
+          {
+            "imie_nazwisko": "Patrycja Marciniak"
+          }
+        ]
+      }
+    ],
+    "pelnomocnicy": [
+      {
+        "imie_nazwisko": "Dorota Siedlecki",
+        "pesel": null
+      },
+      {
+        "imie_nazwisko": "Ryszard Jabłończyk",
+        "pesel": null
+      }
+    ]
+  },
+  "reference": {
+    "mocodawca": [
+      {
+        "data": {
+          "imie_nazwisko": null,
+          "krs": "9995831483",
+          "nazwa": "Rubiconis Technologie S.A.",
+          "nip": "9998174794",
+          "typ": "osoba_prawna"
+        },
+        "podpisujacy": [
+          {
+            "imie_nazwisko": "Zbigniew Mazurkiewicz"
+          },
+          {
+            "imie_nazwisko": "Patrycja Marciniak"
+          }
+        ]
+      }
+    ],
+    "pelnomocnicy": [
+      {
+        "imie_nazwisko": "Dorota Siedlecki",
+        "pesel": null
+      },
+      {
+        "imie_nazwisko": "Ryszard Jabłończyk",
+        "pesel": null
+      }
+    ]
+  },
+  "diffs": [],
+  "trace": {
+    "source": "pelnomocnictwo.pdf",
+    "class": "pelnomocnictwo",
+    "ocr_used": false,
+    "quotes": {
+      "mocodawca[0].data.imie_nazwisko": null,
+      "mocodawca[0].data.krs": "KRS 9995831483",
+      "mocodawca[0].data.nazwa": "Rubiconis Technologie S.A.",
+      "mocodawca[0].data.nip": "NIP 9998174794",
+      "mocodawca[0].data.typ": "Rubiconis Technologie S.A. z siedzibą w Lublin (KRS 9995831483, NIP 9998174794,",
+      "mocodawca[0].podpisujacy[0].imie_nazwisko": "Zbigniew Mazurkiewicz",
+      "mocodawca[0].podpisujacy[1].imie_nazwisko": "Patrycja Marciniak",
+      "pelnomocnicy[0].imie_nazwisko": "adw. Dorota Siedlecki",
+      "pelnomocnicy[0].pesel": null,
+      "pelnomocnicy[1].imie_nazwisko": "r. pr. Ryszard Jabłończyk",
+      "pelnomocnicy[1].pesel": null
+    },
+    "citation_ok": {
+      "mocodawca[0].data.krs": true,
+      "mocodawca[0].data.nazwa": true,
+      "mocodawca[0].data.nip": true,
+      "mocodawca[0].data.typ": true,
+      "mocodawca[0].podpisujacy[0].imie_nazwisko": true,
+      "mocodawca[0].podpisujacy[1].imie_nazwisko": true,
+      "pelnomocnicy[0].imie_nazwisko": true,
+      "pelnomocnicy[1].imie_nazwisko": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

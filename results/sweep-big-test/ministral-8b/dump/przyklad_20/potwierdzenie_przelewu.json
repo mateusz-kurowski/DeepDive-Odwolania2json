@@ -1,0 +1,51 @@
+{
+  "source": "potwierdzenie_przelewu.pdf",
+  "class": "przelew",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-05-12",
+      "kwota": 17.0,
+      "na_rachunek": "81296583508215258243090935",
+      "numer_transakcji": "CEN2605272985635",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Aleksandra Wierzbicka i Jolanta Najder w postępowaniu przed KIO w przetargu DI.228.2026 CEN2605272985635",
+      "z_rachunku": "83849557122740895669356241"
+    }
+  },
+  "reference": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-05-12",
+      "kwota": 17.0,
+      "na_rachunek": "81296583508215258243090935",
+      "numer_transakcji": "CEN2605272985635",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Aleksandra Wierzbicka i Jolanta Najder w postępowaniu przed KIO w przetargu DI.228.2026 CEN2605272985635",
+      "z_rachunku": "83849557122740895669356241"
+    }
+  },
+  "diffs": [],
+  "trace": {
+    "source": "potwierdzenie_przelewu.pdf",
+    "class": "przelew",
+    "ocr_used": false,
+    "quotes": {
+      "przelew_bankowy.data_operacji": "Data operacji: 12-05-2026",
+      "przelew_bankowy.kwota": "Kwota operacji: 17,00 zł",
+      "przelew_bankowy.na_rachunek": "Na rachunek: PL81 2965 8350 8215 2582 4309 0935",
+      "przelew_bankowy.numer_transakcji": "Nr ref.: CEN2605272985635",
+      "przelew_bankowy.tytul": "Tytuł przelewu: opłata skarbowa od pełnomocnictwa dla Aleksandra Wierzbicka i Jolanta Najder w postępowaniu przed KIO w przetargu DI.228.2026 CEN2605272985635",
+      "przelew_bankowy.z_rachunku": "Z rachunku: PL83 8495 5712 2740 8956 6935 6241"
+    },
+    "citation_ok": {
+      "przelew_bankowy.data_operacji": true,
+      "przelew_bankowy.kwota": true,
+      "przelew_bankowy.na_rachunek": true,
+      "przelew_bankowy.numer_transakcji": true,
+      "przelew_bankowy.tytul": true,
+      "przelew_bankowy.z_rachunku": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

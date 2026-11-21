@@ -1,0 +1,131 @@
+{
+  "source": "pelnomocnictwo.pdf",
+  "class": "pelnomocnictwo",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "mocodawca": [
+      {
+        "data": {
+          "imie_nazwisko": null,
+          "krs": "9999233530",
+          "nazwa": "Helvix Eko-Serwis sp.k.",
+          "nip": "9995558958",
+          "typ": "osoba_prawna"
+        },
+        "podpisujacy": [
+          {
+            "imie_nazwisko": "Teresa Sadowska"
+          }
+        ]
+      },
+      {
+        "data": {
+          "imie_nazwisko": null,
+          "krs": "9998728887",
+          "nazwa": "Nexalia Środowisko S.A.",
+          "nip": "9996504966",
+          "typ": "osoba_prawna"
+        },
+        "podpisujacy": [
+          {
+            "imie_nazwisko": "Paweł Wieczorek"
+          }
+        ]
+      }
+    ],
+    "pelnomocnicy": [
+      {
+        "imie_nazwisko": "Bartosz Rutkowski",
+        "pesel": null
+      },
+      {
+        "imie_nazwisko": "Olga Bąk",
+        "pesel": null
+      }
+    ]
+  },
+  "reference": {
+    "mocodawca": [
+      {
+        "data": {
+          "imie_nazwisko": null,
+          "krs": "9999233530",
+          "nazwa": "Helvix Eko-Serwis sp.k.",
+          "nip": "9995558958",
+          "typ": "osoba_prawna"
+        },
+        "podpisujacy": [
+          {
+            "imie_nazwisko": "Teresa Sadowska"
+          }
+        ]
+      },
+      {
+        "data": {
+          "imie_nazwisko": null,
+          "krs": "9998728887",
+          "nazwa": "Nexalia Środowisko S.A.",
+          "nip": "9996504966",
+          "typ": "osoba_prawna"
+        },
+        "podpisujacy": [
+          {
+            "imie_nazwisko": "Paweł Wieczorek"
+          }
+        ]
+      }
+    ],
+    "pelnomocnicy": [
+      {
+        "imie_nazwisko": "Bartosz Rutkowski",
+        "pesel": null
+      },
+      {
+        "imie_nazwisko": "Olga Bąk",
+        "pesel": null
+      }
+    ]
+  },
+  "diffs": [],
+  "trace": {
+    "source": "pelnomocnictwo.pdf",
+    "class": "pelnomocnictwo",
+    "ocr_used": false,
+    "quotes": {
+      "mocodawca[0].data.imie_nazwisko": null,
+      "mocodawca[0].data.krs": "KRS 9999233530",
+      "mocodawca[0].data.nazwa": "Helvix Eko-Serwis sp.k.",
+      "mocodawca[0].data.nip": "NIP 9995558958",
+      "mocodawca[0].data.typ": "sp.k.",
+      "mocodawca[0].podpisujacy[0].imie_nazwisko": "Teresa Sadowska",
+      "mocodawca[1].data.imie_nazwisko": null,
+      "mocodawca[1].data.krs": "KRS 9998728887",
+      "mocodawca[1].data.nazwa": "Nexalia Środowisko S.A.",
+      "mocodawca[1].data.nip": "NIP 9996504966",
+      "mocodawca[1].data.typ": "S.A.",
+      "mocodawca[1].podpisujacy[0].imie_nazwisko": "Paweł Wieczorek",
+      "pelnomocnicy[0].imie_nazwisko": "adw. Bartosz Rutkowski",
+      "pelnomocnicy[0].pesel": null,
+      "pelnomocnicy[1].imie_nazwisko": "adw. Olga Bąk",
+      "pelnomocnicy[1].pesel": null
+    },
+    "citation_ok": {
+      "mocodawca[0].data.krs": true,
+      "mocodawca[0].data.nazwa": true,
+      "mocodawca[0].data.nip": true,
+      "mocodawca[0].data.typ": true,
+      "mocodawca[0].podpisujacy[0].imie_nazwisko": true,
+      "mocodawca[1].data.krs": true,
+      "mocodawca[1].data.nazwa": true,
+      "mocodawca[1].data.nip": true,
+      "mocodawca[1].data.typ": true,
+      "mocodawca[1].podpisujacy[0].imie_nazwisko": true,
+      "pelnomocnicy[0].imie_nazwisko": true,
+      "pelnomocnicy[1].imie_nazwisko": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

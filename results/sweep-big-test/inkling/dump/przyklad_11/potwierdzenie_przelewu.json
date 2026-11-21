@@ -1,0 +1,51 @@
+{
+  "source": "potwierdzenie_przelewu.pdf",
+  "class": "przelew",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-08-03",
+      "kwota": 200.0,
+      "na_rachunek": "04669325299404954519396033",
+      "numer_transakcji": "CEN2608263063380",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Cezary Bartoszewicz w postępowaniu przed KIO w przetargu DI.529.2026 CEN2608263063380",
+      "z_rachunku": "55773565366491997400614103"
+    }
+  },
+  "reference": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-08-03",
+      "kwota": 200.0,
+      "na_rachunek": "04669325299404954519396033",
+      "numer_transakcji": "CEN2608263063380",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Cezary Bartoszewicz w postępowaniu przed KIO w przetargu DI.529.2026 CEN2608263063380",
+      "z_rachunku": "55773565366491997400614103"
+    }
+  },
+  "diffs": [],
+  "trace": {
+    "source": "potwierdzenie_przelewu.pdf",
+    "class": "przelew",
+    "ocr_used": false,
+    "quotes": {
+      "przelew_bankowy.data_operacji": "Data transakcji\n03-08-2026",
+      "przelew_bankowy.kwota": "Kwota operacji\n200,00",
+      "przelew_bankowy.na_rachunek": "Na rachunek: PL04 6693 2529 9404 9545 1939 6033",
+      "przelew_bankowy.numer_transakcji": "Numer referencyjny\nCEN2608263063380",
+      "przelew_bankowy.tytul": "Opis\nopłata skarbowa od pełnomocnictwa dla Cezary Bartoszewicz w postępowaniu przed KIO w przetargu\nDI.529.2026 CEN2608263063380",
+      "przelew_bankowy.z_rachunku": "Rachunek nadawcy: PL55 7735 6536 6491 9974 0061 4103"
+    },
+    "citation_ok": {
+      "przelew_bankowy.data_operacji": true,
+      "przelew_bankowy.kwota": true,
+      "przelew_bankowy.na_rachunek": true,
+      "przelew_bankowy.numer_transakcji": true,
+      "przelew_bankowy.tytul": true,
+      "przelew_bankowy.z_rachunku": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

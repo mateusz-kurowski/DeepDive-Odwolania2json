@@ -1,0 +1,134 @@
+{
+  "source": "odwolanie.pdf",
+  "class": "odwolanie",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "OdwolanieKIO": {
+      "data": null,
+      "czynnosc_dzien": "2026-05-06",
+      "czynnosc_powod_id": 6,
+      "czynnosc_opis": "Odpowiedzi/wyjaśnienia do SWZ",
+      "miejscowosc": null
+    },
+    "Odwolujacy": [
+      {
+        "krs": "9996527940",
+        "nazwa": "Holdex Dystrybucja Medyczna sp. z o.o.",
+        "nip": "9998884068",
+        "regon": "999881092",
+        "przez-pelnomocnika": 1,
+        "pelnomocnik": {
+          "imie_nazwisko": "Renata Kowalczyk",
+          "nazwa": "Kowalczyk Legal Kancelaria Radców Prawnych sp. z o.o.",
+          "mail": "sekretariat@kowalczyk.example"
+        }
+      }
+    ],
+    "Zamawiajacy": [
+      {
+        "krs": "9994890373",
+        "nazwa": "Szpital Specjalistyczny im. Jana Pawła II w Brzozówce",
+        "nip": "9994537600",
+        "regon": "999255628",
+        "prowadzacy_postepowanie": null
+      }
+    ],
+    "ZamowieniePubliczne": {
+      "numer_bzp": "2026/BZP00999283",
+      "numer_postepowania": "IR.271-35/2026",
+      "numer_ted": "999493-2026",
+      "tytul": "Sukcesywna dostawa produktów leczniczych w podziale na 12 pakietów"
+    }
+  },
+  "reference": {
+    "OdwolanieKIO": {
+      "data": null,
+      "czynnosc_dzien": "2026-05-06",
+      "czynnosc_powod_id": 6,
+      "czynnosc_opis": "Odpowiedzi/wyjaśnienia do SWZ",
+      "miejscowosc": null
+    },
+    "Odwolujacy": [
+      {
+        "krs": "9996527940",
+        "nazwa": "Holdex Dystrybucja Medyczna sp. z o.o.",
+        "nip": "9998884068",
+        "regon": "999881092",
+        "przez-pelnomocnika": 1,
+        "pelnomocnik": {
+          "imie_nazwisko": "Renata Kowalczyk",
+          "nazwa": "Kowalczyk Legal Kancelaria Radców Prawnych sp. z o.o.",
+          "mail": "sekretariat@kowalczyk.example"
+        }
+      }
+    ],
+    "Zamawiajacy": [
+      {
+        "krs": "9994890373",
+        "nazwa": "Szpital Specjalistyczny im. Jana Pawła II w Brzozówce",
+        "nip": "9994537600",
+        "regon": "999255628",
+        "prowadzacy_postepowanie": null
+      }
+    ],
+    "ZamowieniePubliczne": {
+      "numer_bzp": "2026/BZP00999283",
+      "numer_postepowania": "IR.271-35/2026",
+      "numer_ted": "999493-2026",
+      "tytul": "Sukcesywna dostawa produktów leczniczych w podziale na 12 pakietów"
+    }
+  },
+  "diffs": [],
+  "trace": {
+    "source": "odwolanie.pdf",
+    "class": "odwolanie",
+    "ocr_used": false,
+    "quotes": {
+      "OdwolanieKIO.data": null,
+      "OdwolanieKIO.czynnosc_dzien": "Zamawiający w dniu 6 maja 2026 roku udzielił odpowiedzi na pytania wykonawców i wyjaśnień treści SWZ.",
+      "OdwolanieKIO.czynnosc_powod_id": "Zamawiający w dniu 6 maja 2026 roku udzielił odpowiedzi na pytania wykonawców i wyjaśnień treści SWZ.",
+      "OdwolanieKIO.miejscowosc": null,
+      "Odwolujacy[0].krs": "KRS: 9996527940",
+      "Odwolujacy[0].nazwa": "Holdex Dystrybucja Medyczna sp. z o.o.",
+      "Odwolujacy[0].nip": "NIP: 9998884068",
+      "Odwolujacy[0].regon": "REGON: 999881092",
+      "Odwolujacy[0].przez-pelnomocnika": "reprezentowany przez: r. pr. Renata Kowalczyk, r. pr. Renata Jabłońska",
+      "Odwolujacy[0].pelnomocnik.imie_nazwisko": "r. pr. Renata Kowalczyk",
+      "Odwolujacy[0].pelnomocnik.nazwa": "adres do korespondencji: Kowalczyk Legal Kancelaria Radców Prawnych sp. z o.o.",
+      "Odwolujacy[0].pelnomocnik.mail": "e-mail: sekretariat@kowalczyk.example",
+      "Zamawiajacy[0].krs": "KRS: 9994890373",
+      "Zamawiajacy[0].nazwa": "Szpital Specjalistyczny im. Jana Pawła II w Brzozówce",
+      "Zamawiajacy[0].nip": "NIP: 9994537600",
+      "Zamawiajacy[0].regon": "REGON: 999255628",
+      "Zamawiajacy[0].prowadzacy_postepowanie": null,
+      "ZamowieniePubliczne.numer_bzp": "ogłoszenie o zamówieniu w Biuletynie Zamówień Publicznych nr 2026/BZP 00999283",
+      "ZamowieniePubliczne.numer_postepowania": "nr referencyjny: IR.271-35/2026",
+      "ZamowieniePubliczne.numer_ted": "ogłoszenie w Dzienniku Urzędowym Unii Europejskiej nr 2026/S 150-999493",
+      "ZamowieniePubliczne.tytul": "pn. \"Sukcesywna dostawa produktów leczniczych w podziale na 12 pakietów\""
+    },
+    "citation_ok": {
+      "OdwolanieKIO.czynnosc_dzien": true,
+      "OdwolanieKIO.czynnosc_powod_id": true,
+      "Odwolujacy[0].krs": true,
+      "Odwolujacy[0].nazwa": true,
+      "Odwolujacy[0].nip": true,
+      "Odwolujacy[0].regon": true,
+      "Odwolujacy[0].przez-pelnomocnika": true,
+      "Odwolujacy[0].pelnomocnik.imie_nazwisko": true,
+      "Odwolujacy[0].pelnomocnik.nazwa": true,
+      "Odwolujacy[0].pelnomocnik.mail": true,
+      "Zamawiajacy[0].krs": true,
+      "Zamawiajacy[0].nazwa": true,
+      "Zamawiajacy[0].nip": true,
+      "Zamawiajacy[0].regon": true,
+      "ZamowieniePubliczne.numer_bzp": true,
+      "ZamowieniePubliczne.numer_postepowania": true,
+      "ZamowieniePubliczne.numer_ted": true,
+      "ZamowieniePubliczne.tytul": true
+    },
+    "nulled": [],
+    "retries": 1,
+    "truncated": false
+  }
+}

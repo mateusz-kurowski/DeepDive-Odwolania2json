@@ -1,0 +1,81 @@
+{
+  "source": "pelnomocnictwo.pdf",
+  "class": "pelnomocnictwo",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "mocodawca": [
+      {
+        "data": {
+          "imie_nazwisko": null,
+          "krs": "9991877493",
+          "nazwa": "Silvatica Automatyka sp. k.",
+          "nip": "9995501241",
+          "typ": "osoba_prawna"
+        },
+        "podpisujacy": [
+          {
+            "imie_nazwisko": "Sławomir Jabłoński"
+          }
+        ]
+      }
+    ],
+    "pelnomocnicy": [
+      {
+        "imie_nazwisko": "Norbert Szulc",
+        "pesel": null
+      }
+    ]
+  },
+  "reference": {
+    "mocodawca": [
+      {
+        "data": {
+          "imie_nazwisko": null,
+          "krs": "9991877493",
+          "nazwa": "Silvatica Automatyka sp. k.",
+          "nip": "9995501241",
+          "typ": "osoba_prawna"
+        },
+        "podpisujacy": [
+          {
+            "imie_nazwisko": "Sławomir Jabłoński"
+          }
+        ]
+      }
+    ],
+    "pelnomocnicy": [
+      {
+        "imie_nazwisko": "Norbert Szulc",
+        "pesel": null
+      }
+    ]
+  },
+  "diffs": [],
+  "trace": {
+    "source": "pelnomocnictwo.pdf",
+    "class": "pelnomocnictwo",
+    "ocr_used": false,
+    "quotes": {
+      "mocodawca[0].data.imie_nazwisko": null,
+      "mocodawca[0].data.krs": "wpisanej do rejestru przedsiębiorców Krajowego Rejestru Sądowego pod numerem KRS 9991877493",
+      "mocodawca[0].data.nazwa": "Silvatica Automatyka sp. k. (dalej: \"Wykonawca\")",
+      "mocodawca[0].data.nip": "posiadającej NIP 9995501241",
+      "mocodawca[0].data.typ": "Silvatica Automatyka sp. k.",
+      "mocodawca[0].podpisujacy[0].imie_nazwisko": "Sławomir Jabłoński",
+      "pelnomocnicy[0].imie_nazwisko": "adw. Norbert Szulc",
+      "pelnomocnicy[0].pesel": null
+    },
+    "citation_ok": {
+      "mocodawca[0].data.krs": true,
+      "mocodawca[0].data.nazwa": true,
+      "mocodawca[0].data.nip": true,
+      "mocodawca[0].data.typ": true,
+      "mocodawca[0].podpisujacy[0].imie_nazwisko": true,
+      "pelnomocnicy[0].imie_nazwisko": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}
