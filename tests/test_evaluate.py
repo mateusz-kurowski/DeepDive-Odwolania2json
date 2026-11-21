@@ -382,3 +382,28 @@ def test_evaluate_scan_layout_resolves_reference_class_by_keys(
     report = evaluate(tmp_path / "skany", demo_classes[1], llm, Settings(llm_model="m"), workers=1)
     assert report.classified_total == 1 and report.classified_ok == 1
     assert report.micro_f1 == 1.0
+
+
+def test_evaluate_same_class_twice_in_one_folder_paired_by_file_name(
+    tmp_path, demo_classes, fake_llm, monkeypatch
+):
+    from conftest import DEMO_TEXT, extraction
+
+    from src import pipeline
+    from src.textextract import DocText
+
+    monkeypatch.setattr(
+        pipeline, "read_pdf", lambda path, settings=None: DocText(DEMO_TEXT, 1, False)
+    )
+    example = tmp_path / "dane" / "przyklad_01"
+    example.mkdir(parents=True)
+    for name in ("a", "b"):
+        (example / f"{name}.pdf").write_bytes(b"%PDF")
+        (example / f"{name}.json").write_text(
+            json.dumps({"nip": "5270000000", "tytul": "Budowa drogi"}), encoding="utf-8"
+        )
+    llm = fake_llm([classification(), extraction(), classification(), extraction()])
+    report = evaluate(tmp_path / "dane", demo_classes[1], llm, Settings(llm_model="m"), workers=1)
+    assert report.classified_total == 2 and report.classified_ok == 2
+    assert report.docs == 2
+    assert report.fp_total == 0 and report.micro_f1 == 1.0
