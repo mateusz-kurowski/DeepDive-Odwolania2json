@@ -1,0 +1,6 @@
+# Tylko lokalnie (docker compose ładuje ten plik automatycznie; Coolify go nie używa).
+# Publikuje UI na http://localhost:${WEB_PORT:-8080}. Zmienne z .env trafiają do compose automatycznie.
+services:
+  web:
+    ports:
+      - "127.0.0.1:${WEB_PORT:-8080}:80"

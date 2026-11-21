@@ -1,40 +1,87 @@
-# `docker compose up --build` → UI na http://localhost:8080 (front: nginx, API: FastAPI).
-# Konfiguracja w .env (patrz .env.example). Bez S3_BUCKET pliki i wyniki idą do ./storage;
-# z S3_BUCKET (+ S3_ENDPOINT_URL dla MinIO) do object storage.
+# Wdrożenie na Coolify: Resource → Docker Compose (build pack) → to repo, plik docker-compose.yml.
+#   - Zmienne środowiskowe (klucze, S3, model) ustawiasz w UI Coolify (Environment Variables);
+#     Coolify sam wykrywa `${...}` poniżej. Pliku .env nie ma w repo i nie jest potrzebny.
+#   - Domenę nadaj usłudze `web` (port 80) w UI albo zostaw automatyczną z SERVICE_FQDN_WEB_80.
+#     Proxy (Traefik) i TLS robi Coolify, dlatego brak `ports:`.
+# Lokalnie: `docker compose up --build` + zmienne w .env (patrz .env.example) → UI na http://localhost:8080
+#   (port 8080 publikuje docker-compose.override.yml, ładowany automatycznie tylko lokalnie).
+# Bez S3_BUCKET pliki i wyniki idą do wolumenu `storage`; z S3_BUCKET do object storage.
+
+x-app-env: &app-env
+  OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+  OPENAI_BASE_URL: ${OPENAI_BASE_URL:-}
+  LLM_MODEL: ${LLM_MODEL:-}
+  EXTRACTION_MODE: ${EXTRACTION_MODE:-hybrid}
+  CITATION_THRESHOLD: ${CITATION_THRESHOLD:-85}
+  OCR_BACKEND: ${OCR_BACKEND:-vlm}
+  VLM_MODEL: ${VLM_MODEL:-}
+  VLM_BASE_URL: ${VLM_BASE_URL:-}
+  VLM_API_KEY: ${VLM_API_KEY:-}
+  LANGFUSE_SECRET_KEY: ${LANGFUSE_SECRET_KEY:-}
+  LANGFUSE_PUBLIC_KEY: ${LANGFUSE_PUBLIC_KEY:-}
+  LANGFUSE_BASE_URL: ${LANGFUSE_BASE_URL:-}
+
 services:
   api:
     build: .
     command: ["serve", "--host", "0.0.0.0", "--port", "8000"]
-    env_file: .env
+    restart: unless-stopped
+    expose:
+      - "8000"
     environment:
+      <<: *app-env
       STORAGE_DIR: /app/storage
+      MAX_UPLOAD_MB: ${MAX_UPLOAD_MB:-25}
+      DOC_WORKERS: ${DOC_WORKERS:-2}
+      S3_BUCKET: ${S3_BUCKET:-}
+      S3_ENDPOINT_URL: ${S3_ENDPOINT_URL:-}
+      S3_REGION: ${S3_REGION:-}
+      S3_ACCESS_KEY: ${S3_ACCESS_KEY:-}
+      S3_SECRET_KEY: ${S3_SECRET_KEY:-}
+      S3_CREATE_BUCKET: ${S3_CREATE_BUCKET:-false}
     volumes:
-      - ./classes:/app/classes          # schematy edytowane w UI zapisują się tutaj
-      - ./config:/app/config:ro
-      - ./data:/app/data:ro             # dane do ewaluacji zawsze lokalnie
-      - ./results:/app/results:ro       # domyślne wyniki ewaluacji (odczyt lokalny)
-      - ./storage:/app/storage          # tylko gdy brak S3_BUCKET
+      # schematy edytowane w UI; przy pierwszym starcie wolumen kopiuje classes/ z obrazu
+      - classes:/app/classes
+      # dane i domyślne wyniki ewaluacji z repo (Coolify rozwiązuje ścieżki względne do sklonowanego repo)
+      - ./data:/app/data:ro
+      - ./results:/app/results:ro
+      - storage:/app/storage            # używane tylko gdy brak S3_BUCKET
     healthcheck:
       test: ["CMD", "python", "-c", "import urllib.request as u; u.urlopen('http://localhost:8000/api/health')"]
       interval: 10s
       timeout: 3s
       retries: 5
+      start_period: 20s
 
   web:
     build: ./web
-    ports:
-      - "127.0.0.1:${WEB_PORT:-8080}:80"
+    restart: unless-stopped
+    environment:
+      # magiczna zmienna Coolify: domena dla usługi web, ruch na port 80 kontenera
+      SERVICE_FQDN_WEB_80: ""
+    expose:
+      - "80"
     depends_on:
       api:
         condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1/"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
 
-  # Przetwarzanie wsadowe z linii poleceń: docker compose run --rm app
+  # Przetwarzanie wsadowe z linii poleceń (lokalnie): docker compose --profile cli run --rm app
   app:
     profiles: ["cli"]
     build: .
-    env_file: .env
+    environment:
+      <<: *app-env
     volumes:
       - ./input:/app/input
       - ./output:/app/output
       - ./trace:/app/trace
-      - ./classes:/app/classes
+      - classes:/app/classes
+
+volumes:
+  classes:
+  storage:
