@@ -5,10 +5,12 @@ from __future__ import annotations
 import json
 import logging
 import os
+import re
 from collections.abc import Callable, Mapping
 from contextlib import asynccontextmanager
 from pathlib import Path
 from typing import Annotated, Any, Literal
+from urllib.parse import quote
 
 from fastapi import APIRouter, FastAPI, File, Request, UploadFile
 from fastapi.responses import JSONResponse, Response
@@ -49,11 +51,27 @@ class RunRequest(BaseModel):
 
 
 def _download(body: bytes, media_type: str, filename: str) -> Response:
-    return Response(
-        body,
-        media_type=media_type,
-        headers={"Content-Disposition": f'attachment; filename="{filename}"'},
+    ascii_name = re.sub(r"[^A-Za-z0-9._-]", "_", filename) or "plik"
+    disposition = (
+        f"attachment; filename=\"{ascii_name}\"; filename*=UTF-8''{quote(filename, safe='')}"
     )
+    return Response(body, media_type=media_type, headers={"Content-Disposition": disposition})
+
+
+MAX_FILES = 50
+
+
+async def _read_limited(file: UploadFile, limit: int) -> bytes:
+    """Czyta plik kawałkami i przerywa po przekroczeniu limitu (bez alokacji całości)."""
+    chunks, size = [], 0
+    while chunk := await file.read(1024 * 1024):
+        size += len(chunk)
+        if size > limit:
+            raise DocumentError(
+                f"{file.filename}: plik większy niż {limit // 1024 // 1024} MB.", 413
+            )
+        chunks.append(chunk)
+    return b"".join(chunks)
 
 
 def create_app(
@@ -118,7 +136,11 @@ def create_app(
     # --- dokumenty ---------------------------------------------------------------------------
     @api.post("/documents", status_code=201)
     async def upload(files: Annotated[list[UploadFile], File()]) -> list[dict]:
-        contents = [(f.filename or "", await f.read()) for f in files]
+        if len(files) > MAX_FILES:
+            raise DocumentError(f"Najwyżej {MAX_FILES} plików naraz.", 413)
+        contents = [
+            (f.filename or "", await _read_limited(f, documents.max_upload_bytes)) for f in files
+        ]
         for name, content in contents:  # walidacja wszystkiego przed zapisem czegokolwiek
             documents.validate_upload(name, content)
         return [documents.add(name, content) for name, content in contents]

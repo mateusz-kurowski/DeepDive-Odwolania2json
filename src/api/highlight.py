@@ -9,6 +9,11 @@ from rapidfuzz import fuzz
 
 MIN_SCORE = 85
 MAX_RECTS = 16
+MAX_SIDE = 3000  # px, dłuższy bok renderowanej strony
+
+
+class DocumentTooLarge(ValueError):
+    """Strona o nietypowym rozmiarze: nie renderujemy."""
 
 
 def _normalize(text: str) -> tuple[str, list[int]]:
@@ -89,7 +94,10 @@ def render_page(pdf_bytes: bytes, number: int, width: int = 900) -> bytes:
         if not 1 <= number <= len(pdf):
             raise IndexError(number)
         page = pdf[number - 1]
-        scale = max(width, 100) / page.get_size()[0]
+        pw, ph = page.get_size()
+        if pw <= 0 or ph <= 0 or ph / pw > 20 or pw / ph > 20:
+            raise DocumentTooLarge("nietypowy rozmiar strony")
+        scale = min(max(width, 100) / pw, MAX_SIDE / max(pw, ph))
         image = page.render(scale=scale).to_pil().convert("RGB")
         buf = io.BytesIO()
         image.save(buf, format="PNG")

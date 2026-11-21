@@ -373,6 +373,8 @@ class DocumentService:
             return highlight.render_page(self.pdf(doc_id), number, width)
         except IndexError:
             raise DocumentError("Nie ma takiej strony.", 404) from None
+        except highlight.DocumentTooLarge as exc:
+            raise DocumentError(f"Nie można wyrenderować strony: {exc}.", 422) from None
 
     # --- korekty -----------------------------------------------------------------------------
     @staticmethod
@@ -458,11 +460,17 @@ class DocumentService:
             writer.writerow(["file", "class", "path", "value"])
             for row in rows:
                 for path, value in _flat(row["data"]):
-                    writer.writerow(
-                        [row["file"], row["class"], path, "" if value is None else value]
-                    )
+                    cells = (row["file"], row["class"], path, "" if value is None else value)
+                    writer.writerow([_csv_safe(c) for c in cells])
             return buf.getvalue().encode("utf-8-sig"), "text/csv", "dokumenty.csv"
         raise DocumentError("Format eksportu: json, jsonl lub csv.", 422)
+
+
+def _csv_safe(cell: Any) -> Any:
+    """Komórka zaczynająca się od = + - @ (lub tab/CR) byłaby formułą w arkuszu."""
+    if isinstance(cell, str) and cell[:1] in ("=", "+", "-", "@", "\t", "\r"):
+        return "'" + cell
+    return cell
 
 
 def _mean(values: list[float | None]) -> float | None:

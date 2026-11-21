@@ -130,3 +130,24 @@ def test_revert_restores_model_value_and_unapprove_keeps_edit(client, pdf_bytes)
     assert r["status"] == "ai" and r["value"] == "Budowa drogi"
     r = client.patch(url, json={"path": "tytul", "value": "Budowa drogi"}).json()
     assert r["status"] == "ai"
+
+
+def test_csv_export_neutralizes_formulas_and_download_header_is_safe(client, pdf_bytes):
+    doc_id = _upload(client, pdf_bytes, 'zly"\r\nX-Evil: 1.pdf')
+    wait_for(client, doc_id)
+    client.patch(
+        f"/api/documents/{doc_id}/fields", json={"path": "tytul", "value": '=HYPERLINK("x")'}
+    )
+    r = client.post("/api/documents/export", json={"ids": [doc_id], "format": "csv"})
+    assert "'=HYPERLINK" in r.text and ",=HYPERLINK" not in r.text
+    out = client.get(f"/api/documents/{doc_id}/export")
+    disp = out.headers["content-disposition"]
+    assert (
+        "\r" not in disp and "\n" not in disp and 'filename="' in disp and "filename*=UTF-8" in disp
+    )
+
+
+def test_upload_limits(make_client, pdf_bytes):
+    with make_client() as c:
+        files = [("files", (f"{i}.pdf", pdf_bytes, "application/pdf")) for i in range(51)]
+        assert c.post("/api/documents", files=files).status_code == 413
