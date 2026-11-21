@@ -1,0 +1,38 @@
+# Seria ewaluacji: python -m src sweep sweeps/przyklad.yaml   (lub: make sweep CONFIG=sweeps/przyklad.yaml)
+# Klucz API i adres z .env (OPENAI_API_KEY, OPENAI_BASE_URL); warianty zmieniają model i ustawienia.
+out_dir: results/sweep-only-scans  # pełne wyniki: <out_dir>/<wariant>/{report.json,report.txt,dump/}, zbiorczo summary.{md,json}
+workers: 2
+# cache: .cache/llm        # opcjonalnie: cache odpowiedzi LLM (klucz zawiera nazwę modelu)
+# classes: classes
+# Wartości domyślne dla wszystkich wariantów (każdy wariant może je nadpisać):
+mode: hybrid                # hybrid | llm_only
+# limit: 10
+# examples: ["01", "02"]
+# ocr_backend: vlm          # vlm | tesseract
+# vlm_model: nazwa-modelu-z-wizja
+
+variants:
+  - name: inkling
+    model: thinkingmachines/inkling-2-mini
+    vlm_model: thinkingmachines/inkling-2-mini
+    data: data/dane
+  - name: ministral-8b
+    model: mistralai/ministral-8b-2512
+    vlm_model: mistralai/ministral-8b-2512
+    data: data/dane
+  - name: inkling-skany
+    model: thinkingmachines/inkling-2-mini
+    vlm_model: thinkingmachines/inkling-2-mini
+    data: data/dane/skany
+  - name: ministral-8b-skany
+    model: mistralai/ministral-8b-2512
+    vlm_model: mistralai/ministral-8b-2512
+    data: data/dane/skany
+  # - name: inny-model
+  #   model: nazwa-w-litellm
+  #   vlm_model: model-z-wizja   # OCR skanów tym modelem
+  # Model, który na OpenRouterze zwraca 404 "No endpoints found" przy domyślnym config/llm.json
+  # (filtry require_parameters + data_collection: deny): osobny config bez filtrów.
+  # - name: ministral
+  #   model: mistralai/ministral-14b-2512
+  #   llm_config: config/llm-no-routing-filter.json

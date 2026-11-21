@@ -1,0 +1,58 @@
+{
+  "source": "0001.pdf",
+  "class": "przelew",
+  "error": null,
+  "ocr_used": true,
+  "prediction": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-09-11",
+      "kwota": 7500.0,
+      "na_rachunek": "60101010100081362231000000",
+      "numer_transakcji": "CEN9057564440515",
+      "tytul": "wpis od odwołania - postępowanie nr DA.ZP.242.50.2026 CEN9057564440515",
+      "z_rachunku": "62217000089152501756617062"
+    }
+  },
+  "reference": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-09-11",
+      "kwota": 7500.0,
+      "na_rachunek": "60101010100081362231000000",
+      "numer_transakcji": "CEN9057564440515",
+      "tytul": "wpis od odwołania - postępowanie nr DA.ZP.242.50.2026 CEN9057564440515",
+      "z_rachunku": "PL62217000089152501756617062"
+    }
+  },
+  "diffs": [
+    {
+      "field": "przelew_bankowy.z_rachunku",
+      "predicted": "62217000089152501756617062",
+      "expected": "pl62217000089152501756617062",
+      "status": "wrong"
+    }
+  ],
+  "trace": {
+    "source": "0001.pdf",
+    "class": "przelew",
+    "ocr_used": true,
+    "quotes": {
+      "przelew_bankowy.data_operacji": "Data transakcji\n11.09.2026",
+      "przelew_bankowy.kwota": "Kwota\n7 500,00 PLN",
+      "przelew_bankowy.na_rachunek": "Numer rachunku\n60 1010 1010 0081 3622 3100 0000",
+      "przelew_bankowy.numer_transakcji": "Numer referencyjny transakcji\nCEN9057564440515",
+      "przelew_bankowy.tytul": "Opis\nwpis od odwołania - postępowanie nr DA.ZP.242.50.2026 CEN9057564440515",
+      "przelew_bankowy.z_rachunku": "Numer rachunku\nPL62 2170 0008 9152 5017 5661 7062"
+    },
+    "citation_ok": {
+      "przelew_bankowy.data_operacji": true,
+      "przelew_bankowy.kwota": true,
+      "przelew_bankowy.na_rachunek": true,
+      "przelew_bankowy.numer_transakcji": true,
+      "przelew_bankowy.tytul": true,
+      "przelew_bankowy.z_rachunku": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

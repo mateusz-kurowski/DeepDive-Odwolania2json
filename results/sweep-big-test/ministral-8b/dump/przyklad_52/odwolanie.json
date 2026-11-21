@@ -1,0 +1,142 @@
+{
+  "source": "odwolanie.pdf",
+  "class": "odwolanie",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "OdwolanieKIO": {
+      "data": "2026-07-21",
+      "czynnosc_dzien": "2026-07-11",
+      "czynnosc_powod_id": 2,
+      "czynnosc_opis": "Ogłoszenie wyboru oferty",
+      "miejscowosc": "Katowice"
+    },
+    "Odwolujacy": [
+      {
+        "krs": "9993140838",
+        "nazwa": "BRONTEX-BUD Maciej Jaworski",
+        "nip": "9993140838",
+        "regon": "999694017",
+        "przez-pelnomocnika": 1,
+        "pelnomocnik": {
+          "imie_nazwisko": "Karolina Wiśniewska",
+          "nazwa": "Kancelaria Radcy Prawnego Karolina Wiśniewska",
+          "mail": "kancelaria@wisniewskaprawo.example"
+        }
+      }
+    ],
+    "Zamawiajacy": [
+      {
+        "krs": null,
+        "nazwa": "Gmina Rudnik Wielki",
+        "nip": "9990264287",
+        "regon": "999242211",
+        "prowadzacy_postepowanie": null
+      }
+    ],
+    "ZamowieniePubliczne": {
+      "numer_bzp": "2026/BZP00999112",
+      "numer_postepowania": "ZP.271.93.2026",
+      "numer_ted": "999562-2026",
+      "tytul": "Termomodernizacja budynków użyteczności publicznej wraz z instalacją pomp ciepła"
+    }
+  },
+  "reference": {
+    "OdwolanieKIO": {
+      "data": "2026-07-21",
+      "czynnosc_dzien": "2026-07-11",
+      "czynnosc_powod_id": 2,
+      "czynnosc_opis": "Ogłoszenie wyboru oferty",
+      "miejscowosc": "Katowice"
+    },
+    "Odwolujacy": [
+      {
+        "krs": null,
+        "nazwa": "BRONTEX-BUD Maciej Jaworski",
+        "nip": "9993140838",
+        "regon": "999694017",
+        "przez-pelnomocnika": 1,
+        "pelnomocnik": {
+          "imie_nazwisko": "Karolina Wiśniewska",
+          "nazwa": "Kancelaria Radcy Prawnego Karolina Wiśniewska",
+          "mail": "kancelaria@wisniewskaprawo.example"
+        }
+      }
+    ],
+    "Zamawiajacy": [
+      {
+        "krs": null,
+        "nazwa": "Gmina Rudnik Wielki",
+        "nip": "9990264287",
+        "regon": "999242211",
+        "prowadzacy_postepowanie": null
+      }
+    ],
+    "ZamowieniePubliczne": {
+      "numer_bzp": "2026/BZP00999112",
+      "numer_postepowania": "ZP.271.93.2026",
+      "numer_ted": "999562-2026",
+      "tytul": "Termomodernizacja budynków użyteczności publicznej wraz z instalacją pomp ciepła"
+    }
+  },
+  "diffs": [
+    {
+      "field": "Odwolujacy[nip=9993140838].krs",
+      "predicted": "9993140838",
+      "expected": null,
+      "status": "extra"
+    }
+  ],
+  "trace": {
+    "source": "odwolanie.pdf",
+    "class": "odwolanie",
+    "ocr_used": false,
+    "quotes": {
+      "OdwolanieKIO.data": "Katowice, 21.07.2026 r.",
+      "OdwolanieKIO.czynnosc_dzien": "Zamawiający w dniu 11 lipca 2026 roku dokonał wyboru oferty najkorzystniejszej, za którą uznał ofertę wykonawcy Cervin Konstrukcje sp.j.",
+      "OdwolanieKIO.czynnosc_powod_id": "wyborze jako najkorzystniejszej oferty wykonawcy Cervin Konstrukcje sp.j. z dnia 11 lipca 2026 r.",
+      "OdwolanieKIO.miejscowosc": "Katowice, 21.07.2026 r.",
+      "Odwolujacy[0].krs": "NIP: 9993140838, REGON: 999694017",
+      "Odwolujacy[0].nazwa": "BRONTEX-BUD Maciej Jaworski",
+      "Odwolujacy[0].nip": "NIP: 9993140838",
+      "Odwolujacy[0].regon": "REGON: 999694017",
+      "Odwolujacy[0].przez-pelnomocnika": "reprezentowany przez: r. pr. Karolina Wiśniewska",
+      "Odwolujacy[0].pelnomocnik.imie_nazwisko": "r. pr. Karolina Wiśniewska",
+      "Odwolujacy[0].pelnomocnik.nazwa": "adres do korespondencji: Kancelaria Radcy Prawnego Karolina Wiśniewska, ul. Słoneczna 134, 40-451 Katowice",
+      "Odwolujacy[0].pelnomocnik.mail": "e-mail: kancelaria@wisniewskaprawo.example",
+      "Zamawiajacy[0].krs": null,
+      "Zamawiajacy[0].nazwa": "Zamawiający: Gmina Rudnik Wielki",
+      "Zamawiajacy[0].nip": "NIP: 9990264287",
+      "Zamawiajacy[0].regon": "REGON: 999242211",
+      "Zamawiajacy[0].prowadzacy_postepowanie": null,
+      "ZamowieniePubliczne.numer_bzp": "ogłoszenie o zamówieniu w Biuletynie Zamówień Publicznych nr 2026/BZP 00999112",
+      "ZamowieniePubliczne.numer_postepowania": "nr referencyjny: ZP.271.93.2026",
+      "ZamowieniePubliczne.numer_ted": "ogłoszenie w Dzienniku Urzędowym Unii Europejskiej nr 2026/S 113-999562",
+      "ZamowieniePubliczne.tytul": "Termomodernizacja budynków użyteczności publicznej wraz z instalacją pomp ciepła"
+    },
+    "citation_ok": {
+      "OdwolanieKIO.data": true,
+      "OdwolanieKIO.czynnosc_dzien": true,
+      "OdwolanieKIO.czynnosc_powod_id": true,
+      "OdwolanieKIO.miejscowosc": true,
+      "Odwolujacy[0].krs": true,
+      "Odwolujacy[0].nazwa": true,
+      "Odwolujacy[0].nip": true,
+      "Odwolujacy[0].regon": true,
+      "Odwolujacy[0].przez-pelnomocnika": true,
+      "Odwolujacy[0].pelnomocnik.imie_nazwisko": true,
+      "Odwolujacy[0].pelnomocnik.nazwa": true,
+      "Odwolujacy[0].pelnomocnik.mail": true,
+      "Zamawiajacy[0].nazwa": true,
+      "Zamawiajacy[0].nip": true,
+      "Zamawiajacy[0].regon": true,
+      "ZamowieniePubliczne.numer_bzp": true,
+      "ZamowieniePubliczne.numer_postepowania": true,
+      "ZamowieniePubliczne.numer_ted": true,
+      "ZamowieniePubliczne.tytul": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

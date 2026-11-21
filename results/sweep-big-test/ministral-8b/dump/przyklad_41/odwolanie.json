@@ -1,0 +1,132 @@
+{
+  "source": "odwolanie.pdf",
+  "class": "odwolanie",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "OdwolanieKIO": {
+      "data": null,
+      "czynnosc_dzien": "2026-08-04",
+      "czynnosc_powod_id": 1,
+      "czynnosc_opis": "Decyzja o odrzuceniu oferty",
+      "miejscowosc": null
+    },
+    "Odwolujacy": [
+      {
+        "krs": "9995540127",
+        "nazwa": "Torvex Budownictwo sp. z o.o.",
+        "nip": "9992284611",
+        "regon": "999473016",
+        "przez-pelnomocnika": 1,
+        "pelnomocnik": {
+          "imie_nazwisko": "Piotr Zalewski",
+          "nazwa": "Kancelaria Adwokacka adw. Piotr Zalewski",
+          "mail": "p.zalewski@adwokat.example"
+        }
+      }
+    ],
+    "Zamawiajacy": [
+      {
+        "krs": null,
+        "nazwa": "Gmina Brzozowo Pomorskie",
+        "nip": "9995062817",
+        "regon": "999871350",
+        "prowadzacy_postepowanie": null
+      }
+    ],
+    "ZamowieniePubliczne": {
+      "numer_bzp": null,
+      "numer_postepowania": "IR.271.14.2026",
+      "numer_ted": "999327-2026",
+      "tytul": "Budowa sali gimnastycznej wraz z zapleczem sanitarno-szatniowym i infrastrukturą towarzyszącą przy Szkole Podstawowej nr 3 w Brzozowie Pomorskim"
+    }
+  },
+  "reference": {
+    "OdwolanieKIO": {
+      "data": null,
+      "czynnosc_dzien": "2026-08-04",
+      "czynnosc_powod_id": 1,
+      "czynnosc_opis": "Decyzja o odrzuceniu oferty",
+      "miejscowosc": null
+    },
+    "Odwolujacy": [
+      {
+        "krs": "9995540127",
+        "nazwa": "Torvex Budownictwo sp. z o.o.",
+        "nip": "9992284611",
+        "regon": "999473016",
+        "przez-pelnomocnika": 1,
+        "pelnomocnik": {
+          "imie_nazwisko": "Piotr Zalewski",
+          "nazwa": "Kancelaria Adwokacka adw. Piotr Zalewski",
+          "mail": "p.zalewski@adwokat.example"
+        }
+      }
+    ],
+    "Zamawiajacy": [
+      {
+        "krs": null,
+        "nazwa": "Gmina Brzozowo Pomorskie",
+        "nip": "9995062817",
+        "regon": "999871350",
+        "prowadzacy_postepowanie": null
+      }
+    ],
+    "ZamowieniePubliczne": {
+      "numer_bzp": null,
+      "numer_postepowania": "IR.271.14.2026",
+      "numer_ted": "999327-2026",
+      "tytul": "Budowa sali gimnastycznej wraz z zapleczem sanitarno-szatniowym i infrastrukturą towarzyszącą przy Szkole Podstawowej nr 3 w Brzozowie Pomorskim"
+    }
+  },
+  "diffs": [],
+  "trace": {
+    "source": "odwolanie.pdf",
+    "class": "odwolanie",
+    "ocr_used": false,
+    "quotes": {
+      "OdwolanieKIO.data": null,
+      "OdwolanieKIO.czynnosc_dzien": "Zamawiający w dniu 4 sierpnia 2026 roku odrzucił ofertę Odwołującego, uznając, że zawiera ona rażąco niską cenę oraz jest niezgodna z warunkami zamówienia w zakresie technologii wykonania konstrukcji dachu. Tego samego dnia Zamawiający dokonał wyboru oferty najkorzystniejszej.",
+      "OdwolanieKIO.czynnosc_powod_id": "odrzuceniu oferty Odwołującego na podstawie art. 226 ust. 1 pkt 5 i pkt 8 Pzp, o którym Zamawiający zawiadomił pismem z dnia 4 sierpnia 2026 r.",
+      "OdwolanieKIO.miejscowosc": null,
+      "Odwolujacy[0].krs": "KRS: 9995540127",
+      "Odwolujacy[0].nazwa": "Lider Konsorcjum: Torvex Budownictwo sp. z o.o.",
+      "Odwolujacy[0].nip": "NIP: 9992284611",
+      "Odwolujacy[0].regon": "REGON: 999473016",
+      "Odwolujacy[0].przez-pelnomocnika": "reprezentowany przez: adw. Piotr Zalewski",
+      "Odwolujacy[0].pelnomocnik.imie_nazwisko": "adw. Piotr Zalewski",
+      "Odwolujacy[0].pelnomocnik.nazwa": "adres do korespondencji: Kancelaria Adwokacka adw. Piotr Zalewski",
+      "Odwolujacy[0].pelnomocnik.mail": "e-mail: p.zalewski@adwokat.example",
+      "Zamawiajacy[0].krs": null,
+      "Zamawiajacy[0].nazwa": "Zamawiający: Gmina Brzozowo Pomorskie",
+      "Zamawiajacy[0].nip": "NIP: 9995062817",
+      "Zamawiajacy[0].regon": "REGON: 999871350",
+      "Zamawiajacy[0].prowadzacy_postepowanie": null,
+      "ZamowieniePubliczne.numer_bzp": null,
+      "ZamowieniePubliczne.numer_postepowania": "nr referencyjny: IR.271.14.2026",
+      "ZamowieniePubliczne.numer_ted": "ogłoszenie w Dzienniku Urzędowym Unii Europejskiej nr 2026/S 142-999327",
+      "ZamowieniePubliczne.tytul": "postępowania o udzielenie zamówienia publicznego prowadzonego w trybie przetargu nieograniczonego pn. \"Budowa sali gimnastycznej wraz z zapleczem sanitarno-szatniowym i infrastrukturą towarzyszącą przy Szkole Podstawowej nr 3 w Brzozowie Pomorskim\""
+    },
+    "citation_ok": {
+      "OdwolanieKIO.czynnosc_dzien": true,
+      "OdwolanieKIO.czynnosc_powod_id": true,
+      "Odwolujacy[0].krs": true,
+      "Odwolujacy[0].nazwa": true,
+      "Odwolujacy[0].nip": true,
+      "Odwolujacy[0].regon": true,
+      "Odwolujacy[0].przez-pelnomocnika": true,
+      "Odwolujacy[0].pelnomocnik.imie_nazwisko": true,
+      "Odwolujacy[0].pelnomocnik.nazwa": true,
+      "Odwolujacy[0].pelnomocnik.mail": true,
+      "Zamawiajacy[0].nazwa": true,
+      "Zamawiajacy[0].nip": true,
+      "Zamawiajacy[0].regon": true,
+      "ZamowieniePubliczne.numer_postepowania": true,
+      "ZamowieniePubliczne.numer_ted": true,
+      "ZamowieniePubliczne.tytul": true
+    },
+    "nulled": [],
+    "retries": 1,
+    "truncated": false
+  }
+}

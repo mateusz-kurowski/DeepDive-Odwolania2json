@@ -1,0 +1,92 @@
+{
+  "source": "pelnomocnictwo.pdf",
+  "class": "pelnomocnictwo",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "mocodawca": [
+      {
+        "data": {
+          "imie_nazwisko": null,
+          "krs": "9995046546",
+          "nazwa": "Ilyrion Sieci sp. j.",
+          "nip": "9997585897",
+          "typ": "osoba_prawna"
+        },
+        "podpisujacy": [
+          {
+            "imie_nazwisko": "Halina Dudziewicz"
+          }
+        ]
+      }
+    ],
+    "pelnomocnicy": [
+      {
+        "imie_nazwisko": "Aleksandra Jabłończyk",
+        "pesel": null
+      },
+      {
+        "imie_nazwisko": "Dorota Jurgielewicz",
+        "pesel": null
+      }
+    ]
+  },
+  "reference": {
+    "mocodawca": [
+      {
+        "data": {
+          "imie_nazwisko": null,
+          "krs": "9995046546",
+          "nazwa": "Ilyrion Sieci sp. j.",
+          "nip": "9997585897",
+          "typ": "osoba_prawna"
+        },
+        "podpisujacy": [
+          {
+            "imie_nazwisko": "Halina Dudziewicz"
+          }
+        ]
+      }
+    ],
+    "pelnomocnicy": [
+      {
+        "imie_nazwisko": "Aleksandra Jabłończyk",
+        "pesel": null
+      },
+      {
+        "imie_nazwisko": "Dorota Jurgielewicz",
+        "pesel": null
+      }
+    ]
+  },
+  "diffs": [],
+  "trace": {
+    "source": "pelnomocnictwo.pdf",
+    "class": "pelnomocnictwo",
+    "ocr_used": false,
+    "quotes": {
+      "mocodawca[0].data.imie_nazwisko": null,
+      "mocodawca[0].data.krs": "numerem KRS 9995046546",
+      "mocodawca[0].data.nazwa": "Ilyrion Sieci sp. j.",
+      "mocodawca[0].data.nip": "NIP 9997585897",
+      "mocodawca[0].data.typ": "wpisanej do rejestru przedsiębiorców Krajowego Rejestru Sądowego",
+      "mocodawca[0].podpisujacy[0].imie_nazwisko": "Halina Dudziewicz",
+      "pelnomocnicy[0].imie_nazwisko": "adw. Aleksandra Jabłończyk",
+      "pelnomocnicy[0].pesel": null,
+      "pelnomocnicy[1].imie_nazwisko": "r. pr. Dorota Jurgielewicz",
+      "pelnomocnicy[1].pesel": null
+    },
+    "citation_ok": {
+      "mocodawca[0].data.krs": true,
+      "mocodawca[0].data.nazwa": true,
+      "mocodawca[0].data.nip": true,
+      "mocodawca[0].data.typ": true,
+      "mocodawca[0].podpisujacy[0].imie_nazwisko": true,
+      "pelnomocnicy[0].imie_nazwisko": true,
+      "pelnomocnicy[1].imie_nazwisko": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

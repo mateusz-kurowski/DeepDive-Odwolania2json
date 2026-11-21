@@ -1,0 +1,58 @@
+{
+  "source": "potwierdzenie_przelewu.pdf",
+  "class": "przelew",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-06-14",
+      "kwota": 34.0,
+      "na_rachunek": "19546370601574577093699823",
+      "numer_transakcji": "CEN2606277078899",
+      "tytul": "Tytułem opłata skarbowa od pełnomocnictwa dla Grzegorz Rutkiewicz w postępowaniu przed KIO w przetargu DI.123.2026 CEN2606277078899",
+      "z_rachunku": "40826585774033060612824095"
+    }
+  },
+  "reference": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-06-14",
+      "kwota": 34.0,
+      "na_rachunek": "19546370601574577093699823",
+      "numer_transakcji": "CEN2606277078899",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Grzegorz Rutkiewicz w postępowaniu przed KIO w przetargu DI.123.2026 CEN2606277078899",
+      "z_rachunku": "40826585774033060612824095"
+    }
+  },
+  "diffs": [
+    {
+      "field": "przelew_bankowy.tytul",
+      "predicted": "tytułem opłata skarbowa od pełnomocnictwa dla grzegorz rutkiewicz w postępowaniu przed kio w przetargu di.123.2026 cen2606277078899",
+      "expected": "opłata skarbowa od pełnomocnictwa dla grzegorz rutkiewicz w postępowaniu przed kio w przetargu di.123.2026 cen2606277078899",
+      "status": "wrong"
+    }
+  ],
+  "trace": {
+    "source": "potwierdzenie_przelewu.pdf",
+    "class": "przelew",
+    "ocr_used": false,
+    "quotes": {
+      "przelew_bankowy.data_operacji": "Data transakcji 14 czerwca 2026",
+      "przelew_bankowy.kwota": "Kwota przelewu 34.00 PLN",
+      "przelew_bankowy.na_rachunek": "19546370601574577093699823",
+      "przelew_bankowy.numer_transakcji": "Numer transakcji CEN2606277078899",
+      "przelew_bankowy.tytul": "Tytułem opłata skarbowa od pełnomocnictwa dla Grzegorz Rutkiewicz w postępowaniu przed KIO w przetargu DI.123.2026 CEN2606277078899",
+      "przelew_bankowy.z_rachunku": "40826585774033060612824095"
+    },
+    "citation_ok": {
+      "przelew_bankowy.data_operacji": true,
+      "przelew_bankowy.kwota": true,
+      "przelew_bankowy.na_rachunek": true,
+      "przelew_bankowy.numer_transakcji": true,
+      "przelew_bankowy.tytul": true,
+      "przelew_bankowy.z_rachunku": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

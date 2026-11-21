@@ -1,0 +1,100 @@
+{
+  "source": "pelnomocnictwo.pdf",
+  "class": "pelnomocnictwo",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "mocodawca": [
+      {
+        "data": {
+          "imie_nazwisko": null,
+          "krs": "9991240860",
+          "nazwa": "Belmoria Systemy S.A.",
+          "nip": "9992160970",
+          "typ": "osoba_prawna"
+        },
+        "podpisujacy": [
+          {
+            "imie_nazwisko": "Patrycja Głowacz"
+          },
+          {
+            "imie_nazwisko": "Oliwia Jabłończyk"
+          }
+        ]
+      }
+    ],
+    "pelnomocnicy": [
+      {
+        "imie_nazwisko": "Zbigniew Górnicki",
+        "pesel": null
+      },
+      {
+        "imie_nazwisko": "Zbigniew Szymanski",
+        "pesel": null
+      }
+    ]
+  },
+  "reference": {
+    "mocodawca": [
+      {
+        "data": {
+          "imie_nazwisko": null,
+          "krs": "9991240860",
+          "nazwa": "Belmoria Systemy S.A.",
+          "nip": "9992160970",
+          "typ": "osoba_prawna"
+        },
+        "podpisujacy": [
+          {
+            "imie_nazwisko": "Patrycja Głowacz"
+          },
+          {
+            "imie_nazwisko": "Oliwia Jabłończyk"
+          }
+        ]
+      }
+    ],
+    "pelnomocnicy": [
+      {
+        "imie_nazwisko": "Zbigniew Górnicki",
+        "pesel": null
+      },
+      {
+        "imie_nazwisko": "Zbigniew Szymanski",
+        "pesel": null
+      }
+    ]
+  },
+  "diffs": [],
+  "trace": {
+    "source": "pelnomocnictwo.pdf",
+    "class": "pelnomocnictwo",
+    "ocr_used": false,
+    "quotes": {
+      "mocodawca[0].data.imie_nazwisko": null,
+      "mocodawca[0].data.krs": "KRS 9991240860",
+      "mocodawca[0].data.nazwa": "Belmoria Systemy S.A.",
+      "mocodawca[0].data.nip": "NIP 9992160970",
+      "mocodawca[0].data.typ": "Belmoria Systemy S.A., ul. Wiśniowa 79, 00-344 Warszawa, KRS 9991240860",
+      "mocodawca[0].podpisujacy[0].imie_nazwisko": "Patrycja Głowacz",
+      "mocodawca[0].podpisujacy[1].imie_nazwisko": "Oliwia Jabłończyk",
+      "pelnomocnicy[0].imie_nazwisko": "adw. Zbigniew Górnicki",
+      "pelnomocnicy[0].pesel": null,
+      "pelnomocnicy[1].imie_nazwisko": "adw. Zbigniew Szymanski",
+      "pelnomocnicy[1].pesel": null
+    },
+    "citation_ok": {
+      "mocodawca[0].data.krs": true,
+      "mocodawca[0].data.nazwa": true,
+      "mocodawca[0].data.nip": true,
+      "mocodawca[0].data.typ": true,
+      "mocodawca[0].podpisujacy[0].imie_nazwisko": true,
+      "mocodawca[0].podpisujacy[1].imie_nazwisko": true,
+      "pelnomocnicy[0].imie_nazwisko": true,
+      "pelnomocnicy[1].imie_nazwisko": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

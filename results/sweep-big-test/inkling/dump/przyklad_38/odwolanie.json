@@ -1,0 +1,136 @@
+{
+  "source": "odwolanie.pdf",
+  "class": "odwolanie",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "OdwolanieKIO": {
+      "data": "2026-08-12",
+      "czynnosc_dzien": "2026-07-22",
+      "czynnosc_powod_id": 11,
+      "czynnosc_opis": "Opis przedmiotu zamówienia (OPZ)",
+      "miejscowosc": "Łódź"
+    },
+    "Odwolujacy": [
+      {
+        "krs": "9992992231",
+        "nazwa": "Granitix Usługi S.A.",
+        "nip": "9993373158",
+        "regon": "999402472",
+        "przez-pelnomocnika": 1,
+        "pelnomocnik": {
+          "imie_nazwisko": "Oliwia Wierzbicka",
+          "nazwa": "Kancelaria Adwokacka Spółka z ograniczoną odpowiedzialnością",
+          "mail": "biuro@sekretariat.example"
+        }
+      }
+    ],
+    "Zamawiajacy": [
+      {
+        "krs": "9998396331",
+        "nazwa": "Umbria Automatyka sp. z o.o.",
+        "nip": "9990955300",
+        "regon": "999022723",
+        "prowadzacy_postepowanie": null
+      }
+    ],
+    "ZamowieniePubliczne": {
+      "numer_bzp": "2026/BZP00999641",
+      "numer_postepowania": "SWZ.702.2026",
+      "numer_ted": "999836-2026",
+      "tytul": "Dostawa wyposażenia pomieszczeń biurowych oraz elementów wyposażenia architektonicznego"
+    }
+  },
+  "reference": {
+    "OdwolanieKIO": {
+      "data": "2026-08-12",
+      "czynnosc_dzien": "2026-07-22",
+      "czynnosc_powod_id": 11,
+      "czynnosc_opis": "Opis przedmiotu zamówienia (OPZ)",
+      "miejscowosc": "Łódź"
+    },
+    "Odwolujacy": [
+      {
+        "krs": "9992992231",
+        "nazwa": "Granitix Usługi S.A.",
+        "nip": "9993373158",
+        "regon": "999402472",
+        "przez-pelnomocnika": 1,
+        "pelnomocnik": {
+          "imie_nazwisko": "Oliwia Wierzbicka",
+          "nazwa": "Kancelaria Adwokacka Spółka z ograniczoną odpowiedzialnością",
+          "mail": "biuro@sekretariat.example"
+        }
+      }
+    ],
+    "Zamawiajacy": [
+      {
+        "krs": "9998396331",
+        "nazwa": "Umbria Automatyka sp. z o.o.",
+        "nip": "9990955300",
+        "regon": "999022723",
+        "prowadzacy_postepowanie": null
+      }
+    ],
+    "ZamowieniePubliczne": {
+      "numer_bzp": "2026/BZP00999641",
+      "numer_postepowania": "SWZ.702.2026",
+      "numer_ted": "999836-2026",
+      "tytul": "Dostawa wyposażenia pomieszczeń biurowych oraz elementów wyposażenia architektonicznego"
+    }
+  },
+  "diffs": [],
+  "trace": {
+    "source": "odwolanie.pdf",
+    "class": "odwolanie",
+    "ocr_used": false,
+    "quotes": {
+      "OdwolanieKIO.data": "Łódź, dnia 12 sierpnia 2026 roku",
+      "OdwolanieKIO.czynnosc_dzien": "Zamawiający w dniu 22 lipca 2026 roku udostępnił Opis Przedmiotu Zamówienia.",
+      "OdwolanieKIO.czynnosc_powod_id": "Zamawiający w dniu 22 lipca 2026 roku udostępnił Opis Przedmiotu Zamówienia.",
+      "OdwolanieKIO.miejscowosc": "Łódź, dnia 12 sierpnia 2026 roku",
+      "Odwolujacy[0].krs": "KRS: 9992992231",
+      "Odwolujacy[0].nazwa": "Granitix Usługi S.A.",
+      "Odwolujacy[0].nip": "NIP: 9993373158",
+      "Odwolujacy[0].regon": "REGON: 999402472",
+      "Odwolujacy[0].przez-pelnomocnika": "reprezentowana przez: adw. Oliwia Wierzbicka, adw. Jolanta Jabłończyk",
+      "Odwolujacy[0].pelnomocnik.imie_nazwisko": "adw. Oliwia Wierzbicka",
+      "Odwolujacy[0].pelnomocnik.nazwa": "adres do korespondencji: Kancelaria Adwokacka Spółka z ograniczoną odpowiedzialnością",
+      "Odwolujacy[0].pelnomocnik.mail": "biuro@sekretariat.example",
+      "Zamawiajacy[0].krs": "KRS: 9998396331",
+      "Zamawiajacy[0].nazwa": "Umbria Automatyka sp. z o.o.",
+      "Zamawiajacy[0].nip": "NIP: 9990955300",
+      "Zamawiajacy[0].regon": "REGON: 999022723",
+      "Zamawiajacy[0].prowadzacy_postepowanie": null,
+      "ZamowieniePubliczne.numer_bzp": "numer ogłoszenia o zamówieniu w BZP: 2026/BZP00999641",
+      "ZamowieniePubliczne.numer_postepowania": "nr referencyjny sprawy: SWZ.702.2026",
+      "ZamowieniePubliczne.numer_ted": "numer ogłoszenia TED: 999836-2026",
+      "ZamowieniePubliczne.tytul": "„Dostawa wyposażenia pomieszczeń biurowych oraz elementów wyposażenia architektonicznego”"
+    },
+    "citation_ok": {
+      "OdwolanieKIO.data": true,
+      "OdwolanieKIO.czynnosc_dzien": true,
+      "OdwolanieKIO.czynnosc_powod_id": true,
+      "OdwolanieKIO.miejscowosc": true,
+      "Odwolujacy[0].krs": true,
+      "Odwolujacy[0].nazwa": true,
+      "Odwolujacy[0].nip": true,
+      "Odwolujacy[0].regon": true,
+      "Odwolujacy[0].przez-pelnomocnika": true,
+      "Odwolujacy[0].pelnomocnik.imie_nazwisko": true,
+      "Odwolujacy[0].pelnomocnik.nazwa": true,
+      "Odwolujacy[0].pelnomocnik.mail": true,
+      "Zamawiajacy[0].krs": true,
+      "Zamawiajacy[0].nazwa": true,
+      "Zamawiajacy[0].nip": true,
+      "Zamawiajacy[0].regon": true,
+      "ZamowieniePubliczne.numer_bzp": true,
+      "ZamowieniePubliczne.numer_postepowania": true,
+      "ZamowieniePubliczne.numer_ted": true,
+      "ZamowieniePubliczne.tytul": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

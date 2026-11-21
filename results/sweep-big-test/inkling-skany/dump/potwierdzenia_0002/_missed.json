@@ -1,0 +1,47 @@
+{
+  "przelew": {
+    "reason": "brak dokumentu tej klasy",
+    "expected": {
+      "przelew_bankowy": {
+        "data_operacji": "2026-04-09",
+        "kwota": 17.0,
+        "na_rachunek": "43103015086563666671799331",
+        "numer_transakcji": null,
+        "tytul": "opłata skarbowa od pełnomocnictwa dla adw. Mateusz Wierzbicki w postępowaniu przed KIO w przetargu ZG.261.8.2026",
+        "z_rachunku": "50109010985413569910373779"
+      }
+    },
+    "diffs": [
+      {
+        "field": "przelew_bankowy.data_operacji",
+        "predicted": null,
+        "expected": "2026-04-09",
+        "status": "missing"
+      },
+      {
+        "field": "przelew_bankowy.kwota",
+        "predicted": null,
+        "expected": 17.0,
+        "status": "missing"
+      },
+      {
+        "field": "przelew_bankowy.na_rachunek",
+        "predicted": null,
+        "expected": "43103015086563666671799331",
+        "status": "missing"
+      },
+      {
+        "field": "przelew_bankowy.tytul",
+        "predicted": null,
+        "expected": "opłata skarbowa od pełnomocnictwa dla adw. mateusz wierzbicki w postępowaniu przed kio w przetargu zg.261.8.2026",
+        "status": "missing"
+      },
+      {
+        "field": "przelew_bankowy.z_rachunku",
+        "predicted": null,
+        "expected": "50109010985413569910373779",
+        "status": "missing"
+      }
+    ]
+  }
+}

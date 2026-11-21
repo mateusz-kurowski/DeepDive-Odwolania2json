@@ -1,0 +1,135 @@
+{
+  "source": "odwolanie.pdf",
+  "class": "odwolanie",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "OdwolanieKIO": {
+      "data": "2026-08-12",
+      "czynnosc_dzien": "2026-08-02",
+      "czynnosc_powod_id": 3,
+      "czynnosc_opis": "Decyzja o wykluczeniu wykonawcy",
+      "miejscowosc": "Olsztyn"
+    },
+    "Odwolujacy": [
+      {
+        "krs": "9996858325",
+        "nazwa": "Vellum Facility sp. z o.o. sp.k.",
+        "nip": "9999762610",
+        "regon": "999467718",
+        "przez-pelnomocnika": 1,
+        "pelnomocnik": {
+          "imie_nazwisko": "Celina Ostrowska",
+          "nazwa": "Kancelaria Prawa Zamówień Publicznych Ostrowska Piotrowska s.c.",
+          "mail": "kancelaria@ostrowskakancelaria.example"
+        }
+      }
+    ],
+    "Zamawiajacy": [
+      {
+        "krs": "9995350331",
+        "nazwa": "Zakład Usług Komunalnych w Zalesiu Królewskim sp. z o.o.",
+        "nip": "9991216707",
+        "regon": "999633654",
+        "prowadzacy_postepowanie": null
+      }
+    ],
+    "ZamowieniePubliczne": {
+      "numer_bzp": null,
+      "numer_postepowania": "ZP.26.2026",
+      "numer_ted": "999337-2026",
+      "tytul": "Usługa ochrony osób i mienia w obiektach Zamawiającego w latach 2026–2028"
+    }
+  },
+  "reference": {
+    "OdwolanieKIO": {
+      "data": "2026-08-12",
+      "czynnosc_dzien": "2026-08-02",
+      "czynnosc_powod_id": 3,
+      "czynnosc_opis": "Decyzja o wykluczeniu wykonawcy",
+      "miejscowosc": "Olsztyn"
+    },
+    "Odwolujacy": [
+      {
+        "krs": "9996858325",
+        "nazwa": "Vellum Facility sp. z o.o. sp.k.",
+        "nip": "9999762610",
+        "regon": "999467718",
+        "przez-pelnomocnika": 1,
+        "pelnomocnik": {
+          "imie_nazwisko": "Celina Ostrowska",
+          "nazwa": "Kancelaria Prawa Zamówień Publicznych Ostrowska Piotrowska s.c.",
+          "mail": "kancelaria@ostrowskakancelaria.example"
+        }
+      }
+    ],
+    "Zamawiajacy": [
+      {
+        "krs": "9995350331",
+        "nazwa": "Zakład Usług Komunalnych w Zalesiu Królewskim sp. z o.o.",
+        "nip": "9991216707",
+        "regon": "999633654",
+        "prowadzacy_postepowanie": null
+      }
+    ],
+    "ZamowieniePubliczne": {
+      "numer_bzp": null,
+      "numer_postepowania": "ZP.26.2026",
+      "numer_ted": "999337-2026",
+      "tytul": "Usługa ochrony osób i mienia w obiektach Zamawiającego w latach 2026–2028"
+    }
+  },
+  "diffs": [],
+  "trace": {
+    "source": "odwolanie.pdf",
+    "class": "odwolanie",
+    "ocr_used": false,
+    "quotes": {
+      "OdwolanieKIO.data": "Olsztyn, dnia 12 sierpnia 2026 r.",
+      "OdwolanieKIO.czynnosc_dzien": "Zamawiający w dniu 2 sierpnia 2026 roku wykluczył Odwołującego z postępowania.",
+      "OdwolanieKIO.czynnosc_powod_id": "wykluczeniu Odwołującego z postępowania na podstawie art. 109 ust. 1 pkt 7 Pzp z dnia 2 sierpnia 2026 r.",
+      "OdwolanieKIO.miejscowosc": "Olsztyn, dnia 12 sierpnia 2026 r.",
+      "Odwolujacy[0].krs": "KRS: 9996858325",
+      "Odwolujacy[0].nazwa": "Vellum Facility sp. z o.o. sp.k.",
+      "Odwolujacy[0].nip": "NIP: 9999762610",
+      "Odwolujacy[0].regon": "REGON: 999467718",
+      "Odwolujacy[0].przez-pelnomocnika": "reprezentowany przez: r. pr. Celina Ostrowska, adw. Barbara Piotrowska",
+      "Odwolujacy[0].pelnomocnik.imie_nazwisko": "r. pr. Celina Ostrowska",
+      "Odwolujacy[0].pelnomocnik.nazwa": "adres do korespondencji: Kancelaria Prawa Zamówień Publicznych Ostrowska Piotrowska s.c.",
+      "Odwolujacy[0].pelnomocnik.mail": "e-mail: kancelaria@ostrowskakancelaria.example",
+      "Zamawiajacy[0].krs": "KRS: 9995350331",
+      "Zamawiajacy[0].nazwa": "Zakład Usług Komunalnych w Zalesiu Królewskim sp. z o.o.",
+      "Zamawiajacy[0].nip": "NIP: 9991216707",
+      "Zamawiajacy[0].regon": "REGON: 999633654",
+      "Zamawiajacy[0].prowadzacy_postepowanie": null,
+      "ZamowieniePubliczne.numer_bzp": null,
+      "ZamowieniePubliczne.numer_postepowania": "nr referencyjny: ZP.26.2026",
+      "ZamowieniePubliczne.numer_ted": "ogłoszenie w Dzienniku Urzędowym Unii Europejskiej nr 999337-2026",
+      "ZamowieniePubliczne.tytul": "pn. \"Usługa ochrony osób i mienia w obiektach Zamawiającego w latach 2026–2028\""
+    },
+    "citation_ok": {
+      "OdwolanieKIO.data": true,
+      "OdwolanieKIO.czynnosc_dzien": true,
+      "OdwolanieKIO.czynnosc_powod_id": true,
+      "OdwolanieKIO.miejscowosc": true,
+      "Odwolujacy[0].krs": true,
+      "Odwolujacy[0].nazwa": true,
+      "Odwolujacy[0].nip": true,
+      "Odwolujacy[0].regon": true,
+      "Odwolujacy[0].przez-pelnomocnika": true,
+      "Odwolujacy[0].pelnomocnik.imie_nazwisko": true,
+      "Odwolujacy[0].pelnomocnik.nazwa": true,
+      "Odwolujacy[0].pelnomocnik.mail": true,
+      "Zamawiajacy[0].krs": true,
+      "Zamawiajacy[0].nazwa": true,
+      "Zamawiajacy[0].nip": true,
+      "Zamawiajacy[0].regon": true,
+      "ZamowieniePubliczne.numer_postepowania": true,
+      "ZamowieniePubliczne.numer_ted": true,
+      "ZamowieniePubliczne.tytul": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

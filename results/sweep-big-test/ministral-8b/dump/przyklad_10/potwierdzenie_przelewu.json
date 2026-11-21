@@ -1,0 +1,51 @@
+{
+  "source": "potwierdzenie_przelewu.pdf",
+  "class": "przelew",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-09-26",
+      "kwota": 200.0,
+      "na_rachunek": "64610803725981455663135560",
+      "numer_transakcji": "CEN2610117441609",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Patrycja Rutkiewicz i Marek Łukaszewski w postępowaniu przed KIO w przetargu ZP.856.2026 CEN2610117441609",
+      "z_rachunku": "21822962409050354037148193"
+    }
+  },
+  "reference": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-09-26",
+      "kwota": 200.0,
+      "na_rachunek": "64610803725981455663135560",
+      "numer_transakcji": "CEN2610117441609",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Patrycja Rutkiewicz i Marek Łukaszewski w postępowaniu przed KIO w przetargu ZP.856.2026 CEN2610117441609",
+      "z_rachunku": "21822962409050354037148193"
+    }
+  },
+  "diffs": [],
+  "trace": {
+    "source": "potwierdzenie_przelewu.pdf",
+    "class": "przelew",
+    "ocr_used": false,
+    "quotes": {
+      "przelew_bankowy.data_operacji": "26 września 2026",
+      "przelew_bankowy.kwota": "200,00",
+      "przelew_bankowy.na_rachunek": "PL64610803725981455663135560",
+      "przelew_bankowy.numer_transakcji": "CEN2610117441609",
+      "przelew_bankowy.tytul": "opłata skarbowa od pełnomocnictwa dla Patrycja Rutkiewicz i Marek Łukaszewski w postępowaniu przed KIO w przetargu ZP.856.2026 CEN2610117441609",
+      "przelew_bankowy.z_rachunku": "PL21822962409050354037148193"
+    },
+    "citation_ok": {
+      "przelew_bankowy.data_operacji": true,
+      "przelew_bankowy.kwota": true,
+      "przelew_bankowy.na_rachunek": true,
+      "przelew_bankowy.numer_transakcji": true,
+      "przelew_bankowy.tytul": true,
+      "przelew_bankowy.z_rachunku": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

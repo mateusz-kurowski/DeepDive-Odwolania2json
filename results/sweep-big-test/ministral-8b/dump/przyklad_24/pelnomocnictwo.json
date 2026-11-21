@@ -1,0 +1,89 @@
+{
+  "source": "pelnomocnictwo.pdf",
+  "class": "pelnomocnictwo",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "mocodawca": [
+      {
+        "data": {
+          "imie_nazwisko": null,
+          "krs": "9995264890",
+          "nazwa": "Uldaris Automatyka S.A.",
+          "nip": "9997683341",
+          "typ": "osoba_prawna"
+        },
+        "podpisujacy": [
+          {
+            "imie_nazwisko": "Weronika Siedlecki"
+          },
+          {
+            "imie_nazwisko": "Cezary Lipowczyk"
+          }
+        ]
+      }
+    ],
+    "pelnomocnicy": [
+      {
+        "imie_nazwisko": "Halina Jabłończyk",
+        "pesel": null
+      }
+    ]
+  },
+  "reference": {
+    "mocodawca": [
+      {
+        "data": {
+          "imie_nazwisko": null,
+          "krs": "9995264890",
+          "nazwa": "Uldaris Automatyka S.A.",
+          "nip": "9997683341",
+          "typ": "osoba_prawna"
+        },
+        "podpisujacy": [
+          {
+            "imie_nazwisko": "Weronika Siedlecki"
+          },
+          {
+            "imie_nazwisko": "Cezary Lipowczyk"
+          }
+        ]
+      }
+    ],
+    "pelnomocnicy": [
+      {
+        "imie_nazwisko": "Halina Jabłończyk",
+        "pesel": null
+      }
+    ]
+  },
+  "diffs": [],
+  "trace": {
+    "source": "pelnomocnictwo.pdf",
+    "class": "pelnomocnictwo",
+    "ocr_used": false,
+    "quotes": {
+      "mocodawca[0].data.imie_nazwisko": null,
+      "mocodawca[0].data.krs": "KRS 9995264890",
+      "mocodawca[0].data.nazwa": "Uldaris Automatyka S.A.",
+      "mocodawca[0].data.nip": "NIP 9997683341",
+      "mocodawca[0].data.typ": "Uldaris Automatyka S.A.",
+      "mocodawca[0].podpisujacy[0].imie_nazwisko": "Weronika Siedlecki",
+      "mocodawca[0].podpisujacy[1].imie_nazwisko": "Cezary Lipowczyk",
+      "pelnomocnicy[0].imie_nazwisko": "adw. Halina Jabłończyk",
+      "pelnomocnicy[0].pesel": null
+    },
+    "citation_ok": {
+      "mocodawca[0].data.krs": true,
+      "mocodawca[0].data.nazwa": true,
+      "mocodawca[0].data.nip": true,
+      "mocodawca[0].data.typ": true,
+      "mocodawca[0].podpisujacy[0].imie_nazwisko": true,
+      "mocodawca[0].podpisujacy[1].imie_nazwisko": true,
+      "pelnomocnicy[0].imie_nazwisko": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

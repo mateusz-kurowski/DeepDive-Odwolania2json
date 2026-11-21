@@ -1,0 +1,143 @@
+{
+  "source": "odwolanie.pdf",
+  "class": "odwolanie",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "OdwolanieKIO": {
+      "data": "2026-08-01",
+      "czynnosc_dzien": "2026-07-11",
+      "czynnosc_powod_id": 9,
+      "czynnosc_opis": "Decyzja o unieważnieniu postępowania",
+      "miejscowosc": "Gdańsk"
+    },
+    "Odwolujacy": [
+      {
+        "krs": "9996902468",
+        "nazwa": "Opalit Serwis sp. k.",
+        "nip": "9992251714",
+        "regon": "999950475",
+        "przez-pelnomocnika": 1,
+        "pelnomocnik": {
+          "imie_nazwisko": "Patrycja Bartoszewicz, Aleksandra Gajewicz",
+          "nazwa": "Kancelaria Prawna i Partnerzy",
+          "mail": "biuro@kontakt.example"
+        }
+      }
+    ],
+    "Zamawiajacy": [
+      {
+        "krs": "9998459407",
+        "nazwa": "Opalit Wyposażenie S.A.",
+        "nip": "9997564636",
+        "regon": "999247630",
+        "prowadzacy_postepowanie": null
+      }
+    ],
+    "ZamowieniePubliczne": {
+      "numer_bzp": "2026/BZP00999107",
+      "numer_postepowania": "ZP.621.2026",
+      "numer_ted": "999639-2026",
+      "tytul": "Dostawa i wdrożenie oprogramowania do obsługi dokumentacji wraz z serwisem wsparcia technicznego"
+    }
+  },
+  "reference": {
+    "OdwolanieKIO": {
+      "data": "2026-08-01",
+      "czynnosc_dzien": "2026-07-11",
+      "czynnosc_powod_id": 9,
+      "czynnosc_opis": "Decyzja o unieważnieniu postępowania",
+      "miejscowosc": "Gdańsk"
+    },
+    "Odwolujacy": [
+      {
+        "krs": "9996902468",
+        "nazwa": "Opalit Serwis sp. k.",
+        "nip": "9992251714",
+        "regon": "999950475",
+        "przez-pelnomocnika": 1,
+        "pelnomocnik": {
+          "imie_nazwisko": "Patrycja Bartoszewicz",
+          "nazwa": "Kancelaria Prawna i Partnerzy",
+          "mail": "biuro@kontakt.example"
+        }
+      }
+    ],
+    "Zamawiajacy": [
+      {
+        "krs": "9998459407",
+        "nazwa": "Opalit Wyposażenie S.A.",
+        "nip": "9997564636",
+        "regon": "999247630",
+        "prowadzacy_postepowanie": null
+      }
+    ],
+    "ZamowieniePubliczne": {
+      "numer_bzp": "2026/BZP00999107",
+      "numer_postepowania": "ZP.621.2026",
+      "numer_ted": "999639-2026",
+      "tytul": "Dostawa i wdrożenie oprogramowania do obsługi dokumentacji wraz z serwisem wsparcia technicznego"
+    }
+  },
+  "diffs": [
+    {
+      "field": "Odwolujacy[krs=9996902468].pelnomocnik.imie_nazwisko",
+      "predicted": "patrycja bartoszewicz, aleksandra gajewicz",
+      "expected": "patrycja bartoszewicz",
+      "status": "wrong"
+    }
+  ],
+  "trace": {
+    "source": "odwolanie.pdf",
+    "class": "odwolanie",
+    "ocr_used": false,
+    "quotes": {
+      "OdwolanieKIO.data": "Gdańsk, dnia 1 sierpnia 2026 roku",
+      "OdwolanieKIO.czynnosc_dzien": "Zamawiający w dniu 11 lipca 2026 roku unieważnił postępowanie.",
+      "OdwolanieKIO.czynnosc_powod_id": "Zamawiający w dniu 11 lipca 2026 roku unieważnił postępowanie.",
+      "OdwolanieKIO.miejscowosc": "Gdańsk, dnia 1 sierpnia 2026 roku",
+      "Odwolujacy[0].krs": "KRS: 9996902468",
+      "Odwolujacy[0].nazwa": "Opalit Serwis sp. k.",
+      "Odwolujacy[0].nip": "NIP: 9992251714",
+      "Odwolujacy[0].regon": "REGON: 999950475",
+      "Odwolujacy[0].przez-pelnomocnika": "reprezentowana przez: adw. Patrycja Bartoszewicz, adw. Aleksandra Gajewicz",
+      "Odwolujacy[0].pelnomocnik.imie_nazwisko": "adw. Patrycja Bartoszewicz, adw. Aleksandra Gajewicz",
+      "Odwolujacy[0].pelnomocnik.nazwa": "adres do korespondencji: Kancelaria Prawna i Partnerzy",
+      "Odwolujacy[0].pelnomocnik.mail": "biuro@kontakt.example",
+      "Zamawiajacy[0].krs": "KRS: 9998459407",
+      "Zamawiajacy[0].nazwa": "Opalit Wyposażenie S.A.",
+      "Zamawiajacy[0].nip": "NIP: 9997564636",
+      "Zamawiajacy[0].regon": "REGON: 999247630",
+      "Zamawiajacy[0].prowadzacy_postepowanie": null,
+      "ZamowieniePubliczne.numer_bzp": "numer ogłoszenia o zamówieniu w BZP: 2026/BZP00999107",
+      "ZamowieniePubliczne.numer_postepowania": "nr referencyjny sprawy: ZP.621.2026",
+      "ZamowieniePubliczne.numer_ted": "TED: 2026/S154-999639",
+      "ZamowieniePubliczne.tytul": "postępowania o udzielenie zamówienia w trybie negocjacji z ogłoszeniem pn. \"Dostawa i wdrożenie oprogramowania do obsługi dokumentacji wraz z serwisem wsparcia technicznego\""
+    },
+    "citation_ok": {
+      "OdwolanieKIO.data": true,
+      "OdwolanieKIO.czynnosc_dzien": true,
+      "OdwolanieKIO.czynnosc_powod_id": true,
+      "OdwolanieKIO.miejscowosc": true,
+      "Odwolujacy[0].krs": true,
+      "Odwolujacy[0].nazwa": true,
+      "Odwolujacy[0].nip": true,
+      "Odwolujacy[0].regon": true,
+      "Odwolujacy[0].przez-pelnomocnika": true,
+      "Odwolujacy[0].pelnomocnik.imie_nazwisko": true,
+      "Odwolujacy[0].pelnomocnik.nazwa": true,
+      "Odwolujacy[0].pelnomocnik.mail": true,
+      "Zamawiajacy[0].krs": true,
+      "Zamawiajacy[0].nazwa": true,
+      "Zamawiajacy[0].nip": true,
+      "Zamawiajacy[0].regon": true,
+      "ZamowieniePubliczne.numer_bzp": true,
+      "ZamowieniePubliczne.numer_postepowania": true,
+      "ZamowieniePubliczne.numer_ted": true,
+      "ZamowieniePubliczne.tytul": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

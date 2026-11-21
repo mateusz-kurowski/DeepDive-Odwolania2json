@@ -1,0 +1,81 @@
+{
+  "source": "0002.pdf",
+  "class": "pelnomocnictwo",
+  "error": null,
+  "ocr_used": true,
+  "prediction": {
+    "mocodawca": [
+      {
+        "data": {
+          "imie_nazwisko": null,
+          "krs": "9994354396",
+          "nazwa": "Medicor Infrastruktura S.A.",
+          "nip": "9995090281",
+          "typ": "osoba_prawna"
+        },
+        "podpisujacy": [
+          {
+            "imie_nazwisko": "Grzegorz Jaworski"
+          }
+        ]
+      }
+    ],
+    "pelnomocnicy": [
+      {
+        "imie_nazwisko": "Mateusz Wierzbicki",
+        "pesel": null
+      }
+    ]
+  },
+  "reference": {
+    "mocodawca": [
+      {
+        "data": {
+          "imie_nazwisko": null,
+          "krs": "9994354396",
+          "nazwa": "Medicor Infrastruktura S.A.",
+          "nip": "9995090281",
+          "typ": "osoba_prawna"
+        },
+        "podpisujacy": [
+          {
+            "imie_nazwisko": "Grzegorz Jaworski"
+          }
+        ]
+      }
+    ],
+    "pelnomocnicy": [
+      {
+        "imie_nazwisko": "Mateusz Wierzbicki",
+        "pesel": null
+      }
+    ]
+  },
+  "diffs": [],
+  "trace": {
+    "source": "0002.pdf",
+    "class": "pelnomocnictwo",
+    "ocr_used": true,
+    "quotes": {
+      "mocodawca[0].data.imie_nazwisko": null,
+      "mocodawca[0].data.krs": "KRS: 9994354396",
+      "mocodawca[0].data.nazwa": "Medicor Infrastruktura S.A.",
+      "mocodawca[0].data.nip": "NIP: 9995090281",
+      "mocodawca[0].data.typ": "wpisana do rejestru przedsiębiorców Krajowego Rejestru Sądowego",
+      "mocodawca[0].podpisujacy[0].imie_nazwisko": "Grzegorz Jaworski – Członek Zarządu",
+      "pelnomocnicy[0].imie_nazwisko": "Mateusz Wierzbicki – adwokat",
+      "pelnomocnicy[0].pesel": null
+    },
+    "citation_ok": {
+      "mocodawca[0].data.krs": true,
+      "mocodawca[0].data.nazwa": true,
+      "mocodawca[0].data.nip": true,
+      "mocodawca[0].data.typ": true,
+      "mocodawca[0].podpisujacy[0].imie_nazwisko": true,
+      "pelnomocnicy[0].imie_nazwisko": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

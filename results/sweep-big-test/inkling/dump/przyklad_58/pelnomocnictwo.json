@@ -1,0 +1,92 @@
+{
+  "source": "pelnomocnictwo.pdf",
+  "class": "pelnomocnictwo",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "mocodawca": [
+      {
+        "data": {
+          "imie_nazwisko": null,
+          "krs": "9995522683",
+          "nazwa": "Imperon Serwis sp. z o.o.",
+          "nip": "9993124780",
+          "typ": "osoba_prawna"
+        },
+        "podpisujacy": [
+          {
+            "imie_nazwisko": "Sebastian Baran"
+          }
+        ]
+      }
+    ],
+    "pelnomocnicy": [
+      {
+        "imie_nazwisko": "Grzegorz Wiśniewski",
+        "pesel": null
+      },
+      {
+        "imie_nazwisko": "Leszek Wieczorek",
+        "pesel": null
+      }
+    ]
+  },
+  "reference": {
+    "mocodawca": [
+      {
+        "data": {
+          "imie_nazwisko": null,
+          "krs": "9995522683",
+          "nazwa": "Imperon Serwis sp. z o.o.",
+          "nip": "9993124780",
+          "typ": "osoba_prawna"
+        },
+        "podpisujacy": [
+          {
+            "imie_nazwisko": "Sebastian Baran"
+          }
+        ]
+      }
+    ],
+    "pelnomocnicy": [
+      {
+        "imie_nazwisko": "Grzegorz Wiśniewski",
+        "pesel": null
+      },
+      {
+        "imie_nazwisko": "Leszek Wieczorek",
+        "pesel": null
+      }
+    ]
+  },
+  "diffs": [],
+  "trace": {
+    "source": "pelnomocnictwo.pdf",
+    "class": "pelnomocnictwo",
+    "ocr_used": false,
+    "quotes": {
+      "mocodawca[0].data.imie_nazwisko": null,
+      "mocodawca[0].data.krs": "KRS 9995522683",
+      "mocodawca[0].data.nazwa": "Imperon Serwis sp. z o.o.",
+      "mocodawca[0].data.nip": "NIP 9993124780",
+      "mocodawca[0].data.typ": "Imperon Serwis sp. z o.o.",
+      "mocodawca[0].podpisujacy[0].imie_nazwisko": "Sebastian Baran",
+      "pelnomocnicy[0].imie_nazwisko": "adw. Grzegorz Wiśniewski",
+      "pelnomocnicy[0].pesel": null,
+      "pelnomocnicy[1].imie_nazwisko": "adw. Leszek Wieczorek",
+      "pelnomocnicy[1].pesel": null
+    },
+    "citation_ok": {
+      "mocodawca[0].data.krs": true,
+      "mocodawca[0].data.nazwa": true,
+      "mocodawca[0].data.nip": true,
+      "mocodawca[0].data.typ": true,
+      "mocodawca[0].podpisujacy[0].imie_nazwisko": true,
+      "pelnomocnicy[0].imie_nazwisko": true,
+      "pelnomocnicy[1].imie_nazwisko": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

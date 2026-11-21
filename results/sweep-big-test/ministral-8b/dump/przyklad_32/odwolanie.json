@@ -1,0 +1,135 @@
+{
+  "source": "odwolanie.pdf",
+  "class": "odwolanie",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "OdwolanieKIO": {
+      "data": "2026-08-08",
+      "czynnosc_dzien": "2026-07-24",
+      "czynnosc_powod_id": 8,
+      "czynnosc_opis": "Zaniechanie wykluczenia wykonawcy",
+      "miejscowosc": "Poznań"
+    },
+    "Odwolujacy": [
+      {
+        "krs": "9996203344",
+        "nazwa": "Centaur Usługi sp. z o.o.",
+        "nip": "9996658849",
+        "regon": "999413872",
+        "przez-pelnomocnika": 1,
+        "pelnomocnik": {
+          "imie_nazwisko": "Cezary Marciniak",
+          "nazwa": "Kancelaria Radców Prawnych i Partnerzy",
+          "mail": "biuro@poczta.example"
+        }
+      }
+    ],
+    "Zamawiajacy": [
+      {
+        "krs": "9996418450",
+        "nazwa": "Elarion Technologie sp. z o.o.",
+        "nip": "9996764238",
+        "regon": "999940293",
+        "prowadzacy_postepowanie": null
+      }
+    ],
+    "ZamowieniePubliczne": {
+      "numer_bzp": "2026/BZP00999809",
+      "numer_postepowania": "ZS.520.2026",
+      "numer_ted": null,
+      "tytul": "Dostawa i wdrożenie oprogramowania do obsługi dokumentacji wraz z serwisem wsparcia technicznego"
+    }
+  },
+  "reference": {
+    "OdwolanieKIO": {
+      "data": "2026-08-08",
+      "czynnosc_dzien": "2026-07-24",
+      "czynnosc_powod_id": 8,
+      "czynnosc_opis": "Zaniechanie wykluczenia wykonawcy",
+      "miejscowosc": "Poznań"
+    },
+    "Odwolujacy": [
+      {
+        "krs": "9996203344",
+        "nazwa": "Centaur Usługi sp. z o.o.",
+        "nip": "9996658849",
+        "regon": "999413872",
+        "przez-pelnomocnika": 1,
+        "pelnomocnik": {
+          "imie_nazwisko": "Cezary Marciniak",
+          "nazwa": "Kancelaria Radców Prawnych i Partnerzy",
+          "mail": "biuro@poczta.example"
+        }
+      }
+    ],
+    "Zamawiajacy": [
+      {
+        "krs": "9996418450",
+        "nazwa": "Elarion Technologie sp. z o.o.",
+        "nip": "9996764238",
+        "regon": "999940293",
+        "prowadzacy_postepowanie": null
+      }
+    ],
+    "ZamowieniePubliczne": {
+      "numer_bzp": "2026/BZP00999809",
+      "numer_postepowania": "ZS.520.2026",
+      "numer_ted": null,
+      "tytul": "Dostawa i wdrożenie oprogramowania do obsługi dokumentacji wraz z serwisem wsparcia technicznego"
+    }
+  },
+  "diffs": [],
+  "trace": {
+    "source": "odwolanie.pdf",
+    "class": "odwolanie",
+    "ocr_used": false,
+    "quotes": {
+      "OdwolanieKIO.data": "Poznań, dnia 8 sierpnia 2026 roku",
+      "OdwolanieKIO.czynnosc_dzien": "Zamawiający w dniu 24 lipca 2026 roku nie wykluczył z postępowania podmiotu działającego wspólnie z Odwołującym.",
+      "OdwolanieKIO.czynnosc_powod_id": "Zamawiający w dniu 24 lipca 2026 roku nie wykluczył z postępowania podmiotu działającego wspólnie z Odwołującym.",
+      "OdwolanieKIO.miejscowosc": "Poznań, dnia 8 sierpnia 2026 roku",
+      "Odwolujacy[0].krs": "KRS: 9996203344",
+      "Odwolujacy[0].nazwa": "Odwołujący: Centaur Usługi sp. z o.o.",
+      "Odwolujacy[0].nip": "NIP: 9996658849",
+      "Odwolujacy[0].regon": "REGON: 999413872",
+      "Odwolujacy[0].przez-pelnomocnika": "reprezentowana przez: adw. Cezary Marciniak",
+      "Odwolujacy[0].pelnomocnik.imie_nazwisko": "adw. Cezary Marciniak",
+      "Odwolujacy[0].pelnomocnik.nazwa": "adres do korespondencji: Kancelaria Radców Prawnych i Partnerzy",
+      "Odwolujacy[0].pelnomocnik.mail": "biuro@poczta.example",
+      "Zamawiajacy[0].krs": "KRS: 9996418450",
+      "Zamawiajacy[0].nazwa": "Zamawiający: Elarion Technologie sp. z o.o.",
+      "Zamawiajacy[0].nip": "NIP: 9996764238",
+      "Zamawiajacy[0].regon": "REGON: 999940293",
+      "Zamawiajacy[0].prowadzacy_postepowanie": null,
+      "ZamowieniePubliczne.numer_bzp": "numer BZP: 2026/BZP00999809",
+      "ZamowieniePubliczne.numer_postepowania": "nr referencyjny sprawy: ZS.520.2026",
+      "ZamowieniePubliczne.numer_ted": null,
+      "ZamowieniePubliczne.tytul": "postępowania o udzielenie zamówienia w trybie negocjacji z ogłoszeniem pn. \"Dostawa i wdrożenie oprogramowania do obsługi dokumentacji wraz z serwisem wsparcia technicznego\""
+    },
+    "citation_ok": {
+      "OdwolanieKIO.data": true,
+      "OdwolanieKIO.czynnosc_dzien": true,
+      "OdwolanieKIO.czynnosc_powod_id": true,
+      "OdwolanieKIO.miejscowosc": true,
+      "Odwolujacy[0].krs": true,
+      "Odwolujacy[0].nazwa": true,
+      "Odwolujacy[0].nip": true,
+      "Odwolujacy[0].regon": true,
+      "Odwolujacy[0].przez-pelnomocnika": true,
+      "Odwolujacy[0].pelnomocnik.imie_nazwisko": true,
+      "Odwolujacy[0].pelnomocnik.nazwa": true,
+      "Odwolujacy[0].pelnomocnik.mail": true,
+      "Zamawiajacy[0].krs": true,
+      "Zamawiajacy[0].nazwa": true,
+      "Zamawiajacy[0].nip": true,
+      "Zamawiajacy[0].regon": true,
+      "ZamowieniePubliczne.numer_bzp": true,
+      "ZamowieniePubliczne.numer_postepowania": true,
+      "ZamowieniePubliczne.tytul": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

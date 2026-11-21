@@ -1,0 +1,135 @@
+{
+  "source": "odwolanie.pdf",
+  "class": "odwolanie",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "OdwolanieKIO": {
+      "data": "2026-05-27",
+      "czynnosc_dzien": "2026-05-11",
+      "czynnosc_powod_id": 9,
+      "czynnosc_opis": "Decyzja o unieważnieniu postępowania",
+      "miejscowosc": "Warszawa"
+    },
+    "Odwolujacy": [
+      {
+        "krs": "9996429969",
+        "nazwa": "Quentavis Usługi sp. z o.o.",
+        "nip": "9992111166",
+        "regon": "999970360",
+        "przez-pelnomocnika": 1,
+        "pelnomocnik": {
+          "imie_nazwisko": "Aleksandra Wierzbicka",
+          "nazwa": "Kancelaria Adwokacka i Partnerzy",
+          "mail": "biuro@poczta.example"
+        }
+      }
+    ],
+    "Zamawiajacy": [
+      {
+        "krs": "9991809197",
+        "nazwa": "Talveris Automatyka sp. j.",
+        "nip": "9994312880",
+        "regon": "999732519",
+        "prowadzacy_postepowanie": null
+      }
+    ],
+    "ZamowieniePubliczne": {
+      "numer_bzp": "2026/BZP00999715",
+      "numer_postepowania": "DI.228.2026",
+      "numer_ted": null,
+      "tytul": "Dostawa materiałów eksploatacyjnych do urządzeń biurowych"
+    }
+  },
+  "reference": {
+    "OdwolanieKIO": {
+      "data": "2026-05-27",
+      "czynnosc_dzien": "2026-05-11",
+      "czynnosc_powod_id": 9,
+      "czynnosc_opis": "Decyzja o unieważnieniu postępowania",
+      "miejscowosc": "Warszawa"
+    },
+    "Odwolujacy": [
+      {
+        "krs": "9996429969",
+        "nazwa": "Quentavis Usługi sp. z o.o.",
+        "nip": "9992111166",
+        "regon": "999970360",
+        "przez-pelnomocnika": 1,
+        "pelnomocnik": {
+          "imie_nazwisko": "Aleksandra Wierzbicka",
+          "nazwa": "Kancelaria Adwokacka i Partnerzy",
+          "mail": "biuro@poczta.example"
+        }
+      }
+    ],
+    "Zamawiajacy": [
+      {
+        "krs": "9991809197",
+        "nazwa": "Talveris Automatyka sp. j.",
+        "nip": "9994312880",
+        "regon": "999732519",
+        "prowadzacy_postepowanie": null
+      }
+    ],
+    "ZamowieniePubliczne": {
+      "numer_bzp": "2026/BZP00999715",
+      "numer_postepowania": "DI.228.2026",
+      "numer_ted": null,
+      "tytul": "Dostawa materiałów eksploatacyjnych do urządzeń biurowych"
+    }
+  },
+  "diffs": [],
+  "trace": {
+    "source": "odwolanie.pdf",
+    "class": "odwolanie",
+    "ocr_used": false,
+    "quotes": {
+      "OdwolanieKIO.data": "Warszawa, dnia 27 maja 2026 roku",
+      "OdwolanieKIO.czynnosc_dzien": "Zamawiający w dniu 11 maja 2026 roku unieważniił postępowanie.",
+      "OdwolanieKIO.czynnosc_powod_id": "Zamawiający w dniu 11 maja 2026 roku unieważniił postępowanie.",
+      "OdwolanieKIO.miejscowosc": "Warszawa, dnia 27 maja 2026 roku",
+      "Odwolujacy[0].krs": "KRS: 9996429969",
+      "Odwolujacy[0].nazwa": "Quentavis Usługi sp. z o.o.",
+      "Odwolujacy[0].nip": "NIP: 9992111166",
+      "Odwolujacy[0].regon": "REGON: 999970360",
+      "Odwolujacy[0].przez-pelnomocnika": "reprezentowana przez: adw. Aleksandra Wierzbicka, adw. Jolanta Najder",
+      "Odwolujacy[0].pelnomocnik.imie_nazwisko": "adw. Aleksandra Wierzbicka",
+      "Odwolujacy[0].pelnomocnik.nazwa": "adres do korespondencji: Kancelaria Adwokacka i Partnerzy",
+      "Odwolujacy[0].pelnomocnik.mail": "biuro@poczta.example",
+      "Zamawiajacy[0].krs": "KRS: 9991809197",
+      "Zamawiajacy[0].nazwa": "Talveris Automatyka sp. j.",
+      "Zamawiajacy[0].nip": "NIP: 9994312880",
+      "Zamawiajacy[0].regon": "REGON: 999732519",
+      "Zamawiajacy[0].prowadzacy_postepowanie": null,
+      "ZamowieniePubliczne.numer_bzp": "numer BZP: 2026/BZP00999715",
+      "ZamowieniePubliczne.numer_postepowania": "nr referencyjny sprawy: DI.228.2026",
+      "ZamowieniePubliczne.numer_ted": null,
+      "ZamowieniePubliczne.tytul": "pn. „Dostawa materiałów eksploatacyjnych do urządzeń biurowych”"
+    },
+    "citation_ok": {
+      "OdwolanieKIO.data": true,
+      "OdwolanieKIO.czynnosc_dzien": true,
+      "OdwolanieKIO.czynnosc_powod_id": true,
+      "OdwolanieKIO.miejscowosc": true,
+      "Odwolujacy[0].krs": true,
+      "Odwolujacy[0].nazwa": true,
+      "Odwolujacy[0].nip": true,
+      "Odwolujacy[0].regon": true,
+      "Odwolujacy[0].przez-pelnomocnika": true,
+      "Odwolujacy[0].pelnomocnik.imie_nazwisko": true,
+      "Odwolujacy[0].pelnomocnik.nazwa": true,
+      "Odwolujacy[0].pelnomocnik.mail": true,
+      "Zamawiajacy[0].krs": true,
+      "Zamawiajacy[0].nazwa": true,
+      "Zamawiajacy[0].nip": true,
+      "Zamawiajacy[0].regon": true,
+      "ZamowieniePubliczne.numer_bzp": true,
+      "ZamowieniePubliczne.numer_postepowania": true,
+      "ZamowieniePubliczne.tytul": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

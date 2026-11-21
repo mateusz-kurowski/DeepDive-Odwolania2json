@@ -1,0 +1,128 @@
+{
+  "source": "pelnomocnictwo.pdf",
+  "class": "pelnomocnictwo",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "mocodawca": [
+      {
+        "data": {
+          "imie_nazwisko": null,
+          "krs": "9995540127",
+          "nazwa": "Torvex Budownictwo sp. z o.o.",
+          "nip": "9992284611",
+          "typ": "osoba_prawna"
+        },
+        "podpisujacy": [
+          {
+            "imie_nazwisko": "Marek Domański"
+          }
+        ]
+      },
+      {
+        "data": {
+          "imie_nazwisko": null,
+          "krs": "9997108834",
+          "nazwa": "Hydromel Instalacje sp.j.",
+          "nip": "9994417025",
+          "typ": "osoba_prawna"
+        },
+        "podpisujacy": [
+          {
+            "imie_nazwisko": "Agnieszka Kurek"
+          },
+          {
+            "imie_nazwisko": "Robert Kurek"
+          }
+        ]
+      }
+    ],
+    "pelnomocnicy": [
+      {
+        "imie_nazwisko": "Piotr Zalewski",
+        "pesel": null
+      }
+    ]
+  },
+  "reference": {
+    "mocodawca": [
+      {
+        "data": {
+          "imie_nazwisko": null,
+          "krs": "9995540127",
+          "nazwa": "Torvex Budownictwo sp. z o.o.",
+          "nip": "9992284611",
+          "typ": "osoba_prawna"
+        },
+        "podpisujacy": [
+          {
+            "imie_nazwisko": "Marek Domański"
+          }
+        ]
+      },
+      {
+        "data": {
+          "imie_nazwisko": null,
+          "krs": "9997108834",
+          "nazwa": "Hydromel Instalacje sp.j.",
+          "nip": "9994417025",
+          "typ": "osoba_prawna"
+        },
+        "podpisujacy": [
+          {
+            "imie_nazwisko": "Agnieszka Kurek"
+          },
+          {
+            "imie_nazwisko": "Robert Kurek"
+          }
+        ]
+      }
+    ],
+    "pelnomocnicy": [
+      {
+        "imie_nazwisko": "Piotr Zalewski",
+        "pesel": null
+      }
+    ]
+  },
+  "diffs": [],
+  "trace": {
+    "source": "pelnomocnictwo.pdf",
+    "class": "pelnomocnictwo",
+    "ocr_used": false,
+    "quotes": {
+      "mocodawca[0].data.imie_nazwisko": null,
+      "mocodawca[0].data.krs": "KRS 9995540127",
+      "mocodawca[0].data.nazwa": "Torvex Budownictwo sp. z o.o.",
+      "mocodawca[0].data.nip": "NIP 9992284611",
+      "mocodawca[0].data.typ": "sp. z o.o.",
+      "mocodawca[0].podpisujacy[0].imie_nazwisko": "Marek Domański",
+      "mocodawca[1].data.imie_nazwisko": null,
+      "mocodawca[1].data.krs": "KRS 9997108834",
+      "mocodawca[1].data.nazwa": "Hydromel Instalacje sp.j.",
+      "mocodawca[1].data.nip": "NIP 9994417025",
+      "mocodawca[1].data.typ": "sp.j.",
+      "mocodawca[1].podpisujacy[0].imie_nazwisko": "Agnieszka Kurek",
+      "mocodawca[1].podpisujacy[1].imie_nazwisko": "Robert Kurek",
+      "pelnomocnicy[0].imie_nazwisko": "adw. Piotr Zalewski",
+      "pelnomocnicy[0].pesel": null
+    },
+    "citation_ok": {
+      "mocodawca[0].data.krs": true,
+      "mocodawca[0].data.nazwa": true,
+      "mocodawca[0].data.nip": true,
+      "mocodawca[0].data.typ": true,
+      "mocodawca[0].podpisujacy[0].imie_nazwisko": true,
+      "mocodawca[1].data.krs": true,
+      "mocodawca[1].data.nazwa": true,
+      "mocodawca[1].data.nip": true,
+      "mocodawca[1].data.typ": true,
+      "mocodawca[1].podpisujacy[0].imie_nazwisko": true,
+      "mocodawca[1].podpisujacy[1].imie_nazwisko": true,
+      "pelnomocnicy[0].imie_nazwisko": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

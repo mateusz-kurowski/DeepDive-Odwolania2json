@@ -1,0 +1,51 @@
+{
+  "source": "potwierdzenie_przelewu.pdf",
+  "class": "przelew",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-06-30",
+      "kwota": 34.0,
+      "na_rachunek": "54640589193407420758963236",
+      "numer_transakcji": "CEN2606307741258",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Joanna Stępień i Michał Borkowski w postępowaniu przed KIO w przetargu MCLM/ZP/07/2026 CEN2606307741258",
+      "z_rachunku": "55994774587693681405727867"
+    }
+  },
+  "reference": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-06-30",
+      "kwota": 34.0,
+      "na_rachunek": "54640589193407420758963236",
+      "numer_transakcji": "CEN2606307741258",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Joanna Stępień i Michał Borkowski w postępowaniu przed KIO w przetargu MCLM/ZP/07/2026 CEN2606307741258",
+      "z_rachunku": "55994774587693681405727867"
+    }
+  },
+  "diffs": [],
+  "trace": {
+    "source": "potwierdzenie_przelewu.pdf",
+    "class": "przelew",
+    "ocr_used": false,
+    "quotes": {
+      "przelew_bankowy.data_operacji": "Data operacji",
+      "przelew_bankowy.kwota": "Kwota\n34,00 PLN",
+      "przelew_bankowy.na_rachunek": "PL54 6405 8919 3407 4207 5896 3236",
+      "przelew_bankowy.numer_transakcji": "Numer referencyjny\nCEN2606307741258",
+      "przelew_bankowy.tytul": "Tytuł przelewu\nopłata skarbowa od pełnomocnictwa dla Joanna Stępień i Michał Borkowski w postępowaniu\nprzed KIO w przetargu MCLM/ZP/07/2026 CEN2606307741258",
+      "przelew_bankowy.z_rachunku": "PL55 9947 7458 7693 6814 0572 7867"
+    },
+    "citation_ok": {
+      "przelew_bankowy.data_operacji": true,
+      "przelew_bankowy.kwota": true,
+      "przelew_bankowy.na_rachunek": true,
+      "przelew_bankowy.numer_transakcji": true,
+      "przelew_bankowy.tytul": true,
+      "przelew_bankowy.z_rachunku": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

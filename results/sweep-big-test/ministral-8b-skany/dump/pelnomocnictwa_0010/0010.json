@@ -1,0 +1,104 @@
+{
+  "source": "0010.pdf",
+  "class": "pelnomocnictwo",
+  "error": null,
+  "ocr_used": true,
+  "prediction": {
+    "mocodawca": [
+      {
+        "data": {
+          "imie_nazwisko": null,
+          "krs": null,
+          "nazwa": "Paweł Brzozowski Asterion Usługi Techniczne",
+          "nip": "9996635512",
+          "typ": "osoba_fizyczna"
+        },
+        "podpisujacy": [
+          {
+            "imie_nazwisko": "Paweł Brzozowski"
+          }
+        ]
+      }
+    ],
+    "pelnomocnicy": [
+      {
+        "imie_nazwisko": "Andrzej Wróbel",
+        "pesel": null
+      },
+      {
+        "imie_nazwisko": "Monika Zawadzka",
+        "pesel": null
+      }
+    ]
+  },
+  "reference": {
+    "mocodawca": [
+      {
+        "data": {
+          "imie_nazwisko": "Paweł Brzozowski",
+          "krs": null,
+          "nazwa": null,
+          "nip": "9996635512",
+          "typ": "osoba_fizyczna"
+        },
+        "podpisujacy": [
+          {
+            "imie_nazwisko": "Paweł Brzozowski"
+          }
+        ]
+      }
+    ],
+    "pelnomocnicy": [
+      {
+        "imie_nazwisko": "Andrzej Wróbel",
+        "pesel": null
+      },
+      {
+        "imie_nazwisko": "Monika Zawadzka",
+        "pesel": null
+      }
+    ]
+  },
+  "diffs": [
+    {
+      "field": "mocodawca[data.nip=9996635512].data.imie_nazwisko",
+      "predicted": null,
+      "expected": "paweł brzozowski",
+      "status": "missing"
+    },
+    {
+      "field": "mocodawca[data.nip=9996635512].data.nazwa",
+      "predicted": "paweł brzozowski asterion usługi techniczne",
+      "expected": null,
+      "status": "extra"
+    }
+  ],
+  "trace": {
+    "source": "0010.pdf",
+    "class": "pelnomocnictwo",
+    "ocr_used": true,
+    "quotes": {
+      "mocodawca[0].data.imie_nazwisko": null,
+      "mocodawca[0].data.krs": null,
+      "mocodawca[0].data.nazwa": "Paweł Brzozowski, prowadzący/a działalność gospodarczą pod firmą Paweł Brzozowski Asterion Usługi Techniczne",
+      "mocodawca[0].data.nip": "NIP: 999-663-55-12",
+      "mocodawca[0].data.typ": "prowadzący/a działalność gospodarczą",
+      "mocodawca[0].podpisujacy[0].imie_nazwisko": "Paweł Brzozowski",
+      "pelnomocnicy[0].imie_nazwisko": "Andrzej Wróbel",
+      "pelnomocnicy[0].pesel": null,
+      "pelnomocnicy[1].imie_nazwisko": "Monika Zawadzka",
+      "pelnomocnicy[1].pesel": null
+    },
+    "citation_ok": {
+      "mocodawca[0].data.nazwa": true,
+      "mocodawca[0].data.nip": true,
+      "mocodawca[0].data.typ": true,
+      "mocodawca[0].podpisujacy[0].imie_nazwisko": true,
+      "pelnomocnicy[0].imie_nazwisko": true,
+      "pelnomocnicy[1].imie_nazwisko": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

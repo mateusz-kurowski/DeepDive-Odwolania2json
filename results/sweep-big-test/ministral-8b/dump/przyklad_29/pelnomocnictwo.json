@@ -1,0 +1,89 @@
+{
+  "source": "pelnomocnictwo.pdf",
+  "class": "pelnomocnictwo",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "mocodawca": [
+      {
+        "data": {
+          "imie_nazwisko": null,
+          "krs": "9997854723",
+          "nazwa": "Corvella Serwis sp. k.",
+          "nip": "9995776771",
+          "typ": "osoba_prawna"
+        },
+        "podpisujacy": [
+          {
+            "imie_nazwisko": "Aleksandra Chmielewski"
+          },
+          {
+            "imie_nazwisko": "Weronika Cieślak"
+          }
+        ]
+      }
+    ],
+    "pelnomocnicy": [
+      {
+        "imie_nazwisko": "Ewa Chalupowicz",
+        "pesel": null
+      }
+    ]
+  },
+  "reference": {
+    "mocodawca": [
+      {
+        "data": {
+          "imie_nazwisko": null,
+          "krs": "9997854723",
+          "nazwa": "Corvella Serwis sp. k.",
+          "nip": "9995776771",
+          "typ": "osoba_prawna"
+        },
+        "podpisujacy": [
+          {
+            "imie_nazwisko": "Aleksandra Chmielewski"
+          },
+          {
+            "imie_nazwisko": "Weronika Cieślak"
+          }
+        ]
+      }
+    ],
+    "pelnomocnicy": [
+      {
+        "imie_nazwisko": "Ewa Chalupowicz",
+        "pesel": null
+      }
+    ]
+  },
+  "diffs": [],
+  "trace": {
+    "source": "pelnomocnictwo.pdf",
+    "class": "pelnomocnictwo",
+    "ocr_used": false,
+    "quotes": {
+      "mocodawca[0].data.imie_nazwisko": null,
+      "mocodawca[0].data.krs": "KRS 9997854723",
+      "mocodawca[0].data.nazwa": "Corvella Serwis sp. k.",
+      "mocodawca[0].data.nip": "NIP 9995776771",
+      "mocodawca[0].data.typ": "sp. k.",
+      "mocodawca[0].podpisujacy[0].imie_nazwisko": "Aleksandra Chmielewski Członek Zarządu",
+      "mocodawca[0].podpisujacy[1].imie_nazwisko": "Weronika Cieślak Prokurent",
+      "pelnomocnicy[0].imie_nazwisko": "adw. Ewa Chalupowicz",
+      "pelnomocnicy[0].pesel": null
+    },
+    "citation_ok": {
+      "mocodawca[0].data.krs": true,
+      "mocodawca[0].data.nazwa": true,
+      "mocodawca[0].data.nip": true,
+      "mocodawca[0].data.typ": true,
+      "mocodawca[0].podpisujacy[0].imie_nazwisko": true,
+      "mocodawca[0].podpisujacy[1].imie_nazwisko": true,
+      "pelnomocnicy[0].imie_nazwisko": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

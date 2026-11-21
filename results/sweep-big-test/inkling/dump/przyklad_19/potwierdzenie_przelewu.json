@@ -1,0 +1,51 @@
+{
+  "source": "potwierdzenie_przelewu.pdf",
+  "class": "przelew",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-04-26",
+      "kwota": 100.0,
+      "na_rachunek": "98259602737060888831984936",
+      "numer_transakcji": "CEN2605113961811",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Aleksandra Wierzbicki w postępowaniu przed KIO w przetargu DI.578.2026 CEN2605113961811",
+      "z_rachunku": "97552076088416465820563693"
+    }
+  },
+  "reference": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-04-26",
+      "kwota": 100.0,
+      "na_rachunek": "98259602737060888831984936",
+      "numer_transakcji": "CEN2605113961811",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Aleksandra Wierzbicki w postępowaniu przed KIO w przetargu DI.578.2026 CEN2605113961811",
+      "z_rachunku": "97552076088416465820563693"
+    }
+  },
+  "diffs": [],
+  "trace": {
+    "source": "potwierdzenie_przelewu.pdf",
+    "class": "przelew",
+    "ocr_used": false,
+    "quotes": {
+      "przelew_bankowy.data_operacji": "w dniu 26 kwietnia 2026",
+      "przelew_bankowy.kwota": "w kwocie 100,00",
+      "przelew_bankowy.na_rachunek": "PL98 2596 0273 7060 8888 3198 4936",
+      "przelew_bankowy.numer_transakcji": "Numer referencyjny operacji: CEN2605113961811.",
+      "przelew_bankowy.tytul": "opłata skarbowa od pełnomocnictwa dla Aleksandra Wierzbicki w postępowaniu przed KIO w przetargu\nDI.578.2026 CEN2605113961811",
+      "przelew_bankowy.z_rachunku": "PL97 5520 7608 8416 4658 2056 3693"
+    },
+    "citation_ok": {
+      "przelew_bankowy.data_operacji": true,
+      "przelew_bankowy.kwota": true,
+      "przelew_bankowy.na_rachunek": true,
+      "przelew_bankowy.numer_transakcji": true,
+      "przelew_bankowy.tytul": true,
+      "przelew_bankowy.z_rachunku": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

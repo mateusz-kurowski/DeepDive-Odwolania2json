@@ -1,0 +1,74 @@
+[
+  {
+    "name": "inkling",
+    "model": "thinkingmachines/inkling-2-mini",
+    "error": null,
+    "micro_f1": 0.9975393700787402,
+    "precision": 0.9975393700787402,
+    "recall": 0.9975393700787402,
+    "docs": 180,
+    "errors": 0,
+    "citation_ok_rate": 1.0,
+    "mode": "hybrid",
+    "usage": {
+      "calls": 365,
+      "prompt_tokens": 947269,
+      "completion_tokens": 107734,
+      "total_tokens": 1055003
+    }
+  },
+  {
+    "name": "ministral-8b",
+    "model": "mistralai/ministral-8b-2512",
+    "error": null,
+    "micro_f1": 0.9831932773109244,
+    "precision": 0.9875868917576961,
+    "recall": 0.9788385826771654,
+    "docs": 180,
+    "errors": 0,
+    "citation_ok_rate": 0.9943705220061413,
+    "mode": "hybrid",
+    "usage": {
+      "calls": 396,
+      "prompt_tokens": 1030128,
+      "completion_tokens": 141824,
+      "total_tokens": 1171952
+    }
+  },
+  {
+    "name": "inkling-skany",
+    "model": "thinkingmachines/inkling-2-mini",
+    "error": null,
+    "micro_f1": 0.9357495881383854,
+    "precision": 0.9530201342281879,
+    "recall": 0.919093851132686,
+    "docs": 30,
+    "errors": 1,
+    "citation_ok_rate": 0.9965277777777778,
+    "mode": "hybrid",
+    "usage": {
+      "calls": 65,
+      "prompt_tokens": 253337,
+      "completion_tokens": 22389,
+      "total_tokens": 275726
+    }
+  },
+  {
+    "name": "ministral-8b-skany",
+    "model": "mistralai/ministral-8b-2512",
+    "error": null,
+    "micro_f1": 0.9112227805695142,
+    "precision": 0.9444444444444444,
+    "recall": 0.8802588996763754,
+    "docs": 30,
+    "errors": 1,
+    "citation_ok_rate": 0.9964028776978417,
+    "mode": "hybrid",
+    "usage": {
+      "calls": 62,
+      "prompt_tokens": 175460,
+      "completion_tokens": 22335,
+      "total_tokens": 197795
+    }
+  }
+]

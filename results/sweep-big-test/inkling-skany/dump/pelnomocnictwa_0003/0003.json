@@ -1,0 +1,81 @@
+{
+  "source": "0003.pdf",
+  "class": "pelnomocnictwo",
+  "error": null,
+  "ocr_used": true,
+  "prediction": {
+    "mocodawca": [
+      {
+        "data": {
+          "imie_nazwisko": null,
+          "krs": "9998927009",
+          "nazwa": "Kalinex Logistyka Spółka z ograniczoną odpowiedzialnością",
+          "nip": "9990864252",
+          "typ": "osoba_prawna"
+        },
+        "podpisujacy": [
+          {
+            "imie_nazwisko": "Szymon Jabłoń"
+          }
+        ]
+      }
+    ],
+    "pelnomocnicy": [
+      {
+        "imie_nazwisko": "Żaneta Olszewska",
+        "pesel": null
+      }
+    ]
+  },
+  "reference": {
+    "mocodawca": [
+      {
+        "data": {
+          "imie_nazwisko": null,
+          "krs": "9998927009",
+          "nazwa": "Kalinex Logistyka Spółka z ograniczoną odpowiedzialnością",
+          "nip": "9990864252",
+          "typ": "osoba_prawna"
+        },
+        "podpisujacy": [
+          {
+            "imie_nazwisko": "Szymon Jabłoń"
+          }
+        ]
+      }
+    ],
+    "pelnomocnicy": [
+      {
+        "imie_nazwisko": "Żaneta Olszewska",
+        "pesel": null
+      }
+    ]
+  },
+  "diffs": [],
+  "trace": {
+    "source": "0003.pdf",
+    "class": "pelnomocnictwo",
+    "ocr_used": true,
+    "quotes": {
+      "mocodawca[0].data.imie_nazwisko": null,
+      "mocodawca[0].data.krs": "KRS: 9998927009",
+      "mocodawca[0].data.nazwa": "Kalinex Logistyka Spółka z ograniczoną odpowiedzialnością",
+      "mocodawca[0].data.nip": "NIP: 9990864252",
+      "mocodawca[0].data.typ": "Spółka z ograniczoną odpowiedzialnością",
+      "mocodawca[0].podpisujacy[0].imie_nazwisko": "Szymon Jabłoń – Wiceprezes Zarządu",
+      "pelnomocnicy[0].imie_nazwisko": "Żaneta Olszewska",
+      "pelnomocnicy[0].pesel": null
+    },
+    "citation_ok": {
+      "mocodawca[0].data.krs": true,
+      "mocodawca[0].data.nazwa": true,
+      "mocodawca[0].data.nip": true,
+      "mocodawca[0].data.typ": true,
+      "mocodawca[0].podpisujacy[0].imie_nazwisko": true,
+      "pelnomocnicy[0].imie_nazwisko": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

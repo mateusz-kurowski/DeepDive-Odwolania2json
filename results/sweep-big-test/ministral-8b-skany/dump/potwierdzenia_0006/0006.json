@@ -1,0 +1,71 @@
+{
+  "source": "0006.pdf",
+  "class": "przelew",
+  "error": null,
+  "ocr_used": true,
+  "prediction": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-05-16",
+      "kwota": 34.0,
+      "na_rachunek": null,
+      "numer_transakcji": "CEN7319670412925",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla adwokat Sylwia Sikora i adwokat Karolina Kaczmarek w postępowaniu przed KIO w przetargu DZP.260.99.2026 CEN7319670412925",
+      "z_rachunku": null
+    }
+  },
+  "reference": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-05-20",
+      "kwota": 34.0,
+      "na_rachunek": "61103015081403045696356736",
+      "numer_transakcji": "CEN7319670412925",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla adwokat Sylwia Sikora i adwokat Karolina Kaczmarek w postępowaniu przed KIO w przetargu DZP.260.99.2026 CEN7319670412925",
+      "z_rachunku": "PL75217000080889261999999470"
+    }
+  },
+  "diffs": [
+    {
+      "field": "przelew_bankowy.data_operacji",
+      "predicted": "2026-05-16",
+      "expected": "2026-05-20",
+      "status": "wrong"
+    },
+    {
+      "field": "przelew_bankowy.na_rachunek",
+      "predicted": null,
+      "expected": "61103015081403045696356736",
+      "status": "missing"
+    },
+    {
+      "field": "przelew_bankowy.z_rachunku",
+      "predicted": null,
+      "expected": "pl75217000080889261999999470",
+      "status": "missing"
+    }
+  ],
+  "trace": {
+    "source": "0006.pdf",
+    "class": "przelew",
+    "ocr_used": true,
+    "quotes": {
+      "przelew_bankowy.data_operacji": "dnia 16.05.2026",
+      "przelew_bankowy.kwota": "34,00 PLN",
+      "przelew_bankowy.na_rachunek": "61 1030 1508 1403 0456 9635 6736",
+      "przelew_bankowy.numer_transakcji": "CEN7319670412925",
+      "przelew_bankowy.tytul": "opłata skarbowa od pełnomocnictwa dla adwokat Sylwia Sikora i adwokat Karolina Kaczmarek w postępowaniu przed KIO w przetargu DZP.260.99.2026 CEN7319670412925",
+      "przelew_bankowy.z_rachunku": "PL75 2170 0008 0889 2619 9999 9470"
+    },
+    "citation_ok": {
+      "przelew_bankowy.data_operacji": true,
+      "przelew_bankowy.kwota": true,
+      "przelew_bankowy.numer_transakcji": true,
+      "przelew_bankowy.tytul": true
+    },
+    "nulled": [
+      "przelew_bankowy.na_rachunek",
+      "przelew_bankowy.z_rachunku"
+    ],
+    "retries": 1,
+    "truncated": false
+  }
+}

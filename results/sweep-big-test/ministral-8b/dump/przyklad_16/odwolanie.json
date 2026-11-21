@@ -1,0 +1,142 @@
+{
+  "source": "odwolanie.pdf",
+  "class": "odwolanie",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "OdwolanieKIO": {
+      "data": "2026-08-22",
+      "czynnosc_dzien": "2026-08-11",
+      "czynnosc_powod_id": 3,
+      "czynnosc_opis": "Decyzja o wykluczeniu wykonawcy",
+      "miejscowosc": "Warszawa"
+    },
+    "Odwolujacy": [
+      {
+        "krs": "9995891101",
+        "nazwa": "Umbria Serwis S.A.",
+        "nip": "9994524790",
+        "regon": "999556867",
+        "przez-pelnomocnika": 1,
+        "pelnomocnik": {
+          "imie_nazwisko": "Cezary Szymanski, Patrycja Bąkiewicz",
+          "nazwa": "Kancelaria Radców Prawnych Spółka z ograniczoną odpowiedzialnością",
+          "mail": "biuro@poczta.example"
+        }
+      }
+    ],
+    "Zamawiajacy": [
+      {
+        "krs": "9998340863",
+        "nazwa": "Ypsilon Usługi sp. k.",
+        "nip": "9998078300",
+        "regon": "999191360",
+        "prowadzacy_postepowanie": null
+      }
+    ],
+    "ZamowieniePubliczne": {
+      "numer_bzp": null,
+      "numer_postepowania": "DI.906.2026",
+      "numer_ted": "999559-2026",
+      "tytul": "Świadczenie usług pocztowych i kurierskich na potrzeby urzędu"
+    }
+  },
+  "reference": {
+    "OdwolanieKIO": {
+      "data": "2026-08-22",
+      "czynnosc_dzien": "2026-08-11",
+      "czynnosc_powod_id": 3,
+      "czynnosc_opis": "Decyzja o wykluczeniu wykonawcy",
+      "miejscowosc": "Warszawa"
+    },
+    "Odwolujacy": [
+      {
+        "krs": "9995891101",
+        "nazwa": "Umbria Serwis S.A.",
+        "nip": "9994524790",
+        "regon": "999556867",
+        "przez-pelnomocnika": 1,
+        "pelnomocnik": {
+          "imie_nazwisko": "Cezary Szymanski",
+          "nazwa": "Kancelaria Radców Prawnych Spółka z ograniczoną odpowiedzialnością",
+          "mail": "biuro@poczta.example"
+        }
+      }
+    ],
+    "Zamawiajacy": [
+      {
+        "krs": "9998340863",
+        "nazwa": "Ypsilon Usługi sp. k.",
+        "nip": "9998078300",
+        "regon": "999191360",
+        "prowadzacy_postepowanie": null
+      }
+    ],
+    "ZamowieniePubliczne": {
+      "numer_bzp": null,
+      "numer_postepowania": "DI.906.2026",
+      "numer_ted": "999559-2026",
+      "tytul": "Świadczenie usług pocztowych i kurierskich na potrzeby urzędu"
+    }
+  },
+  "diffs": [
+    {
+      "field": "Odwolujacy[krs=9995891101].pelnomocnik.imie_nazwisko",
+      "predicted": "cezary szymanski, patrycja bąkiewicz",
+      "expected": "cezary szymanski",
+      "status": "wrong"
+    }
+  ],
+  "trace": {
+    "source": "odwolanie.pdf",
+    "class": "odwolanie",
+    "ocr_used": false,
+    "quotes": {
+      "OdwolanieKIO.data": "Warszawa, dnia 22 sierpnia 2026 roku",
+      "OdwolanieKIO.czynnosc_dzien": "Zamawiający w dniu 11 sierpnia 2026 roku poinformował o wykluczeniu z postępowania podmiotu działającego wspólnie z Odwołującym.",
+      "OdwolanieKIO.czynnosc_powod_id": "Zamawiający w dniu 11 sierpnia 2026 roku poinformował o wykluczeniu z postępowania",
+      "OdwolanieKIO.miejscowosc": "Warszawa, dnia 22 sierpnia 2026 roku",
+      "Odwolujacy[0].krs": "KRS: 9995891101",
+      "Odwolujacy[0].nazwa": "Odwołujący: Umbria Serwis S.A.",
+      "Odwolujacy[0].nip": "NIP: 9994524790",
+      "Odwolujacy[0].regon": "REGON: 999556867",
+      "Odwolujacy[0].przez-pelnomocnika": "reprezentowana przez: adw. Cezary Szymanski, adw. Patrycja Bąkiewicz",
+      "Odwolujacy[0].pelnomocnik.imie_nazwisko": "adw. Cezary Szymanski, adw. Patrycja Bąkiewicz",
+      "Odwolujacy[0].pelnomocnik.nazwa": "adres do korespondencji: Kancelaria Radców Prawnych Spółka z ograniczoną odpowiedzialnością",
+      "Odwolujacy[0].pelnomocnik.mail": "biuro@poczta.example",
+      "Zamawiajacy[0].krs": "KRS: 9998340863",
+      "Zamawiajacy[0].nazwa": "Zamawiający: Ypsilon Usługi sp. k.",
+      "Zamawiajacy[0].nip": "NIP: 9998078300",
+      "Zamawiajacy[0].regon": "REGON: 999191360",
+      "Zamawiajacy[0].prowadzacy_postepowanie": null,
+      "ZamowieniePubliczne.numer_bzp": null,
+      "ZamowieniePubliczne.numer_postepowania": "nr referencyjny sprawy: DI.906.2026",
+      "ZamowieniePubliczne.numer_ted": "TED: 2026/S074-999559",
+      "ZamowieniePubliczne.tytul": "pn. \"Świadczenie usług pocztowych i kurierskich na potrzeby urzędu\""
+    },
+    "citation_ok": {
+      "OdwolanieKIO.data": true,
+      "OdwolanieKIO.czynnosc_dzien": true,
+      "OdwolanieKIO.czynnosc_powod_id": true,
+      "OdwolanieKIO.miejscowosc": true,
+      "Odwolujacy[0].krs": true,
+      "Odwolujacy[0].nazwa": true,
+      "Odwolujacy[0].nip": true,
+      "Odwolujacy[0].regon": true,
+      "Odwolujacy[0].przez-pelnomocnika": true,
+      "Odwolujacy[0].pelnomocnik.imie_nazwisko": true,
+      "Odwolujacy[0].pelnomocnik.nazwa": true,
+      "Odwolujacy[0].pelnomocnik.mail": true,
+      "Zamawiajacy[0].krs": true,
+      "Zamawiajacy[0].nazwa": true,
+      "Zamawiajacy[0].nip": true,
+      "Zamawiajacy[0].regon": true,
+      "ZamowieniePubliczne.numer_postepowania": true,
+      "ZamowieniePubliczne.numer_ted": true,
+      "ZamowieniePubliczne.tytul": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

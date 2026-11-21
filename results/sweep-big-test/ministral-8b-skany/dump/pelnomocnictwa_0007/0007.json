@@ -1,0 +1,128 @@
+{
+  "source": "0007.pdf",
+  "class": "pelnomocnictwo",
+  "error": null,
+  "ocr_used": true,
+  "prediction": {
+    "mocodawca": [
+      {
+        "data": {
+          "imie_nazwisko": null,
+          "krs": "9998767758",
+          "nazwa": "Tervana Systemy Informatyczne spółka komandytowa",
+          "nip": "9993437059",
+          "typ": "osoba_prawna"
+        },
+        "podpisujacy": [
+          {
+            "imie_nazwisko": "Dorota Grabowska"
+          }
+        ]
+      },
+      {
+        "data": {
+          "imie_nazwisko": null,
+          "krs": "9990349003",
+          "nazwa": "Lumidor Budownictwo spółka z ograniczoną odpowiedzialnością",
+          "nip": "9999882984",
+          "typ": "osoba_prawna"
+        },
+        "podpisujacy": [
+          {
+            "imie_nazwisko": "Łukasz Sosnowski"
+          }
+        ]
+      }
+    ],
+    "pelnomocnicy": [
+      {
+        "imie_nazwisko": "Dorota Kubiak",
+        "pesel": 90082629103
+      }
+    ]
+  },
+  "reference": {
+    "mocodawca": [
+      {
+        "data": {
+          "imie_nazwisko": null,
+          "krs": "9998767758",
+          "nazwa": "Tervana Systemy Informatyczne sp. k.",
+          "nip": "9993437059",
+          "typ": "osoba_prawna"
+        },
+        "podpisujacy": [
+          {
+            "imie_nazwisko": "Dorota Grabowska"
+          }
+        ]
+      },
+      {
+        "data": {
+          "imie_nazwisko": null,
+          "krs": "9990349003",
+          "nazwa": "Lumidor Budownictwo spółka z ograniczoną odpowiedzialnością",
+          "nip": "9999882984",
+          "typ": "osoba_prawna"
+        },
+        "podpisujacy": [
+          {
+            "imie_nazwisko": "Łukasz Sosnowski"
+          }
+        ]
+      }
+    ],
+    "pelnomocnicy": [
+      {
+        "imie_nazwisko": "Dorota Kubiak",
+        "pesel": "90082629103"
+      }
+    ]
+  },
+  "diffs": [
+    {
+      "field": "mocodawca[data.krs=9998767758].data.nazwa",
+      "predicted": "tervana systemy informatyczne spółka komandytowa",
+      "expected": "tervana systemy informatyczne sp. k.",
+      "status": "wrong"
+    }
+  ],
+  "trace": {
+    "source": "0007.pdf",
+    "class": "pelnomocnictwo",
+    "ocr_used": true,
+    "quotes": {
+      "mocodawca[0].data.imie_nazwisko": null,
+      "mocodawca[0].data.krs": "wpisana do rejestru przedsiębiorców Krajowego Rejestru Sądowego pod numerem KRS: 9998767758",
+      "mocodawca[0].data.nazwa": "Tervana Systemy Informatyczne sp. k. z siedzibą w Katowice (40-031), ul. Grunwaldzka 14/14",
+      "mocodawca[0].data.nip": "NIP: 999-343-70-59",
+      "mocodawca[0].data.typ": "sp. k.",
+      "mocodawca[0].podpisujacy[0].imie_nazwisko": "Dorota Grabowska – Prezes Zarządu",
+      "mocodawca[1].data.imie_nazwisko": null,
+      "mocodawca[1].data.krs": "wpisana do rejestru przedsiębiorców Krajowego Rejestru Sądowego pod numerem KRS: 9990349003",
+      "mocodawca[1].data.nazwa": "Lumidor Budownictwo spółka z ograniczoną odpowiedzialnością z siedzibą w Opole (45-873), ul. Sienkiewicza 44",
+      "mocodawca[1].data.nip": "NIP: 999-98-82-984",
+      "mocodawca[1].data.typ": "spółka z ograniczoną odpowiedzialnością",
+      "mocodawca[1].podpisujacy[0].imie_nazwisko": "Łukasz Sosnowski – Prezes Zarządu",
+      "pelnomocnicy[0].imie_nazwisko": "Dorota Kubiak – radca prawny",
+      "pelnomocnicy[0].pesel": "PESEL: 90082629103"
+    },
+    "citation_ok": {
+      "mocodawca[0].data.krs": true,
+      "mocodawca[0].data.nazwa": true,
+      "mocodawca[0].data.nip": true,
+      "mocodawca[0].data.typ": true,
+      "mocodawca[0].podpisujacy[0].imie_nazwisko": true,
+      "mocodawca[1].data.krs": true,
+      "mocodawca[1].data.nazwa": true,
+      "mocodawca[1].data.nip": true,
+      "mocodawca[1].data.typ": true,
+      "mocodawca[1].podpisujacy[0].imie_nazwisko": true,
+      "pelnomocnicy[0].imie_nazwisko": true,
+      "pelnomocnicy[0].pesel": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

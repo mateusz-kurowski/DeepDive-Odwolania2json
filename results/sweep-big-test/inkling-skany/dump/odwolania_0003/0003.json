@@ -1,0 +1,133 @@
+{
+  "source": "0003.pdf",
+  "class": "odwolanie",
+  "error": null,
+  "ocr_used": true,
+  "prediction": {
+    "OdwolanieKIO": {
+      "data": "2026-07-15",
+      "czynnosc_dzien": "2026-07-05",
+      "czynnosc_powod_id": 2,
+      "czynnosc_opis": "Ogłoszenie wyboru oferty",
+      "miejscowosc": "Gdańsk"
+    },
+    "Odwolujacy": [
+      {
+        "krs": "9998927009",
+        "nazwa": "Kalinex Logistyka Sp. z o.o.",
+        "nip": "9990864252",
+        "regon": "999068145",
+        "przez-pelnomocnika": 1,
+        "pelnomocnik": {
+          "imie_nazwisko": "Żaneta Olszewska",
+          "nazwa": "Sikora, Sikora i Partnerzy Kancelaria Radców Prawnych sp. p.",
+          "mail": "z.olszewska@sikora-kancelaria.example"
+        }
+      }
+    ],
+    "Zamawiajacy": [
+      {
+        "krs": null,
+        "nazwa": "Komenda Wojewódzka Państwowej Straży Pożarnej w Jarzębinie",
+        "nip": "9992208055",
+        "regon": null,
+        "prowadzacy_postepowanie": null
+      }
+    ],
+    "ZamowieniePubliczne": {
+      "numer_bzp": null,
+      "numer_postepowania": "PN/58/2026/DOS",
+      "numer_ted": "333259-2026",
+      "tytul": "Dostawa sprzętu komputerowego wraz z oprogramowaniem dla jednostek organizacyjnych Zamawiającego"
+    }
+  },
+  "reference": {
+    "OdwolanieKIO": {
+      "data": "2026-07-15",
+      "czynnosc_dzien": "2026-07-05",
+      "czynnosc_powod_id": 2,
+      "czynnosc_opis": "Ogłoszenie wyboru oferty",
+      "miejscowosc": "Gdańsk"
+    },
+    "Odwolujacy": [
+      {
+        "krs": "9998927009",
+        "nazwa": "Kalinex Logistyka Sp. z o.o.",
+        "nip": "9990864252",
+        "regon": "999068145",
+        "przez-pelnomocnika": 1,
+        "pelnomocnik": {
+          "imie_nazwisko": "Żaneta Olszewska",
+          "nazwa": "Sikora, Sikora i Partnerzy Kancelaria Radców Prawnych sp. p.",
+          "mail": "z.olszewska@sikora-kancelaria.example"
+        }
+      }
+    ],
+    "Zamawiajacy": [
+      {
+        "krs": null,
+        "nazwa": "Komenda Wojewódzka Państwowej Straży Pożarnej w Jarzębinie",
+        "nip": "9992208055",
+        "regon": null,
+        "prowadzacy_postepowanie": null
+      }
+    ],
+    "ZamowieniePubliczne": {
+      "numer_bzp": null,
+      "numer_postepowania": "PN/58/2026/DOS",
+      "numer_ted": "333259-2026",
+      "tytul": "Dostawa sprzętu komputerowego wraz z oprogramowaniem dla jednostek organizacyjnych Zamawiającego"
+    }
+  },
+  "diffs": [],
+  "trace": {
+    "source": "0003.pdf",
+    "class": "odwolanie",
+    "ocr_used": true,
+    "quotes": {
+      "OdwolanieKIO.data": "Gdańsk, 15.07.2026 r.",
+      "OdwolanieKIO.czynnosc_dzien": "o której Zamawiający poinformował w dniu 05.07.2026 r.",
+      "OdwolanieKIO.czynnosc_powod_id": "czynności wyboru jako najkorzystniejszej oferty złożonej przez wykonawcę Polveris Serwis sp. z o.o.",
+      "OdwolanieKIO.miejscowosc": "Gdańsk, 15.07.2026 r.",
+      "Odwolujacy[0].krs": "KRS: 9998927009",
+      "Odwolujacy[0].nazwa": "Kalinex Logistyka Sp. z o.o.",
+      "Odwolujacy[0].nip": "NIP: 9990864252",
+      "Odwolujacy[0].regon": "REGON: 999068145",
+      "Odwolujacy[0].przez-pelnomocnika": "reprezentowany przez pełnomocnika:",
+      "Odwolujacy[0].pelnomocnik.imie_nazwisko": "r. pr. Żaneta Olszewska",
+      "Odwolujacy[0].pelnomocnik.nazwa": "Sikora, Sikora i Partnerzy Kancelaria Radców Prawnych sp. p.",
+      "Odwolujacy[0].pelnomocnik.mail": "e-mail: z.olszewska@sikora-kancelaria.example",
+      "Zamawiajacy[0].krs": null,
+      "Zamawiajacy[0].nazwa": "Komenda Wojewódzka Państwowej Straży Pożarnej w Jarzębinie",
+      "Zamawiajacy[0].nip": "NIP: 9992208055",
+      "Zamawiajacy[0].regon": null,
+      "Zamawiajacy[0].prowadzacy_postepowanie": null,
+      "ZamowieniePubliczne.numer_bzp": null,
+      "ZamowieniePubliczne.numer_postepowania": "nr referencyjny: PN/58/2026/DOS",
+      "ZamowieniePubliczne.numer_ted": "ogłoszenie w Dzienniku Urzędowym Unii Europejskiej nr 333259-2026",
+      "ZamowieniePubliczne.tytul": "pn. „Dostawa sprzętu komputerowego wraz z oprogramowaniem dla jednostek organizacyjnych Zamawiającego”"
+    },
+    "citation_ok": {
+      "OdwolanieKIO.data": true,
+      "OdwolanieKIO.czynnosc_dzien": true,
+      "OdwolanieKIO.czynnosc_powod_id": true,
+      "OdwolanieKIO.miejscowosc": true,
+      "Odwolujacy[0].krs": true,
+      "Odwolujacy[0].nazwa": true,
+      "Odwolujacy[0].nip": true,
+      "Odwolujacy[0].regon": true,
+      "Odwolujacy[0].przez-pelnomocnika": true,
+      "Odwolujacy[0].pelnomocnik.imie_nazwisko": true,
+      "Odwolujacy[0].pelnomocnik.nazwa": true,
+      "Odwolujacy[0].pelnomocnik.mail": true,
+      "Zamawiajacy[0].nazwa": true,
+      "Zamawiajacy[0].nip": true,
+      "ZamowieniePubliczne.numer_postepowania": true,
+      "ZamowieniePubliczne.numer_ted": true,
+      "ZamowieniePubliczne.tytul": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

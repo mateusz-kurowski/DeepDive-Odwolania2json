@@ -1,0 +1,51 @@
+{
+  "source": "potwierdzenie_przelewu.pdf",
+  "class": "przelew",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-10-28",
+      "kwota": 34.0,
+      "na_rachunek": "14112745698863024356935073",
+      "numer_transakcji": "CEN2611122913642",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Aleksandra Jabłończyk i Dorota Jurgielewicz w postępowaniu przed KIO w przetargu SWZ.716.2026 CEN2611122913642",
+      "z_rachunku": "97432190332550070532957559"
+    }
+  },
+  "reference": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-10-28",
+      "kwota": 34.0,
+      "na_rachunek": "14112745698863024356935073",
+      "numer_transakcji": "CEN2611122913642",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Aleksandra Jabłończyk i Dorota Jurgielewicz w postępowaniu przed KIO w przetargu SWZ.716.2026 CEN2611122913642",
+      "z_rachunku": "97432190332550070532957559"
+    }
+  },
+  "diffs": [],
+  "trace": {
+    "source": "potwierdzenie_przelewu.pdf",
+    "class": "przelew",
+    "ocr_used": false,
+    "quotes": {
+      "przelew_bankowy.data_operacji": "Data wykonania: 28-10-2026",
+      "przelew_bankowy.kwota": "Kwota przelewu: 34,00 PLN",
+      "przelew_bankowy.na_rachunek": "Na rachunek: 14112745698863024356935073",
+      "przelew_bankowy.numer_transakcji": "Nr ref.: CEN2611122913642",
+      "przelew_bankowy.tytul": "opłata skarbowa od pełnomocnictwa dla Aleksandra Jabłończyk i Dorota Jurgielewicz w postępowaniu\nprzed KIO w przetargu SWZ.716.2026 CEN2611122913642",
+      "przelew_bankowy.z_rachunku": "Rachunek nadawcy: 97432190332550070532957559"
+    },
+    "citation_ok": {
+      "przelew_bankowy.data_operacji": true,
+      "przelew_bankowy.kwota": true,
+      "przelew_bankowy.na_rachunek": true,
+      "przelew_bankowy.numer_transakcji": true,
+      "przelew_bankowy.tytul": true,
+      "przelew_bankowy.z_rachunku": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

@@ -1,0 +1,136 @@
+{
+  "source": "odwolanie.pdf",
+  "class": "odwolanie",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "OdwolanieKIO": {
+      "data": "2026-07-20",
+      "czynnosc_dzien": "2026-07-08",
+      "czynnosc_powod_id": 8,
+      "czynnosc_opis": "Zaniechanie wykluczenia wykonawcy",
+      "miejscowosc": "Bydgoszcz"
+    },
+    "Odwolujacy": [
+      {
+        "krs": "9990299642",
+        "nazwa": "Wexford Usługi sp. j.",
+        "nip": "9999988004",
+        "regon": "999132498",
+        "przez-pelnomocnika": 1,
+        "pelnomocnik": {
+          "imie_nazwisko": "Klaudia Dobrowolski",
+          "nazwa": "Kancelaria Adwokacka Spółka z ograniczoną odpowiedzialnością",
+          "mail": "biuro@biuro.example"
+        }
+      }
+    ],
+    "Zamawiajacy": [
+      {
+        "krs": "9992132121",
+        "nazwa": "Lunareth Sieci S.A.",
+        "nip": "9997286918",
+        "regon": "999839460",
+        "prowadzacy_postepowanie": null
+      }
+    ],
+    "ZamowieniePubliczne": {
+      "numer_bzp": "2026/BZP00999997",
+      "numer_postepowania": "SWZ.755.2026",
+      "numer_ted": "999035-2026",
+      "tytul": "Modernizacja instalacji wentylacyjnej w obiekcie użyteczności publicznej"
+    }
+  },
+  "reference": {
+    "OdwolanieKIO": {
+      "data": "2026-07-20",
+      "czynnosc_dzien": "2026-07-08",
+      "czynnosc_powod_id": 8,
+      "czynnosc_opis": "Zaniechanie wykluczenia wykonawcy",
+      "miejscowosc": "Bydgoszcz"
+    },
+    "Odwolujacy": [
+      {
+        "krs": "9990299642",
+        "nazwa": "Wexford Usługi sp. j.",
+        "nip": "9999988004",
+        "regon": "999132498",
+        "przez-pelnomocnika": 1,
+        "pelnomocnik": {
+          "imie_nazwisko": "Klaudia Dobrowolski",
+          "nazwa": "Kancelaria Adwokacka Spółka z ograniczoną odpowiedzialnością",
+          "mail": "biuro@biuro.example"
+        }
+      }
+    ],
+    "Zamawiajacy": [
+      {
+        "krs": "9992132121",
+        "nazwa": "Lunareth Sieci S.A.",
+        "nip": "9997286918",
+        "regon": "999839460",
+        "prowadzacy_postepowanie": null
+      }
+    ],
+    "ZamowieniePubliczne": {
+      "numer_bzp": "2026/BZP00999997",
+      "numer_postepowania": "SWZ.755.2026",
+      "numer_ted": "999035-2026",
+      "tytul": "Modernizacja instalacji wentylacyjnej w obiekcie użyteczności publicznej"
+    }
+  },
+  "diffs": [],
+  "trace": {
+    "source": "odwolanie.pdf",
+    "class": "odwolanie",
+    "ocr_used": false,
+    "quotes": {
+      "OdwolanieKIO.data": "Bydgoszcz, dnia 20 lipca 2026 roku",
+      "OdwolanieKIO.czynnosc_dzien": "Zamawiający w dniu 8 lipca 2026 roku nie wykluczył z postępowania podmiotu działającego wspólnie z Odwołującym.",
+      "OdwolanieKIO.czynnosc_powod_id": "nie wykluczył z postępowania podmiotu działającego wspólnie z Odwołującym",
+      "OdwolanieKIO.miejscowosc": "Bydgoszcz, dnia 20 lipca 2026 roku",
+      "Odwolujacy[0].krs": "KRS: 9990299642",
+      "Odwolujacy[0].nazwa": "Wexford Usługi sp. j.",
+      "Odwolujacy[0].nip": "NIP: 9999988004",
+      "Odwolujacy[0].regon": "REGON: 999132498",
+      "Odwolujacy[0].przez-pelnomocnika": "reprezentowana przez: adw. Klaudia Dobrowolski",
+      "Odwolujacy[0].pelnomocnik.imie_nazwisko": "adw. Klaudia Dobrowolski",
+      "Odwolujacy[0].pelnomocnik.nazwa": "Kancelaria Adwokacka Spółka z ograniczoną odpowiedzialnością",
+      "Odwolujacy[0].pelnomocnik.mail": "biuro@biuro.example",
+      "Zamawiajacy[0].krs": "KRS: 9992132121",
+      "Zamawiajacy[0].nazwa": "Lunareth Sieci S.A.",
+      "Zamawiajacy[0].nip": "NIP: 9997286918",
+      "Zamawiajacy[0].regon": "REGON: 999839460",
+      "Zamawiajacy[0].prowadzacy_postepowanie": null,
+      "ZamowieniePubliczne.numer_bzp": "numer BZP: 2026/BZP00999997",
+      "ZamowieniePubliczne.numer_postepowania": "nr referencyjny sprawy: SWZ.755.2026",
+      "ZamowieniePubliczne.numer_ted": "TED: 999035-2026",
+      "ZamowieniePubliczne.tytul": "Modernizacja instalacji wentylacyjnej w obiekcie użyteczności publicznej"
+    },
+    "citation_ok": {
+      "OdwolanieKIO.data": true,
+      "OdwolanieKIO.czynnosc_dzien": true,
+      "OdwolanieKIO.czynnosc_powod_id": true,
+      "OdwolanieKIO.miejscowosc": true,
+      "Odwolujacy[0].krs": true,
+      "Odwolujacy[0].nazwa": true,
+      "Odwolujacy[0].nip": true,
+      "Odwolujacy[0].regon": true,
+      "Odwolujacy[0].przez-pelnomocnika": true,
+      "Odwolujacy[0].pelnomocnik.imie_nazwisko": true,
+      "Odwolujacy[0].pelnomocnik.nazwa": true,
+      "Odwolujacy[0].pelnomocnik.mail": true,
+      "Zamawiajacy[0].krs": true,
+      "Zamawiajacy[0].nazwa": true,
+      "Zamawiajacy[0].nip": true,
+      "Zamawiajacy[0].regon": true,
+      "ZamowieniePubliczne.numer_bzp": true,
+      "ZamowieniePubliczne.numer_postepowania": true,
+      "ZamowieniePubliczne.numer_ted": true,
+      "ZamowieniePubliczne.tytul": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

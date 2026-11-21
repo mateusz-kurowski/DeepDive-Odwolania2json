@@ -1,0 +1,51 @@
+{
+  "source": "potwierdzenie_przelewu.pdf",
+  "class": "przelew",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-06-04",
+      "kwota": 34.0,
+      "na_rachunek": "79178212353055434671550278",
+      "numer_transakcji": "CEN2606076928397",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Damian Sobczak i Henryk Ostrowski w postępowaniu przed KIO w przetargu SZP/PN/66/26 CEN2606076928397",
+      "z_rachunku": "80868172124330984510280157"
+    }
+  },
+  "reference": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-06-04",
+      "kwota": 34.0,
+      "na_rachunek": "79178212353055434671550278",
+      "numer_transakcji": "CEN2606076928397",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Damian Sobczak i Henryk Ostrowski w postępowaniu przed KIO w przetargu SZP/PN/66/26 CEN2606076928397",
+      "z_rachunku": "80868172124330984510280157"
+    }
+  },
+  "diffs": [],
+  "trace": {
+    "source": "potwierdzenie_przelewu.pdf",
+    "class": "przelew",
+    "ocr_used": false,
+    "quotes": {
+      "przelew_bankowy.data_operacji": "04.06.2026",
+      "przelew_bankowy.kwota": "34,00 PLN",
+      "przelew_bankowy.na_rachunek": "PL79178212353055434671550278",
+      "przelew_bankowy.numer_transakcji": "CEN2606076928397",
+      "przelew_bankowy.tytul": "opłata skarbowa od pełnomocnictwa dla Damian Sobczak i Henryk Ostrowski w\npostępowaniu przed KIO w przetargu SZP/PN/66/26 CEN2606076928397",
+      "przelew_bankowy.z_rachunku": "PL80868172124330984510280157"
+    },
+    "citation_ok": {
+      "przelew_bankowy.data_operacji": true,
+      "przelew_bankowy.kwota": true,
+      "przelew_bankowy.na_rachunek": true,
+      "przelew_bankowy.numer_transakcji": true,
+      "przelew_bankowy.tytul": true,
+      "przelew_bankowy.z_rachunku": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

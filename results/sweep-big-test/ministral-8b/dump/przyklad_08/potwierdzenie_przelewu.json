@@ -1,0 +1,51 @@
+{
+  "source": "potwierdzenie_przelewu.pdf",
+  "class": "przelew",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-05-26",
+      "kwota": 34.0,
+      "na_rachunek": "41351879105578128609561192",
+      "numer_transakcji": "CEN2606053930003",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Bartosz Jastrzębski i Oliwia Zajkowski w postępowaniu przed KIO w przetargu ZS.158.2026 CEN2606053930003",
+      "z_rachunku": "57936403120146943695277279"
+    }
+  },
+  "reference": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-05-26",
+      "kwota": 34.0,
+      "na_rachunek": "41351879105578128609561192",
+      "numer_transakcji": "CEN2606053930003",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Bartosz Jastrzębski i Oliwia Zajkowski w postępowaniu przed KIO w przetargu ZS.158.2026 CEN2606053930003",
+      "z_rachunku": "57936403120146943695277279"
+    }
+  },
+  "diffs": [],
+  "trace": {
+    "source": "potwierdzenie_przelewu.pdf",
+    "class": "przelew",
+    "ocr_used": false,
+    "quotes": {
+      "przelew_bankowy.data_operacji": "Data transakcji 26 maja 2026",
+      "przelew_bankowy.kwota": "Kwota 34,00 zł",
+      "przelew_bankowy.na_rachunek": "Rachunek uznawany PL41351879105578128609561192",
+      "przelew_bankowy.numer_transakcji": "Nr ref. CEN2606053930003",
+      "przelew_bankowy.tytul": "Tytułem opłata skarbowa od pełnomocnictwa dla Bartosz Jastrzębski i Oliwia Zajkowski w postępowaniu przed KIO w przetargu ZS.158.2026 CEN2606053930003",
+      "przelew_bankowy.z_rachunku": "Z rachunku PL57936403120146943695277279"
+    },
+    "citation_ok": {
+      "przelew_bankowy.data_operacji": true,
+      "przelew_bankowy.kwota": true,
+      "przelew_bankowy.na_rachunek": true,
+      "przelew_bankowy.numer_transakcji": true,
+      "przelew_bankowy.tytul": true,
+      "przelew_bankowy.z_rachunku": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

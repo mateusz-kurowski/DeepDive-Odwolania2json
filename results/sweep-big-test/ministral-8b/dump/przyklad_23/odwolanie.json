@@ -1,0 +1,135 @@
+{
+  "source": "odwolanie.pdf",
+  "class": "odwolanie",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "OdwolanieKIO": {
+      "data": "2026-03-27",
+      "czynnosc_dzien": "2026-03-09",
+      "czynnosc_powod_id": 6,
+      "czynnosc_opis": "Odpowiedzi/wyjaśnienia do SWZ",
+      "miejscowosc": "Poznań"
+    },
+    "Odwolujacy": [
+      {
+        "krs": "9996325136",
+        "nazwa": "Wexford Systemy sp. z o.o.",
+        "nip": "9991432253",
+        "regon": "999129757",
+        "przez-pelnomocnika": 1,
+        "pelnomocnik": {
+          "imie_nazwisko": "Halina Walczak",
+          "nazwa": "Kancelaria Adwokacka i Partnerzy",
+          "mail": "biuro@poczta.example"
+        }
+      }
+    ],
+    "Zamawiajacy": [
+      {
+        "krs": "9992898131",
+        "nazwa": "Galdaris Technologie sp. z o.o.",
+        "nip": "9998380192",
+        "regon": "999172530",
+        "prowadzacy_postepowanie": null
+      }
+    ],
+    "ZamowieniePubliczne": {
+      "numer_bzp": null,
+      "numer_postepowania": "ZS.209.2026",
+      "numer_ted": "999656-2026",
+      "tytul": "Dostawa i wdrożenie oprogramowania do obsługi dokumentacji wraz z serwisem wsparcia technicznego"
+    }
+  },
+  "reference": {
+    "OdwolanieKIO": {
+      "data": "2026-03-27",
+      "czynnosc_dzien": "2026-03-09",
+      "czynnosc_powod_id": 6,
+      "czynnosc_opis": "Odpowiedzi/wyjaśnienia do SWZ",
+      "miejscowosc": "Poznań"
+    },
+    "Odwolujacy": [
+      {
+        "krs": "9996325136",
+        "nazwa": "Wexford Systemy sp. z o.o.",
+        "nip": "9991432253",
+        "regon": "999129757",
+        "przez-pelnomocnika": 1,
+        "pelnomocnik": {
+          "imie_nazwisko": "Halina Walczak",
+          "nazwa": "Kancelaria Adwokacka i Partnerzy",
+          "mail": "biuro@poczta.example"
+        }
+      }
+    ],
+    "Zamawiajacy": [
+      {
+        "krs": "9992898131",
+        "nazwa": "Galdaris Technologie sp. z o.o.",
+        "nip": "9998380192",
+        "regon": "999172530",
+        "prowadzacy_postepowanie": null
+      }
+    ],
+    "ZamowieniePubliczne": {
+      "numer_bzp": null,
+      "numer_postepowania": "ZS.209.2026",
+      "numer_ted": "999656-2026",
+      "tytul": "Dostawa i wdrożenie oprogramowania do obsługi dokumentacji wraz z serwisem wsparcia technicznego"
+    }
+  },
+  "diffs": [],
+  "trace": {
+    "source": "odwolanie.pdf",
+    "class": "odwolanie",
+    "ocr_used": false,
+    "quotes": {
+      "OdwolanieKIO.data": "Poznań, dnia 27 marca 2026 roku",
+      "OdwolanieKIO.czynnosc_dzien": "Zamawiający w dniu 9 marca 2026 roku przekazał wykonawcom odpowiedzi i wyjaśnienia do treści Specyfikacji Warunków Zamówienia.",
+      "OdwolanieKIO.czynnosc_powod_id": "Zamawiający w dniu 9 marca 2026 roku przekazał wykonawcom odpowiedzi i wyjaśnienia do treści Specyfikacji Warunków Zamówienia.",
+      "OdwolanieKIO.miejscowosc": "Poznań, dnia 27 marca 2026 roku",
+      "Odwolujacy[0].krs": "KRS: 9996325136",
+      "Odwolujacy[0].nazwa": "Wexford Systemy sp. z o.o.",
+      "Odwolujacy[0].nip": "NIP: 9991432253",
+      "Odwolujacy[0].regon": "REGON: 999129757",
+      "Odwolujacy[0].przez-pelnomocnika": "reprezentowana przez: adw. Halina Walczak, r. pr. Bartosz Bartoszewicz",
+      "Odwolujacy[0].pelnomocnik.imie_nazwisko": "adw. Halina Walczak",
+      "Odwolujacy[0].pelnomocnik.nazwa": "Kancelaria Adwokacka i Partnerzy",
+      "Odwolujacy[0].pelnomocnik.mail": "biuro@poczta.example",
+      "Zamawiajacy[0].krs": "KRS: 9992898131",
+      "Zamawiajacy[0].nazwa": "Galdaris Technologie sp. z o.o.",
+      "Zamawiajacy[0].nip": "NIP: 9998380192",
+      "Zamawiajacy[0].regon": "REGON: 999172530",
+      "Zamawiajacy[0].prowadzacy_postepowanie": null,
+      "ZamowieniePubliczne.numer_bzp": null,
+      "ZamowieniePubliczne.numer_postepowania": "nr referencyjny sprawy: ZS.209.2026",
+      "ZamowieniePubliczne.numer_ted": "2026/S171-999656",
+      "ZamowieniePubliczne.tytul": "postępowania o udzielenie zamówienia w trybie negocjacji z ogłoszeniem pn. \"Dostawa i wdrożenie oprogramowania do obsługi dokumentacji wraz z serwisem wsparcia technicznego\""
+    },
+    "citation_ok": {
+      "OdwolanieKIO.data": true,
+      "OdwolanieKIO.czynnosc_dzien": true,
+      "OdwolanieKIO.czynnosc_powod_id": true,
+      "OdwolanieKIO.miejscowosc": true,
+      "Odwolujacy[0].krs": true,
+      "Odwolujacy[0].nazwa": true,
+      "Odwolujacy[0].nip": true,
+      "Odwolujacy[0].regon": true,
+      "Odwolujacy[0].przez-pelnomocnika": true,
+      "Odwolujacy[0].pelnomocnik.imie_nazwisko": true,
+      "Odwolujacy[0].pelnomocnik.nazwa": true,
+      "Odwolujacy[0].pelnomocnik.mail": true,
+      "Zamawiajacy[0].krs": true,
+      "Zamawiajacy[0].nazwa": true,
+      "Zamawiajacy[0].nip": true,
+      "Zamawiajacy[0].regon": true,
+      "ZamowieniePubliczne.numer_postepowania": true,
+      "ZamowieniePubliczne.numer_ted": true,
+      "ZamowieniePubliczne.tytul": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

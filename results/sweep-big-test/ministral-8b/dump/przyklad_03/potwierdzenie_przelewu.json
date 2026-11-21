@@ -1,0 +1,51 @@
+{
+  "source": "potwierdzenie_przelewu.pdf",
+  "class": "przelew",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-02-17",
+      "kwota": 50.0,
+      "na_rachunek": "09460896147587484470692985",
+      "numer_transakcji": "CEN2603024646444",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Norbert Szulc w postępowaniu przed KIO w przetargu ZP.154.2026 CEN2603024646444",
+      "z_rachunku": "39203888965989833490230983"
+    }
+  },
+  "reference": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-02-17",
+      "kwota": 50.0,
+      "na_rachunek": "09460896147587484470692985",
+      "numer_transakcji": "CEN2603024646444",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Norbert Szulc w postępowaniu przed KIO w przetargu ZP.154.2026 CEN2603024646444",
+      "z_rachunku": "39203888965989833490230983"
+    }
+  },
+  "diffs": [],
+  "trace": {
+    "source": "potwierdzenie_przelewu.pdf",
+    "class": "przelew",
+    "ocr_used": false,
+    "quotes": {
+      "przelew_bankowy.data_operacji": "DATA REALIZACJI ..................................... 17.02.2026",
+      "przelew_bankowy.kwota": "KWOTA PRZELEWU ....................................... 50,00 PLN",
+      "przelew_bankowy.na_rachunek": "RACHUNEK ODBIORCY\nPL09460896147587484470692985",
+      "przelew_bankowy.numer_transakcji": "NUMER REFERENCYJNY ............................ CEN2603024646444",
+      "przelew_bankowy.tytul": "OPIS:\nopłata skarbowa od pełnomocnictwa dla Norbert Szulc w\npostępowaniu przed KIO w przetargu ZP.154.2026 CEN2603024646444",
+      "przelew_bankowy.z_rachunku": "RACHUNEK NADAWCY\nPL39203888965989833490230983"
+    },
+    "citation_ok": {
+      "przelew_bankowy.data_operacji": true,
+      "przelew_bankowy.kwota": true,
+      "przelew_bankowy.na_rachunek": true,
+      "przelew_bankowy.numer_transakcji": true,
+      "przelew_bankowy.tytul": true,
+      "przelew_bankowy.z_rachunku": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

@@ -1,0 +1,88 @@
+{
+  "source": "pelnomocnictwo.pdf",
+  "class": "pelnomocnictwo",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "mocodawca": [
+      {
+        "data": {
+          "imie_nazwisko": null,
+          "krs": "9990428468",
+          "nazwa": "Balttec Infrastruktura S.A.",
+          "nip": "9995059584",
+          "typ": "osoba_prawna"
+        },
+        "podpisujacy": [
+          {
+            "imie_nazwisko": "Grzegorz Bąkiewicz"
+          }
+        ]
+      }
+    ],
+    "pelnomocnicy": [
+      {
+        "imie_nazwisko": "Dorota Zawadzka",
+        "pesel": null
+      }
+    ]
+  },
+  "reference": {
+    "mocodawca": [
+      {
+        "data": {
+          "imie_nazwisko": null,
+          "krs": "9990428468",
+          "nazwa": "Balttec Infrastruktura S.A.",
+          "nip": "9995059584",
+          "typ": "osoba_prawna"
+        },
+        "podpisujacy": [
+          {
+            "imie_nazwisko": "Grzegorz Bąkiewicz"
+          }
+        ]
+      }
+    ],
+    "pelnomocnicy": [
+      {
+        "imie_nazwisko": "Dorota Zawadzki",
+        "pesel": null
+      }
+    ]
+  },
+  "diffs": [
+    {
+      "field": "pelnomocnicy[imie_nazwisko=dorota zawadzki].imie_nazwisko",
+      "predicted": "dorota zawadzka",
+      "expected": "dorota zawadzki",
+      "status": "wrong"
+    }
+  ],
+  "trace": {
+    "source": "pelnomocnictwo.pdf",
+    "class": "pelnomocnictwo",
+    "ocr_used": false,
+    "quotes": {
+      "mocodawca[0].data.imie_nazwisko": null,
+      "mocodawca[0].data.krs": "KRS 9990428468",
+      "mocodawca[0].data.nazwa": "Balttec Infrastruktura S.A.",
+      "mocodawca[0].data.nip": "NIP 9995059584",
+      "mocodawca[0].data.typ": null,
+      "mocodawca[0].podpisujacy[0].imie_nazwisko": "Grzegorz Bąkiewicz",
+      "pelnomocnicy[0].imie_nazwisko": "adw. Dorota Zawadzki",
+      "pelnomocnicy[0].pesel": null
+    },
+    "citation_ok": {
+      "mocodawca[0].data.krs": true,
+      "mocodawca[0].data.nazwa": true,
+      "mocodawca[0].data.nip": true,
+      "mocodawca[0].data.typ": false,
+      "mocodawca[0].podpisujacy[0].imie_nazwisko": true,
+      "pelnomocnicy[0].imie_nazwisko": true
+    },
+    "nulled": [],
+    "retries": 1,
+    "truncated": false
+  }
+}

@@ -1,0 +1,143 @@
+{
+  "source": "odwolanie.pdf",
+  "class": "odwolanie",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "OdwolanieKIO": {
+      "data": "2026-06-05",
+      "czynnosc_dzien": "2026-05-25",
+      "czynnosc_powod_id": 5,
+      "czynnosc_opis": "Modyfikacja treści SWZ",
+      "miejscowosc": "Rzeszów"
+    },
+    "Odwolujacy": [
+      {
+        "krs": "9997927279",
+        "nazwa": "Umbria Rozwiązania sp. j.",
+        "nip": "9990600725",
+        "regon": "999424597",
+        "przez-pelnomocnika": 1,
+        "pelnomocnik": {
+          "imie_nazwisko": "Bartosz Jastrzębski, Oliwia Zajkowski",
+          "nazwa": "Kancelaria Radców Prawnych Spółka z ograniczoną odpowiedzialnością",
+          "mail": "biuro@biuro.example"
+        }
+      }
+    ],
+    "Zamawiajacy": [
+      {
+        "krs": "9999495942",
+        "nazwa": "Corvella Sieci sp. k.",
+        "nip": "9997193358",
+        "regon": "999209545",
+        "prowadzacy_postepowanie": null
+      }
+    ],
+    "ZamowieniePubliczne": {
+      "numer_bzp": "2026/BZP00999955",
+      "numer_postepowania": "ZS.158.2026",
+      "numer_ted": "999211-2026",
+      "tytul": "Dostawa i wdrożenie oprogramowania do obsługi dokumentacji wraz z serwisem wsparcia technicznego"
+    }
+  },
+  "reference": {
+    "OdwolanieKIO": {
+      "data": "2026-06-05",
+      "czynnosc_dzien": "2026-05-25",
+      "czynnosc_powod_id": 5,
+      "czynnosc_opis": "Modyfikacja treści SWZ",
+      "miejscowosc": "Rzeszów"
+    },
+    "Odwolujacy": [
+      {
+        "krs": "9997927279",
+        "nazwa": "Umbria Rozwiązania sp. j.",
+        "nip": "9990600725",
+        "regon": "999424597",
+        "przez-pelnomocnika": 1,
+        "pelnomocnik": {
+          "imie_nazwisko": "Bartosz Jastrzębski",
+          "nazwa": "Kancelaria Radców Prawnych Spółka z ograniczoną odpowiedzialnością",
+          "mail": "biuro@biuro.example"
+        }
+      }
+    ],
+    "Zamawiajacy": [
+      {
+        "krs": "9999495942",
+        "nazwa": "Corvella Sieci sp. k.",
+        "nip": "9997193358",
+        "regon": "999209545",
+        "prowadzacy_postepowanie": null
+      }
+    ],
+    "ZamowieniePubliczne": {
+      "numer_bzp": "2026/BZP00999955",
+      "numer_postepowania": "ZS.158.2026",
+      "numer_ted": "999211-2026",
+      "tytul": "Dostawa i wdrożenie oprogramowania do obsługi dokumentacji wraz z serwisem wsparcia technicznego"
+    }
+  },
+  "diffs": [
+    {
+      "field": "Odwolujacy[krs=9997927279].pelnomocnik.imie_nazwisko",
+      "predicted": "bartosz jastrzębski, oliwia zajkowski",
+      "expected": "bartosz jastrzębski",
+      "status": "wrong"
+    }
+  ],
+  "trace": {
+    "source": "odwolanie.pdf",
+    "class": "odwolanie",
+    "ocr_used": false,
+    "quotes": {
+      "OdwolanieKIO.data": "Rzeszów, dnia 5 czerwca 2026 roku",
+      "OdwolanieKIO.czynnosc_dzien": "Zamawiający w dniu 25 maja 2026 roku zmodyfikował treść Specyfikacji Warunków Zamówienia.",
+      "OdwolanieKIO.czynnosc_powod_id": "Zamawiający w dniu 25 maja 2026 roku zmodyfikował treść Specyfikacji Warunków Zamówienia.",
+      "OdwolanieKIO.miejscowosc": "Rzeszów, dnia 5 czerwca 2026 roku",
+      "Odwolujacy[0].krs": "KRS: 9997927279",
+      "Odwolujacy[0].nazwa": "Odwołujący: Umbria Rozwiązania sp. j.",
+      "Odwolujacy[0].nip": "NIP: 9990600725",
+      "Odwolujacy[0].regon": "REGON: 999424597",
+      "Odwolujacy[0].przez-pelnomocnika": "reprezentowana przez: adw. Bartosz Jastrzębski, adw. Oliwia Zajkowski",
+      "Odwolujacy[0].pelnomocnik.imie_nazwisko": "Bartosz Jastrzębski, adw.\nOliwia Zajkowski, adw.",
+      "Odwolujacy[0].pelnomocnik.nazwa": "adres do korespondencji: Kancelaria Radców Prawnych Spółka z ograniczoną odpowiedzialnością, ul. Kaszubska 65, 85-934 Bydgoszcz",
+      "Odwolujacy[0].pelnomocnik.mail": "biuro@biuro.example",
+      "Zamawiajacy[0].krs": "KRS: 9999495942",
+      "Zamawiajacy[0].nazwa": "Zamawiający: Corvella Sieci sp. k.",
+      "Zamawiajacy[0].nip": "NIP: 9997193358",
+      "Zamawiajacy[0].regon": "REGON: 999209545",
+      "Zamawiajacy[0].prowadzacy_postepowanie": null,
+      "ZamowieniePubliczne.numer_bzp": "numer BZP: 2026/BZP00999955",
+      "ZamowieniePubliczne.numer_postepowania": "nr referencyjny sprawy: ZS.158.2026",
+      "ZamowieniePubliczne.numer_ted": "TED: 2026/S224-999211",
+      "ZamowieniePubliczne.tytul": "postępowania o udzielenie zamówienia w trybie negocjacji z ogłoszeniem pn. \"Dostawa i wdrożenie oprogramowania do obsługi dokumentacji wraz z serwisem wsparcia technicznego\""
+    },
+    "citation_ok": {
+      "OdwolanieKIO.data": true,
+      "OdwolanieKIO.czynnosc_dzien": true,
+      "OdwolanieKIO.czynnosc_powod_id": true,
+      "OdwolanieKIO.miejscowosc": true,
+      "Odwolujacy[0].krs": true,
+      "Odwolujacy[0].nazwa": true,
+      "Odwolujacy[0].nip": true,
+      "Odwolujacy[0].regon": true,
+      "Odwolujacy[0].przez-pelnomocnika": true,
+      "Odwolujacy[0].pelnomocnik.imie_nazwisko": true,
+      "Odwolujacy[0].pelnomocnik.nazwa": true,
+      "Odwolujacy[0].pelnomocnik.mail": true,
+      "Zamawiajacy[0].krs": true,
+      "Zamawiajacy[0].nazwa": true,
+      "Zamawiajacy[0].nip": true,
+      "Zamawiajacy[0].regon": true,
+      "ZamowieniePubliczne.numer_bzp": true,
+      "ZamowieniePubliczne.numer_postepowania": true,
+      "ZamowieniePubliczne.numer_ted": true,
+      "ZamowieniePubliczne.tytul": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

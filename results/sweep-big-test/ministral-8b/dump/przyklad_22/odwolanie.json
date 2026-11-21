@@ -1,0 +1,141 @@
+{
+  "source": "odwolanie.pdf",
+  "class": "odwolanie",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "OdwolanieKIO": {
+      "data": null,
+      "czynnosc_dzien": "2026-01-07",
+      "czynnosc_powod_id": 9,
+      "czynnosc_opis": "Decyzja o unieważnieniu postępowania",
+      "miejscowosc": null
+    },
+    "Odwolujacy": [
+      {
+        "krs": "9994097527",
+        "nazwa": "Zorina Systemy sp. z o.o.",
+        "nip": "9992726100",
+        "regon": "999205547",
+        "przez-pelnomocnika": 1,
+        "pelnomocnik": {
+          "imie_nazwisko": "Dorota Sikorski, Grzegorz Szulc",
+          "nazwa": "Kancelaria Adwokacka Spółka z ograniczoną odpowiedzialnością",
+          "mail": "biuro@kontakt.example"
+        }
+      }
+    ],
+    "Zamawiajacy": [
+      {
+        "krs": "9995571982",
+        "nazwa": "Quantis Serwis sp. j.",
+        "nip": "9990877668",
+        "regon": "999132305",
+        "prowadzacy_postepowanie": null
+      }
+    ],
+    "ZamowieniePubliczne": {
+      "numer_bzp": "2026/BZP00999327",
+      "numer_postepowania": "ZP.246.2026",
+      "numer_ted": "999985-2026",
+      "tytul": "Dostawa licencji oprogramowania do monitorowania infrastruktury i alarmowej"
+    }
+  },
+  "reference": {
+    "OdwolanieKIO": {
+      "data": null,
+      "czynnosc_dzien": "2026-01-07",
+      "czynnosc_powod_id": 9,
+      "czynnosc_opis": "Decyzja o unieważnieniu postępowania",
+      "miejscowosc": null
+    },
+    "Odwolujacy": [
+      {
+        "krs": "9994097527",
+        "nazwa": "Zorina Systemy sp. z o.o.",
+        "nip": "9992726100",
+        "regon": "999205547",
+        "przez-pelnomocnika": 1,
+        "pelnomocnik": {
+          "imie_nazwisko": "Dorota Sikorski",
+          "nazwa": "Kancelaria Adwokacka Spółka z ograniczoną odpowiedzialnością",
+          "mail": "biuro@kontakt.example"
+        }
+      }
+    ],
+    "Zamawiajacy": [
+      {
+        "krs": "9995571982",
+        "nazwa": "Quantis Serwis sp. j.",
+        "nip": "9990877668",
+        "regon": "999132305",
+        "prowadzacy_postepowanie": null
+      }
+    ],
+    "ZamowieniePubliczne": {
+      "numer_bzp": "2026/BZP00999327",
+      "numer_postepowania": "ZP.246.2026",
+      "numer_ted": "999985-2026",
+      "tytul": "Dostawa licencji oprogramowania do monitorowania infrastruktury i alarmowej"
+    }
+  },
+  "diffs": [
+    {
+      "field": "Odwolujacy[krs=9994097527].pelnomocnik.imie_nazwisko",
+      "predicted": "dorota sikorski, grzegorz szulc",
+      "expected": "dorota sikorski",
+      "status": "wrong"
+    }
+  ],
+  "trace": {
+    "source": "odwolanie.pdf",
+    "class": "odwolanie",
+    "ocr_used": false,
+    "quotes": {
+      "OdwolanieKIO.data": null,
+      "OdwolanieKIO.czynnosc_dzien": "Zamawiający w dniu 7 stycznia 2026 roku unieważnił postępowanie.",
+      "OdwolanieKIO.czynnosc_powod_id": "Zamawiający w dniu 7 stycznia 2026 roku unieważnił postępowanie.",
+      "OdwolanieKIO.miejscowosc": null,
+      "Odwolujacy[0].krs": "KRS: 9994097527",
+      "Odwolujacy[0].nazwa": "Zorina Systemy sp. z o.o.",
+      "Odwolujacy[0].nip": "NIP: 9992726100",
+      "Odwolujacy[0].regon": "REGON: 999205547",
+      "Odwolujacy[0].przez-pelnomocnika": "reprezentowana przez: r. pr. Dorota Sikorski, r. pr. Grzegorz Szulc",
+      "Odwolujacy[0].pelnomocnik.imie_nazwisko": "r. pr. Dorota Sikorski, r. pr. Grzegorz Szulc",
+      "Odwolujacy[0].pelnomocnik.nazwa": "adres do korespondencji: Kancelaria Adwokacka Spółka z ograniczoną odpowiedzialnością",
+      "Odwolujacy[0].pelnomocnik.mail": "biuro@kontakt.example",
+      "Zamawiajacy[0].krs": "KRS: 9995571982",
+      "Zamawiajacy[0].nazwa": "Quantis Serwis sp. j.",
+      "Zamawiajacy[0].nip": "NIP: 9990877668",
+      "Zamawiajacy[0].regon": "REGON: 999132305",
+      "Zamawiajacy[0].prowadzacy_postepowanie": null,
+      "ZamowieniePubliczne.numer_bzp": "numer ogłoszenia o zamówieniu w BZP: 2026/BZP00999327",
+      "ZamowieniePubliczne.numer_postepowania": "nr referencyjny sprawy: ZP.246.2026",
+      "ZamowieniePubliczne.numer_ted": "numer ogłoszenia w Dzienniku Urzędowym UE: 2026/S002-999985",
+      "ZamowieniePubliczne.tytul": "postępowania o udzielenie zamówienia w trybie przetargu ograniczonego pn. \"Dostawa licencji oprogramowania do monitorowania infrastruktury i alarmowej\""
+    },
+    "citation_ok": {
+      "OdwolanieKIO.czynnosc_dzien": true,
+      "OdwolanieKIO.czynnosc_powod_id": true,
+      "Odwolujacy[0].krs": true,
+      "Odwolujacy[0].nazwa": true,
+      "Odwolujacy[0].nip": true,
+      "Odwolujacy[0].regon": true,
+      "Odwolujacy[0].przez-pelnomocnika": true,
+      "Odwolujacy[0].pelnomocnik.imie_nazwisko": true,
+      "Odwolujacy[0].pelnomocnik.nazwa": true,
+      "Odwolujacy[0].pelnomocnik.mail": true,
+      "Zamawiajacy[0].krs": true,
+      "Zamawiajacy[0].nazwa": true,
+      "Zamawiajacy[0].nip": true,
+      "Zamawiajacy[0].regon": true,
+      "ZamowieniePubliczne.numer_bzp": true,
+      "ZamowieniePubliczne.numer_postepowania": true,
+      "ZamowieniePubliczne.numer_ted": true,
+      "ZamowieniePubliczne.tytul": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}

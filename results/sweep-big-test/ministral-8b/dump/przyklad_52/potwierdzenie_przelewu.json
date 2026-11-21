@@ -1,0 +1,65 @@
+{
+  "source": "potwierdzenie_przelewu.pdf",
+  "class": "przelew",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-07-21",
+      "kwota": 100.0,
+      "na_rachunek": null,
+      "numer_transakcji": "CEN2607213383444",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Karolina Wiśniewska w postępowaniu przed KIO w przetargu ZP.271.93.2026 CEN2607213383444",
+      "z_rachunku": null
+    }
+  },
+  "reference": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-07-21",
+      "kwota": 100.0,
+      "na_rachunek": "28136902188320879984436720",
+      "numer_transakcji": "CEN2607213383444",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Karolina Wiśniewska w postępowaniu przed KIO w przetargu ZP.271.93.2026 CEN2607213383444",
+      "z_rachunku": "07104462551544820625216547"
+    }
+  },
+  "diffs": [
+    {
+      "field": "przelew_bankowy.na_rachunek",
+      "predicted": null,
+      "expected": "28136902188320879984436720",
+      "status": "missing"
+    },
+    {
+      "field": "przelew_bankowy.z_rachunku",
+      "predicted": null,
+      "expected": "07104462551544820625216547",
+      "status": "missing"
+    }
+  ],
+  "trace": {
+    "source": "potwierdzenie_przelewu.pdf",
+    "class": "przelew",
+    "ocr_used": false,
+    "quotes": {
+      "przelew_bankowy.data_operacji": "Data operacji 21 lipca 2026",
+      "przelew_bankowy.kwota": "Kwota 100,00 PLN",
+      "przelew_bankowy.na_rachunek": "PL28 1369 0218 8320 8799 8443 6720",
+      "przelew_bankowy.numer_transakcji": "Numer referencyjny CEN2607213383444",
+      "przelew_bankowy.tytul": "Tytuł przelewu opłata skarbowa od pełnomocnictwa dla Karolina Wiśniewska w postępowaniu przed KIO w przetargu ZP.271.93.2026 CEN2607213383444",
+      "przelew_bankowy.z_rachunku": "PL07 1044 6255 1544 8206 2521 6547"
+    },
+    "citation_ok": {
+      "przelew_bankowy.data_operacji": true,
+      "przelew_bankowy.kwota": true,
+      "przelew_bankowy.numer_transakcji": true,
+      "przelew_bankowy.tytul": true
+    },
+    "nulled": [
+      "przelew_bankowy.na_rachunek",
+      "przelew_bankowy.z_rachunku"
+    ],
+    "retries": 1,
+    "truncated": false
+  }
+}

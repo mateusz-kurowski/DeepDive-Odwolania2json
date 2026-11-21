@@ -1,0 +1,51 @@
+{
+  "source": "potwierdzenie_przelewu.pdf",
+  "class": "przelew",
+  "error": null,
+  "ocr_used": false,
+  "prediction": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-06-15",
+      "kwota": 100.0,
+      "na_rachunek": "28364494971232236957639982",
+      "numer_transakcji": "CEN2606166197214",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Barbara Włodarczyk w postępowaniu przed KIO w przetargu ZP.50.2026 CEN2606166197214",
+      "z_rachunku": "30241960209282258045179097"
+    }
+  },
+  "reference": {
+    "przelew_bankowy": {
+      "data_operacji": "2026-06-15",
+      "kwota": 100.0,
+      "na_rachunek": "28364494971232236957639982",
+      "numer_transakcji": "CEN2606166197214",
+      "tytul": "opłata skarbowa od pełnomocnictwa dla Barbara Włodarczyk w postępowaniu przed KIO w przetargu ZP.50.2026 CEN2606166197214",
+      "z_rachunku": "30241960209282258045179097"
+    }
+  },
+  "diffs": [],
+  "trace": {
+    "source": "potwierdzenie_przelewu.pdf",
+    "class": "przelew",
+    "ocr_used": false,
+    "quotes": {
+      "przelew_bankowy.data_operacji": "Data operacji\n2026-06-15",
+      "przelew_bankowy.kwota": "Kwota\n100,00 PLN",
+      "przelew_bankowy.na_rachunek": "Rachunek odbiorcy\nPL28364494971232236957639982",
+      "przelew_bankowy.numer_transakcji": "Numer referencyjny\nCEN2606166197214",
+      "przelew_bankowy.tytul": "Tytuł przelewu\nopłata skarbowa od pełnomocnictwa dla Barbara Włodarczyk w postępowaniu przed\nKIO w przetargu ZP.50.2026 CEN2606166197214",
+      "przelew_bankowy.z_rachunku": "Rachunek zleceniodawcy\nPL30241960209282258045179097"
+    },
+    "citation_ok": {
+      "przelew_bankowy.data_operacji": true,
+      "przelew_bankowy.kwota": true,
+      "przelew_bankowy.na_rachunek": true,
+      "przelew_bankowy.numer_transakcji": true,
+      "przelew_bankowy.tytul": true,
+      "przelew_bankowy.z_rachunku": true
+    },
+    "nulled": [],
+    "retries": 0,
+    "truncated": false
+  }
+}
