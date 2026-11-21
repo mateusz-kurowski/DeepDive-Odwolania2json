@@ -1,0 +1,40 @@
+{
+  // Mocodawca – podmiot udzielający pełnomocnictwa. może być więcej niż 1 (konsorcjum wspólnie)
+  "mocodawca": [
+    {
+      "data": {
+        // Imię i nazwisko mocodawcy, jeśli jest osobą fizyczną.
+        // W przypadku osoby prawnej: null.
+        "imie_nazwisko": null,
+
+        // Numer KRS mocodawcy będącego osobą prawną.
+        "krs": "0000244633",
+
+        // Pełna nazwa mocodawcy.
+        "nazwa": "FAMBUD",
+
+        // Numer NIP mocodawcy.
+        "nip": "8361772283",
+
+        // Typ mocodawcy: "osoba_prawna" lub "osoba_fizyczna".
+        "typ": "osoba_prawna"
+      },
+
+      // Osoby podpisujące w imieniu mocodawcy.
+      "podpisujacy": [
+        {
+          "imie_nazwisko": "Paweł Podolski"
+        }
+      ]
+    }
+  ],
+
+  // Osoby otrzymujące pełnomocnictwo.
+  "pelnomocnicy": [
+    {
+      // Imię i nazwisko pełnomocnika w mianowniku.
+      "imie_nazwisko": "Krystyna Mazowiecka",
+      "pesel": 85120133547
+    }
+  ]
+}
