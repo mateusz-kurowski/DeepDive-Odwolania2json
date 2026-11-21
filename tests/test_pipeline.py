@@ -167,8 +167,8 @@ def test_classification_failure_falls_back_to_hints(tmp_path, fake_llm):
     assert len(llm.calls) == 2
 
 
-def test_classification_failure_with_ambiguous_hints_is_unknown(tmp_path, fake_llm):
+def test_classification_failure_with_ambiguous_hints_stays_an_error(tmp_path, fake_llm):
     classes = hinted_classes(tmp_path)
     doc = DocText(text="ALFA i BETA naraz", pages=1, ocr_used=False)
-    result = pipeline.process_text(doc, classes, fake_llm([LLMError("x")]), "hybrid", 85)
-    assert result.class_name == "nieznany"
+    with pytest.raises(LLMError):
+        pipeline.process_text(doc, classes, fake_llm([LLMError("x")]), "hybrid", 85)

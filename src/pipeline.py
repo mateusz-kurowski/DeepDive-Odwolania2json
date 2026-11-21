@@ -37,6 +37,9 @@ def process_text(
         class_name = classify(doc, classes, llm)
     except LLMError as exc:
         class_name = classify_by_hints(doc, classes)
+        if class_name == UNKNOWN:
+            # Hinty nie rozstrzygają: to awaria, nie dokument spoza klas.
+            raise
         log.warning("Klasyfikacja przez LLM nieudana (%s), klasa z hintów: %s", exc, class_name)
     if class_name == UNKNOWN:
         return DocResult(path=None, class_name=UNKNOWN, ocr_used=doc.ocr_used)
