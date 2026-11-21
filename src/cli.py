@@ -55,6 +55,10 @@ def _parser() -> argparse.ArgumentParser:
     sw = sub.add_parser("sweep", help="seria ewaluacji na wariantach z pliku YAML")
     sw.add_argument("config", type=Path, help="plik YAML z wariantami (np. sweeps/przyklad.yaml)")
 
+    serve = sub.add_parser("serve", help="uruchom API (wymaga: uv sync --extra api)")
+    serve.add_argument("--host", default="127.0.0.1")
+    serve.add_argument("--port", type=int, default=8000)
+
     classes = sub.add_parser("classes", help="wypisz wczytane klasy")
     classes.add_argument("--classes", type=Path)
     return parser
@@ -125,6 +129,16 @@ def _sweep(args: argparse.Namespace, llm: LLM | None, env: Mapping[str, str] | N
     return 1 if any(r["error"] for r in results) else 0
 
 
+def _serve(args: argparse.Namespace) -> int:
+    try:
+        import uvicorn
+    except ImportError:
+        print("Brak zależności API. Zainstaluj: uv sync --extra api", file=sys.stderr)
+        return 2
+    uvicorn.run("src.api.app:create_app", factory=True, host=args.host, port=args.port)
+    return 0
+
+
 def main(
     argv: list[str] | None = None,
     llm: LLM | None = None,
@@ -134,6 +148,8 @@ def main(
     args = _parser().parse_args(argv)
     if args.command == "sweep":
         return _sweep(args, llm, env)
+    if args.command == "serve":
+        return _serve(args)
     settings = _settings(args, env)
     try:
         classes = load_classes(settings.classes_dir)

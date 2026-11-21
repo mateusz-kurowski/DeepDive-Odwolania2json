@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import logging
 import re
+from collections.abc import Callable
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -480,6 +481,7 @@ def evaluate(
     workers: int = 4,
     dump_dir: Path | None = None,
     only: list[str] | None = None,
+    on_progress: Callable[[int, int], None] | None = None,
 ) -> Report:
     examples = _find_examples(data_dir)
     if only:
@@ -497,4 +499,6 @@ def evaluate(
         ):
             total.merge(part)
             log.info("eval %d/%d", i, len(examples))
+            if on_progress:
+                on_progress(i, len(examples))
     return total
