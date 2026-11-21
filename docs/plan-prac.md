@@ -11,9 +11,9 @@ Kolejność wg wpływu na punkty: preselekcja to 100% F1 na ukrytym zbiorze ze s
    - [ ] Walidacja sumy kontrolnej IBAN: błędny numer rachunku daje `null`.
    - [ ] Klasyfikacja: `KIO_KIO 2617-21.pdf` (wyrok KIO) wpada do `odwolanie`.
 2. **Instalacja i uruchomienie jak chce organizator.**
-   - [ ] `requirements.txt`: `make requirements`, commit, test zgodności z `uv.lock`.
-   - [ ] Czysta instalacja w nowym venv: `pip install -r requirements.txt` + `python -m src run`.
-   - [ ] `start.bat`: czy robi to samo (venv, pip, run).
+   - [x] `requirements.txt`: `make requirements`, commit, test zgodności z `uv.lock`.
+   - [x] Czysta instalacja w nowym venv: `pip install -r requirements.txt` + `python -m src run`.
+   - [x] `start.bat`: czy robi to samo (venv, pip, run).
    - [ ] README: instalacja Tesseracta (Windows/Linux/macOS), jeśli VLM nie wejdzie.
    - [ ] `docker compose build` (dotąd nieuruchomione).
 3. **Push na GitHub.**
