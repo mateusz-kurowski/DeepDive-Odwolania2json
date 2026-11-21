@@ -96,7 +96,7 @@ data/dane/        60 przykładów z referencją (organizator)
 tests/            testy (pytest)
 ```
 
-Testy: `uv run pytest` (zależności deweloperskie instaluje `uv sync`).
+Testy: `make test` (`uv run pytest`). Lint i format: `make lint`, `make format` (ruff). Zależności deweloperskie instaluje `uv sync`. `requirements.txt` (wymóg dostawy) generuje `make requirements`.
 
 ## Licencje
 

@@ -63,7 +63,7 @@ Model: adres endpointu, nazwa i klucz w zmiennych środowiskowych. Początek bud
 
 Ewaluacja: skrypt lokalny liczy F1 per pole i łącznie na `dane/przyklad_01..60`, dostępny jako `eval` w CLI. Na nim stroimy prompty i reguły.
 
-Dostawa: CLI (`python -m odwolania2json` plus `start.bat`), `requirements.txt`, `Dockerfile` i Docker Compose, README, instrukcja „jak dodać klasę dokumentu" z przykładem.
+Dostawa: CLI (`python -m src` plus `start.bat`), zależności przez uv (`pyproject.toml`, `uv.lock`) oraz `requirements.txt` generowany z lockfile (`make requirements`, wymóg organizatora), `Makefile` z komendami, ruff do lintu i formatowania, `Dockerfile` i Docker Compose, README, instrukcja „jak dodać klasę dokumentu" z przykładem.
 
 ## 6. Znane pułapki danych
 
@@ -100,3 +100,14 @@ Pytania do organizatora/mentorów (nie do rozstrzygnięcia przez nas):
 - Format konfiguracji klasy (struktura YAML), reguły dopasowania cytatów, próg zaufania.
 - Strategia ponownych prób, obsługa wielostronicowych dokumentów, logowanie `nieznany`.
 - Struktura repozytorium i obraz Docker.
+
+## 9. Decyzje budowniczego (po implementacji)
+
+- Format konfiguracji klasy: opisany w README („Jak dodać klasę dokumentu”), przykłady w `classes/` i `classes_examples/`. Pole to `{value, quote}` po stronie modelu, a wynik jest rozpakowywany do kształtu UZP; pola wyliczane (`derive`) nie trafiają do schematu modelu.
+- Cytaty: dopasowanie przybliżone (RapidFuzz `partial_ratio`), próg `CITATION_THRESHOLD=85`. Niezgodny cytat nie kasuje wartości, tylko obniża zaufanie (flaga w `trace/`) i uruchamia jedną ponowną próbę.
+- Ponowne próby: jedna ponowna ekstrakcja przy błędnym formacie (tryb `hybrid`) lub niezgodnym cytacie; po niej błędny format = `null`. Klient modelu ponawia 429/5xx/timeout z backoffem i przechodzi na `json_object`, gdy backend nie obsługuje `json_schema`.
+- Długie dokumenty: limit 60 000 znaków, obcięcie początek (70%) + koniec (30%) ze znacznikiem, model informowany o niepełności, flaga `truncated` w śladzie. Chunking poza zakresem (warunek powrotu w `docs/benchmark.md`).
+- `nieznany`: wpis w logu, brak pliku JSON. Ślad cytatów w `trace/`, nie w `output/`.
+- OCR: decyzja per dokument (Tesseract `pol` przez pypdfium2), bo przykład z szablonu jest skanem.
+- Narzędzia: uv (zależności), ruff (lint i format), Makefile (komendy), pytest.
+- Niezmierzone w momencie pisania: F1 na żywym modelu, wybór modelu, budowa obrazu Docker (patrz `docs/benchmark.md`).

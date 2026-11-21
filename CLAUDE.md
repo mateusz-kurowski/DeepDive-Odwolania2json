@@ -47,13 +47,14 @@ Pełny projekt: `docs/superpowers/specs/2026-11-21-odwolania2json-design.md`. **
 - `docs/schematy/` — oczekiwane JSON-y organizatora (3 klasy).
 - `docs/zadanie/` — PDF-y `UZP - Pełna treść zadania konkursowego` i `UZP - Regulamin zadania konkursowego`, README organizatora i `PODSUMOWANIE.md`.
 - `data/dane/przyklad_01..60/` — 60 spraw (3 PDF + 3 JSON każda). `data/szablon-aplikacja/` — przykładowe `input/` i `output/` plus przykład negatywny.
-- Docelowo: `classes/` (YAML), kod w `src/`, `Dockerfile`, `docker-compose.yml`, README i instrukcja „jak dodać klasę".
+- `classes/` (YAML klas), `classes_examples/` (przykład „config only”), kod w `src/`, `tests/`, `pyproject.toml` + `uv.lock` (uv), `Makefile` (`make help`), `Dockerfile`, `docker-compose.yml`, README z instrukcją „jak dodać klasę”, `docs/benchmark.md` (pomiary F1).
 
 ## 6. Zasady pracy w tym projekcie
 
 - Status: kod według planu `docs/superpowers/plans/` zbudowany (CLI `run`/`eval`/`classes`, trzy klasy w `classes/`, Docker, README). **Niezmierzone**: F1 na żywym modelu i wybór modelu (potrzebny endpoint, wyniki idą do `docs/benchmark.md`).
 - Walking skeleton: jedna klasa (`przelew`, najprostsza) end-to-end z ewaluacją, potem `pelnomocnictwo`, na końcu `odwolanie` (najtrudniejsza). Potem własna czwarta klasa jako dowód „config only".
 - Każda zmiana promptu lub reguły: policzyć F1 na 60 przykładach przed i po. Liczba idzie na slajd.
+- Komendy: `make test`, `make lint`/`make format` (ruff), `make eval`; zależności przez uv. Przed zgłoszeniem: `make requirements`.
 - Małe commity. To jest submoduł: commity trafiają do `HackNation-2026-proj1`, a po zmianie trzeba też zaktualizować gitlink w repo głównym.
 - Odpowiedzi zwięzłe, wniosek na początku.
 

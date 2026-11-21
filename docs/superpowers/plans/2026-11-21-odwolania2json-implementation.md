@@ -1,5 +1,7 @@
 # Odwołania2JSON Implementation Plan
 
+> **Stan po wykonaniu (21.11):** taski 1–16 wykonane, 17 czeka na endpoint modelu. Odchylenia od tego planu: pakiet nazywa się `src/` (nie `odwolania2json/`, uruchomienie `python -m src`); zależności zarządza uv (`pyproject.toml`, `uv.lock`, bez `requirements-dev.txt` i `pytest.ini`), a `requirements.txt` jest generowany na żądanie (`make requirements`); dodano `Makefile`, ruff i naprawki po review (parowanie tablic w `eval`, fallback `json_object`, fail-fast przy braku klas). Pełny rejestr decyzji: `.superpowers/sdd/` (lokalny) i spec §9.
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** CLI, które zamienia PDF-y spraw KIO z `input/caseN/` na JSON-y w `output/caseN/` zgodne ze schematami UZP, z klasami dokumentów definiowanymi wyłącznie plikami YAML.
@@ -14,7 +16,7 @@
 
 - Python 3.13+, zależności w `requirements.txt`, bez GPU na docelowej maszynie; model tylko przez API zgodne z OpenAI (LiteLLM/vLLM/Ollama).
 - Wyłącznie open source, w tym modele open-weights. Żadnego Gemini/Claude/GPT w rozwiązaniu (w kodzie, testach ani konfiguracji domyślnej).
-- Nowa klasa dokumentu = nowy plik YAML w `classes/`; dodanie klasy nie może wymagać edycji Pythona. Żaden moduł w `odwolania2json/` nie zawiera nazw `odwolanie`, `pelnomocnictwo`, `przelew` (pilnuje tego test w Task 2).
+- Nowa klasa dokumentu = nowy plik YAML w `classes/`; dodanie klasy nie może wymagać edycji Pythona. Żaden moduł w `src/` nie zawiera nazw `odwolanie`, `pelnomocnictwo`, `przelew` (pilnuje tego test w Task 2).
 - Nie zgadywać: pole niepewne lub z błędnym formatem po jednej ponownej próbie = `null`.
 - Wyjście: `output/caseN/<ta-sama-nazwa-co-PDF>.json` w dokładnym kształcie z `docs/schematy/`. Dokument spoza klas (`nieznany`): bez pliku JSON, wpis w logu. Poza JSON-ami nic nie ląduje w `output/` (ślad cytatów idzie do `trace/`).
 - Formaty: daty ISO `YYYY-MM-DD`; BZP `YYYY/BZP########` (bez spacji); TED `NNNNNN-YYYY` (także z `YYYY/S ###-NNNNNN`); IBAN jako 26 cyfr bez spacji i bez `PL`; `prowadzacy_postepowanie` ∈ {null,1,0}; `przez-pelnomocnika` ∈ {1,0}; `czynnosc_powod_id` ∈ 1–11; `pesel` jako liczba lub `null`; kwota jako liczba.
@@ -39,7 +41,7 @@ Wejścia, o które spec milczy, a które ugryzą użytkownika (każde ma test w 
 ## File Structure
 
 ```
-odwolania2json/
+src/
   __init__.py  __main__.py
   settings.py      # Settings.from_env()
   classconfig.py   # modele YAML klasy + load_classes()
@@ -65,7 +67,7 @@ Dockerfile  docker-compose.yml  start.bat  requirements.txt  README.md
 ### Task 1: Szkielet projektu i ustawienia
 
 **Files:**
-- Create: `requirements.txt`, `requirements-dev.txt`, `pytest.ini`, `odwolania2json/__init__.py`, `odwolania2json/__main__.py`, `odwolania2json/settings.py`, `tests/test_settings.py`
+- Create: `requirements.txt`, `requirements-dev.txt`, `pytest.ini`, `src/__init__.py`, `src/__main__.py`, `src/settings.py`, `tests/test_settings.py`
 - Modify: `.env.example`
 
 **Interfaces:**
@@ -83,7 +85,7 @@ Dockerfile  docker-compose.yml  start.bat  requirements.txt  README.md
 ### Task 2: Konfiguracja klasy (YAML → modele)
 
 **Files:**
-- Create: `odwolania2json/classconfig.py`, `tests/test_classconfig.py`, `tests/test_no_hardcoded_classes.py`
+- Create: `src/classconfig.py`, `tests/test_classconfig.py`, `tests/test_no_hardcoded_classes.py`
 
 **Interfaces:**
 - Produces:
@@ -91,7 +93,7 @@ Dockerfile  docker-compose.yml  start.bat  requirements.txt  README.md
   - `ClassConfig`: `name: str`, `description: str`, `hints: list[str]`, `rules: list[str]`, `examples: list[dict]` (few-shot: `{"text": str, "output": dict}`), `fields: list[FieldSpec]`.
   - `load_classes(directory: Path) -> dict[str, ClassConfig]` (czyta `*.yaml`; `name` musi równać się nazwie pliku bez rozszerzenia; zły plik → `ClassConfigError(path, message)`).
 
-- [ ] **Step 1: Failing tests:** `test_loads_valid_class` (tmp YAML z polami `text`, `enum` z `options`, `array` z `key`, → `cfg.fields[1].options[4] == "..."`), `test_name_must_match_filename`, `test_unknown_field_type_rejected`, `test_array_requires_fields`, `test_derive_must_reference_sibling` (`from` wskazuje nieistniejące pole → błąd), `test_empty_dir_returns_empty_dict`. W `test_no_hardcoded_classes.py`: `test_no_class_names_in_package` — grep po `odwolania2json/*.py` na `odwolanie|pelnomocnictwo|przelew` (case-insensitive), oczekiwane 0 trafień.
+- [ ] **Step 1: Failing tests:** `test_loads_valid_class` (tmp YAML z polami `text`, `enum` z `options`, `array` z `key`, → `cfg.fields[1].options[4] == "..."`), `test_name_must_match_filename`, `test_unknown_field_type_rejected`, `test_array_requires_fields`, `test_derive_must_reference_sibling` (`from` wskazuje nieistniejące pole → błąd), `test_empty_dir_returns_empty_dict`. W `test_no_hardcoded_classes.py`: `test_no_class_names_in_package` — grep po `src/*.py` na `odwolanie|pelnomocnictwo|przelew` (case-insensitive), oczekiwane 0 trafień.
 - [ ] **Step 2:** Run `pytest tests/test_classconfig.py tests/test_no_hardcoded_classes.py -v`. Expected: FAIL.
 - [ ] **Step 3:** Implement `classconfig.py` zgodnie z sygnaturami; walidacja spójności w `model_validator`.
 - [ ] **Step 4:** Run the same command. Expected: PASS.
@@ -102,7 +104,7 @@ Dockerfile  docker-compose.yml  start.bat  requirements.txt  README.md
 ### Task 3: Schemat odpowiedzi modelu i rozpakowanie wyniku
 
 **Files:**
-- Create: `odwolania2json/schema.py`, `tests/test_schema.py`
+- Create: `src/schema.py`, `tests/test_schema.py`
 
 **Interfaces:**
 - Consumes: `ClassConfig`, `FieldSpec` (Task 2).
@@ -121,7 +123,7 @@ Dockerfile  docker-compose.yml  start.bat  requirements.txt  README.md
 ### Task 4: Walidatory i normalizatory
 
 **Files:**
-- Create: `odwolania2json/validators.py`, `tests/test_validators.py`
+- Create: `src/validators.py`, `tests/test_validators.py`
 
 **Interfaces:**
 - Produces:
@@ -139,7 +141,7 @@ Dockerfile  docker-compose.yml  start.bat  requirements.txt  README.md
 ### Task 5: Weryfikacja cytatów
 
 **Files:**
-- Create: `odwolania2json/citations.py`, `tests/test_citations.py`
+- Create: `src/citations.py`, `tests/test_citations.py`
 
 **Interfaces:**
 - Produces: `citation_score(quote: str | None, text: str) -> float` (0–100; `None` lub pusty cytat → `0.0`; normalizuje białe znaki, wielkość liter i łączniki; `rapidfuzz.fuzz.partial_ratio`); `citation_ok(quote, text, threshold: float) -> bool`.
@@ -155,7 +157,7 @@ Dockerfile  docker-compose.yml  start.bat  requirements.txt  README.md
 ### Task 6: Tekst z PDF i OCR awaryjny
 
 **Files:**
-- Create: `odwolania2json/textextract.py`, `tests/test_textextract.py`
+- Create: `src/textextract.py`, `tests/test_textextract.py`
 
 **Interfaces:**
 - Produces: `DocText` (dataclass): `text: str`, `pages: int`, `ocr_used: bool`; `looks_garbage(text: str, pages: int) -> bool` (średnio < 50 znaków nie-białych na stronę lub < 60% znaków alfanumerycznych/polskich/interpunkcji); `read_pdf(path: Path) -> DocText` (pypdf; jeśli `looks_garbage`, próba OCR: render `pypdfium2` + `pytesseract` z `lang="pol"`; wyjątek OCR → `DocText(text="", ocr_used=False)` + ostrzeżenie w logu, nie wyjątek); `UnreadableDocument` nie jest rzucany, brak tekstu sygnalizuje pusty `text`.
@@ -171,7 +173,7 @@ Dockerfile  docker-compose.yml  start.bat  requirements.txt  README.md
 ### Task 7: Klient modelu i FakeLLM
 
 **Files:**
-- Create: `odwolania2json/llm.py`, `tests/conftest.py`, `tests/test_llm.py`
+- Create: `src/llm.py`, `tests/conftest.py`, `tests/test_llm.py`
 
 **Interfaces:**
 - Produces:
@@ -191,7 +193,7 @@ Dockerfile  docker-compose.yml  start.bat  requirements.txt  README.md
 ### Task 8: Klasyfikator
 
 **Files:**
-- Create: `odwolania2json/classify.py`, `tests/test_classify.py`
+- Create: `src/classify.py`, `tests/test_classify.py`
 
 **Interfaces:**
 - Consumes: `LLM`, `ClassConfig`, `DocText`.
@@ -208,7 +210,7 @@ Dockerfile  docker-compose.yml  start.bat  requirements.txt  README.md
 ### Task 9: Ekstrakcja (prompt, cytaty, walidacja, tryby)
 
 **Files:**
-- Create: `odwolania2json/extract.py`, `tests/test_extract.py`
+- Create: `src/extract.py`, `tests/test_extract.py`
 
 **Interfaces:**
 - Consumes: `build_response_schema`, `unwrap`, `validate_value`, `citation_ok`, `LLM`, `Settings`.
@@ -228,8 +230,8 @@ Dockerfile  docker-compose.yml  start.bat  requirements.txt  README.md
 ### Task 10: Pipeline wsadowy i CLI `run`
 
 **Files:**
-- Create: `odwolania2json/pipeline.py`, `odwolania2json/cli.py`, `start.bat`, `tests/test_pipeline.py`, `tests/test_cli.py`
-- Modify: `odwolania2json/__main__.py`
+- Create: `src/pipeline.py`, `src/cli.py`, `start.bat`, `tests/test_pipeline.py`, `tests/test_cli.py`
+- Modify: `src/__main__.py`
 
 **Interfaces:**
 - Consumes: Tasks 2–9.
@@ -238,8 +240,8 @@ Dockerfile  docker-compose.yml  start.bat  requirements.txt  README.md
   - `process_text(doc: DocText, classes, llm, mode, threshold) -> DocResult` (bez ścieżki; używane przez `eval`) — klasyfikuje i ekstrahuje; `nieznany` → `data=None`.
   - `process_pdf(path: Path, classes, llm, settings: Settings) -> DocResult` — łapie `LLMError` i inne wyjątki do `error`, nigdy nie przerywa batcha.
   - `run_batch(input_dir: Path, output_dir: Path, trace_dir: Path, classes, llm, settings, workers: int = 4) -> list[DocResult]` — rekurencyjnie `**/*.pdf` (bez względu na wielkość liter rozszerzenia), odtwarza strukturę katalogów `caseN/`, zapisuje `<stem>.json` (`ensure_ascii=False`, `indent=2`, nazwa pliku jak w wejściu), ślad (cytaty, `citation_ok`, `nulled`, `retries`, `truncated`) do `trace_dir/<caseN>/<stem>.json`; `nieznany` i błędy tylko w logu.
-  - CLI: `python -m odwolania2json run [--input input] [--output output] [--trace trace] [--mode hybrid|llm_only] [--workers 4]`; `python -m odwolania2json classes` wypisuje wczytane klasy. Kod wyjścia 1 tylko gdy jakikolwiek dokument zakończył się błędem (nie dla `nieznany`).
-  - `start.bat`: `python -m odwolania2json run %*`.
+  - CLI: `python -m src run [--input input] [--output output] [--trace trace] [--mode hybrid|llm_only] [--workers 4]`; `python -m src classes` wypisuje wczytane klasy. Kod wyjścia 1 tylko gdy jakikolwiek dokument zakończył się błędem (nie dla `nieznany`).
+  - `start.bat`: `python -m src run %*`.
 
 - [ ] **Step 1: Failing tests (FakeLLM, `read_pdf` zmockowany lub PDF z `data/dane/przyklad_01/`):** `test_writes_json_with_same_stem_and_structure` (`input/case1/Mój plik.PDF` → `output/case1/Mój plik.json`; Review Focus 4), `test_unknown_writes_no_file_and_logs`, `test_non_pdf_ignored`, `test_empty_input_dir_exit_0_with_message`, `test_llm_failure_on_one_file_does_not_stop_batch_exit_1` (Review Focus 2), `test_unreadable_pdf_skipped_with_log` (Review Focus 1), `test_trace_written_outside_output`, `test_rerun_is_idempotent` (drugie uruchomienie nadpisuje bez błędu), `test_mode_flag_overrides_env`, `test_same_stem_in_two_cases_does_not_collide`.
 - [ ] **Step 2:** Run `pytest tests/test_pipeline.py tests/test_cli.py -v`. Expected: FAIL.
@@ -252,8 +254,8 @@ Dockerfile  docker-compose.yml  start.bat  requirements.txt  README.md
 ### Task 11: Ewaluacja F1 (`eval`)
 
 **Files:**
-- Create: `odwolania2json/evaluate.py`, `tests/test_evaluate.py`
-- Modify: `odwolania2json/cli.py`
+- Create: `src/evaluate.py`, `tests/test_evaluate.py`
+- Modify: `src/cli.py`
 
 **Interfaces:**
 - Consumes: `process_text`, `read_pdf`, `ClassConfig` (`FieldSpec.key`).
@@ -263,7 +265,7 @@ Dockerfile  docker-compose.yml  start.bat  requirements.txt  README.md
   - `score_document(pred: dict | None, ref: dict, cfg: ClassConfig) -> dict[str, Counts]` — reguły: oba `null`/brak → pomijane; pred ≠ null i = ref → TP; pred ≠ null i ≠ ref → FP + FN; pred = null i ref ≠ null → FN; pred ≠ null i ref = null → FP; pred `None` (dokument rozpoznany błędnie lub `nieznany`) → wszystkie pola ref to FN.
   - `Report` (dataclass): `per_field: dict[str, Counts]`, `micro_f1`, `precision`, `recall`, `doc_exact_match`, `classification_accuracy`, `citation_ok_rate`, `null_rate_on_ref_valued`; `Report.render() -> str` (tabela tekstowa).
   - `evaluate(data_dir: Path, classes, llm, settings, limit: int | None = None, workers: int = 4) -> Report` — dla każdego `przyklad_NN`: czyta wszystkie PDF-y, klasyfikuje, ekstrahuje i porównuje z `<klasa>.json` (referencja dobierana po **nazwie klasy = nazwa pliku JSON**, więc nazwa PDF-a nie ma znaczenia). Predykcja klasy, dla której nie ma referencji, liczy się jako FP wszystkich jej pól.
-  - CLI: `python -m odwolania2json eval [--data data/dane] [--mode ...] [--model NAZWA] [--limit N] [--workers 4] [--out-json PLIK]`; `--model` nadpisuje `LLM_MODEL`.
+  - CLI: `python -m src eval [--data data/dane] [--mode ...] [--model NAZWA] [--limit N] [--workers 4] [--out-json PLIK]`; `--model` nadpisuje `LLM_MODEL`.
 
 - [ ] **Step 1: Failing tests (czyste, bez LLM):** `test_flatten_arrays_by_key`, `test_flatten_arrays_fallback_to_index`, `test_perfect_prediction_f1_1`, `test_wrong_value_counts_fp_and_fn`, `test_null_vs_missing_equivalent`, `test_pred_null_ref_value_is_fn`, `test_pred_value_ref_null_is_fp`, `test_misclassified_doc_all_fn`, `test_normalization_case_and_whitespace`, `test_array_order_irrelevant_when_key_matches` (zamienione `pelnomocnicy` z kluczem `imie_nazwisko`), `test_report_aggregates_micro_f1`.
 - [ ] **Step 2:** Run `pytest tests/test_evaluate.py -v`. Expected: FAIL.
@@ -283,7 +285,7 @@ Dockerfile  docker-compose.yml  start.bat  requirements.txt  README.md
 
 - [ ] **Step 1: Failing test** `test_shipped_classes_load_and_validators_exist` (`load_classes(Path("classes"))` nie rzuca; każdy `validator` istnieje w `REGISTRY`; każde `derive.from_field` istnieje; dla `przelew`: pola `przelew_bankowy.{data_operacji,kwota,na_rachunek,numer_transakcji,tytul,z_rachunku}` oraz typy `date`→`validator: date`, `kwota`→`amount`, rachunki→`iban`). Run → FAIL.
 - [ ] **Step 2:** Napisz `classes/przelew.yaml`: `description` (potwierdzenie przelewu bankowego), `hints` (`przelew`, `rachunek`, `kwota`), opisy pól, `rules` (np. `tytul` dosłownie jak w dokumencie; `numer_transakcji` null gdy brak), ≥1 few-shot z przykładu 01. Run `pytest tests/test_shipped_classes.py -v` → PASS.
-- [ ] **Step 3: Pomiar (wymaga endpointu z `.env`):** `python -m odwolania2json eval --limit 60 --mode hybrid` i `--mode llm_only`; wpisz F1 per pole i łącznie dla klasy `przelew` do `docs/benchmark.md` (tabela: tryb, F1, precision, recall, ścieżka błędów). Jeśli F1 < 0,9, popraw opisy/reguły i powtórz; każdą iterację odnotuj w tym samym pliku.
+- [ ] **Step 3: Pomiar (wymaga endpointu z `.env`):** `python -m src eval --limit 60 --mode hybrid` i `--mode llm_only`; wpisz F1 per pole i łącznie dla klasy `przelew` do `docs/benchmark.md` (tabela: tryb, F1, precision, recall, ścieżka błędów). Jeśli F1 < 0,9, popraw opisy/reguły i powtórz; każdą iterację odnotuj w tym samym pliku.
 - [ ] **Step 4: Commit** `feat: klasa przelew i pierwszy pomiar F1`.
 
 ---
@@ -329,7 +331,7 @@ Dockerfile  docker-compose.yml  start.bat  requirements.txt  README.md
 **Interfaces:**
 - Consumes: wyłącznie publiczne API (`load_classes`, `process_text`, `FakeLLM`).
 
-- [ ] **Step 1: Failing test** `test_new_class_added_by_yaml_only`: kopiuje `classes/*.yaml` oraz `classes_examples/faktura.yaml` do tmp `classes/`, `FakeLLM` zwraca najpierw klasę `faktura`, potem wypełnione pola; `process_text` zwraca `class_name == "faktura"` i dane w kształcie z YAML, **bez** żadnej zmiany w `odwolania2json/` (assercja: hash plików pakietu przed i po teście jest ten sam). `test_new_class_visible_in_classes_cli`. Run → FAIL (brak pliku).
+- [ ] **Step 1: Failing test** `test_new_class_added_by_yaml_only`: kopiuje `classes/*.yaml` oraz `classes_examples/faktura.yaml` do tmp `classes/`, `FakeLLM` zwraca najpierw klasę `faktura`, potem wypełnione pola; `process_text` zwraca `class_name == "faktura"` i dane w kształcie z YAML, **bez** żadnej zmiany w `src/` (assercja: hash plików pakietu przed i po teście jest ten sam). `test_new_class_visible_in_classes_cli`. Run → FAIL (brak pliku).
 - [ ] **Step 2:** Napisz `classes_examples/faktura.yaml` (numer faktury, data wystawienia ISO, sprzedawca/nabywca z `nip`, kwota brutto `amount`, `hints`: `faktura`, `VAT`). Run `pytest tests/test_config_only.py -v` → PASS.
 - [ ] **Step 3: Commit** `feat: przykład klasy faktura (config only)`.
 
@@ -342,7 +344,7 @@ Dockerfile  docker-compose.yml  start.bat  requirements.txt  README.md
 - Modify: `.env.example` (jeśli brak którejś zmiennej)
 
 **Interfaces:**
-- Produces: `docker compose run --rm app` uruchamia `python -m odwolania2json run` na wolumenach `./input`, `./output`, `./classes`, `./trace`, z `env_file: .env`.
+- Produces: `docker compose run --rm app` uruchamia `python -m src run` na wolumenach `./input`, `./output`, `./classes`, `./trace`, z `env_file: .env`.
 
 - [ ] **Step 1:** `Dockerfile` na `python:3.13-slim` z `tesseract-ocr` i `tesseract-ocr-pol` (apt), `pip install -r requirements.txt`, `ENTRYPOINT ["python","-m","odwolania2json"]`, `CMD ["run"]`. `docker-compose.yml` z jedną usługą `app`.
 - [ ] **Step 2: Weryfikacja:** `docker compose build` kończy się sukcesem; `docker compose run --rm app classes` wypisuje trzy klasy (bez potrzeby modelu); z włączonym endpointem: `docker compose run --rm app run` na `data/szablon-aplikacja/input` kopiuje się do `input/`, wynik w `output/case1/` zgodny kształtem z `data/szablon-aplikacja/output/case1/`.
@@ -358,7 +360,7 @@ Dockerfile  docker-compose.yml  start.bat  requirements.txt  README.md
 
 **Uwaga:** wymaga endpointu LiteLLM zespołu i odpowiedzi na pytanie 4 do organizatora (open-source vs open-weights) **przed** ostatecznym wyborem.
 
-- [ ] **Step 1:** Dla 2–3 kandydatów open-weights (rząd 30B+, JSON schema; lista z LiteLLM zespołu) uruchom `python -m odwolania2json eval --model <nazwa> --mode hybrid` i `--mode llm_only` (wyniki `--out-json docs/bench/<model>-<mode>.json`).
+- [ ] **Step 1:** Dla 2–3 kandydatów open-weights (rząd 30B+, JSON schema; lista z LiteLLM zespołu) uruchom `python -m src eval --model <nazwa> --mode hybrid` i `--mode llm_only` (wyniki `--out-json docs/bench/<model>-<mode>.json`).
 - [ ] **Step 2:** Uzupełnij tabelę w `docs/benchmark.md` (model, tryb, F1, precision, recall, czas na dokument, licencja modelu). Wybierz model i domyślny tryb (`hybrid` zostaje, chyba że `llm_only` wygrywa wyraźnie); wpisz do `.env.example`.
 - [ ] **Step 3:** Zaktualizuj `CLAUDE.md` (sekcja 3: wybrany model i przełącznik `EXTRACTION_MODE`; sekcja 6: status „po zatwierdzeniu, kod gotowy"; sekcja 8: wpis w dzienniku) oraz sekcję 8 spec (model wybrany, link do benchmarku).
 - [ ] **Step 4: Commit** `docs: benchmark modeli i wybór`.
