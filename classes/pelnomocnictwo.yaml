@@ -1,0 +1,83 @@
+name: pelnomocnictwo
+description: >-
+  Pełnomocnictwo do reprezentowania wykonawcy (mocodawcy) w postępowaniu
+  przed Krajową Izbą Odwoławczą lub w postępowaniu o udzielenie zamówienia publicznego.
+hints:
+  - pełnomocnictw
+  - pelnomocnictw
+  - udzielam
+  - udzielają
+rules:
+  - "mocodawca to podmiot udzielający pełnomocnictwa. Może być ich kilku (konsorcjum, wykonawcy wspólnie): każdy to osobny element tablicy mocodawca."
+  - "data.typ: osoba_prawna dla spółek i innych podmiotów z KRS, osoba_fizyczna dla osoby prowadzącej działalność gospodarczą (CEIDG) lub osoby prywatnej."
+  - "Dla osoby prawnej data.imie_nazwisko = null, a data.nazwa to pełna nazwa podmiotu. Dla osoby fizycznej data.imie_nazwisko to imię i nazwisko mocodawcy, data.nazwa to nazwa firmy (jeśli jest, inaczej imię i nazwisko), a data.krs = null."
+  - "podpisujacy to osoby podpisujące w imieniu danego mocodawcy (pod nagłówkiem „W imieniu ...” lub „Mocodawca”), każda jako osobny element. Nie wpisuj tu pełnomocników."
+  - "pelnomocnicy to osoby, którym udzielono pełnomocnictwa (np. po „udzielam pełnomocnictwa:”, „Pełnomocnictwo przyjmuję”). Imię i nazwisko w mianowniku, bez tytułów (adw., r.pr.) i numerów wpisu."
+  - "pesel zwróć jako 11 cyfr tylko gdy jest jawnie podany w dokumencie, w przeciwnym razie null."
+  - "NIP i KRS przypisuj do właściwego mocodawcy; gdy któregoś nie ma przy danym mocodawcy, zwróć null (nie bierz go od innego podmiotu)."
+examples:
+  - text: |
+      Ja, niżej podpisany Jarosław Dudek, prowadzący działalność gospodarczą pod firmą DUDEK-TECH
+      Jarosław Dudek, NIP 9994150873, niniejszym udzielam pełnomocnictwa: adw. Natalia Górecka.
+      Mocodawca: Jarosław Dudek
+    output:
+      mocodawca:
+        - data:
+            imie_nazwisko: "Jarosław Dudek"
+            krs: null
+            nazwa: "DUDEK-TECH Jarosław Dudek"
+            nip: "9994150873"
+            typ: osoba_fizyczna
+          podpisujacy:
+            - imie_nazwisko: "Jarosław Dudek"
+      pelnomocnicy:
+        - imie_nazwisko: "Natalia Górecka"
+          pesel: null
+fields:
+  - name: mocodawca
+    type: array
+    key: [data.krs, data.nip]
+    description: Podmioty udzielające pełnomocnictwa.
+    fields:
+      - name: data
+        type: object
+        fields:
+          - name: imie_nazwisko
+            type: text
+            description: Imię i nazwisko mocodawcy będącego osobą fizyczną, dla osoby prawnej null.
+          - name: krs
+            type: text
+            validator: krs
+            description: Numer KRS mocodawcy będącego osobą prawną.
+          - name: nazwa
+            type: text
+            description: Pełna nazwa mocodawcy.
+          - name: nip
+            type: text
+            validator: nip
+            description: Numer NIP mocodawcy.
+          - name: typ
+            type: enum
+            description: Typ mocodawcy.
+            options:
+              osoba_prawna: spółka lub inny podmiot z KRS
+              osoba_fizyczna: osoba fizyczna, także prowadząca działalność gospodarczą
+      - name: podpisujacy
+        type: array
+        key: [imie_nazwisko]
+        description: Osoby podpisujące w imieniu mocodawcy.
+        fields:
+          - name: imie_nazwisko
+            type: text
+  - name: pelnomocnicy
+    type: array
+    key: [imie_nazwisko]
+    description: Osoby otrzymujące pełnomocnictwo.
+    fields:
+      - name: imie_nazwisko
+        type: text
+        description: Imię i nazwisko pełnomocnika w mianowniku.
+      - name: pesel
+        type: integer
+        validator: pesel
+        description: PESEL pełnomocnika, jeśli podany.

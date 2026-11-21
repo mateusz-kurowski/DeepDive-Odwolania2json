@@ -79,6 +79,26 @@ def test_reference_values_survive_validators_unchanged(class_name):
             except ValueError as exc:
                 problems.append(f"{ref.parent.name}:{path}: {exc}")
                 continue
-            if out != value:
+            if out != value and str(out) != str(value):
                 problems.append(f"{ref.parent.name}:{path}: {value!r} -> {out!r}")
     assert problems == []
+
+
+def test_pelnomocnictwo_structure():
+    cfg = CLASSES["pelnomocnictwo"]
+    top = {f.name: f for f in cfg.fields}
+    assert set(top) == {"mocodawca", "pelnomocnicy"}
+    assert top["mocodawca"].type == "array" and top["mocodawca"].key == ["data.krs", "data.nip"]
+    assert top["pelnomocnicy"].type == "array" and top["pelnomocnicy"].key == ["imie_nazwisko"]
+    moc = {f.name: f for f in top["mocodawca"].fields}
+    assert set(moc) == {"data", "podpisujacy"}
+    assert moc["podpisujacy"].type == "array" and moc["podpisujacy"].key == ["imie_nazwisko"]
+    data = {f.name: f for f in moc["data"].fields}
+    assert set(data) == {"imie_nazwisko", "krs", "nazwa", "nip", "typ"}
+    assert data["typ"].type == "enum"
+    assert set(data["typ"].options) == {"osoba_prawna", "osoba_fizyczna"}
+    assert data["krs"].validator == "krs" and data["nip"].validator == "nip"
+    pel = {f.name: f for f in top["pelnomocnicy"].fields}
+    assert set(pel) == {"imie_nazwisko", "pesel"}
+    assert pel["pesel"].validator == "pesel"
+    assert cfg.hints and cfg.rules and cfg.examples

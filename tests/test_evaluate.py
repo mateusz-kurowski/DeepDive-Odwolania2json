@@ -172,3 +172,8 @@ def test_evaluate_misclassified_counts_all_fn(tmp_path, demo_classes, fake_llm, 
     assert report.classification_accuracy == 0.0
     assert report.micro_f1 == 0.0
     assert report.fn_total == 2
+
+
+def test_numeric_string_equals_number_for_numeric_fields():
+    ref = {**REF, "kwota": "10000"}
+    assert score_document(REF, ref, CFG)["kwota"].tp == 1

@@ -56,6 +56,8 @@ def _norm(value: Any, spec: FieldSpec) -> Any:
     text = re.sub(r"\s+", " ", str(value)).strip()
     if not text:
         return None
+    if spec.type in ("integer", "number") and re.fullmatch(r"\d+(\.\d+)?", text):
+        return float(text)
     if spec.validator == "date":
         try:
             return normalize_date(text)
