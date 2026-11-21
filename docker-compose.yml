@@ -1,5 +1,36 @@
+# `docker compose up --build` → UI na http://localhost:8080 (front: nginx, API: FastAPI).
+# Konfiguracja w .env (patrz .env.example). Bez S3_BUCKET pliki i wyniki idą do ./storage;
+# z S3_BUCKET (+ S3_ENDPOINT_URL dla MinIO) do object storage.
 services:
+  api:
+    build: .
+    command: ["serve", "--host", "0.0.0.0", "--port", "8000"]
+    env_file: .env
+    environment:
+      STORAGE_DIR: /app/storage
+    volumes:
+      - ./classes:/app/classes          # schematy edytowane w UI zapisują się tutaj
+      - ./config:/app/config:ro
+      - ./data:/app/data:ro             # dane do ewaluacji zawsze lokalnie
+      - ./results:/app/results:ro       # domyślne wyniki ewaluacji (odczyt lokalny)
+      - ./storage:/app/storage          # tylko gdy brak S3_BUCKET
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request as u; u.urlopen('http://localhost:8000/api/health')"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  web:
+    build: ./web
+    ports:
+      - "${WEB_PORT:-8080}:80"
+    depends_on:
+      api:
+        condition: service_healthy
+
+  # Przetwarzanie wsadowe z linii poleceń: docker compose run --rm app
   app:
+    profiles: ["cli"]
     build: .
     env_file: .env
     volumes:

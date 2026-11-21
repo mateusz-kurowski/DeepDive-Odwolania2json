@@ -45,8 +45,9 @@ Trzy sposoby, każdy wymaga pliku `.env` (klucz i adres API) oraz PDF-ów w `inp
 | pip (Linux/macOS) | `pip install -r requirements.txt && python -m src run` w venv | Python 3.13+ |
 | Windows | `start.bat` (venv, pip i `run` w jednym kroku) | Python 3.13+ |
 | Docker | `docker compose run --rm app` | Docker |
+| UI + API | `docker compose up --build`, potem http://localhost:8080 | Docker |
 
-Lokalne API i interfejs graficzny: wkrótce.
+Lokalne API i interfejs graficzny: sekcja „UI i API”.
 
 Szczegóły poniżej. Wymagania: Python 3.13+. Instalacja przez `pip` (`requirements.txt`) albo [uv](https://docs.astral.sh/uv/) (`uv.lock`). Do skanów potrzebny jest model z wizją (VLM, patrz „OCR skanów”); Tesseract jest opcjonalny i nie instaluje się domyślnie.
 
@@ -160,10 +161,26 @@ Nic nie edytujesz w Pythonie. Przykład: `classes_examples/faktura.yaml`.
 
 Nowy walidator formatu to jeden wpis w `src/validators.py` (`REGISTRY`).
 
+## UI i API
+
+```bash
+cp .env.example .env
+docker compose up --build        # UI: http://localhost:8080, API: kontener `api` (port 8000 wewnątrz sieci)
+```
+
+Front (`web/`, statyczny HTML + JS, nginx) i API (`src/api/`, FastAPI) to osobne kontenery; nginx przekazuje `/api/` do API. Kontrakt endpointów: [`docs/api.md`](docs/api.md). Bez Dockera: `uv sync --extra api && uv run python -m src serve` (API na `127.0.0.1:8000`; front `web/` serwuj dowolnym serwerem statycznym z proxy `/api`).
+
+- **Dokumenty użytkowników** (wgrane w UI PDF-y, wyniki ekstrakcji, korekty) trafiają do object storage: S3 albo MinIO (`S3_BUCKET`, `S3_ENDPOINT_URL`, `S3_ACCESS_KEY`, `S3_SECRET_KEY`, patrz `.env.example`). Bez `S3_BUCKET` aplikacja zapisuje do katalogu `./storage`, więc działa od razu, a podłączenie bucketa to tylko zmiana `.env`.
+- **Ewaluacja.** Dane do ewaluacji nie trafiają do storage: są zawsze lokalne (`config/eval-datasets.yaml`, ścieżki do katalogów z PDF-ami i referencjami). Domyślnie UI pokazuje wyniki odczytane z plików lokalnych (`results/`, tylko odczyt: raporty `eval --out-json` i `sweep`). Dodatkowe przebiegi uruchomione z UI zapisują raport i diffy per dokument w object storage.
+- **Schematy.** Typy dokumentów to YAML w `classes/`; edycja w UI zapisuje plik (po walidacji) i działa od następnego dokumentu, bez restartu.
+- **Przegląd.** Pole ma status AI / Poprawione / Zatwierdzone. Zamiast „pewności” UI pokazuje, czy cytat źródłowy został zweryfikowany w tekście. Podświetlenia cytatów w PDF są liczone dopasowaniem przybliżonym do warstwy tekstowej (skany: bez podświetleń).
+
 ## Struktura
 
 ```
 src/               kod (generyczny silnik, nie zna nazw klas)
+src/api/           API (FastAPI): dokumenty, schematy, ewaluacja, storage
+web/               UI (statyczny front + nginx)
 classes/          klasy dokumentów (YAML)
 classes_examples/ przykład klasy do skopiowania
 docs/             projekt, plan, schematy organizatora, benchmark

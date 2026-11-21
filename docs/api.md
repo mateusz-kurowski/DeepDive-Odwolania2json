@@ -17,7 +17,7 @@ Prefiks `/api`. W Dockerze front (nginx) proxuje `/api/` do kontenera `api` (por
 - `GET /api/documents/{id}` → `DocSummary` + `{ocr_used:bool, model:str, pages:int, fields:[Field], data:object}` (`data` = JSON po korektach)
 - `GET /api/documents/{id}/pdf` → `application/pdf`
 - `GET /api/documents/{id}/pages/{n}.png?width=900` → obraz strony (n od 1)
-- `PATCH /api/documents/{id}/fields` body `{path, value?, status?:"ai"|"edited"|"approved"}` → `Field` (podanie `value` ustawia status `edited`)
+- `PATCH /api/documents/{id}/fields` body `{path, value?, status?:"ai"|"approved", revert?:bool}` → `Field`. `value` ustawia status `edited` (jeśli różni się od wartości z modelu) i zdejmuje zatwierdzenie; `status:"approved"` zatwierdza; `status:"ai"` zdejmuje zatwierdzenie (edycja zostaje); `revert:true` przywraca wartość z modelu i zdejmuje zatwierdzenie.
 - `POST /api/documents/{id}/approve-all` → `DocSummary`
 - `POST /api/documents/{id}/reprocess` → 202 `DocSummary`
 - `DELETE /api/documents/{id}` → 204; `DELETE /api/documents` → 204 (wszystkie)
@@ -40,4 +40,4 @@ Wyniki domyślne są czytane z plików lokalnych (`results/`, tylko do odczytu, 
 - `POST /api/evaluation/runs` body `{dataset, model?, mode?:"hybrid"|"llm_only", limit?:int}` → 202 `RunSummary` (zapis do storage)
 - `GET /api/evaluation/runs/{id}` → `RunSummary` + `{report: <Report.to_dict()>|null}`; `report.per_field` to `{ścieżka: {tp,fp,fn,precision,recall,f1}}`
 - `GET /api/evaluation/runs/{id}/documents` → `[{label, stem, class_name, tp, fp, fn, f1:number|null, error:str|null}]`
-- `GET /api/evaluation/runs/{id}/documents/{label}/{stem}` → `{source, class, error, ocr_used, prediction, reference, diffs:[{field, predicted, expected, status:"TP"|"FP"|"FN"|...}], trace}`
+- `GET /api/evaluation/runs/{id}/documents/{label}/{stem}` → `{source, class, error, ocr_used, prediction, reference, diffs:[{field, predicted, expected, status:"wrong"|"missing"|"extra"}], trace}`

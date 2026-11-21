@@ -22,10 +22,11 @@ Kolejność wg wpływu na punkty: preselekcja to 100% F1 na ukrytym zbiorze ze s
 ## P1: punkty dodatkowe
 
 5. **Lokalne API + UI** (opcjonalne, ale punktowane).
-   - [ ] Wymagania z FAQ: wgranie plików, uruchomienie, podgląd JSON obok oryginału.
-   - [ ] Cienkie API (FastAPI) nad `process_pdf`.
-   - [ ] Jedna komenda, np. `python -m src serve`, frontend serwowany z tego samego procesu (bez Node).
-   - [ ] Cytaty źródłowe i podświetlenie w tekście.
+   - [x] Wymagania z FAQ: wgranie plików, uruchomienie, podgląd JSON obok oryginału (`web/`, ekran „Przegląd dokumentu”).
+   - [x] API (FastAPI, `src/api/`, kontrakt w `docs/api.md`) nad `process_pdf`; pliki użytkowników i wyniki UI w S3/MinIO (lokalny katalog bez `S3_BUCKET`).
+   - [x] Osobny front (nginx) i API w Dockerze: `docker compose up --build` (nieprzetestowane: daemon Dockera wyłączony).
+   - [x] Cytaty źródłowe i podświetlenie w PDF (dopasowanie przybliżone do warstwy tekstowej; skany bez podświetleń).
+   - [ ] Test z prawdziwym S3/MinIO i `docker compose up` na maszynie z Dockerem.
 6. **Elastyczność (połowa oceny finału).**
    - [ ] Czwarta klasa jako dowód „config only”: `classes_examples/` działa bez edycji Pythona.
    - [ ] Instrukcja dodawania klasy w README + scenariusz do pokazania jurorom.
