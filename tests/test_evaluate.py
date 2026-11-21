@@ -209,3 +209,62 @@ def test_extra_predicted_item_counts_fp_only():
     counts = score_document(pred, ref, CFG)
     assert counts["osoby[].nazwa"].tp == 1 and counts["osoby[].nazwa"].fp == 1
     assert total(counts).fn == 0
+
+
+def _demo_example(tmp_path, monkeypatch, ref):
+    from conftest import DEMO_TEXT
+
+    from src import pipeline
+    from src.textextract import DocText
+
+    monkeypatch.setattr(pipeline, "read_pdf", lambda path: DocText(DEMO_TEXT, 1, False))
+    example = tmp_path / "dane" / "przyklad_01"
+    example.mkdir(parents=True)
+    (example / "cokolwiek.pdf").write_bytes(b"%PDF")
+    (example / "demo.json").write_text(json.dumps(ref), encoding="utf-8")
+    return tmp_path / "dane"
+
+
+def test_evaluate_dump_writes_prediction_reference_and_diffs(
+    tmp_path, demo_classes, fake_llm, monkeypatch
+):
+    from conftest import extraction
+
+    data = _demo_example(tmp_path, monkeypatch, {"nip": "5270000000", "tytul": "Inny tytuł"})
+    dump = tmp_path / "dump"
+    evaluate(
+        data,
+        demo_classes[1],
+        fake_llm([classification(), extraction()]),
+        Settings(llm_model="m"),
+        workers=1,
+        dump_dir=dump,
+    )
+    doc = json.loads((dump / "przyklad_01" / "cokolwiek.json").read_text(encoding="utf-8"))
+    assert doc["class"] == "demo" and doc["error"] is None
+    assert doc["prediction"]["tytul"] == "Budowa drogi"
+    assert doc["reference"] == {"nip": "5270000000", "tytul": "Inny tytuł"}
+    assert doc["trace"]["citation_ok"]
+    assert doc["diffs"] == [
+        {"field": "tytul", "predicted": "budowa drogi", "expected": "inny tytuł", "status": "wrong"}
+    ]
+
+
+def test_evaluate_dump_records_unknown_and_missed_reference(
+    tmp_path, demo_classes, fake_llm, monkeypatch
+):
+    data = _demo_example(tmp_path, monkeypatch, {"nip": "5270000000", "tytul": "T"})
+    dump = tmp_path / "dump"
+    evaluate(
+        data,
+        demo_classes[1],
+        fake_llm([classification("nieznany")]),
+        Settings(llm_model="m"),
+        workers=1,
+        dump_dir=dump,
+    )
+    doc = json.loads((dump / "przyklad_01" / "cokolwiek.json").read_text(encoding="utf-8"))
+    assert doc["class"] == "nieznany" and doc["prediction"] is None
+    missed = json.loads((dump / "przyklad_01" / "_missed.json").read_text(encoding="utf-8"))
+    assert missed["demo"]["reason"] == "brak dokumentu tej klasy"
+    assert {d["status"] for d in missed["demo"]["diffs"]} == {"missing"}

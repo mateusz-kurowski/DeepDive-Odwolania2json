@@ -70,9 +70,10 @@ Lokalny F1 na przykładach z referencją (`data/dane/przyklad_NN/`):
 uv run python -m src eval --mode hybrid
 uv run python -m src eval --mode llm_only --model <nazwa> --out-json wyniki.json
 uv run python -m src eval --limit 10        # szybki test
+uv run python -m src eval --dump results/dump   # predykcja, referencja i różnice per dokument
 ```
 
-Raport pokazuje precision, recall i F1 per pole oraz łącznie, exact match dokumentu, poprawność klasyfikacji, odsetek poprawnych cytatów i odsetek `null` przy polach z wartością referencyjną. Skaner organizatora nie jest opublikowany, więc założenia porównania są w dokumencie projektowym (sekcja 7). Wyniki pomiarów: `docs/benchmark.md`.
+Raport pokazuje precision, recall i F1 per pole oraz łącznie, exact match dokumentu, poprawność klasyfikacji, odsetek poprawnych cytatów i odsetek `null` przy polach z wartością referencyjną. Skaner organizatora nie jest opublikowany, więc założenia porównania są w dokumencie projektowym (sekcja 7). `--dump` zapisuje dla każdego PDF-a predykcję, referencję, listę różnic i ślad cytatów (`<dump>/<przyklad>/<plik>.json`; `_missed.json` dla klas bez dokumentu). `run` zapisuje dodatkowo `trace/_summary.json` (klasa, błąd, plik wyjściowy, tokeny per plik). Wyniki pomiarów: `docs/benchmark.md`.
 
 ## Jak dodać klasę dokumentu
 

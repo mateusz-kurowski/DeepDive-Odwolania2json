@@ -38,6 +38,7 @@ def _parser() -> argparse.ArgumentParser:
     ev.add_argument("--data", type=Path, default=Path("data/dane"))
     ev.add_argument("--model", help="nadpisuje LLM_MODEL")
     ev.add_argument("--limit", type=int)
+    ev.add_argument("--dump", type=Path, help="zapisz predykcje, referencje i różnice per dokument")
     ev.add_argument("--out-json", type=Path, help="zapisz raport jako JSON")
     common(ev)
 
@@ -56,6 +57,34 @@ def _settings(args: argparse.Namespace, env: Mapping[str, str] | None) -> Settin
     if args.classes:
         update["classes_dir"] = args.classes
     return settings.model_copy(update=update)
+
+
+def _write_summary(args, results, settings, llm) -> None:
+    usage = getattr(llm, "usage", None)
+    files = []
+    for r in results:
+        rel = r.path.relative_to(args.input) if r.path else None
+        files.append(
+            {
+                "source": rel.as_posix() if rel else None,
+                "class": r.class_name,
+                "error": r.error,
+                "ocr_used": r.ocr_used,
+                "output": rel.with_suffix(".json").as_posix()
+                if rel and r.data is not None
+                else None,
+            }
+        )
+    summary = {
+        "model": settings.llm_model,
+        "mode": settings.extraction_mode,
+        "files": files,
+        **({"usage": usage.to_dict()} if usage else {}),
+    }
+    args.trace.mkdir(parents=True, exist_ok=True)
+    (args.trace / "_summary.json").write_text(
+        json.dumps(summary, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+    )
 
 
 def main(
@@ -97,6 +126,7 @@ def main(
             settings,
             limit=args.limit,
             workers=args.workers,
+            dump_dir=args.dump,
         )
         print(f"model: {settings.llm_model}, tryb: {settings.extraction_mode}")
         print(report.render())
@@ -128,6 +158,7 @@ def main(
     results = run_batch(
         args.input, args.output, args.trace, classes, llm, settings, workers=args.workers
     )
+    _write_summary(args, results, settings, llm)
     errors = [r for r in results if r.error]
     unknown = [r for r in results if r.class_name == UNKNOWN and not r.error]
     print(

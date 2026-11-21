@@ -37,11 +37,11 @@ classes: ## Wypisz wczytane klasy
 eval: ## F1 na data/dane (MODE, MODEL, LIMIT)
 	uv run python -m src eval $(EXTRA) $(if $(LIMIT),--limit $(LIMIT))
 
-eval-hybrid: ## F1 w trybie hybrid, raport do docs/bench/
-	uv run python -m src eval --mode hybrid --workers $(WORKERS) --out-json docs/bench/hybrid.json
+eval-hybrid: ## F1 w trybie hybrid, raport i dump do results/
+	uv run python -m src eval --mode hybrid --workers $(WORKERS) --out-json results/full-hybrid.json --dump results/dump-hybrid
 
-eval-llm-only: ## F1 w trybie llm_only, raport do docs/bench/
-	uv run python -m src eval --mode llm_only --workers $(WORKERS) --out-json docs/bench/llm_only.json
+eval-llm-only: ## F1 w trybie llm_only, raport i dump do results/
+	uv run python -m src eval --mode llm_only --workers $(WORKERS) --out-json results/full-llm_only.json --dump results/dump-llm_only
 
 docker-build: ## Zbuduj obraz
 	docker compose build

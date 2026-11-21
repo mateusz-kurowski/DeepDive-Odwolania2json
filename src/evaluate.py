@@ -10,7 +10,7 @@ from typing import Any
 
 from src.classconfig import ClassConfig, FieldSpec
 from src.llm import LLM
-from src.pipeline import process_pdf
+from src.pipeline import DocResult, _trace, process_pdf
 from src.settings import Settings
 from src.validators import date as normalize_date
 
@@ -192,6 +192,29 @@ def score_document(pred: dict | None, ref: dict, cfg: ClassConfig) -> dict[str, 
     return result
 
 
+def diff_document(pred: dict | None, ref: dict | None, cfg: ClassConfig) -> list[dict]:
+    """Różnice pole po polu (to, co score_document zlicza jako FP/FN).
+
+    Wartości są w postaci znormalizowanej, tak jak porównuje eval.
+    """
+    pred_flat: dict[str, Any] = {}
+    ref_flat: dict[str, Any] = {}
+    _walk_pair(pred or {}, ref or {}, cfg.fields, "", pred_flat, ref_flat)
+    diffs = []
+    for path in sorted(set(pred_flat) | set(ref_flat)):
+        p, r = pred_flat.get(path), ref_flat.get(path)
+        if p == r:
+            continue
+        status = "wrong" if p is not None and r is not None else "missing" if p is None else "extra"
+        diffs.append({"field": path, "predicted": p, "expected": r, "status": status})
+    return diffs
+
+
+def _dump_json(path: Path, payload: Any) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+
 @dataclass
 class Report:
     per_field: dict[str, Counts] = field(default_factory=dict)
@@ -316,7 +339,11 @@ class Report:
 
 
 def _evaluate_example(
-    example: Path, classes: dict[str, ClassConfig], llm: LLM, settings: Settings
+    example: Path,
+    classes: dict[str, ClassConfig],
+    llm: LLM,
+    settings: Settings,
+    dump_dir: Path | None = None,
 ) -> Report:
     report = Report()
     results = [process_pdf(p, classes, llm, settings) for p in sorted(example.glob("*.pdf"))]
@@ -325,14 +352,21 @@ def _evaluate_example(
         for p in sorted(example.glob("*.json"))
         if p.stem in classes
     }
-    scored: set[int] = set()
+    scored: dict[int, dict] = {}
+    missed: dict[str, dict] = {}
     for class_name, ref in refs.items():
         matching = [r for r in results if r.class_name == class_name and r.data is not None]
         report.classified_total += 1
         report.classified_ok += bool(matching)
         pred = matching[0].data if matching else None
         if matching:
-            scored.add(id(matching[0]))
+            scored[id(matching[0])] = ref
+        else:
+            missed[class_name] = {
+                "reason": "brak dokumentu tej klasy",
+                "expected": ref,
+                "diffs": diff_document(None, ref, classes[class_name]),
+            }
         report.add_document(score_document(pred, ref, classes[class_name]))
     for r in results:
         if r.data is not None and id(r) not in scored:
@@ -342,7 +376,31 @@ def _evaluate_example(
             report.cited_ok += sum(r.extraction.citation_ok.values())
         if r.error:
             log.warning("%s: %s", r.path, r.error)
+        if dump_dir is not None and r.path is not None:
+            _dump_result(dump_dir / example.name, r, scored.get(id(r)), classes)
+    if dump_dir is not None and missed:
+        _dump_json(dump_dir / example.name / "_missed.json", missed)
     return report
+
+
+def _dump_result(
+    out_dir: Path, r: DocResult, ref: dict | None, classes: dict[str, ClassConfig]
+) -> None:
+    assert r.path is not None
+    diffs = diff_document(r.data, ref or {}, classes[r.class_name]) if r.data is not None else []
+    _dump_json(
+        out_dir / f"{r.path.stem}.json",
+        {
+            "source": r.path.name,
+            "class": r.class_name,
+            "error": r.error,
+            "ocr_used": r.ocr_used,
+            "prediction": r.data,
+            "reference": ref,
+            "diffs": diffs,
+            "trace": _trace(r, Path(r.path.name)) if r.extraction is not None else None,
+        },
+    )
 
 
 def evaluate(
@@ -352,6 +410,7 @@ def evaluate(
     settings: Settings,
     limit: int | None = None,
     workers: int = 4,
+    dump_dir: Path | None = None,
 ) -> Report:
     examples = sorted(p for p in Path(data_dir).glob("przyklad_*") if p.is_dir())
     if limit is not None:
@@ -359,7 +418,7 @@ def evaluate(
     total = Report()
     with ThreadPoolExecutor(max_workers=max(workers, 1)) as pool:
         for i, part in enumerate(
-            pool.map(lambda e: _evaluate_example(e, classes, llm, settings), examples), 1
+            pool.map(lambda e: _evaluate_example(e, classes, llm, settings, dump_dir), examples), 1
         ):
             total.merge(part)
             log.info("eval %d/%d", i, len(examples))
