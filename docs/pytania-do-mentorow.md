@@ -7,9 +7,8 @@ Kontekst do przekazania w rozmowie: lokalny F1 na 60 przykładach treningowych j
 ## A. Pytania do zadania
 
 ### 2. Open source a modele (zawężone po FAQ)
-FAQ mówi: komponenty i modele open source, "dostępne do użytku bez ograniczeń i opłat licencyjnych", model musi umożliwiać instalację lokalną, API może być zewnętrzne, ale serwer musi być w UE. Nie rozstrzyga:
+FAQ i późniejsze ustalenia: komponenty i modele open source, "dostępne do użytku bez ograniczeń i opłat licencyjnych", model musi umożliwiać instalację lokalną, API może być zewnętrzne, hostowane w UE, a dostawca musi mieć politykę prywatności. Nie rozstrzyga:
 - Czy model open-weights z własną licencją (np. DeepSeek, Qwen, Llama) spełnia "bez ograniczeń", czy wymagana jest licencja zatwierdzona przez OSI (MIT, Apache-2.0)? Jak traktować licencje z ograniczeniami użycia?
-- Czy hostowanie modelu u dostawcy w UE (np. nasz LiteLLM) wystarcza, czy trzeba wskazać konkretnego dostawcę?
 
 ### 4. Jak liczone jest F1
 - Pole `null` w referencji i `null` w naszym wyniku: trafienie (TP) czy pominięte?
@@ -27,10 +26,6 @@ Dane treningowe są syntetyczne, testowy ma być "realny" (min. 10 spraw).
 - Czy będą dokumenty dłuższe niż 11 stron?
 - Czy będą dokumenty innych klas niż 3 znane?
 - Czy zbiór zawiera przypadki brzegowe: konsorcja po stronie odwołującego, kilku zamawiających, brak NIP/KRS?
-
-### 8. Dokument spoza klas
-- Czy brak pliku JSON dla dokumentu `nieznany` jest oczekiwanym zachowaniem, czy ma powstać pusty JSON albo wpis w logu?
-- Czy zbiór testowy zawiera takie dokumenty (przykład negatywny jest w `szablon-aplikacja`), i ile?
 
 ### 9. Dodawanie klas: kto obsługuje system (zawężone po FAQ)
 FAQ potwierdza, że nowe typy dokumentów i pola mają być dodawane przez konfigurację bez przebudowy kodu i że to kluczowe w ocenie finałowej. Nie mówi:
@@ -106,7 +101,7 @@ Typowa pułapka: zdanie mówi o wyborze oferty, ale zaskarżone jest zaniechanie
 ## C. Kolejność w rozmowie
 
 1. Najpierw 2 i 4 (licencja modelu i metryka F1).
-2. Potem 5, 8, 9 (zakres danych i elastyczność).
+2. Potem 5 i 9 (zakres danych i elastyczność).
 3. 6, 13, 14 tylko jeśli rozmówca zna domenę UZP/KIO. Najlepiej na stoisku UZP, gdzie można zobaczyć zbiór testowy (FAQ): sprawdzić tam kod 12, układ czynności i konsorcja, i poprosić o kilka anonimowych przykładów.
 
 ## D. Odpowiedzi znalezione w FAQ (wersja 1.0), pytania usunięte z listy
@@ -116,4 +111,7 @@ Typowa pułapka: zdanie mówi o wyborze oferty, ale zaskarżone jest zaniechanie
 - **2 (część):** zewnętrzne API dozwolone, jeśli model da się zainstalować lokalnie, a serwer jest w UE.
 - **5 (część):** zbiór testowy jest osobny i ukryty, zawiera skany; wgląd na stoisku UZP.
 - **9 (część):** nowe typy i pola przez konfigurację bez przebudowy kodu, istotne w finale.
+- **8. Dokument spoza klas (późniejsze ustalenie):** obcy plik = pusty JSON `{}` pod nazwą oryginalnego pliku. Wdrożone.
+- **Imiona (późniejsze ustalenie):** w mianowniku ("Mateusz Szymański", nie "Mateusza Szymańskiego"). Wdrożone jako reguły w klasach.
+- **Model (późniejsze ustalenie):** API hostowane w UE, dostawca z polityką prywatności.
 - **Nowe wymagania z FAQ:** serwer API w UE; GUI (wgranie PDF, uruchomienie, podgląd JSON obok dokumentu) jest opcjonalny, ale punktowany; zgłoszenie = link do działającego prototypu na GitHubie umożliwiającego wgranie dokumentów i odczyt wyników.
