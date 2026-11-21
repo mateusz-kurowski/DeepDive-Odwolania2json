@@ -89,20 +89,35 @@ def main(
         return 2
 
     if args.command == "eval":
+        llm = llm or OpenAICompatLLM(settings)
         report = evaluate(
             args.data,
             classes,
-            llm or OpenAICompatLLM(settings),
+            llm,
             settings,
             limit=args.limit,
             workers=args.workers,
         )
         print(f"model: {settings.llm_model}, tryb: {settings.extraction_mode}")
         print(report.render())
+        usage = getattr(llm, "usage", None)
+        if usage:
+            print("tokeny:", usage.to_dict())
         if args.out_json:
             args.out_json.parent.mkdir(parents=True, exist_ok=True)
             args.out_json.write_text(
-                json.dumps(report.to_dict(), ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+                json.dumps(
+                    {
+                        **report.to_dict(),
+                        "model": settings.llm_model,
+                        "mode": settings.extraction_mode,
+                        **({"usage": usage.to_dict()} if usage else {}),
+                    },
+                    ensure_ascii=False,
+                    indent=2,
+                )
+                + "\n",
+                encoding="utf-8",
             )
         return 0
 
@@ -119,4 +134,7 @@ def main(
         f"Przetworzono {len(results)} plików: {len(results) - len(errors) - len(unknown)} "
         f"zapisanych, {len(unknown)} nieznanych, {len(errors)} błędów (tryb: {settings.extraction_mode})"
     )
+    usage = getattr(llm, "usage", None)
+    if usage:
+        print("tokeny:", usage.to_dict())
     return 1 if errors else 0

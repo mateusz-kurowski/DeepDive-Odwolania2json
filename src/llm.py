@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import logging
+import threading
 import time
 from collections.abc import Callable
 from typing import Any, Protocol
@@ -22,6 +23,31 @@ _RETRIABLE = (
 
 class LLM(Protocol):
     def complete_json(self, system: str, user: str, schema: dict, name: str) -> dict: ...
+
+
+class Usage:
+    """Licznik wywołań i tokenów (bezpieczny wątkowo)."""
+
+    def __init__(self) -> None:
+        self._lock = threading.Lock()
+        self.calls = 0
+        self.prompt_tokens = 0
+        self.completion_tokens = 0
+
+    def add(self, response: Any) -> None:
+        u = getattr(response, "usage", None)
+        with self._lock:
+            self.calls += 1
+            self.prompt_tokens += getattr(u, "prompt_tokens", 0) or 0
+            self.completion_tokens += getattr(u, "completion_tokens", 0) or 0
+
+    def to_dict(self) -> dict:
+        return {
+            "calls": self.calls,
+            "prompt_tokens": self.prompt_tokens,
+            "completion_tokens": self.completion_tokens,
+            "total_tokens": self.prompt_tokens + self.completion_tokens,
+        }
 
 
 class LLMError(Exception):
@@ -50,6 +76,7 @@ class OpenAICompatLLM:
         self.sleep = sleep
         self._client = client
         self._json_object_mode = False
+        self.usage = Usage()
 
     @property
     def client(self) -> Any:
@@ -109,6 +136,7 @@ class OpenAICompatLLM:
             ],
             response_format=response_format,
         )
+        self.usage.add(response)
         content = response.choices[0].message.content
         try:
             parsed = json.loads(content or "")
