@@ -17,7 +17,7 @@ rules:
   - "data i miejscowosc pochodzą z nagłówka pierwszej strony (linia „Miejscowość, dnia DD.MM.RRRR” albo „Miejscowość DD.MM.RRRR”). Gdy nagłówka z miejscowością i datą nie ma, zwróć null."
   - "Odwolujacy: gdy występuje konsorcjum odwołujących, podaj dane Lidera konsorcjum (jeden element tablicy)."
   - "przez-pelnomocnika = 1, gdy odwołujący jest reprezentowany przez pełnomocnika (np. „reprezentowany przez”, „na podstawie pełnomocnictwa”), w przeciwnym razie 0."
-  - "pelnomocnik.imie_nazwisko: gdy jest kilku pełnomocników, pierwszy wymieniony. pelnomocnik.nazwa to nazwa podmiotu zatrudniającego pełnomocnika (np. kancelarii), a mail to adres kontaktowy pełnomocnika odwołującego, nie zamawiającego."
+  - "pelnomocnik.imie_nazwisko: gdy jest kilku pełnomocników, pierwszy wymieniony. pelnomocnik.nazwa to nazwa podmiotu zatrudniającego pełnomocnika (kancelarii), zwykle z linii „adres do korespondencji: Kancelaria …” albo ze stopki pełnomocnika; nigdy nazwa odwołującego ani zamawiającego (gdy brak takiej nazwy, null), a mail to adres kontaktowy pełnomocnika odwołującego, nie zamawiającego."
   - "Zamawiajacy: dane NIP, KRS, REGON podaj tylko jeśli są jawnie przy zamawiającym. Każdy zamawiający to osobny element tablicy."
   - "prowadzacy_postepowanie: null, gdy jest jeden zamawiający lub brak informacji. Gdy zamawiających jest więcej: 1 dla oznaczonego jako prowadzący postępowanie lub lider postępowania, 0 dla pozostałych."
   - "numer_bzp przepisz w całości, tak jak w dokumencie, bez spacji: YYYY/BZP######## razem z końcówką /NN, jeśli występuje (np. 2026/BZP00123456/03 zostaje 2026/BZP00123456/03, nie obcinaj /03). Tylko numer ogłoszenia BZP (nie TED). numer_ted w formacie NNNNNN-YYYY, a zapis „YYYY/S ###-NNNNNN” zamień na NNNNNN-YYYY."
@@ -198,7 +198,7 @@ fields:
             description: Imię i nazwisko pełnomocnika odwołującego, jeśli występuje.
           - name: nazwa
             type: text
-            description: Nazwa podmiotu zatrudniającego pełnomocnika.
+            description: Nazwa kancelarii lub innego podmiotu pełnomocnika (np. z „adres do korespondencji”), nie nazwa odwołującego.
           - name: mail
             type: text
             validator: email
