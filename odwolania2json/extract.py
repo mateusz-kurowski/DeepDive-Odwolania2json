@@ -1,0 +1,163 @@
+from __future__ import annotations
+
+import json
+import logging
+from collections.abc import Iterator
+from dataclasses import dataclass, field
+from typing import Literal
+
+from odwolania2json.citations import citation_ok
+from odwolania2json.classconfig import ClassConfig, FieldSpec
+from odwolania2json.llm import LLM, LLMError
+from odwolania2json.schema import build_response_schema, unwrap
+from odwolania2json.textextract import DocText
+from odwolania2json.validators import validate_value
+
+log = logging.getLogger(__name__)
+
+MAX_CHARS = 60_000
+HEAD_RATIO = 0.7
+Mode = Literal["hybrid", "llm_only"]
+
+
+@dataclass
+class Extraction:
+    data: dict
+    quotes: dict[str, str | None]
+    citation_ok: dict[str, bool]
+    nulled: list[str] = field(default_factory=list)
+    retries: int = 0
+    truncated: bool = False
+
+
+def truncate(text: str) -> tuple[str, bool]:
+    if len(text) <= MAX_CHARS:
+        return text, False
+    head_len = int(MAX_CHARS * HEAD_RATIO)
+    tail_len = MAX_CHARS - head_len
+    omitted = len(text) - head_len - tail_len
+    marker = f"\n[...pominięto {omitted} znaków...]\n"
+    return text[:head_len] + marker + text[-tail_len:], True
+
+
+def _describe_fields(fields: list[FieldSpec], indent: int = 0) -> list[str]:
+    pad = "  " * indent
+    lines: list[str] = []
+    for spec in fields:
+        if spec.derive is not None:
+            continue
+        head = f"{pad}- {spec.name} ({spec.type})"
+        if spec.description:
+            head += f": {spec.description}"
+        lines.append(head)
+        if spec.options:
+            lines += [f"{pad}    {value} = {label}" for value, label in spec.options.items()]
+        if spec.type in ("object", "array"):
+            lines += _describe_fields(spec.fields, indent + 1)
+    return lines
+
+
+def _system_prompt(cfg: ClassConfig, truncated: bool) -> str:
+    parts = [
+        f"Wyodrębniasz dane z dokumentu klasy '{cfg.name}': {cfg.description}",
+        "Dla każdego pola zwróć obiekt {value, quote}: value to wartość, quote to "
+        "dosłowny fragment tekstu dokumentu, z którego ją odczytano.",
+        "Gdy nie jesteś pewien albo informacji nie ma w tekście, zwróć value=null i quote=null. "
+        "Nie zgaduj.",
+        "Pola:",
+        *_describe_fields(cfg.fields),
+    ]
+    if cfg.rules:
+        parts += ["Reguły:", *[f"- {rule}" for rule in cfg.rules]]
+    if cfg.examples:
+        parts.append(
+            "Przykłady poprawnych wartości (w odpowiedzi opakuj każdą wartość jako {value, quote}):"
+        )
+        for ex in cfg.examples:
+            parts.append(
+                f"TEKST:\n{ex.text}\nWARTOŚCI:\n{json.dumps(ex.output, ensure_ascii=False)}"
+            )
+    if truncated:
+        parts.append(
+            "Tekst jest niepełny (środek pominięto). "
+            "Dla pól bez dowodu w widocznym tekście zwracaj null."
+        )
+    return "\n".join(parts)
+
+
+def _cells(raw: dict, fields: list[FieldSpec], prefix: str = "") -> Iterator[tuple[dict, FieldSpec, str]]:
+    for spec in fields:
+        if spec.derive is not None:
+            continue
+        path = f"{prefix}{spec.name}"
+        value = raw.get(spec.name)
+        if spec.type == "object":
+            yield from _cells(value or {}, spec.fields, f"{path}.")
+        elif spec.type == "array":
+            for i, item in enumerate(value or []):
+                yield from _cells(item, spec.fields, f"{path}[{i}].")
+        elif isinstance(value, dict):
+            yield value, spec, path
+
+
+def _problems(raw: dict, cfg: ClassConfig, text: str, mode: Mode, threshold: float) -> list[str]:
+    problems = []
+    for cell, spec, path in _cells(raw, cfg.fields):
+        value = cell.get("value")
+        if value is None:
+            continue
+        if mode == "hybrid":
+            try:
+                validate_value(spec, value)
+            except ValueError as exc:
+                problems.append(f"{path}: {exc}")
+                continue
+        if not citation_ok(cell.get("quote"), text, threshold):
+            problems.append(
+                f"{path}: cytat nie występuje w tekście; podaj dosłowny fragment albo null"
+            )
+    return problems
+
+
+def extract(doc: DocText, cfg: ClassConfig, llm: LLM, mode: Mode, threshold: float) -> Extraction:
+    text, truncated = truncate(doc.text)
+    system = _system_prompt(cfg, truncated)
+    schema = build_response_schema(cfg)
+    raw = llm.complete_json(system, text, schema, cfg.name)
+    retries = 0
+
+    problems = _problems(raw, cfg, text, mode, threshold)
+    if problems:
+        retries = 1
+        feedback = (
+            f"{text}\n\nPoprzednia odpowiedź miała problemy, popraw je:\n"
+            + "\n".join(f"- {p}" for p in problems)
+        )
+        try:
+            raw = llm.complete_json(system, feedback, schema, cfg.name)
+        except LLMError as exc:
+            log.warning("Ponowna próba nieudana, zostaje pierwsza odpowiedź: %s", exc)
+
+    nulled: list[str] = []
+    if mode == "hybrid":
+        for cell, spec, path in _cells(raw, cfg.fields):
+            try:
+                cell["value"] = validate_value(spec, cell.get("value"))
+            except ValueError:
+                cell["value"] = None
+                nulled.append(path)
+
+    data, quotes = unwrap(raw, cfg)
+    cited = {
+        path: citation_ok(quotes[path], text, threshold)
+        for cell, _, path in _cells(raw, cfg.fields)
+        if cell.get("value") is not None
+    }
+    return Extraction(
+        data=data,
+        quotes=quotes,
+        citation_ok=cited,
+        nulled=nulled,
+        retries=retries,
+        truncated=truncated,
+    )
