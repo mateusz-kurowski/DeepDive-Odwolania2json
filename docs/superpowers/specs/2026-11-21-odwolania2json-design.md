@@ -8,7 +8,7 @@ Materiały: `projects/[Urząd Zamówień Publicznych] Odwołania2JSON/` oraz rep
 Aplikacja zamienia PDF-y sprawy odwoławczej KIO na kanoniczny JSON: dla każdego PDF-a rozpoznaje klasę dokumentu i wyciąga pola według schematu UZP.
 
 - Wejście: `input/caseN/*.pdf`. Wyjście: `output/caseN/<ta-sama-nazwa>.json`.
-- Klasy: `odwolanie`, `pelnomocnictwo`, `przelew`, plus ścieżka `nieznany` (dokument spoza klas, bez pliku JSON, wpis w logu). Przykład negatywny: 9-stronicowy PDF w `szablon-aplikacja`.
+- Klasy: `odwolanie`, `pelnomocnictwo`, `przelew`, plus ścieżka `nieznany` (dokument spoza klas: pusty JSON `{}` pod nazwą pliku, wpis w logu). Przykład negatywny: 9-stronicowy PDF w `szablon-aplikacja`.
 - Dlaczego to zadanie: zespół ma doświadczenie z takimi narzędziami, a zadanie jest jasno zdefiniowane i mierzalne (60 spraw z oczekiwanymi JSON-ami).
 - Ocena: etap I to F1 na ukrytym zbiorze min. 10 realnych spraw. Etap II to maks. 3 finalistów. Regulamin i README podają 50% F1 i 50% elastyczność/rozszerzalność. PDF zadania podaje 50/30/20 (F1 / elastyczność / architektura). **Rozbieżność do wyjaśnienia z organizatorem.** Premie: konfiguracja nowych klas wyłącznie konfiguracją oraz przezroczystość ekstrakcji.
 
@@ -86,7 +86,7 @@ Moje decyzje (do sprawdzenia przez zespół):
 - Demonstracja rozszerzalności: dodajemy własną czwartą klasę (np. `wezwanie` lub `faktura`) wyłącznie plikiem YAML i opisujemy to w instrukcji. Wejście inne niż PDF jest poza zakresem.
 - Tesseract z danymi `pol` pakujemy do obrazu Docker jako zależność opcjonalną (OCR uruchamiany tylko przy braku tekstu).
 - Limit czasu: brak twardego; docelowo kilka sekund na dokument przy modelu z API.
-- Fałszywa klasa dokumentu: dokument `nieznany` nie generuje pliku JSON.
+- Fałszywa klasa dokumentu: dokument `nieznany` dostaje pusty JSON `{}` (FAQ organizatora).
 
 Pytania do organizatora/mentorów (nie do rozstrzygnięcia przez nas):
 1. Wagi oceny: 50/50 (regulamin i README) czy 50/30/20 (PDF zadania).

@@ -92,7 +92,7 @@ def _write_summary(args, results, settings, llm) -> None:
                 "error": r.error,
                 "ocr_used": r.ocr_used,
                 "output": rel.with_suffix(".json").as_posix()
-                if rel and r.data is not None
+                if rel and (r.data is not None or (r.class_name == UNKNOWN and not r.error))
                 else None,
             }
         )
@@ -187,7 +187,7 @@ def main(
     unknown = [r for r in results if r.class_name == UNKNOWN and not r.error]
     print(
         f"Przetworzono {len(results)} plików: {len(results) - len(errors) - len(unknown)} "
-        f"zapisanych, {len(unknown)} nieznanych, {len(errors)} błędów (tryb: {settings.extraction_mode})"
+        f"zapisanych, {len(unknown)} nieznanych (pusty JSON), {len(errors)} błędów (tryb: {settings.extraction_mode})"
     )
     usage = getattr(llm, "usage", None)
     if usage:

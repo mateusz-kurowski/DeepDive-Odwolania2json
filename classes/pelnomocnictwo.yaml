@@ -13,6 +13,7 @@ rules:
   - "Dla osoby prawnej data.imie_nazwisko = null, a data.nazwa to pełna nazwa podmiotu. Dla osoby fizycznej data.imie_nazwisko to imię i nazwisko mocodawcy, data.nazwa to nazwa firmy (jeśli jest, inaczej imię i nazwisko), a data.krs = null."
   - "podpisujacy to osoby podpisujące w imieniu danego mocodawcy (pod nagłówkiem „W imieniu ...” lub „Mocodawca”), każda jako osobny element. Nie wpisuj tu pełnomocników."
   - "pelnomocnicy to osoby, którym udzielono pełnomocnictwa (np. po „udzielam pełnomocnictwa:”, „Pełnomocnictwo przyjmuję”). Imię i nazwisko w mianowniku, bez tytułów (adw., r.pr.) i numerów wpisu."
+  - "Wszystkie imiona i nazwiska (mocodawca, podpisujący, pełnomocnicy) zapisuj w mianowniku, także gdy w tekście stoją w innym przypadku (np. „udzielam pełnomocnictwa Mateuszowi Szymańskiemu” → „Mateusz Szymański”), bez tytułów i numerów wpisu."
   - "pesel zwróć jako 11 cyfr tylko gdy jest jawnie podany w dokumencie, w przeciwnym razie null."
   - "NIP i KRS przypisuj do właściwego mocodawcy; gdy któregoś nie ma przy danym mocodawcy, zwróć null (nie bierz go od innego podmiotu)."
 examples:

@@ -69,7 +69,7 @@ def process_pdf(
         return DocResult(path, UNKNOWN, error=str(exc))
     result.path = path
     if result.class_name == UNKNOWN:
-        log.info("Dokument nieznany (poza klasami), bez pliku JSON: %s", path)
+        log.info("Dokument nieznany (poza klasami), zapisuję pusty JSON: %s", path)
     return result
 
 
@@ -116,4 +116,6 @@ def run_batch(
         if result.data is not None:
             _write_json(output_dir / rel, result.data)
             _write_json(trace_dir / rel, _trace(result, rel))
+        elif result.class_name == UNKNOWN and not result.error:
+            _write_json(output_dir / rel, {})  # obcy dokument: pusty JSON pod nazwą pliku
     return results

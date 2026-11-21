@@ -7,7 +7,7 @@ Kontekst projektu dla Claude'a i zespołu. Język: polski (nazwy techniczne po a
 PDF-y sprawy odwoławczej KIO → klasyfikacja dokumentu → ekstrakcja pól → JSON zgodny ze schematem UZP.
 
 - Wejście: `input/caseN/*.pdf`. Wyjście: `output/caseN/<ta-sama-nazwa>.json`.
-- Klasy: `odwolanie`, `pelnomocnictwo`, `przelew`. Dokument spoza klas = `nieznany`: bez pliku JSON, wpis w logu.
+- Klasy: `odwolanie`, `pelnomocnictwo`, `przelew`. Dokument spoza klas = `nieznany`: pusty JSON `{}` pod oryginalną nazwą (FAQ organizatora), wpis w logu.
 - Ocena: etap I to F1 na ukrytym zbiorze min. 10 realnych spraw; etap II (maks. 3 finalistów) to 50% F1 i 50% elastyczność/rozszerzalność (regulamin i README) albo 50/30/20 (PDF zadania). **Rozbieżność niewyjaśniona** — zapytać organizatora.
 - Premie: nowe klasy dokumentów dodawane samą konfiguracją; przezroczystość ekstrakcji (cytaty źródłowe).
 - Nagroda 20 000 zł brutto, z przeniesieniem praw autorskich; zwycięzca dostarcza kod, Docker Compose, dokumentację i instrukcję dodawania klasy.
