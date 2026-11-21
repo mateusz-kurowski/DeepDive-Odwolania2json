@@ -1,0 +1,32 @@
+name: faktura
+description: >-
+  Faktura VAT lub rachunek, czyli dokument sprzedaży z numerem, datą wystawienia,
+  stronami i kwotą brutto.
+hints:
+  - faktura
+  - VAT
+rules:
+  - "Kwotę brutto zapisz jako liczbę, bez waluty."
+  - "sprzedawca to wystawca faktury, nabywca to odbiorca."
+fields:
+  - name: numer_faktury
+    type: text
+    description: Numer faktury (np. FV/12/2026).
+  - name: data_wystawienia
+    type: text
+    validator: date
+    description: Data wystawienia (ISO YYYY-MM-DD).
+  - name: sprzedawca
+    type: object
+    fields:
+      - {name: nazwa, type: text, description: Pełna nazwa sprzedawcy.}
+      - {name: nip, type: text, validator: nip, description: NIP sprzedawcy.}
+  - name: nabywca
+    type: object
+    fields:
+      - {name: nazwa, type: text, description: Pełna nazwa nabywcy.}
+      - {name: nip, type: text, validator: nip, description: NIP nabywcy.}
+  - name: kwota_brutto
+    type: number
+    validator: amount
+    description: Kwota brutto do zapłaty.
