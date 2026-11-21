@@ -10,7 +10,7 @@ Aplikacja zamienia PDF-y sprawy odwoławczej KIO na kanoniczny JSON: dla każdeg
 - Wejście: `input/caseN/*.pdf`. Wyjście: `output/caseN/<ta-sama-nazwa>.json`.
 - Klasy: `odwolanie`, `pelnomocnictwo`, `przelew`, plus ścieżka `nieznany` (dokument spoza klas: pusty JSON `{}` pod nazwą pliku, wpis w logu). Przykład negatywny: 9-stronicowy PDF w `szablon-aplikacja`.
 - Dlaczego to zadanie: zespół ma doświadczenie z takimi narzędziami, a zadanie jest jasno zdefiniowane i mierzalne (60 spraw z oczekiwanymi JSON-ami).
-- Ocena: etap I to F1 na ukrytym zbiorze min. 10 realnych spraw. Etap II to maks. 3 finalistów. Regulamin i README podają 50% F1 i 50% elastyczność/rozszerzalność. PDF zadania podaje 50/30/20 (F1 / elastyczność / architektura). **Rozbieżność do wyjaśnienia z organizatorem.** Premie: konfiguracja nowych klas wyłącznie konfiguracją oraz przezroczystość ekstrakcji.
+- Ocena: etap I to F1 na ukrytym zbiorze min. 10 realnych spraw. Etap II to maks. 3 finalistów. Preselekcja: 100% F1. Finał: 50% F1 i 50% elastyczność/możliwość rozbudowy o nowe klasy (FAQ organizatora v1.0; PDF zadania podawał 50/30/20, FAQ to rozstrzyga). Premie: konfiguracja nowych klas wyłącznie konfiguracją oraz przezroczystość ekstrakcji.
 
 ## 2. Cele, nie-cele, anty-cele
 
@@ -35,7 +35,7 @@ Anty-cele (porażka, nawet gdy „działa"):
 ## 3. Ograniczenia
 
 - Python 3.13+, `requirements.txt`. Tylko open source. Bez GPU na docelowej maszynie, więc model jest wołany przez API zgodne z OpenAI (własny LiteLLM, vLLM, Ollama), nie uruchamiany w procesie.
-- Wyłącznie modele open-weights (decyzja zespołu). Konkretny model jeszcze nie wybrany.
+- Wyłącznie modele open-weights (decyzja zespołu), dające się zainstalować lokalnie, wołane przez API hostowane w UE u dostawcy z polityką prywatności (FAQ). Konkretny model jeszcze nie wybrany.
 - Po wygranej: kod, Docker Compose, dokumentacja i umowa przenosząca prawa autorskie (nagroda 20 tys. zł brutto). Pilnować licencji bibliotek, danych i modeli.
 - Hackathon 21–22.11.2026, Bydgoszcz. Wybór zadań w HackTribe do 20:00 21.11 jest nieodwracalny.
 
@@ -89,10 +89,11 @@ Moje decyzje (do sprawdzenia przez zespół):
 - Fałszywa klasa dokumentu: dokument `nieznany` dostaje pusty JSON `{}` (FAQ organizatora).
 
 Pytania do organizatora/mentorów (nie do rozstrzygnięcia przez nas):
-1. Wagi oceny: 50/50 (regulamin i README) czy 50/30/20 (PDF zadania).
-2. Jak jury uruchamia rozwiązanie: na własnej maszynie (wtedy musi mieć dostęp do modelu) czy u nas? Czy dostarczyć endpoint modelu, czy ma on być wewnątrz Docker Compose?
-3. Jak dokładnie liczone jest F1 (pola puste, tablice, nadmiarowe pliki).
-4. Czy „wyłącznie open source, w tym modele" dopuszcza modele open-weights (np. Qwen, Mistral na Apache 2.0, Llama na własnej licencji), czy wymaga licencji open source w rozumieniu OSI. Zadać przed wyborem modelu.
+1. Jak dokładnie liczone jest F1 (pola `null`, tablice, normalizacja, nadmiarowe pliki).
+2. Czy „wyłącznie open source, w tym modele" dopuszcza open-weights z własną licencją (Qwen, Llama, DeepSeek), czy wymaga licencji OSI. Zadać przed wyborem modelu.
+3. Układ i skany w zbiorze testowym, kod `czynnosc_powod_id` 12, konsorcja (pełna lista: `docs/pytania-do-mentorow.md`).
+
+Rozstrzygnięte przez FAQ organizatora (patrz §10): wagi oceny, sposób uruchamiania, zachowanie dla obcego dokumentu.
 
 ## 8. Zostaje budowniczemu
 
@@ -107,7 +108,18 @@ Pytania do organizatora/mentorów (nie do rozstrzygnięcia przez nas):
 - Cytaty: dopasowanie przybliżone (RapidFuzz `partial_ratio`), próg `CITATION_THRESHOLD=85`. Niezgodny cytat nie kasuje wartości, tylko obniża zaufanie (flaga w `trace/`) i uruchamia jedną ponowną próbę.
 - Ponowne próby: jedna ponowna ekstrakcja przy błędnym formacie (tryb `hybrid`) lub niezgodnym cytacie; po niej błędny format = `null`. Klient modelu ponawia 429/5xx/timeout z backoffem i przechodzi na `json_object`, gdy backend nie obsługuje `json_schema`.
 - Długie dokumenty: limit 60 000 znaków, obcięcie początek (70%) + koniec (30%) ze znacznikiem, model informowany o niepełności, flaga `truncated` w śladzie. Chunking poza zakresem (warunek powrotu w `docs/benchmark.md`).
-- `nieznany`: wpis w logu, brak pliku JSON. Ślad cytatów w `trace/`, nie w `output/`.
+- `nieznany`: pusty JSON `{}` pod nazwą pliku (FAQ), wpis w logu. Ślad cytatów w `trace/`, nie w `output/`.
 - OCR: decyzja per dokument (Tesseract `pol` przez pypdfium2), bo przykład z szablonu jest skanem.
 - Narzędzia: uv (zależności), ruff (lint i format), Makefile (komendy), pytest.
 - Niezmierzone w momencie pisania: F1 na żywym modelu, wybór modelu, budowa obrazu Docker (patrz `docs/benchmark.md`).
+
+## 10. Ustalenia z FAQ organizatora (v1.0) i późniejsze
+
+- Ocena: preselekcja 100% F1; finał 50% F1 + 50% elastyczność (nowe klasy i pola konfiguracją bez przebudowy kodu).
+- Środowisko jury: komputer biurowy bez GPU. Rozwiązanie dostarcza klucz API do używanej usługi (organizator nie nadużywa tokenów). CLI z instrukcją jest wymagane.
+- Model: komponenty i modele open source, instalowalne lokalnie; API hostowane na terenie UE; dostawca z polityką prywatności. **Do sprawdzenia:** lokalizacja serwera LiteLLM.
+- Dokumenty: 3 typy (odwołanie, pełnomocnictwo, potwierdzenie przelewu); skany występują w zbiorze testowym (OCR wymagany); zbiór testowy ukryty (wgląd na stoisku UZP).
+- Obcy dokument (poza 3 typami): pusty JSON `{}` pod oryginalną nazwą pliku.
+- Imiona i nazwiska w mianowniku („Mateusz Szymański”, nie „Mateusza Szymańskiego”); reguła jest w `classes/*.yaml`.
+- Brak informacji w dokumencie: `null` tam, gdzie schemat to dopuszcza, bez zgadywania.
+- GUI (wgranie PDF, uruchomienie, podgląd JSON obok dokumentu) opcjonalny, ale dodatkowo punktowany. Zgłoszenie: tytuł i link do działającego prototypu na GitHubie. **Niezrealizowane:** brak GUI.
