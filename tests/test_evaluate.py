@@ -349,3 +349,24 @@ def test_evaluate_only_selected_examples(tmp_path, demo_classes, fake_llm, monke
     )
     assert report.docs == 1
     assert len(llm.calls) == 2
+
+
+def test_evaluate_scan_layout_resolves_reference_class_by_keys(
+    tmp_path, demo_classes, fake_llm, monkeypatch
+):
+    from conftest import DEMO_TEXT, extraction
+
+    from src import pipeline
+    from src.textextract import DocText
+
+    monkeypatch.setattr(pipeline, "read_pdf", lambda path: DocText(DEMO_TEXT, 1, False))
+    case = tmp_path / "skany" / "demo_kind" / "0001"
+    case.mkdir(parents=True)
+    (case / "0001.pdf").write_bytes(b"%PDF")
+    (case / "0001.json").write_text(
+        json.dumps({"nip": "5270000000", "tytul": "Budowa drogi"}), encoding="utf-8"
+    )
+    llm = fake_llm([classification(), extraction()])
+    report = evaluate(tmp_path / "skany", demo_classes[1], llm, Settings(llm_model="m"), workers=1)
+    assert report.classified_total == 1 and report.classified_ok == 1
+    assert report.micro_f1 == 1.0
