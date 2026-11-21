@@ -9,9 +9,11 @@ hints:
   - Krajowej Izby Odwoławczej
   - Odwołujący
 rules:
-  - "czynnosc_dzien, czynnosc_powod_id: ustalaj WYŁĄCZNIE z pierwszego „Zarzutu”. Czynność zamawiającego, której dotyczy pierwszy zarzut, jest zwykle opisana zdaniem w rodzaju „Zamawiający w dniu DATA ... [czynność]” (bywa tuż przed pierwszym zarzutem). Kolejne zarzuty ignoruj."
-  - "czynnosc_dzien to data tej czynności zamawiającego (ISO). Gdy brak wiarygodnej daty dla pierwszego zarzutu, zwróć null."
-  - "czynnosc_powod_id wybierz z listy opcji według rodzaju czynności z pierwszego zarzutu. „Zaniechanie” (7, 8, 10) dotyczy braku działania zamawiającego, a decyzje (1, 3, 9) jego aktywnych czynności."
+  - "czynnosc_dzien i czynnosc_powod_id opisują czynność albo zaniechanie zamawiającego zaskarżone odwołaniem (to, którego dotyczy pierwszy zarzut). Szukaj go w tej kolejności: (a) zdanie przed listą zarzutów opisujące zaskarżoną czynność, zwykle „Zamawiający w dniu DATA roku [czynność]” (także w części „wnoszę odwołanie wobec czynności/zaniechania…”); (b) punkt 1) wyliczenia „…polegających na: 1) …”; (c) tytuł „Zarzut nr 1 – …”, jeśli nazywa konkretną czynność (np. „bezpodstawnego odrzucenia oferty”). Uzasadnienie zarzutu (ogólne wywody o OPZ, dokumentacji, zasadach konkurencji) NIE wyznacza kodu ani daty."
+  - "czynnosc_dzien to data zaskarżonej czynności (ISO) z tego zdania albo z „o którym Zamawiający zawiadomił pismem z dnia …”. Nie bierz daty pisma odwołania ani dat wcześniejszych zdarzeń („Uprzednio, w dniu …”, „Wcześniej, w dniu …”, otwarcie ofert, wezwanie do wyjaśnień). Gdy brak wiarygodnej daty, zwróć null."
+  - "czynnosc_powod_id według sformułowania zaskarżonej czynności: „unieważnił postępowanie” = 9; „odrzucił ofertę”, „poinformował o odrzuceniu oferty” = 1; „wykluczył”, „poinformował o wykluczeniu” = 3; „ogłosił wybór oferty”, „dokonał wyboru oferty” = 2; „opublikował/udostępnił SWZ” (także razem z ogłoszeniem o zamówieniu) = 4; „zmodyfikował treść SWZ” = 5; „udzielił odpowiedzi”, „przekazał odpowiedzi i wyjaśnienia do SWZ” = 6; „nie odrzucił oferty”, „zaniechał odrzucenia” = 7; „nie wykluczył”, „zaniechał wykluczenia” = 8; „zaniechał unieważnienia” = 10; „udostępnił/opublikował Opis Przedmiotu Zamówienia” = 11."
+  - "Zaniechanie ma pierwszeństwo przed wyborem oferty: gdy zdanie mówi o informacji o wyniku postępowania lub o wyborze oferty, ale zaskarżone jest zaniechanie („zaniechawszy unieważnienia”, „z której wynika, że zaniechał wykluczenia”, „nie odrzucił oferty”), kod to zaniechanie (10, 8 albo 7), nie 2. Rozstrzyga punkt 1) wyliczenia i tytuł pierwszego zarzutu."
+  - "Kod 11 (OPZ) tylko wtedy, gdy zaskarżona czynność to udostępnienie lub opublikowanie opisu przedmiotu zamówienia. Samo omawianie OPZ w treści zarzutu nie oznacza kodu 11."
   - "data i miejscowosc pochodzą z nagłówka pierwszej strony (linia „Miejscowość, dnia DD.MM.RRRR” albo „Miejscowość DD.MM.RRRR”). Gdy nagłówka z miejscowością i datą nie ma, zwróć null."
   - "Odwolujacy: gdy występuje konsorcjum odwołujących, podaj dane Lidera konsorcjum (jeden element tablicy)."
   - "przez-pelnomocnika = 1, gdy odwołujący jest reprezentowany przez pełnomocnika (np. „reprezentowany przez”, „na podstawie pełnomocnictwa”), w przeciwnym razie 0."
@@ -20,6 +22,10 @@ rules:
   - "prowadzacy_postepowanie: null, gdy jest jeden zamawiający lub brak informacji. Gdy zamawiających jest więcej: 1 dla oznaczonego jako prowadzący postępowanie lub lider postępowania, 0 dla pozostałych."
   - "numer_bzp przepisz w całości, tak jak w dokumencie, bez spacji: YYYY/BZP######## razem z końcówką /NN, jeśli występuje (np. 2026/BZP00123456/03 zostaje 2026/BZP00123456/03, nie obcinaj /03). Tylko numer ogłoszenia BZP (nie TED). numer_ted w formacie NNNNNN-YYYY, a zapis „YYYY/S ###-NNNNNN” zamień na NNNNNN-YYYY."
   - "numer_postepowania to numer referencyjny sprawy (np. ZP.039.2025). tytul to tytuł zamówienia bez cudzysłowów."
+requires:
+  - when: OdwolanieKIO.czynnosc_powod_id
+    then: [OdwolanieKIO.czynnosc_dzien]
+    message: "Data zaskarżonej czynności stoi zwykle w zdaniu „Zamawiający w dniu DATA roku …” przed pierwszym zarzutem."
 examples:
   - text: |
       Odwołujący:
@@ -61,6 +67,59 @@ examples:
         numer_postepowania: "ZS.791.2026"
         numer_ted: "999137-2026"
         tytul: "Zakup i dostawa sprzętu komputerowego"
+  - text: |
+      Krajowa Izba Odwoławcza
+      Zamawiający:
+      Gmina Wierzbno Dolne
+      ul. Rynek 4, 63-210 Wierzbno Dolne
+      NIP: 9990011223, REGON: 999001122
+      Odwołujący: Konsorcjum wykonawców w składzie:
+      1) Lider Konsorcjum:
+      Norvia Instalacje sp. z o.o.
+      ul. Polna 12, 61-001 Poznań
+      KRS: 9990123456, NIP: 9991234560, REGON: 999123450
+      2) Partner Konsorcjum:
+      Tamex Budowa sp.j.
+      KRS: 9990654321, NIP: 9996543210, REGON: 999654320
+      reprezentowany przez: adw. Monika Lisowska, r. pr. Tomasz Wrona
+      adres do korespondencji: Lisowska i Wspólnicy Kancelaria Adwokacka sp.p., ul. Długa 3, 60-100 Poznań
+      tel. 000 000 000, e-mail: biuro@lisowska.example
+      dotyczy: postępowania pn. „Przebudowa stacji uzdatniania wody w Wierzbnie”, nr referencyjny: RI.271.9.2026, ogłoszenie o zamówieniu w Biuletynie Zamówień Publicznych nr 2026/BZP 00123456/02, ogłoszenie w Dzienniku Urzędowym Unii Europejskiej nr 2026/S 118-123456
+      Poznań, 22 maja 2026 roku
+      ODWOŁANIE
+      wnoszę odwołanie wobec niezgodnych z przepisami ustawy czynności i zaniechań Zamawiającego, polegających na:
+      1) zaniechaniu unieważnienia postępowania obarczonego wadą niemożliwą do usunięcia;
+      2) wyborze jako najkorzystniejszej oferty wykonawcy Hydrovia S.A.;
+      Zamawiający w dniu 15 maja 2026 roku ogłosił wybór oferty najkorzystniejszej wykonawcy Hydrovia S.A., nie unieważniając postępowania mimo wady niemożliwej do usunięcia. Wcześniej, w dniu 30 kwietnia 2026 r., Zamawiający udzielił odpowiedzi na pytania wykonawców.
+      Zarzut nr 1 – zaniechania unieważnienia postępowania, tj. naruszenie art. 255 pkt 6 Pzp;
+      Zarzut nr 2 – wadliwego wyboru oferty najkorzystniejszej, tj. naruszenie art. 239 ust. 1 Pzp.
+    output:
+      OdwolanieKIO:
+        data: "2026-05-22"
+        czynnosc_dzien: "2026-05-15"
+        czynnosc_powod_id: 10
+        miejscowosc: "Poznań"
+      Odwolujacy:
+        - krs: "9990123456"
+          nazwa: "Norvia Instalacje sp. z o.o."
+          nip: "9991234560"
+          regon: "999123450"
+          przez-pelnomocnika: 1
+          pelnomocnik:
+            imie_nazwisko: "Monika Lisowska"
+            nazwa: "Lisowska i Wspólnicy Kancelaria Adwokacka sp.p."
+            mail: "biuro@lisowska.example"
+      Zamawiajacy:
+        - krs: null
+          nazwa: "Gmina Wierzbno Dolne"
+          nip: "9990011223"
+          regon: "999001122"
+          prowadzacy_postepowanie: null
+      ZamowieniePubliczne:
+        numer_bzp: "2026/BZP00123456/02"
+        numer_postepowania: "RI.271.9.2026"
+        numer_ted: "123456-2026"
+        tytul: "Przebudowa stacji uzdatniania wody w Wierzbnie"
 fields:
   - name: OdwolanieKIO
     type: object
@@ -72,10 +131,10 @@ fields:
       - name: czynnosc_dzien
         type: text
         validator: date
-        description: Data czynności uruchamiającej bieg terminu odwołania dla pierwszego zarzutu (ISO).
+        description: Data zaskarżonej czynności lub zaniechania zamawiającego, opisanej przed pierwszym zarzutem (ISO).
       - name: czynnosc_powod_id
         type: enum
-        description: Powód odwołania, ustalany wyłącznie z pierwszego zarzutu.
+        description: Rodzaj zaskarżonej czynności zamawiającego (zdanie „Zamawiający w dniu …” przed pierwszym zarzutem, punkt 1) wyliczenia, tytuł pierwszego zarzutu).
         options:
           1: odrzucenie oferty
           2: wybór oferty
