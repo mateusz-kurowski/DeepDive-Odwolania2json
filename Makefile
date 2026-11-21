@@ -1,5 +1,5 @@
 .DEFAULT_GOAL := help
-.PHONY: help install requirements lint format test run classes eval eval-hybrid eval-llm-only sweep docker-build docker-run clean
+.PHONY: help install requirements lint format test run classes eval eval-hybrid eval-llm-only sweep docker-build docker-run up api clean
 
 # Parametry (nadpisz: make eval MODE=llm_only LIMIT=10 MODEL=nazwa)
 MODE ?=
@@ -62,6 +62,12 @@ docker-build: ## Zbuduj obraz
 
 docker-run: ## Uruchom run w kontenerze
 	docker compose run --rm app run
+
+up: ## UI + API w Dockerze (http://localhost:8080)
+	docker compose up --build
+
+api: ## Samo API lokalnie (uv sync --extra api)
+	uv run --extra api python -m src serve
 
 clean: ## Usuń output/, trace/ i cache
 	rm -rf output trace .pytest_cache

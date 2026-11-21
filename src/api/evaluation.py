@@ -1,0 +1,345 @@
+"""Ewaluacja w API: wyniki lokalne (results/, tylko odczyt) i przebiegi z UI w object storage."""
+
+from __future__ import annotations
+
+import json
+import logging
+import os
+import re
+import tempfile
+import uuid
+from collections.abc import Callable
+from concurrent.futures import ThreadPoolExecutor
+from datetime import UTC, datetime
+from pathlib import Path
+
+import yaml
+
+from src.api.storage import NotFound, Storage
+from src.classconfig import load_classes
+from src.evaluate import Counts, _find_examples, evaluate, score_document
+from src.llm import LLM
+from src.settings import Settings
+
+log = logging.getLogger(__name__)
+
+PREFIX = "evaluations/"
+_SAFE = re.compile(r"[\w][\w.\- ]*")
+
+
+class EvaluationError(Exception):
+    def __init__(self, message: str, status: int = 400):
+        super().__init__(message)
+        self.status = status
+
+
+def _iso(ts: float) -> str:
+    return datetime.fromtimestamp(ts, UTC).isoformat(timespec="seconds")
+
+
+def _now() -> str:
+    return datetime.now(UTC).isoformat(timespec="seconds")
+
+
+def _summary_fields(report: dict) -> dict:
+    return {
+        "micro_f1": report.get("micro_f1"),
+        "precision": report.get("precision"),
+        "recall": report.get("recall"),
+        "docs": report.get("docs"),
+        "errors": report.get("errors"),
+        "citation_ok_rate": report.get("citation_ok_rate"),
+    }
+
+
+def load_datasets(config: Path) -> list[dict]:
+    if not config.is_file():
+        return []
+    raw = yaml.safe_load(config.read_text(encoding="utf-8")) or {}
+    out = []
+    for item in raw.get("datasets", []):
+        path = Path(item["path"])
+        out.append(
+            {
+                "id": item["id"],
+                "name": item.get("name", item["id"]),
+                "description": item.get("description", ""),
+                "path": str(path),
+                "examples": len(_find_examples(path)) if path.is_dir() else 0,
+            }
+        )
+    return out
+
+
+class EvaluationService:
+    def __init__(
+        self,
+        storage: Storage,
+        settings: Settings,
+        llm_factory: Callable[[Settings], LLM],
+        datasets_config: Path,
+        results_dir: Path,
+    ):
+        self.storage = storage
+        self.settings = settings
+        self.llm_factory = llm_factory
+        self.datasets_config = Path(datasets_config)
+        self.results_dir = Path(results_dir)
+        self._pool = ThreadPoolExecutor(max_workers=1, thread_name_prefix="eval")
+
+    # --- zbiory ------------------------------------------------------------------------------
+    def datasets(self) -> list[dict]:
+        return load_datasets(self.datasets_config)
+
+    # --- wyniki lokalne ----------------------------------------------------------------------
+    def _local_files(self) -> list[Path]:
+        found: list[Path] = []
+        if not self.results_dir.is_dir():
+            return found
+        for root, dirs, files in os.walk(self.results_dir):
+            dirs[:] = [d for d in dirs if not d.startswith("dump")]
+            found += [Path(root) / f for f in files if f.endswith(".json") and f != "summary.json"]
+        return sorted(found)
+
+    def _local_id(self, path: Path) -> str:
+        rel = path.relative_to(self.results_dir).with_suffix("")
+        return "local-" + "__".join(rel.parts)
+
+    def _local_dump(self, path: Path) -> Path:
+        name = "dump" if path.stem == "report" else f"dump-{path.stem}"
+        return path.parent / name
+
+    def _local_runs(self) -> list[tuple[dict, Path]]:
+        runs = []
+        for path in self._local_files():
+            try:
+                report = json.loads(path.read_text(encoding="utf-8"))
+            except (OSError, ValueError):
+                continue
+            if not (isinstance(report, dict) and "per_field" in report and "micro_f1" in report):
+                continue
+            rel = path.relative_to(self.results_dir).with_suffix("")
+            stat = path.stat()
+            runs.append(
+                (
+                    {
+                        "id": self._local_id(path),
+                        "source": "local",
+                        "name": "/".join(
+                            rel.parts[:-1] + (() if rel.name == "report" else (rel.name,))
+                        )
+                        or rel.name,
+                        "dataset": None,
+                        "model": report.get("model"),
+                        "mode": report.get("mode"),
+                        "status": "done",
+                        "started_at": None,
+                        "finished_at": _iso(stat.st_mtime),
+                        "error": None,
+                        "progress": None,
+                        **_summary_fields(report),
+                    },
+                    path,
+                )
+            )
+        return runs
+
+    # --- wyniki w storage --------------------------------------------------------------------
+    def _storage_runs(self) -> list[dict]:
+        runs = []
+        for key in self.storage.list(PREFIX):
+            if key.endswith("/run.json"):
+                try:
+                    runs.append(json.loads(self.storage.get(key)))
+                except (NotFound, ValueError):
+                    continue
+        return runs
+
+    def _save_run(self, run: dict) -> None:
+        self.storage.put(
+            f"{PREFIX}{run['id']}/run.json",
+            json.dumps(run, ensure_ascii=False).encode("utf-8"),
+            "application/json",
+        )
+
+    def list_runs(self) -> list[dict]:
+        runs = [r for r, _ in self._local_runs()] + self._storage_runs()
+        runs.sort(key=lambda r: r.get("finished_at") or r.get("started_at") or "", reverse=True)
+        return runs
+
+    def get_run(self, run_id: str) -> dict:
+        for run, path in self._local_runs():
+            if run["id"] == run_id:
+                return {**run, "report": json.loads(path.read_text(encoding="utf-8"))}
+        if re.fullmatch(r"s-[0-9a-f]{32}", run_id):
+            try:
+                run = json.loads(self.storage.get(f"{PREFIX}{run_id}/run.json"))
+            except NotFound:
+                raise EvaluationError("Nie znaleziono przebiegu.", 404) from None
+            try:
+                report = json.loads(self.storage.get(f"{PREFIX}{run_id}/report.json"))
+            except NotFound:
+                report = None
+            return {**run, "report": report}
+        raise EvaluationError("Nie znaleziono przebiegu.", 404)
+
+    # --- uruchamianie z UI -------------------------------------------------------------------
+    def start(
+        self,
+        dataset_id: str,
+        model: str | None = None,
+        mode: str | None = None,
+        limit: int | None = None,
+    ) -> dict:
+        dataset = next((d for d in self.datasets() if d["id"] == dataset_id), None)
+        if dataset is None:
+            raise EvaluationError(f"Nieznany zbiór danych: {dataset_id}", 404)
+        if dataset["examples"] == 0:
+            raise EvaluationError(f"Zbiór '{dataset_id}' jest pusty lub niedostępny lokalnie.", 409)
+        if mode not in (None, "hybrid", "llm_only"):
+            raise EvaluationError("Tryb: hybrid lub llm_only.", 422)
+        if limit is not None and limit < 1:
+            raise EvaluationError("Limit musi być dodatni.", 422)
+        settings = self.settings.model_copy(
+            update={
+                "llm_model": model or self.settings.llm_model,
+                "extraction_mode": mode or self.settings.extraction_mode,
+            }
+        )
+        if not settings.llm_model:
+            raise EvaluationError("Brak modelu: podaj model lub ustaw LLM_MODEL.", 422)
+        run = {
+            "id": f"s-{uuid.uuid4().hex}",
+            "source": "storage",
+            "name": f"{dataset['name']} · {settings.llm_model}",
+            "dataset": dataset_id,
+            "model": settings.llm_model,
+            "mode": settings.extraction_mode,
+            "status": "running",
+            "started_at": _now(),
+            "finished_at": None,
+            "error": None,
+            "progress": {
+                "done": 0,
+                "total": min(dataset["examples"], limit or dataset["examples"]),
+            },
+            **_summary_fields({}),
+        }
+        self._save_run(run)
+        self._pool.submit(self._execute, run, Path(dataset["path"]), settings, limit)
+        return run
+
+    def resume(self) -> None:
+        """Przebieg przerwany restartem nie wznawia się sam: oznaczamy go jako błąd."""
+        for run in self._storage_runs():
+            if run.get("status") == "running":
+                run.update(status="error", error="Przerwano restartem API.", finished_at=_now())
+                self._save_run(run)
+
+    def _execute(self, run: dict, data: Path, settings: Settings, limit: int | None) -> None:
+        try:
+            classes = load_classes(settings.classes_dir)
+            llm = self.llm_factory(settings)
+
+            def progress(done: int, total: int) -> None:
+                run["progress"] = {"done": done, "total": total}
+                self._save_run(run)
+
+            with tempfile.TemporaryDirectory() as tmp:
+                dump = Path(tmp)
+                report = evaluate(
+                    data,
+                    classes,
+                    llm,
+                    settings,
+                    limit=limit,
+                    workers=4,
+                    dump_dir=dump,
+                    on_progress=progress,
+                )
+                payload = {
+                    **report.to_dict(),
+                    "model": settings.llm_model,
+                    "mode": settings.extraction_mode,
+                }
+                usage = getattr(llm, "usage", None)
+                if usage:
+                    payload["usage"] = usage.to_dict()
+                for file in dump.rglob("*.json"):
+                    rel = file.relative_to(dump).as_posix()
+                    self.storage.put(
+                        f"{PREFIX}{run['id']}/dump/{rel}", file.read_bytes(), "application/json"
+                    )
+            self.storage.put(
+                f"{PREFIX}{run['id']}/report.json",
+                json.dumps(payload, ensure_ascii=False).encode("utf-8"),
+                "application/json",
+            )
+            run.update(status="done", finished_at=_now(), **_summary_fields(payload))
+        except Exception as exc:
+            log.exception("Ewaluacja %s nieudana", run["id"])
+            run.update(status="error", error=f"{type(exc).__name__}: {exc}", finished_at=_now())
+        self._save_run(run)
+
+    # --- dokumenty przebiegu -----------------------------------------------------------------
+    def _dump_names(self, run_id: str) -> list[tuple[str, str]]:
+        names: list[tuple[str, str]] = []
+        local = next((p for r, p in self._local_runs() if r["id"] == run_id), None)
+        if local is not None:
+            base = self._local_dump(local)
+            if base.is_dir():
+                for f in sorted(base.glob("*/*.json")):
+                    names.append((f.parent.name, f.stem))
+        else:
+            prefix = f"{PREFIX}{run_id}/dump/"
+            for key in self.storage.list(prefix):
+                parts = key[len(prefix) :].split("/")
+                if len(parts) == 2 and parts[1].endswith(".json"):
+                    names.append((parts[0], parts[1][:-5]))
+        return [(label, stem) for label, stem in names if stem != "_missed"]
+
+    def read_document(self, run_id: str, label: str, stem: str) -> dict:
+        if not (_SAFE.fullmatch(label) and _SAFE.fullmatch(stem)) or ".." in label + stem:
+            raise EvaluationError("Niepoprawna nazwa dokumentu.", 404)
+        self.get_run(run_id)
+        local = next((p for r, p in self._local_runs() if r["id"] == run_id), None)
+        try:
+            if local is not None:
+                return json.loads(
+                    (self._local_dump(local) / label / f"{stem}.json").read_text("utf-8")
+                )
+            return json.loads(self.storage.get(f"{PREFIX}{run_id}/dump/{label}/{stem}.json"))
+        except (FileNotFoundError, NotFound):
+            raise EvaluationError("Nie znaleziono dokumentu w przebiegu.", 404) from None
+
+    def documents(self, run_id: str) -> list[dict]:
+        self.get_run(run_id)
+        classes = load_classes(self.settings.classes_dir)
+        rows = []
+        for label, stem in self._dump_names(run_id):
+            doc = self.read_document(run_id, label, stem)
+            cls = doc.get("class")
+            tp = fp = fn = None
+            f1 = None
+            if (
+                doc.get("reference") is not None
+                and doc.get("prediction") is not None
+                and cls in classes
+            ):
+                total = Counts()
+                for c in score_document(doc["prediction"], doc["reference"], classes[cls]).values():
+                    total = total + c
+                tp, fp, fn, f1 = total.tp, total.fp, total.fn, total.f1
+            rows.append(
+                {
+                    "label": label,
+                    "stem": stem,
+                    "class_name": cls,
+                    "tp": tp,
+                    "fp": fp,
+                    "fn": fn,
+                    "f1": f1,
+                    "error": doc.get("error"),
+                }
+            )
+        return rows

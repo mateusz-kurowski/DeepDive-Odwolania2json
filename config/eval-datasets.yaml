@@ -1,0 +1,11 @@
+# Zbiory do ewaluacji w UI. Dane są zawsze lokalne (nie trafiają do object storage);
+# do storage zapisują się tylko wyniki przebiegów uruchomionych z UI.
+datasets:
+  - id: dane
+    name: Dane treningowe (60 przykładów)
+    description: Syntetyczne sprawy z oczekiwanymi JSON-ami (3 dokumenty na sprawę).
+    path: data/dane
+  - id: skany
+    name: Skany (OCR)
+    description: Skany odwołań, pełnomocnictw i potwierdzeń przelewu.
+    path: data/dane/skany

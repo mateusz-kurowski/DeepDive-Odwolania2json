@@ -12,4 +12,5 @@ trace/
 results/*
 !results/sweep-only-scans/
 !results/sweep-przyklad/
+storage/
 !results/sweep-big-test/

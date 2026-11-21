@@ -18,9 +18,19 @@ dependencies = [
 [project.optional-dependencies]
 # Opcjonalny OCR lokalny (wymaga też programu Tesseract w systemie, patrz README)
 tesseract = ["pytesseract"]
+api = [
+    "boto3>=1.44.9",
+    "fastapi>=0.165.0",
+    "python-multipart>=0.0.34",
+    "uvicorn[standard]>=0.54.0",
+]
 
 [dependency-groups]
-dev = ["pytest", "ruff"]
+dev = [
+    "httpx>=0.28.1",
+    "pytest",
+    "ruff",
+]
 
 [tool.uv]
 package = false

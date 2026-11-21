@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import logging
 import re
+from collections.abc import Callable
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -401,24 +402,28 @@ def _evaluate_example(
 ) -> Report:
     report = Report()
     results = [process_pdf(p, classes, llm, settings) for p in sorted(example.glob("*.pdf"))]
-    refs: dict[str, dict] = {}
+    # Klasa referencji wynika z jej treści (klucze), nie z nazwy pliku.
+    refs: list[tuple[str, str, dict]] = []
     for p in sorted(example.glob("*.json")):
         ref = json.loads(p.read_text(encoding="utf-8"))
-        name = p.stem if p.stem in classes else _ref_class(ref, classes)
+        name = _ref_class(ref, classes)
         if name:
-            refs[name] = ref
+            refs.append((p.stem, name, ref))
     scored: dict[int, dict] = {}
     missed: dict[str, dict] = {}
     report.errors = sum(1 for r in results if r.error)
-    for class_name, ref in refs.items():
-        matching = [r for r in results if r.class_name == class_name and r.data is not None]
+    for stem, class_name, ref in refs:
+        # Para po nazwie pliku (abc.pdf <-> abc.json); gdy brak, pierwszy wolny dokument tej klasy.
+        free = [r for r in results if r.data is not None and id(r) not in scored]
+        by_stem = [r for r in free if r.path is not None and r.path.stem == stem]
+        matching = [r for r in (by_stem or free) if r.class_name == class_name][:1]
         report.classified_total += 1
         report.classified_ok += bool(matching)
         pred = matching[0].data if matching else None
         if matching:
             scored[id(matching[0])] = ref
         else:
-            missed[class_name] = {
+            missed[stem] = {
                 "reason": "brak dokumentu tej klasy",
                 "expected": ref,
                 "diffs": diff_document(None, ref, classes[class_name]),
@@ -476,6 +481,7 @@ def evaluate(
     workers: int = 4,
     dump_dir: Path | None = None,
     only: list[str] | None = None,
+    on_progress: Callable[[int, int], None] | None = None,
 ) -> Report:
     examples = _find_examples(data_dir)
     if only:
@@ -493,4 +499,6 @@ def evaluate(
         ):
             total.merge(part)
             log.info("eval %d/%d", i, len(examples))
+            if on_progress:
+                on_progress(i, len(examples))
     return total
