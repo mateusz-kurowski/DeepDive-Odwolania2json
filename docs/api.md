@@ -7,14 +7,14 @@ Prefiks `/api`. W Dockerze front (nginx) proxuje `/api/` do kontenera `api` (por
 - `GET /api/settings` → `{llm_model, extraction_mode, ocr_backend, vlm_model, openai_base_url, storage_backend, bucket|null, max_upload_mb, classes:[nazwa]}` (bez kluczy)
 
 ## Dokumenty (pliki użytkownika w object storage)
-`DocSummary`: `{id, filename, status:"queued"|"processing"|"done"|"error", class_name:str|null, label:str (sygnatura albo nazwa pliku), created_at, duration_s:number|null, citation_ok_rate:number|null (0..1), needs_review:bool, approved_count:int, field_count:int, error:str|null}`
+`DocSummary`: `{demo:bool, id, filename, status:"queued"|"processing"|"done"|"error", class_name:str|null, label:str (sygnatura albo nazwa pliku), created_at, duration_s:number|null, citation_ok_rate:number|null (0..1), needs_review:bool, approved_count:int, field_count:int, error:str|null}`
 
 `Field`: `{path, label, section:str|null, value:any, quote:str|null, citation_ok:bool|null, status:"ai"|"edited"|"approved", highlights:[{page:int(1-based), x,y,w,h}]}`; `x,y,w,h` to ułamki 0..1 strony, początek w lewym górnym rogu; `highlights` puste dla skanów lub gdy cytatu nie da się zlokalizować.
 
 - `POST /api/documents` (multipart, pole `files`, wiele) → 201 `[{id, filename, status}]`; tylko PDF, ≤ `max_upload_mb`; przetwarzanie w tle (poll `GET`).
 - `POST /api/documents/samples` → 201 jak wyżej (przykładowe PDF-y z katalogu lokalnego).
-- `POST /api/documents/demo` → 201 `[{id, filename, status:"done"}]`; dokument demo z `data/demo/` (PDF + zapisany wynik prawdziwego przebiegu), bez wywołania modelu.
-- `GET /api/documents?q=&status=&needs_review=` → `{items:[DocSummary], summary:{total, processed, needs_review_rate:number|null, avg_citation_ok_rate:number|null, avg_duration_s:number|null}}` (nowe najpierw)
+- `POST /api/documents/demo` → 201 `[{id, filename, status:"done"}]`; dokument demo z `data/demo/` (PDF + zapisany wynik prawdziwego przebiegu), bez wywołania modelu. Dokument ma `demo:true`; ponowne wywołanie zastępuje poprzedni dokument demo.
+- `GET /api/documents?q=&status=&needs_review=` → `{items:[DocSummary], summary:{total, processed, active, failed, needs_review_rate:number|null, avg_citation_ok_rate:number|null, avg_duration_s:number|null}}` (nowe najpierw)
 - `GET /api/documents/{id}` → `DocSummary` + `{ocr_used:bool, model:str, pages:int, fields:[Field], data:object}` (`data` = JSON po korektach)
 - `GET /api/documents/{id}/pdf` → `application/pdf`
 - `GET /api/documents/{id}/pages/{n}.png?width=900` → obraz strony (n od 1)

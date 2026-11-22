@@ -29,12 +29,13 @@ export function mount(root, ctx) {
     type: 'file', accept: 'application/pdf,.pdf', multiple: true, class: 'sr-only', id: 'file-input', tabindex: '-1', 'aria-label': 'Wybierz pliki PDF',
     onchange: () => { upload(fileInput.files); fileInput.value = ''; },
   });
+  const demoBtn = h('button', { class: 'btn primary', type: 'button', onclick: loadDemo }, 'Załaduj dokument demo');
   const drop = h('section', { class: 'drop', 'aria-label': 'Dodawanie dokumentów' },
     h('div', null,
       h('div', { class: 't' }, 'Przeciągnij pliki PDF z orzeczeniami KIO'),
       h('div', { class: 's' }, 'Wiele plików naraz. Skany przejdą przez OCR. „Dokument demo” otwiera gotowy, przetworzony dokument bez czekania na model.')),
     h('div', { class: 'btn-row' },
-      h('button', { class: 'btn primary', type: 'button', onclick: loadDemo }, 'Załaduj dokument demo'),
+      demoBtn,
       h('button', { class: 'btn', type: 'button', onclick: () => fileInput.click() }, 'Wybierz pliki'),
       h('button', { class: 'btn subtle', type: 'button', onclick: loadSamples }, 'Przetwórz przykładowe orzeczenia (model)')),
     fileInput);
@@ -93,20 +94,21 @@ export function mount(root, ctx) {
     renderBatch();
     renderTable();
     clearTimeout(timer);
-    if (st.items.some((i) => i.status === 'queued' || i.status === 'processing')) {
+    if ((st.summary && st.summary.active > 0) || st.items.some((i) => i.status === 'queued' || i.status === 'processing')) {
       timer = setTimeout(load, 2000);
     }
   }
 
   function renderBatch() {
-    const active = st.items.filter((i) => i.status === 'queued' || i.status === 'processing');
-    if (!active.length) return clear(batchEl);
-    const total = st.items.length;
-    const done = total - active.length;
+    // liczby z podsumowania API (dla całego zbioru, niezależnie od filtra i wyszukiwarki na liście)
+    const s = st.summary;
+    if (!s || !s.active) return clear(batchEl);
+    const total = s.total;
+    const done = s.processed;
     clear(batchEl, h('div', { class: 'batch' },
       h('div', { class: 'row' },
-        h('b', null, `Ekstrakcja w toku: ${done} z ${total} dokumentów gotowych`),
-        h('span', { class: 'muted' }, `${active.filter((i) => i.status === 'processing').length} w obróbce · ${active.filter((i) => i.status === 'queued').length} w kolejce`)),
+        h('b', null, `Ekstrakcja w toku: ${done} z ${total} dokumentów przetworzonych`),
+        h('span', { class: 'muted' }, `${s.active} w toku${s.failed ? ` · ${s.failed} z błędem` : ''}`)),
       h('div', { class: 'progress tall', role: 'progressbar', 'aria-label': 'Postęp ekstrakcji', 'aria-valuemin': '0', 'aria-valuemax': String(total), 'aria-valuenow': String(done) },
         h('div', { style: `width:${Math.round((done / total) * 100)}%` }))));
   }
@@ -185,6 +187,7 @@ export function mount(root, ctx) {
   }
 
   async function loadDemo() {
+    demoBtn.disabled = true;
     say('Ładowanie dokumentu demo…');
     try {
       const r = await api.post('/documents/demo');
@@ -192,6 +195,7 @@ export function mount(root, ctx) {
       return;
     } catch (e) {
       say(e.message, true);
+      demoBtn.disabled = false;
     }
   }
 

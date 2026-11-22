@@ -7,3 +7,6 @@ na tym PDF-ie: dane, cytaty i flagi weryfikacji. Wynik zgadza się z oczekiwanym
 Służy do przycisku „Załaduj dokument demo” (`POST /api/documents/demo`): pokazuje gotowy, przetworzony dokument bez wywołania
 modelu, więc demo działa bez endpointu LLM i bez sieci. Podświetlenia w PDF-ie liczy API na żywo z cytatów, nie są w fixture.
 Aby odtworzyć fixture: wgraj PDF przez UI, po przetworzeniu skopiuj `meta`/`result` z magazynu dokumentów.
+
+Uwaga: fixture przechowuje etykiety, sekcje i ścieżki pól z chwili zapisu. Po zmianie klasy `odwolanie` w `classes/`
+(np. przez edytor schematów) odtwórz fixture, inaczej demo pokaże stary układ pól.

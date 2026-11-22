@@ -131,6 +131,11 @@ def test_demo_endpoint_loads_stored_result_without_llm(make_client, tmp_path):
         assert doc["status"] == "done" and doc["class_name"] == "odwolanie"
         assert doc["pages"] == 2 and len(doc["fields"]) > 10
         assert any(f["highlights"] for f in doc["fields"])
+        assert doc["demo"] is True
+        second = c.post("/api/documents/demo").json()[0]["id"]
+        items = c.get("/api/documents").json()
+        assert [i["id"] for i in items["items"]] == [second]
+        assert items["summary"]["active"] == 0 and items["summary"]["failed"] == 0
     with make_client(env={"DEMO_DIR": str(tmp_path / "brak")}) as c:
         assert c.post("/api/documents/demo").status_code == 404
 

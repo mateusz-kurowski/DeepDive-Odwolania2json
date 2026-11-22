@@ -226,6 +226,10 @@ class DocumentService:
             raise DocumentError("Brak dokumentu demo na serwerze.", 404)
         fixture = json.loads(fixture_path.read_text(encoding="utf-8"))
         content = pdf_path.read_bytes()
+        # ponowne załadowanie resetuje demo (bez duplikatów i bez starych zatwierdzeń)
+        for item in self.list()["items"]:
+            if item["demo"]:
+                self.delete(item["id"])
         doc_id = uuid.uuid4().hex
         self.storage.put(self._key(doc_id, "source.pdf"), content, "application/pdf")
         self._write_json(doc_id, "result.json", fixture["result"])
@@ -238,6 +242,7 @@ class DocumentService:
                 "status": "done",
                 "created_at": _now(),
                 "error": None,
+                "demo": True,
                 **fixture["meta"],
             },
         )
@@ -338,6 +343,7 @@ class DocumentService:
             "approved_count": sum(f["status"] == "approved" for f in fields),
             "field_count": len(fields),
             "error": meta.get("error"),
+            "demo": bool(meta.get("demo")),
         }
 
     def list(self, q: str = "", status: str = "", needs_review: bool | None = None) -> dict:
@@ -354,6 +360,8 @@ class DocumentService:
         summary = {
             "total": total,
             "processed": len(done),
+            "active": sum(s["status"] in ("queued", "processing") for s in items),
+            "failed": sum(s["status"] == "error" for s in items),
             "needs_review_rate": (sum(s["needs_review"] for s in done) / len(done))
             if done
             else None,

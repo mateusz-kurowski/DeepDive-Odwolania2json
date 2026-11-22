@@ -21,9 +21,7 @@ export function mount(root, ctx) {
   ctx.onCleanup(() => {
     dead = true;
     clearTimeout(timer);
-    document.removeEventListener('keydown', onKey);
   });
-  document.addEventListener('keydown', onKey);
 
   ctx.header(h('div', { class: 'crumbs' }, h('a', { href: '#/documents' }, 'Dokumenty'), ' / ', h('b', null, '…')));
   const metaEl = h('section', { class: 'docmeta', 'aria-label': 'Metadane dokumentu' });
@@ -31,6 +29,8 @@ export function mount(root, ctx) {
   const fieldsEl = h('section', { class: 'fields', 'aria-label': 'Wyodrębnione pola' });
   const msg = h('div', { role: 'status', 'aria-live': 'polite', style: 'padding:0 24px' });
   const live = h('div', { class: 'sr-only', role: 'status', 'aria-live': 'polite' });
+  // WCAG 2.1.4: skróty jednoznakowe działają tylko, gdy fokus jest w panelu pól
+  fieldsEl.addEventListener('keydown', onKey);
   clear(root, metaEl, msg, live, h('div', { class: 'split' }, viewerEl, fieldsEl));
   clear(metaEl, loading('Ładowanie…'));
 
@@ -81,6 +81,7 @@ export function mount(root, ctx) {
           h('span', { class: 'muted' }, d.filename)),
         h('div', { class: 'chips' },
           d.class_name ? h('span', { class: 'pill navy' }, d.class_name) : null,
+          d.demo ? h('span', { class: 'pill navy' }, 'Demo: zapisany wynik przebiegu modelu') : null,
           d.model ? h('span', { class: 'pill' }, `Model: ${d.model}`) : null,
           d.duration_s != null ? h('span', { class: 'pill' }, `Czas: ${dur(d.duration_s)}`) : null,
           d.ocr_used ? h('span', { class: 'pill' }, 'OCR') : null,
@@ -91,7 +92,6 @@ export function mount(root, ctx) {
         h('button', { class: 'btn', type: 'button', onclick: toggleJson }, st.json ? 'Widok pól' : 'Widok JSON'),
         h('button', { class: 'btn primary', type: 'button', disabled: !ready || !fields().length, onclick: approveAll }, 'Zatwierdź wszystko'),
         h('button', { class: 'btn subtle', type: 'button', disabled: !ready, onclick: exportJson }, 'Pobierz JSON po korektach')));
-    if (d.error) clear(msg, errorBox(d.error));
   }
 
   function renderViewer() {
@@ -106,7 +106,10 @@ export function mount(root, ctx) {
       ? h('div', { class: 'page', style: `width:${w}px` },
           h('img', {
             src: `/api/documents/${id}/pages/${st.page}.png?width=${reqW}`, alt: `Strona ${st.page} dokumentu ${d.filename}`,
-            onload: (e) => { e.target.parentNode.classList.add('ready'); },
+            onload: (e) => {
+              e.target.parentNode.classList.add('ready');
+              if (st.pendingReveal) { st.pendingReveal = false; revealHighlight(); }
+            },
             onerror: (e) => { e.target.parentNode.classList.add('failed'); },
           }),
           h('div', { class: 'pageskel', 'aria-hidden': 'true' }, h('span', { class: 'spinner' })),
@@ -185,7 +188,7 @@ export function mount(root, ctx) {
       }
       out.push(fieldRow(f));
     }
-    out.push(h('div', { class: 'keys' }, h('b', null, 'Skróty:'), ' J / K lub ↑ / ↓ – następne / poprzednie pole · A – zatwierdź · E – edytuj · Esc – anuluj edycję'));
+    out.push(h('div', { class: 'keys' }, h('b', null, 'Skróty (gdy fokus jest w panelu pól):'), ' J / K lub ↑ / ↓ – następne / poprzednie pole · A – zatwierdź · E – edytuj · Esc – anuluj edycję'));
     clear(fieldsEl, out);
     const input = fieldsEl.querySelector('[data-edit]');
     if (input) input.focus();
@@ -267,12 +270,14 @@ export function mount(root, ctx) {
     st.editing = null;
     const f = activeField();
     if (jump && f && f.highlights && f.highlights[0]) st.page = f.highlights[0].page;
-    if (st.page !== prevPage) renderViewer(); else syncHighlights();
+    const pageChanged = st.page !== prevPage;
+    if (pageChanged) renderViewer(); else syncHighlights();
     renderFields();
     const row = fieldsEl.querySelector(`[data-path="${CSS.escape(path)}"]`);
     if (row) row.scrollIntoView({ block: 'nearest', behavior: reduced() ? 'auto' : 'smooth' });
     if (focus) row?.querySelector('.fval')?.focus({ preventScroll: true });
-    revealHighlight();
+    // po zmianie strony obraz jeszcze się wczytuje: przewiń dopiero w onload (inaczej wysokość strony jest zła)
+    if (pageChanged) st.pendingReveal = true; else revealHighlight();
     if (f) live.textContent = `${f.label}: ${show(f.value)}${f.highlights && f.highlights.length ? `, strona ${f.highlights[0].page}` : ', brak podświetlenia w dokumencie'}`;
   }
 
@@ -328,9 +333,8 @@ export function mount(root, ctx) {
     const list = fields();
     const i = list.findIndex((f) => f.path === st.active);
     const key = e.key.toLowerCase();
-    const inList = fieldsEl.contains(e.target);
-    if ((key === 'j' || (inList && key === 'arrowdown')) && i < list.length - 1) { e.preventDefault(); select(list[i + 1].path, true, true); }
-    else if ((key === 'k' || (inList && key === 'arrowup')) && i > 0) { e.preventDefault(); select(list[i - 1].path, true, true); }
+    if ((key === 'j' || key === 'arrowdown') && i < list.length - 1) { e.preventDefault(); select(list[i + 1].path, true, true); }
+    else if ((key === 'k' || key === 'arrowup') && i > 0) { e.preventDefault(); select(list[i - 1].path, true, true); }
     else if (key === 'a' && list[i]) { e.preventDefault(); toggleApprove(list[i]); }
     else if (key === 'e' && list[i]) { e.preventDefault(); startEdit(list[i]); }
   }
