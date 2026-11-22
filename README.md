@@ -15,17 +15,47 @@ Szczegóły pomiarów: [`docs/benchmark.md`](docs/benchmark.md).
 
 **1. Klucz API.** Skopiuj `.env.example` do `.env` i wklej klucz przekazany w zgłoszeniu HackTribe w `OPENAI_API_KEY=`. Adres API i modele są już ustawione.
 
+Linux/Mac:
 ```bash
-cp .env.example .env          # Windows: copy .env.example .env
+cp .env.example .env
+```
+
+Windows:
+```bash
+copy .env.example .env
 ```
 
 **2. Dokumenty.** Włóż PDF-y do `input/<sprawa>/`. Wyniki pojawią się w `output/<sprawa>/<ta-sama-nazwa>.json`. Przykładowa sprawa do próby (skan odwołania i dokument spoza klas):
 
+Linux/Mac:
 ```bash
-cp -r data/szablon-aplikacja/input/* input/     # Windows: xcopy /E data\szablon-aplikacja\input input\
+cp -r data/szablon-aplikacja/input/* input/
 ```
 
-**3. Uruchom.** Wybierz jeden wiersz:
+Windows:
+```bash
+xcopy /E data\szablon-aplikacja\input input\
+```
+
+**3. Uruchom CLI**:
+
+Linux/Mac:
+```bash
+./start.sh
+```
+
+Windows:
+```bash
+start.bat       # lub w Powershell: .\start.bat 
+```
+
+**3. [OPCJONALNIE] Uruchom aplikację (UI + API)**:
+
+```bash
+docker compose up --build   # lub `gui.bat` / `start.sh gui` 
+```
+
+**Dodatkowo**:
 
 | Masz | Przetwarzanie `input/` → `output/` | Sprawdzenie konfiguracji | Interfejs w przeglądarce |
 |---|---|---|---|

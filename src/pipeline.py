@@ -1,7 +1,9 @@
 from __future__ import annotations
 
+import itertools
 import json
 import logging
+import sys
 import time
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass
@@ -130,8 +132,20 @@ def run_batch(
     workers: int = 4,
 ) -> list[DocResult]:
     pdfs = find_pdfs(input_dir)
+    done = itertools.count(1)
+
+    def work(pdf: Path) -> DocResult:
+        result = process_pdf(pdf, classes, llm, settings)
+        status = "błąd" if result.error else (result.class_name or "?")
+        print(
+            f"[{next(done)}/{len(pdfs)}] {pdf.relative_to(input_dir).as_posix()}: {status}",
+            file=sys.stderr,
+            flush=True,
+        )
+        return result
+
     with ThreadPoolExecutor(max_workers=max(workers, 1)) as pool:
-        results = list(pool.map(lambda p: process_pdf(p, classes, llm, settings), pdfs))
+        results = list(pool.map(work, pdfs))
     for pdf, result in zip(pdfs, results, strict=True):
         rel = pdf.relative_to(input_dir).with_suffix(".json")
         if result.data is not None:

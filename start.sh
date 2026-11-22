@@ -23,7 +23,8 @@ fi
 
 # venv z uv nie ma pip; doinstaluj go w razie potrzeby
 .venv/bin/python -m pip --version >/dev/null 2>&1 || .venv/bin/python -m ensurepip -q
-.venv/bin/python -m pip install -q --disable-pip-version-check -r requirements.txt
+echo "[start] Instaluje zaleznosci (pierwsze uruchomienie moze potrwac kilka minut)..."
+.venv/bin/python -m pip install --disable-pip-version-check -r requirements.txt
 
 if [ $# -eq 0 ]; then
     exec .venv/bin/python -m src run
