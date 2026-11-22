@@ -19,6 +19,7 @@ from src.api.storage import NotFound, Storage
 from src.classconfig import load_classes
 from src.evaluate import Counts, _find_examples, evaluate, score_document
 from src.llm import LLM
+from src.models import load_model_sizes
 from src.settings import Settings
 
 log = logging.getLogger(__name__)
@@ -187,15 +188,21 @@ class EvaluationService:
             "application/json",
         )
 
+    @staticmethod
+    def _with_size(run: dict) -> dict:
+        """Dopisuje rozmiar modelu w mld parametrów (config/models.yaml); None, gdy nieznany."""
+        return {**run, "model_params_b": load_model_sizes().get(run.get("model") or "")}
+
     def list_runs(self) -> list[dict]:
-        runs = [r for r, _ in self._local_runs()] + self._storage_runs()
+        runs = [self._with_size(r) for r, _ in self._local_runs()]
+        runs += [self._with_size(r) for r in self._storage_runs()]
         runs.sort(key=lambda r: r.get("finished_at") or r.get("started_at") or "", reverse=True)
         return runs
 
     def get_run(self, run_id: str) -> dict:
         for run, path in self._local_runs():
             if run["id"] == run_id:
-                return {**run, "report": json.loads(path.read_text(encoding="utf-8"))}
+                return {**self._with_size(run), "report": json.loads(path.read_text(encoding="utf-8"))}
         if re.fullmatch(r"s-[0-9a-f]{32}", run_id):
             try:
                 run = json.loads(self.storage.get(f"{PREFIX}{run_id}/run.json"))
@@ -205,7 +212,7 @@ class EvaluationService:
                 report = json.loads(self.storage.get(f"{PREFIX}{run_id}/report.json"))
             except NotFound:
                 report = None
-            return {**run, "report": report}
+            return {**self._with_size(run), "report": report}
         raise EvaluationError("Nie znaleziono przebiegu.", 404)
 
     # --- uruchamianie z UI -------------------------------------------------------------------

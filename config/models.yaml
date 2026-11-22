@@ -1,0 +1,7 @@
+# Liczba parametrów modeli (w miliardach) do punktacji rozmiaru: średnia z różnych użytych modeli.
+# Klucz = nazwa modelu jak w LLM_MODEL / sweepie. MoE: liczba parametrów ogółem, nie aktywnych.
+# Wartości nominalne z nazw modeli (poza inkling: 26B podane przez zespół); potwierdzić z organizatorem.
+mistralai/ministral-3b-2512: 3
+mistralai/ministral-8b-2512: 8
+mistralai/ministral-14b-2512: 14
+thinkingmachines/inkling-2-mini: 26
