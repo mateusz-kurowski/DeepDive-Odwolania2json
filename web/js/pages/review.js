@@ -1,5 +1,5 @@
 import { api } from '../api.js';
-import { h, clear, badge, errorBox, dur, show, isTyping, download } from '../ui.js';
+import { h, clear, loading, badge, errorBox, progressBar, elapsed, dur, show, isTyping, download } from '../ui.js';
 
 const BASE_W = 640;
 
@@ -21,17 +21,18 @@ export function mount(root, ctx) {
   ctx.onCleanup(() => {
     dead = true;
     clearTimeout(timer);
-    document.removeEventListener('keydown', onKey);
   });
-  document.addEventListener('keydown', onKey);
 
   ctx.header(h('div', { class: 'crumbs' }, h('a', { href: '#/documents' }, 'Dokumenty'), ' / ', h('b', null, '…')));
   const metaEl = h('section', { class: 'docmeta', 'aria-label': 'Metadane dokumentu' });
   const viewerEl = h('section', { class: 'viewer', 'aria-label': 'Podgląd PDF' });
   const fieldsEl = h('section', { class: 'fields', 'aria-label': 'Wyodrębnione pola' });
   const msg = h('div', { role: 'status', 'aria-live': 'polite', style: 'padding:0 24px' });
-  clear(root, metaEl, msg, h('div', { class: 'split' }, viewerEl, fieldsEl));
-  clear(metaEl, h('div', { class: 'loading' }, 'Ładowanie…'));
+  const live = h('div', { class: 'sr-only', role: 'status', 'aria-live': 'polite' });
+  // WCAG 2.1.4: skróty jednoznakowe działają tylko, gdy fokus jest w panelu pól
+  fieldsEl.addEventListener('keydown', onKey);
+  clear(root, metaEl, msg, live, h('div', { class: 'split' }, viewerEl, fieldsEl));
+  clear(metaEl, loading('Ładowanie…'));
 
   const fields = () => (st.doc && st.doc.fields) || [];
   const activeField = () => fields().find((f) => f.path === st.active) || null;
@@ -68,7 +69,7 @@ export function mount(root, ctx) {
   }
 
   function renderMeta() {
-    if (st.error && !st.doc) return clear(metaEl, errorBox(st.error));
+    if (st.error && !st.doc) return clear(metaEl, errorBox(st.error, () => { st.error = null; clear(metaEl, loading('Ładowanie…')); load(); }));
     const d = st.doc;
     if (!d) return;
     const approved = fields().filter((f) => f.status === 'approved').length;
@@ -80,6 +81,7 @@ export function mount(root, ctx) {
           h('span', { class: 'muted' }, d.filename)),
         h('div', { class: 'chips' },
           d.class_name ? h('span', { class: 'pill navy' }, d.class_name) : null,
+          d.demo ? h('span', { class: 'pill navy' }, 'Demo: zapisany wynik przebiegu modelu') : null,
           d.model ? h('span', { class: 'pill' }, `Model: ${d.model}`) : null,
           d.duration_s != null ? h('span', { class: 'pill' }, `Czas: ${dur(d.duration_s)}`) : null,
           d.ocr_used ? h('span', { class: 'pill' }, 'OCR') : null,
@@ -90,7 +92,6 @@ export function mount(root, ctx) {
         h('button', { class: 'btn', type: 'button', onclick: toggleJson }, st.json ? 'Widok pól' : 'Widok JSON'),
         h('button', { class: 'btn primary', type: 'button', disabled: !ready || !fields().length, onclick: approveAll }, 'Zatwierdź wszystko'),
         h('button', { class: 'btn subtle', type: 'button', disabled: !ready, onclick: exportJson }, 'Pobierz JSON po korektach')));
-    if (d.error) clear(msg, errorBox(d.error));
   }
 
   function renderViewer() {
@@ -103,14 +104,23 @@ export function mount(root, ctx) {
       (f.highlights || []).filter((x) => x.page === st.page).map((x) => ({ f, x })));
     const pageEl = pages
       ? h('div', { class: 'page', style: `width:${w}px` },
-          h('img', { src: `/api/documents/${id}/pages/${st.page}.png?width=${reqW}`, alt: `Strona ${st.page} dokumentu ${d.filename}` }),
+          h('img', {
+            src: `/api/documents/${id}/pages/${st.page}.png?width=${reqW}`, alt: `Strona ${st.page} dokumentu ${d.filename}`,
+            onload: (e) => {
+              e.target.parentNode.classList.add('ready');
+              if (st.pendingReveal) { st.pendingReveal = false; revealHighlight(); }
+            },
+            onerror: (e) => { e.target.parentNode.classList.add('failed'); },
+          }),
+          h('div', { class: 'pageskel', 'aria-hidden': 'true' }, h('span', { class: 'spinner' })),
+          h('div', { class: 'pagefail', role: 'alert' }, 'Nie udało się wczytać strony.'),
           hls.map(({ f, x }) =>
-            h('button', {
-              type: 'button', class: 'hl' + (f.path === st.active ? ' active' : ''), 'aria-label': `Pole: ${f.label}`,
+            h('div', {
+              class: 'hl' + (f.path === st.active ? ' active' : ''), 'data-path': f.path, 'aria-hidden': 'true',
               style: `left:${x.x * 100}%;top:${x.y * 100}%;width:${x.w * 100}%;height:${x.h * 100}%`,
               onclick: () => select(f.path, false),
-            })))
-      : h('div', { class: 'empty' }, d.status === 'done' ? 'Brak podglądu strony.' : 'Dokument jest jeszcze przetwarzany.');
+            }, h('span', { class: 'hl-tag', 'aria-hidden': 'true' }, f.label))))
+      : h('div', { class: 'empty' }, d.status === 'done' ? 'Brak podglądu strony.' : d.status === 'error' ? 'Brak podglądu: przetwarzanie nie powiodło się.' : 'Podgląd pojawi się po zakończeniu przetwarzania.');
     const thumbs = Array.from({ length: pages }, (_, i) => i + 1).map((n) =>
       h('button', {
         type: 'button', class: 'thumb', 'aria-label': `Strona ${n}`, 'aria-current': n === st.page ? 'true' : null,
@@ -119,7 +129,7 @@ export function mount(root, ctx) {
     clear(viewerEl,
       h('div', { class: 'vbar' },
         h('button', { class: 'iconbtn', type: 'button', 'aria-label': 'Poprzednia strona', disabled: st.page <= 1, onclick: () => { st.page--; renderViewer(); } }, '‹'),
-        h('span', null, 'Strona ', h('b', null, st.page), ` z ${pages || '—'}`),
+        h('span', { 'aria-live': 'polite' }, 'Strona ', h('b', null, st.page), ` z ${pages || '—'}`),
         h('button', { class: 'iconbtn', type: 'button', 'aria-label': 'Następna strona', disabled: st.page >= pages, onclick: () => { st.page++; renderViewer(); } }, '›'),
         h('span', { class: 'spacer' }),
         h('button', { class: 'iconbtn', type: 'button', 'aria-label': 'Pomniejsz', disabled: st.zoom <= 0.5, onclick: () => { st.zoom = Math.max(0.5, st.zoom - 0.25); renderViewer(); } }, '−'),
@@ -127,7 +137,7 @@ export function mount(root, ctx) {
         h('button', { class: 'iconbtn', type: 'button', 'aria-label': 'Powiększ', disabled: st.zoom >= 2.5, onclick: () => { st.zoom = Math.min(2.5, st.zoom + 0.25); renderViewer(); } }, '+')),
       h('div', { class: 'vbody' },
         pages > 1 ? h('div', { class: 'thumbs', role: 'group', 'aria-label': 'Miniatury stron' }, thumbs) : null,
-        h('div', { class: 'pagescroll' }, pageEl)));
+        h('div', { class: 'pagescroll', tabindex: '0', role: 'region', 'aria-label': 'Strona dokumentu, przewijana strzałkami' }, pageEl)));
   }
 
   function fieldStatus(f) {
@@ -142,12 +152,28 @@ export function mount(root, ctx) {
   }
 
   function renderFields() {
+    const hadFocus = fieldsEl.contains(document.activeElement) && !document.activeElement.matches('[data-edit]');
+    renderFieldsInner();
+    if (hadFocus && !fieldsEl.querySelector('[data-edit]')) fieldsEl.querySelector('.frow.active .fval')?.focus({ preventScroll: true });
+  }
+
+  function renderFieldsInner() {
     if (!st.doc) return clear(fieldsEl);
     if (st.json) {
       return clear(fieldsEl, h('pre', { class: 'jsonview', style: 'margin:0', tabindex: '0', 'aria-label': 'JSON dokumentu' }, JSON.stringify(st.doc.data ?? {}, null, 2)));
     }
     if (st.doc.status !== 'done') {
-      return clear(fieldsEl, h('div', { class: 'loading' }, st.doc.status === 'error' ? 'Przetwarzanie nie powiodło się.' : 'Trwa przetwarzanie…'));
+      if (st.doc.status === 'error') {
+        return clear(fieldsEl, errorBox(st.doc.error || 'Przetwarzanie nie powiodło się.', async () => {
+          try { await api.post(`/documents/${id}/reprocess`); say(''); } catch (e) { say(e.message, true); }
+          load();
+        }));
+      }
+      return clear(fieldsEl, h('div', { class: 'card procbox' },
+        h('div', { class: 't' }, st.doc.status === 'queued' ? 'Dokument czeka w kolejce' : 'Trwa ekstrakcja pól'),
+        progressBar({ label: 'Postęp ekstrakcji dokumentu' }),
+        h('div', { class: 'muted' }, `OCR, klasyfikacja, ekstrakcja i weryfikacja cytatów. Upłynęło: ${elapsed(st.doc.created_at) || '…'}.`),
+        h('div', { class: 'muted', style: 'font-size:14px' }, 'Strona odświeży się sama po zakończeniu.')));
     }
     if (!fields().length) {
       return clear(fieldsEl, h('div', { class: 'empty' }, 'Brak wyodrębnionych pól (dokument spoza znanych klas).'));
@@ -162,7 +188,7 @@ export function mount(root, ctx) {
       }
       out.push(fieldRow(f));
     }
-    out.push(h('div', { class: 'keys' }, h('b', null, 'Skróty:'), ' J / K – następne / poprzednie pole · A – zatwierdź · E – edytuj · Esc – anuluj edycję'));
+    out.push(h('div', { class: 'keys' }, h('b', null, 'Skróty (gdy fokus jest w panelu pól):'), ' J / K lub ↑ / ↓ – następne / poprzednie pole · A – zatwierdź · E – edytuj · Esc – anuluj edycję'));
     clear(fieldsEl, out);
     const input = fieldsEl.querySelector('[data-edit]');
     if (input) input.focus();
@@ -191,7 +217,7 @@ export function mount(root, ctx) {
           h('button', { class: 'btn small', type: 'button', onclick: () => { st.editing = null; renderFields(); } }, 'Anuluj')));
     } else {
       children.push(h('button', {
-        type: 'button', class: 'fval' + (f.value == null || f.value === '' ? ' null' : ''),
+        type: 'button', class: 'fval' + (f.value == null || f.value === '' ? ' null' : ''), 'aria-current': active ? 'true' : null,
         'aria-label': `${f.label}: ${show(f.value)}. Wybierz pole`,
         onclick: () => select(f.path, true),
       }, show(f.value)));
@@ -213,15 +239,46 @@ export function mount(root, ctx) {
     return h('div', { class: 'frow' + (active ? ' active' : ''), 'data-path': f.path }, children);
   }
 
-  function select(path, jump = true) {
+  const reduced = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function syncHighlights() {
+    viewerEl.querySelectorAll('.hl').forEach((b) => {
+      const on = b.dataset.path === st.active;
+      b.classList.toggle('active', on);
+    });
+  }
+
+  function revealHighlight() {
+    const hl = viewerEl.querySelector('.hl.active');
+    const sc = viewerEl.querySelector('.pagescroll');
+    if (!hl || !sc) return;
+    const r = hl.getBoundingClientRect();
+    const c = sc.getBoundingClientRect();
+    sc.scrollTo({
+      top: sc.scrollTop + (r.top - c.top) - c.height / 2 + r.height / 2,
+      left: sc.scrollLeft + (r.left - c.left) - c.width / 2 + r.width / 2,
+      behavior: reduced() ? 'auto' : 'smooth',
+    });
+    hl.classList.remove('flash');
+    void hl.offsetWidth;
+    hl.classList.add('flash');
+  }
+
+  function select(path, jump = true, focus = false) {
+    const prevPage = st.page;
     st.active = path;
     st.editing = null;
     const f = activeField();
     if (jump && f && f.highlights && f.highlights[0]) st.page = f.highlights[0].page;
-    renderViewer();
+    const pageChanged = st.page !== prevPage;
+    if (pageChanged) renderViewer(); else syncHighlights();
     renderFields();
-    const el = fieldsEl.querySelector(`[data-path="${CSS.escape(path)}"]`);
-    if (el) el.scrollIntoView({ block: 'nearest' });
+    const row = fieldsEl.querySelector(`[data-path="${CSS.escape(path)}"]`);
+    if (row) row.scrollIntoView({ block: 'nearest', behavior: reduced() ? 'auto' : 'smooth' });
+    if (focus) row?.querySelector('.fval')?.focus({ preventScroll: true });
+    // po zmianie strony obraz jeszcze się wczytuje: przewiń dopiero w onload (inaczej wysokość strony jest zła)
+    if (pageChanged) st.pendingReveal = true; else revealHighlight();
+    if (f) live.textContent = `${f.label}: ${show(f.value)}${f.highlights && f.highlights.length ? `, strona ${f.highlights[0].page}` : ', brak podświetlenia w dokumencie'}`;
   }
 
   function startEdit(f) { st.editing = f.path; st.active = f.path; renderFields(); }
@@ -237,11 +294,14 @@ export function mount(root, ctx) {
       say(e.message, true);
     }
     renderMeta();
-    renderViewer();
     renderFields();
   }
 
-  const toggleApprove = (f) => patch(f, { status: f.status === 'approved' ? 'ai' : 'approved' });
+  const toggleApprove = async (f) => {
+    await patch(f, { status: f.status === 'approved' ? 'ai' : 'approved' });
+    const n = fields().find((x) => x.path === f.path);
+    if (n) live.textContent = n.status === 'approved' ? `Zatwierdzono: ${n.label}` : `Cofnięto zatwierdzenie: ${n.label}`;
+  };
   const saveEdit = (f, text) => patch(f, { value: typedValue(text, f.value) });
 
   async function approveAll() {
@@ -273,8 +333,8 @@ export function mount(root, ctx) {
     const list = fields();
     const i = list.findIndex((f) => f.path === st.active);
     const key = e.key.toLowerCase();
-    if (key === 'j' && i < list.length - 1) { e.preventDefault(); select(list[i + 1].path); }
-    else if (key === 'k' && i > 0) { e.preventDefault(); select(list[i - 1].path); }
+    if ((key === 'j' || key === 'arrowdown') && i < list.length - 1) { e.preventDefault(); select(list[i + 1].path, true, true); }
+    else if ((key === 'k' || key === 'arrowup') && i > 0) { e.preventDefault(); select(list[i - 1].path, true, true); }
     else if (key === 'a' && list[i]) { e.preventDefault(); toggleApprove(list[i]); }
     else if (key === 'e' && list[i]) { e.preventDefault(); startEdit(list[i]); }
   }

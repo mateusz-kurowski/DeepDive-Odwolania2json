@@ -54,6 +54,10 @@ class RunRequest(BaseModel):
     limit: int | None = None
 
 
+class PinRequest(BaseModel):
+    pinned: bool
+
+
 def _download(body: bytes, media_type: str, filename: str) -> Response:
     ascii_name = re.sub(r"[^A-Za-z0-9._-]", "_", filename) or "plik"
     disposition = (
@@ -90,6 +94,7 @@ def create_app(
     llm_factory = llm_factory or OpenAICompatLLM
     max_upload_mb = int(env.get("MAX_UPLOAD_MB") or 25)
     samples_dir = Path(env.get("SAMPLES_DIR") or "data/szablon-aplikacja/input")
+    demo_dir = Path(env.get("DEMO_DIR") or "data/demo")
 
     documents = DocumentService(
         storage, settings, llm_factory, max_upload_mb, int(env.get("DOC_WORKERS") or 2)
@@ -167,6 +172,10 @@ def create_app(
             raise DocumentError("Brak przykładowych dokumentów na serwerze.", 404)
         return [documents.add(p.name, p.read_bytes()) for p in pdfs]
 
+    @api.post("/documents/demo", status_code=201)
+    def demo() -> list[dict]:
+        return [documents.add_demo(demo_dir)]
+
     @api.get("/documents")
     def list_documents(q: str = "", status: str = "", needs_review: bool | None = None) -> dict:
         return documents.list(q, status, needs_review)
@@ -240,7 +249,6 @@ def create_app(
     def put_class(name: str, body: ClassBody) -> dict:
         return class_store.put(name, body.yaml)
 
-    @api.delete("/classes/{name}", status_code=204)
     @api.post("/classes/parse")
     def parse_class(body: ClassBody) -> dict:
         return {"data": class_store.parse(body.yaml)}
@@ -249,6 +257,7 @@ def create_app(
     def dump_class(body: ClassData) -> dict:
         return {"yaml": class_store.dump(body.data)}
 
+    @api.delete("/classes/{name}", status_code=204)
     def delete_class(name: str) -> Response:
         class_store.delete(name)
         return Response(status_code=204)
@@ -269,6 +278,15 @@ def create_app(
     @api.get("/evaluation/runs/{run_id}")
     def eval_run(run_id: str) -> dict:
         return evaluations.get_run(run_id)
+
+    @api.delete("/evaluation/runs/{run_id}", status_code=204)
+    def eval_delete(run_id: str) -> Response:
+        evaluations.delete_run(run_id)
+        return Response(status_code=204)
+
+    @api.put("/evaluation/runs/{run_id}/pin")
+    def eval_pin(run_id: str, body: PinRequest) -> dict:
+        return evaluations.set_pinned(run_id, body.pinned)
 
     @api.get("/evaluation/runs/{run_id}/documents")
     def eval_documents(run_id: str) -> list[dict]:

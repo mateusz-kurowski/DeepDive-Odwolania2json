@@ -1,5 +1,5 @@
 import { api } from '../api.js';
-import { h, clear, loading, errorBox } from '../ui.js';
+import { h, clear, errorBox } from '../ui.js';
 
 const TEMPLATE = (name) => `name: ${name}
 description: >-
@@ -33,7 +33,7 @@ export function mount(root, ctx) {
   ctx.title('Schematy');
   let savedMode = 'form';
   try { savedMode = localStorage.getItem('schemas.mode') === 'yaml' ? 'yaml' : 'form'; } catch { /* brak storage */ }
-  const st = { mode: savedMode, buf: null, list: cache.list || [], current: null, detail: null, isNew: false, error: null, saveError: null, info: null, loaded: !!cache.list };
+  const st = { mode: savedMode, buf: null, list: cache.list || [], current: null, detail: null, isNew: false, error: null, saveError: null, info: null, loaded: !!cache.list, pending: ctx.params[0] || null };
   let dead = false;
   ctx.onCleanup(() => { dead = true; });
 
@@ -61,6 +61,7 @@ export function mount(root, ctx) {
     st.saveError = null;
     st.info = null;
     st.current = name;
+    st.pending = null;
     st.detail = cache.details.get(name) || null;
     st.buf = null;
     if (st.detail) { st.error = null; renderList(); prepareEditor(); renderPreview(); }
@@ -84,13 +85,14 @@ export function mount(root, ctx) {
   function renderList() {
     clear(listEl,
       h('h2', { style: 'font-size:16px;margin-bottom:4px' }, 'Typy dokumentów'),
-      !st.loaded ? loading('Ładowanie…') : null,
-      st.error && !st.list.length ? errorBox(st.error, () => { st.loaded = false; st.error = null; renderList(); loadList(); }) : null,
+      h('button', { class: 'btn', type: 'button', onclick: startNew }, '+ Nowy typ'),
+      !st.loaded ? [1, 2, 3].map(() => h('div', { class: 'sitem skel', 'aria-hidden': 'true' }, '\u00a0', h('small', null, '\u00a0'))) : null,
+      st.error && !st.list.length ? errorBox(st.error, () => { st.error = null; renderList(); loadList(); }) : null,
       st.list.map((c) => h('button', {
         type: 'button', class: 'sitem', 'aria-current': !st.isNew && c.name === st.current ? 'true' : null,
         onclick: () => { location.hash = `#/schemas/${encodeURIComponent(c.name)}`; },
       }, c.name, h('small', null, `${c.field_count} pól`))),
-      h('button', { class: 'btn', type: 'button', onclick: startNew }, '+ Nowy typ'));
+      );
   }
 
   function startNew() {
@@ -144,7 +146,7 @@ export function mount(root, ctx) {
   const lab = (text, input) => h('label', { class: 'field' }, text, input);
 
   function fieldEditor(list, depth, rerender) {
-    const wrap = h('div', { class: 'fform' });
+    const wrap = h('div', { class: 'sf-form' });
     list.forEach((f, i) => {
       const nested = f.type === 'object' || f.type === 'array';
       const sel = h('select', {
@@ -156,8 +158,8 @@ export function mount(root, ctx) {
           rerender();
         },
       }, FIELD_TYPES.map((t) => h('option', { value: t, selected: t === f.type }, t)));
-      wrap.append(h('div', { class: 'frow' },
-        h('div', { class: 'frow-head' },
+      wrap.append(h('div', { class: 'sf-row' },
+        h('div', { class: 'sf-head' },
           lab('Nazwa', h('input', { type: 'text', value: f.name || '', oninput: (e) => { f.name = e.target.value; } })),
           lab('Typ', sel),
           lab('Walidator', h('input', { type: 'text', value: f.validator || '', placeholder: 'np. date, nip', style: 'width:130px',
@@ -173,7 +175,7 @@ export function mount(root, ctx) {
           ? lab('Opcje (jedna na linię: kod: opis)', h('textarea', { rows: 3, style: 'height:auto;padding:8px 12px', value: optionsToText(f.options),
               oninput: (e) => { f.options = textToOptions(e.target.value); } }))
           : null,
-        nested ? h('div', { class: 'fnest' }, fieldEditor(f.fields || (f.fields = []), depth + 1, rerender)) : null));
+        nested ? h('div', { class: 'sf-nest' }, fieldEditor(f.fields || (f.fields = []), depth + 1, rerender)) : null));
     });
     wrap.append(h('button', { class: 'btn small', type: 'button',
       onclick: () => { list.push({ name: '', type: 'text', description: '' }); rerender(); } }, '+ Pole'));
@@ -186,6 +188,14 @@ export function mount(root, ctx) {
   }
 
   function renderEditor() {
+    if (!st.isNew && !st.detail && (st.pending || (st.current && !st.error))) {
+      return clear(editorEl,
+        h('div', { class: 'toolbar', style: 'margin:0' },
+          h('h2', { style: 'margin:0' }, `Typ: ${st.pending || st.current}`),
+          h('span', { class: 'spacer' }),
+          h('button', { class: 'btn primary', type: 'button', disabled: true }, 'Zapisz')),
+        h('div', { class: 'skel-block', 'aria-hidden': 'true' }));
+    }
     if (!st.isNew && !st.detail) {
       return clear(editorEl, st.error ? errorBox(st.error) : h('div', { class: 'empty' }, 'Wybierz typ dokumentu z listy albo dodaj nowy.'));
     }
@@ -211,7 +221,7 @@ export function mount(root, ctx) {
           oninput: (e) => { buf.yaml = e.target.value; } }));
     } else {
       const d = buf.data;
-      body = h('div', { class: 'fform' },
+      body = h('div', { class: 'sf-form' },
         lab('Opis typu (po czym go rozpoznać)', h('textarea', { rows: 3, style: 'height:auto;padding:8px 12px', value: d.description || '',
           oninput: (e) => { d.description = e.target.value; } })),
         listEditor('Podpowiedzi (hints, jedna na linię)', 'hints', d),
@@ -288,8 +298,9 @@ export function mount(root, ctx) {
 
   function renderPreview() {
     const d = st.detail;
+    const busy = !d && !st.isNew && !st.error && (st.pending || st.current);
     clear(previewEl, h('h2', null, 'Pola schematu'),
-      d ? [
+      busy ? h('div', { class: 'skel-block', 'aria-hidden': 'true' }) : d ? [
         h('p', { class: 'muted', style: 'margin:0 0 8px;font-size:14px' }, d.description),
         tree(d.fields || []),
         d.example_count != null ? h('p', { class: 'muted', style: 'font-size:13px' }, `Przykładów w schemacie: ${d.example_count}`) : null,

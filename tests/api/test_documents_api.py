@@ -1,5 +1,8 @@
 import json
+import time
+from pathlib import Path
 
+import pytest
 from conftest import classification, extraction
 
 from api.conftest import wait_for
@@ -117,6 +120,85 @@ def test_samples_endpoint(make_client, tmp_path, pdf_bytes):
         assert c.post("/api/documents/samples").status_code == 404
 
 
+def _demo_client(tmp, demo, classes_edit=None, drop_class=False):
+    """Aplikacja z kopią prawdziwego classes/ (klasa odwolanie), bez LLM."""
+    import shutil
+
+    from fastapi.testclient import TestClient
+
+    from src.api.app import create_app
+    from src.api.storage import LocalStorage
+    from src.settings import Settings
+
+    classes = tmp / "classes"
+    shutil.copytree("classes", classes)
+    if drop_class:
+        (classes / "odwolanie.yaml").unlink()
+    elif classes_edit:
+        f = classes / "odwolanie.yaml"
+        f.write_text(classes_edit(f.read_text(encoding="utf-8")), encoding="utf-8")
+    app = create_app(
+        settings=Settings(llm_model="m", classes_dir=classes),
+        storage=LocalStorage(tmp / "storage"),
+        llm_factory=lambda s: None,
+        env={
+            "DEMO_DIR": str(demo),
+            "RESULTS_DIR": str(tmp / "r"),
+            "EVAL_DATASETS": str(tmp / "d.yaml"),
+        },
+    )
+    return TestClient(app)
+
+
+def test_demo_endpoint_loads_stored_result_without_llm(make_client, tmp_path):
+    demo = Path("data/demo")
+    if not (demo / "odwolanie.pdf").is_file():
+        pytest.skip("brak data/demo")
+    with _demo_client(tmp_path / "c1", demo) as c:
+        r = c.post("/api/documents/demo")
+        assert r.status_code == 201 and r.json()[0]["status"] == "done"
+        doc = c.get(f"/api/documents/{r.json()[0]['id']}").json()
+        assert doc["status"] == "done" and doc["class_name"] == "odwolanie"
+        assert doc["pages"] == 2 and len(doc["fields"]) > 10
+        assert any(f["highlights"] for f in doc["fields"])
+        assert doc["demo"] is True
+        second = c.post("/api/documents/demo").json()[0]["id"]
+        items = c.get("/api/documents").json()
+        assert [i["id"] for i in items["items"]] == [second]
+        assert items["summary"]["active"] == 0 and items["summary"]["failed"] == 0
+    with _demo_client(tmp_path / "c2", tmp_path / "brak") as c:
+        assert c.post("/api/documents/demo").status_code == 404
+
+
+def test_demo_follows_edited_class_schema(tmp_path):
+    """Rozszerzalność: edycja YAML klasy zmienia pola dokumentu demo (bez odtwarzania fixture)."""
+    demo = Path("data/demo")
+    if not (demo / "odwolanie.pdf").is_file():
+        pytest.skip("brak data/demo")
+    base = _demo_client(tmp_path / "a", demo, classes_edit=lambda y: y)
+    with base as c:
+        doc = c.get(f"/api/documents/{c.post('/api/documents/demo').json()[0]['id']}").json()
+    labels = {f["path"]: f["label"] for f in doc["fields"]}
+    assert "OdwolanieKIO.miejscowosc" in labels
+
+    # nowe pole dodane w YAML pojawia się w dokumencie demo (puste: model go nie wyodrębniał)
+    def add_field(y: str) -> str:
+        marker = "      - name: czynnosc_dzien\n"
+        extra = "      - name: nowe_pole\n        type: text\n        description: Pole dodane w teście.\n"
+        assert marker in y
+        return y.replace(marker, extra + marker, 1)
+
+    with _demo_client(tmp_path / "b", demo, classes_edit=add_field) as c:
+        doc2 = c.get(f"/api/documents/{c.post('/api/documents/demo').json()[0]['id']}").json()
+    added = {f["path"]: f for f in doc2["fields"]}["OdwolanieKIO.nowe_pole"]
+    assert added["value"] is None and added["highlights"] == []
+    assert len(doc2["fields"]) == len(doc["fields"]) + 1
+
+    # brak klasy z fixture: czytelny błąd 409
+    with _demo_client(tmp_path / "c", demo, drop_class=True) as c:
+        assert c.post("/api/documents/demo").status_code == 409
+
+
 def test_revert_restores_model_value_and_unapprove_keeps_edit(client, pdf_bytes):
     doc_id = _upload(client, pdf_bytes)
     wait_for(client, doc_id)
@@ -151,3 +233,31 @@ def test_upload_limits(make_client, pdf_bytes):
     with make_client() as c:
         files = [("files", (f"{i}.pdf", pdf_bytes, "application/pdf")) for i in range(51)]
         assert c.post("/api/documents", files=files).status_code == 413
+
+
+def test_delete_during_processing_does_not_resurrect_document(
+    make_client, pdf_bytes, tmp_path, monkeypatch
+):
+    import threading
+
+    from src.api import documents as documents_module
+
+    started, release = threading.Event(), threading.Event()
+    original = documents_module.process_pdf
+
+    def slow(*args, **kwargs):
+        started.set()
+        assert release.wait(5)
+        return original(*args, **kwargs)
+
+    monkeypatch.setattr(documents_module, "process_pdf", slow)
+    with make_client() as c:
+        doc_id = _upload(c, pdf_bytes)
+        assert started.wait(5)
+        assert c.delete(f"/api/documents/{doc_id}").status_code == 204
+        release.set()
+        time.sleep(0.3)  # czas na próbę zapisu przez worker
+        assert c.get(f"/api/documents/{doc_id}").status_code == 404
+        assert c.get("/api/documents").json()["items"] == []
+        files = [p for p in (tmp_path / "storage").rglob("*") if p.is_file()]
+        assert files == []

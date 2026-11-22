@@ -1,5 +1,5 @@
 import { api } from '../api.js';
-import { h, clear, badge, errorBox, pct, num, dt, show } from '../ui.js';
+import { h, clear, loading, badge, errorBox, pct, num, dt, show } from '../ui.js';
 
 const STATUS = { running: ['W toku', 'busy'], done: ['Zakończony', 'ok'], error: ['Błąd', 'err'] };
 const DIFF_KIND = { TP: 'ok', FP: 'err', FN: 'warn' };
@@ -46,6 +46,7 @@ export function mount(root, ctx) {
   const runsEl = h('section', { class: 'card', 'aria-label': 'Przebiegi ewaluacji' });
   const compareEl = h('section', { class: 'card', 'aria-label': 'Porównanie przebiegów', hidden: true });
   const detailEl = h('div', { style: 'display:flex;flex-direction:column;gap:20px' });
+  const diffHost = h('section', { id: 'diff-host', class: 'card pane', 'aria-label': 'Różnice dla dokumentu' });
   const msg = h('div', { role: 'status', 'aria-live': 'polite' });
   clear(root, h('div', { class: 'content' }, msg, runsEl, compareEl, detailEl, formEl));
 
@@ -72,8 +73,8 @@ export function mount(root, ctx) {
 
   function renderRuns() {
     let body;
-    if (st.listError) body = errorBox(st.listError);
-    else if (!st.loaded) body = h('div', { class: 'loading' }, 'Ładowanie…');
+    if (st.listError) body = errorBox(st.listError, () => { st.loaded = false; st.listError = null; renderRuns(); loadRuns(); });
+    else if (!st.loaded) body = loading('Ładowanie…');
     else if (!st.runs.length) body = h('div', { class: 'empty' }, 'Brak przebiegów. Uruchom ewaluację poniżej albo dodaj wyniki do katalogu results/.');
     else {
       body = h('div', { class: 'table-wrap' }, h('table', null,
@@ -86,7 +87,7 @@ export function mount(root, ctx) {
                 type: 'button', class: 'linklike', style: 'font:inherit;font-weight:inherit;color:inherit;text-decoration:none',
                 onclick: () => { st.sort = { col: i, dir: active && st.sort.dir === 'desc' ? 'asc' : 'desc' }; renderRuns(); },
               }, t, h('span', { 'aria-hidden': 'true' }, active ? (st.sort.dir === 'asc' ? ' ▲' : ' ▼') : ' ↕')));
-          }))),
+          }), h('th', null, h('span', { class: 'sr-only' }, 'Akcje')))),
         h('tbody', null, sortRuns(st.runs, st.sort).map((r) => {
           const [stText, stKind] = STATUS[r.status] || [r.status, 'idle'];
           return h('tr', { class: r.id === st.selectedId ? 'selected' : null },
@@ -108,7 +109,11 @@ export function mount(root, ctx) {
             h('td', null, pct(r.recall)),
             h('td', null, r.docs ?? '—'),
             h('td', null, r.errors ?? '—'),
-            h('td', { class: 'muted' }, dt(r.started_at)));
+            h('td', { class: 'muted' }, dt(r.started_at)),
+            h('td', null, r.source === 'local' ? null : h('button', {
+              type: 'button', class: 'btn small danger', 'aria-label': `Usuń ${runLabel(r)}`, disabled: r.status === 'running',
+              title: r.status === 'running' ? 'Przebieg trwa' : null, onclick: () => removeRun(r),
+            }, 'Usuń')));
         }))));
     }
     clear(runsEl, h('h2', null, 'Przebiegi ewaluacji'),
@@ -116,22 +121,38 @@ export function mount(root, ctx) {
       body);
   }
 
+  async function removeRun(r) {
+    if (!window.confirm(`Usunąć przebieg „${runLabel(r)}” wraz z wynikami? Tej operacji nie można cofnąć.`)) return;
+    try {
+      await api.del(`/evaluation/runs/${encodeURIComponent(r.id)}`);
+    } catch (e) {
+      clear(msg, errorBox(e.message));
+      return;
+    }
+    st.compare.delete(r.id);
+    delete st.compareData[r.id];
+    if (st.selectedId === r.id) { st.selectedId = null; st.detail = null; clear(detailEl); history.replaceState(null, '', '#/evaluation'); }
+    clear(msg, h('div', { class: 'alert info' }, `Usunięto przebieg ${runLabel(r)}.`));
+    await loadRuns();
+    loadCompare();
+  }
+
   /* ---------- porównanie ---------- */
   async function loadCompare() {
     const ids = [...st.compare];
     compareEl.hidden = ids.length < 2;
     if (ids.length < 2) return;
-    clear(compareEl, h('h2', null, 'Porównanie przebiegów'), h('div', { class: 'loading' }, 'Ładowanie…'));
+    clear(compareEl, h('h2', null, 'Porównanie przebiegów'), loading('Ładowanie…'));
     try {
       await Promise.all(ids.filter((i) => !st.compareData[i]).map(async (i) => { st.compareData[i] = await api.get(`/evaluation/runs/${encodeURIComponent(i)}`); }));
     } catch (e) {
-      return clear(compareEl, h('h2', null, 'Porównanie przebiegów'), errorBox(e.message));
+      return clear(compareEl, h('h2', null, 'Porównanie przebiegów'), errorBox(e.message, loadCompare));
     }
     if (dead) return;
     const runs = ids.map((i) => st.compareData[i]);
     const paths = [...new Set(runs.flatMap((r) => Object.keys((r.report && r.report.per_field) || {})))].sort();
     clear(compareEl, h('h2', null, 'Porównanie przebiegów (F1 według pola)'),
-      h('div', { class: 'table-wrap scroll' }, h('table', null,
+      h('div', { class: 'table-wrap scroll', tabindex: '0', role: 'region', 'aria-label': 'Tabela porównania przebiegów' }, h('table', null,
         h('thead', null, h('tr', null, h('th', null, 'Pole'), runs.map((r) => h('th', null, runLabel(r))))),
         h('tbody', null,
           h('tr', null, h('td', { style: 'font-weight:700' }, 'Micro-F1'), runs.map((r) => h('td', { style: 'font-weight:700' }, pct(r.micro_f1)))),
@@ -145,7 +166,7 @@ export function mount(root, ctx) {
   async function loadDetail(quiet = false) {
     if (!st.selectedId) { clear(detailEl); return; }
     const id = st.selectedId;
-    if (!quiet) clear(detailEl, h('div', { class: 'loading' }, 'Ładowanie…'));
+    if (!quiet) clear(detailEl, loading('Ładowanie…'));
     try {
       st.detail = await api.get(`/evaluation/runs/${encodeURIComponent(id)}`);
       if (st.detail.status === 'done' && (!st.docs || st.docsFor !== id)) {
@@ -154,7 +175,7 @@ export function mount(root, ctx) {
       }
     } catch (e) {
       st.detail = null;
-      if (!dead) clear(detailEl, errorBox(e.message));
+      if (!dead) clear(detailEl, errorBox(e.message, () => loadDetail()));
       return;
     }
     if (!dead) renderDetail();
@@ -190,22 +211,31 @@ export function mount(root, ctx) {
 
     if (rep && rep.per_field) {
       const rows = Object.entries(rep.per_field).sort((a, b) => a[1].f1 - b[1].f1);
-      nodes.push(h('div', { class: 'grid2' },
+      nodes.push(
         h('section', { class: 'card', 'aria-label': 'Wyniki według pola' },
           h('h2', null, 'Wyniki według pola'),
-          h('div', { class: 'table-wrap scroll' }, h('table', null,
+          h('div', { class: 'table-wrap scroll', tabindex: '0', role: 'region', 'aria-label': 'Tabela wyników według pola' }, h('table', null,
             h('thead', null, h('tr', null, ['Pole', 'P', 'R', 'F1', '', 'TP/FP/FN'].map((t, i) => h('th', null, i === 4 ? h('span', { class: 'sr-only' }, 'Wykres F1') : t)))),
             h('tbody', null, rows.map(([name, c]) => h('tr', null,
               h('td', { style: 'font-weight:600' }, name), h('td', null, num(c.precision)), h('td', null, num(c.recall)),
               h('td', { style: 'font-weight:700' }, num(c.f1)),
               h('td', { style: 'width:140px' }, h('div', { class: 'bar' + (c.f1 < 0.85 ? ' warn' : '') }, h('div', { style: `width:${Math.round(c.f1 * 100)}%` }))),
-              h('td', { class: 'muted' }, `${c.tp}/${c.fp}/${c.fn}`))))))),
-        docsSection()));
-    } else if (d.status === 'done') {
-      nodes.push(docsSection());
+              h('td', { class: 'muted' }, `${c.tp}/${c.fp}/${c.fn}`))))))));
     }
-    nodes.push(h('div', { id: 'diff-host' }, diffSection()));
+    // Dokumenty i różnice obok siebie, w panelach o stałej wysokości: zmiana podglądu nie rusza układu strony.
+    if (d.status === 'done') nodes.push(h('div', { class: 'grid2 pair' }, docsSection(), diffHost));
+    // Zachowaj przewinięcie tabel przy przebudowie (np. odświeżanie w trakcie przebiegu).
+    const scrolls = [...detailEl.querySelectorAll('.scroll')].map((el) => el.scrollTop);
     clear(detailEl, nodes);
+    detailEl.querySelectorAll('.scroll').forEach((el, i) => { if (scrolls[i]) el.scrollTop = scrolls[i]; });
+    renderDiff();
+  }
+
+  // Podgląd różnic odświeżany osobno: reszta strony (tabele, przewinięcie) zostaje nietknięta.
+  function renderDiff() {
+    clear(diffHost, diffSection());
+    diffHost.style.opacity = st.diff && st.diff.loading ? '.6' : '';
+    detailEl.querySelectorAll('tr[data-key]').forEach((tr) => tr.classList.toggle('selected', tr.dataset.key === st.diffKey));
   }
 
   function docsSection() {
@@ -213,11 +243,11 @@ export function mount(root, ctx) {
     return h('section', { class: 'card', 'aria-label': 'Wyniki według dokumentu' },
       h('h2', null, 'Wyniki według dokumentu'),
       !docs.length ? h('div', { class: 'empty' }, 'Brak danych per dokument.') :
-        h('div', { class: 'table-wrap scroll' }, h('table', null,
+        h('div', { class: 'table-wrap scroll', tabindex: '0', role: 'region', 'aria-label': 'Tabela wyników dokumentów' }, h('table', null,
           h('thead', null, h('tr', null, ['Dokument', 'Klasa', 'TP', 'FP', 'FN', 'F1'].map((t) => h('th', null, t)))),
           h('tbody', null, docs.map((x) => {
             const key = `${x.label}/${x.stem}`;
-            return h('tr', { class: key === st.diffKey ? 'selected' : null },
+            return h('tr', { class: key === st.diffKey ? 'selected' : null, 'data-key': key },
               h('td', null, h('button', { type: 'button', class: 'linklike', onclick: () => openDiff(x) }, `${x.label}/${x.stem}`),
                 x.error ? h('div', { class: 'muted', style: 'font-size:13px' }, x.error) : null),
               h('td', null, x.class_name || '—'), h('td', null, x.tp), h('td', null, x.fp), h('td', null, x.fn),
@@ -226,41 +256,42 @@ export function mount(root, ctx) {
   }
 
   async function openDiff(x) {
-    st.diffKey = `${x.label}/${x.stem}`;
-    st.diff = { loading: true };
-    renderDetail();
+    const key = `${x.label}/${x.stem}`;
+    st.diffKey = key;
+    // Poprzednie różnice zostają widoczne (przygaszone) do czasu załadowania nowych: brak zapadania się układu.
+    st.diff = st.diff && !st.diff.failed ? { ...st.diff, loading: true } : { loading: true };
+    renderDiff();
+    let result;
     try {
-      st.diff = await api.get(`/evaluation/runs/${encodeURIComponent(st.selectedId)}/documents/${encodeURIComponent(x.label)}/${encodeURIComponent(x.stem)}`);
+      result = await api.get(`/evaluation/runs/${encodeURIComponent(st.selectedId)}/documents/${encodeURIComponent(x.label)}/${encodeURIComponent(x.stem)}`);
     } catch (e) {
-      st.diff = { failed: e.message };
+      result = { failed: e.message };
     }
-    if (!dead) {
-      renderDetail();
-      const el = detailEl.querySelector('#diff-host');
-      if (el) el.scrollIntoView({ block: 'nearest' });
-    }
+    if (dead || st.diffKey !== key) return; // użytkownik kliknął inny dokument
+    st.diff = result;
+    renderDiff();
   }
 
   function diffSection() {
-    if (!st.diff) return null;
-    if (st.diff.loading) return h('div', { class: 'loading' }, 'Ładowanie różnic…');
-    if (st.diff.failed) return errorBox(st.diff.failed);
+    if (!st.diff) return [h('h2', null, 'Różnice dla dokumentu'), h('div', { class: 'empty' }, 'Wybierz dokument z tabeli, aby zobaczyć różnice między oczekiwanym a wyodrębnionym wynikiem.')];
+    if (st.diff.loading && !st.diff.diffs) return [loading('Ładowanie różnic…')];
+    if (st.diff.failed) return [errorBox(st.diff.failed)];
     const diffs = (st.diff.diffs || []).filter((x) => !st.onlyErrors || x.status !== 'TP');
-    return h('section', { class: 'card', 'aria-label': 'Różnice dla dokumentu' },
+    return [
       h('div', { class: 'toolbar', style: 'margin-bottom:8px' },
         h('h2', { style: 'margin:0' }, `${st.diffKey} – oczekiwane vs wyodrębnione`),
         h('span', { class: 'spacer' }),
         h('label', { style: 'display:flex;gap:8px;align-items:center;font-size:15px' },
-          h('input', { type: 'checkbox', checked: st.onlyErrors, onchange: (e) => { st.onlyErrors = e.target.checked; renderDetail(); } }),
+          h('input', { type: 'checkbox', checked: st.onlyErrors, onchange: (e) => { st.onlyErrors = e.target.checked; renderDiff(); } }),
           'Tylko różnice')),
       st.diff.error ? h('div', { class: 'alert err', role: 'alert', style: 'margin-bottom:8px' }, st.diff.error) : null,
       !diffs.length ? h('div', { class: 'empty' }, 'Brak różnic.') :
-        h('div', { class: 'table-wrap' }, h('table', null,
+        h('div', { class: 'table-wrap scroll', tabindex: '0', role: 'region', 'aria-label': 'Tabela różnic dla dokumentu' }, h('table', null,
           h('thead', null, h('tr', null, ['Pole', 'Oczekiwane', 'Wyodrębnione', 'Wynik'].map((t) => h('th', null, t)))),
           h('tbody', null, diffs.map((x) => h('tr', null,
             h('td', { style: 'font-weight:600' }, x.field), h('td', null, show(x.expected)), h('td', null, show(x.predicted)),
             h('td', null, badge(x.status, DIFF_KIND[x.status] || 'idle'))))))),
-      h('p', { class: 'muted', style: 'font-size:13px;margin:10px 0 0' }, 'TP – trafione · FP – wyodrębnione błędnie · FN – pominięte.'));
+      h('p', { class: 'muted', style: 'font-size:13px;margin:10px 0 0' }, 'TP – trafione · FP – wyodrębnione błędnie · FN – pominięte.')];
   }
 
   /* ---------- formularz uruchomienia ---------- */

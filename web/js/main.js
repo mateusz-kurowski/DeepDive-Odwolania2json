@@ -28,6 +28,7 @@ document.getElementById('app').append(
 );
 
 let cleanups = [];
+let navigated = false;
 
 function renderNav(active) {
   clear(
@@ -61,7 +62,10 @@ function route() {
   };
   matched.page.mount(view, ctx);
   window.scrollTo(0, 0);
+  if (navigated) view.focus({ preventScroll: true });
+  navigated = true;
 }
 
+document.querySelector('.skip').addEventListener('click', (e) => { e.preventDefault(); view.focus(); });
 window.addEventListener('hashchange', route);
 route();

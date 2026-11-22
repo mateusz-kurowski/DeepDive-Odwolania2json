@@ -9,6 +9,7 @@ import json
 import logging
 import re
 import tempfile
+import threading
 import time
 import uuid
 from collections.abc import Callable
@@ -155,6 +156,9 @@ class DocumentService:
         self.max_upload_bytes = max_upload_mb * 1024 * 1024
         self._pool = ThreadPoolExecutor(max_workers=max(workers, 1), thread_name_prefix="doc")
         self._llm: LLM | None = None
+        # Usunięte dokumenty: zapis z trwającego `_process` nie może ich odtworzyć.
+        self._deleted: set[str] = set()
+        self._write_lock = threading.Lock()
 
     # --- klucze -----------------------------------------------------------------------------
     @staticmethod
@@ -170,11 +174,15 @@ class DocumentService:
             raise DocumentError("Nie znaleziono dokumentu.", 404) from None
 
     def _write_json(self, doc_id: str, name: str, payload: dict) -> None:
-        self.storage.put(
-            self._key(doc_id, name),
-            json.dumps(payload, ensure_ascii=False).encode("utf-8"),
-            "application/json",
-        )
+        key = self._key(doc_id, name)
+        with self._write_lock:
+            if doc_id in self._deleted:
+                raise DocumentError("Nie znaleziono dokumentu.", 404)
+            self.storage.put(
+                key,
+                json.dumps(payload, ensure_ascii=False).encode("utf-8"),
+                "application/json",
+            )
 
     def _meta(self, doc_id: str) -> dict:
         return self._read_json(doc_id, "meta.json")
@@ -209,6 +217,49 @@ class DocumentService:
         )
         self._pool.submit(self._process, doc_id)
         return {"id": doc_id, "filename": name, "status": "queued"}
+
+    def add_demo(self, demo_dir: Path) -> dict:
+        """Dokument demo: PDF + zapisany wynik prawdziwego przebiegu (bez wywołania modelu)."""
+        pdf_path = demo_dir / "odwolanie.pdf"
+        fixture_path = demo_dir / "odwolanie.fixture.json"
+        if not pdf_path.is_file() or not fixture_path.is_file():
+            raise DocumentError("Brak dokumentu demo na serwerze.", 404)
+        fixture = json.loads(fixture_path.read_text(encoding="utf-8"))
+        ex = fixture["extraction"]
+        # Pola budowane z AKTUALNEGO schematu klasy (jak po zwykłym przetwarzaniu), więc edycja
+        # YAML-a klasy zmienia etykiety/sekcje demo; nowe pola pokazują się jako puste.
+        cfg = load_classes(self.settings.classes_dir).get(ex["class_name"])
+        if cfg is None:
+            raise DocumentError(
+                f"Dokument demo wymaga klasy „{ex['class_name']}”, której nie ma w schematach.", 409
+            )
+        fields = build_fields(ex["data"], ex["quotes"], ex["citation_ok"], cfg)
+        content = pdf_path.read_bytes()
+        # ponowne załadowanie resetuje demo (bez duplikatów i bez starych zatwierdzeń)
+        for item in self.list()["items"]:
+            if item["demo"]:
+                self.delete(item["id"])
+        doc_id = uuid.uuid4().hex
+        self.storage.put(self._key(doc_id, "source.pdf"), content, "application/pdf")
+        self._write_json(
+            doc_id,
+            "result.json",
+            {"class_name": ex["class_name"], "data": ex["data"], "fields": fields},
+        )
+        self._write_json(
+            doc_id,
+            "meta.json",
+            {
+                "id": doc_id,
+                "filename": pdf_path.name,
+                "status": "done",
+                "created_at": _now(),
+                "error": None,
+                "demo": True,
+                **fixture["meta"],
+            },
+        )
+        return {"id": doc_id, "filename": pdf_path.name, "status": "done"}
 
     def resume(self) -> None:
         """Po restarcie: dokumenty `queued`/`processing` wracają do kolejki."""
@@ -270,6 +321,11 @@ class DocumentService:
                 )
                 meta["status"] = "done"
             self._write_json(doc_id, "meta.json", meta)
+        except DocumentError as exc:
+            if exc.status == 404:  # dokument usunięty w trakcie przetwarzania
+                log.info("Dokument %s usunięty podczas przetwarzania, pomijam wynik", doc_id)
+                return
+            raise
         except Exception as exc:  # awaria jednego dokumentu nie zatrzymuje reszty
             log.exception("Przetwarzanie %s nieudane", doc_id)
             try:
@@ -300,6 +356,7 @@ class DocumentService:
             "approved_count": sum(f["status"] == "approved" for f in fields),
             "field_count": len(fields),
             "error": meta.get("error"),
+            "demo": bool(meta.get("demo")),
         }
 
     def list(self, q: str = "", status: str = "", needs_review: bool | None = None) -> dict:
@@ -316,6 +373,8 @@ class DocumentService:
         summary = {
             "total": total,
             "processed": len(done),
+            "active": sum(s["status"] in ("queued", "processing") for s in items),
+            "failed": sum(s["status"] == "error" for s in items),
             "needs_review_rate": (sum(s["needs_review"] for s in done) / len(done))
             if done
             else None,
@@ -426,12 +485,18 @@ class DocumentService:
 
     def delete(self, doc_id: str) -> None:
         self._meta(doc_id)
-        for key in self.storage.list(f"{PREFIX}{doc_id}/"):
-            self.storage.delete(key)
+        with self._write_lock:
+            self._deleted.add(doc_id)
+            for key in self.storage.list(f"{PREFIX}{doc_id}/"):
+                self.storage.delete(key)
 
     def delete_all(self) -> None:
-        for key in self.storage.list(PREFIX):
-            self.storage.delete(key)
+        with self._write_lock:
+            for key in self.storage.list(PREFIX):
+                parts = key.split("/")
+                if len(parts) > 1:
+                    self._deleted.add(parts[1])
+                self.storage.delete(key)
 
     # --- eksport -----------------------------------------------------------------------------
     def export_data(self, doc_id: str) -> tuple[str, dict]:
