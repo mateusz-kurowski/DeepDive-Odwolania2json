@@ -50,6 +50,9 @@ def run_check(
     if env is None:
         if (root / ".env").is_file():
             add(OK, ".env", "znaleziony")
+        elif settings.openai_api_key:
+            # Docker: plik .env zostaje na hoście, compose przekazuje zmienne do kontenera.
+            add(OK, ".env", "brak pliku, konfiguracja ze zmiennych środowiska")
         else:
             add(FAIL, ".env", "brak pliku: cp .env.example .env i wklej klucz API")
 

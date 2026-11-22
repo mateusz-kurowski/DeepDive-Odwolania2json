@@ -1,5 +1,5 @@
 .DEFAULT_GOAL := help
-.PHONY: help install requirements lint format test test-web run classes eval eval-hybrid eval-llm-only sweep docker-build docker-run up api clean
+.PHONY: help install requirements lint format test test-web run check gui classes eval eval-hybrid eval-llm-only sweep docker-build docker-run up api clean
 
 # Parametry (nadpisz: make eval MODE=llm_only LIMIT=10 MODEL=nazwa)
 MODE ?=
@@ -42,6 +42,12 @@ test-web: ## Testy frontu (Node 20+, bez zależności)
 run: ## Przetwórz input/ do output/ (MODE=hybrid|llm_only)
 	uv run python -m src run $(EXTRA)
 
+check: ## Diagnostyka: .env, klasy, odpowiedź modeli
+	uv run python -m src check
+
+gui: ## Interfejs w przeglądarce bez Dockera (http://127.0.0.1:8080)
+	uv run --extra api python -m src gui
+
 classes: ## Wypisz wczytane klasy
 	uv run python -m src classes
 
@@ -63,8 +69,8 @@ sweep: ## Seria ewaluacji z pliku YAML (CONFIG=sweeps/przyklad.yaml)
 docker-build: ## Zbuduj obraz
 	docker compose build
 
-docker-run: ## Uruchom run w kontenerze
-	docker compose run --rm app run
+docker-run: ## Uruchom run w kontenerze (input/ → output/)
+	docker compose run --rm app
 
 up: ## UI + API w Dockerze (http://localhost:8080)
 	docker compose up --build

@@ -38,6 +38,15 @@ def test_failing_model_and_missing_key(demo_classes, tmp_path, capsys):
 
 
 def test_missing_env_file_is_reported(demo_classes, tmp_path, capsys):
-    code = run_check(_settings(demo_classes), None, lambda u, k: _Client(), root=tmp_path)
+    settings = _settings(demo_classes).model_copy(update={"openai_api_key": ""})
+    code = run_check(settings, None, lambda u, k: _Client(), root=tmp_path)
     assert code == 1
     assert "cp .env.example .env" in capsys.readouterr().out
+
+
+def test_env_vars_without_env_file_are_ok(demo_classes, tmp_path, capsys):
+    """Docker: .env nie trafia do obrazu, compose przekazuje zmienne środowiska."""
+    (tmp_path / "input").mkdir()
+    code = run_check(_settings(demo_classes), None, lambda u, k: _Client(), root=tmp_path)
+    assert code == 0
+    assert "zmiennych środowiska" in capsys.readouterr().out

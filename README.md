@@ -1,220 +1,237 @@
 # Odwołania2JSON
 
-Zamienia PDF-y sprawy odwoławczej KIO na JSON-y zgodne ze schematem UZP (HackNation 2026, zadanie UZP).
+Urzędnik UZP dostaje sprawę odwoławczą KIO jako kilka PDF-ów o różnym układzie, czasem skanów, i ręcznie przepisuje z nich strony, sygnatury, zarzuty i kwoty. Odwołania2JSON rozpoznaje typ każdego dokumentu (odwołanie, pełnomocnictwo, potwierdzenie przelewu) i zapisuje jego dane jako JSON zgodny ze schematem UZP, z cytatem źródłowym dla każdego pola. Nowy typ dokumentu dodaje się samym plikiem YAML, bez zmian w kodzie.
 
-```
-input/case1/*.pdf  →  klasyfikacja  →  ekstrakcja modelem  →  walidacja  →  output/case1/<ta-sama-nazwa>.json
-```
+| Wynik (tryb `hybrid`, `ministral-3b` + `ministral-8b`) | |
+|---|---|
+| F1 na 180 PDF z referencją (60 spraw organizatora) | **0,984**, klasyfikacja 100% |
+| F1 na 30 skanach (PDF bez warstwy tekstowej) | **0,922** |
+| Dokumenty spoza klas odrzucone (`{}`) | **12/12** |
+| Czas dla 150 PDF (limit organizatora 45 min) | **ok. 3 min** tekst, ok. 11 min same skany (`--workers 8`) |
 
-- Klasy dokumentów: `odwolanie`, `pelnomocnictwo`, `przelew`. Dokument spoza klas (`nieznany`) dostaje pusty JSON `{}` pod oryginalną nazwą pliku oraz wpis w logu.
-- Każda klasa to plik YAML w `classes/`. **Nowa klasa nie wymaga zmian w kodzie** (patrz niżej).
-- Dla każdego pola model podaje cytat z dokumentu, a kod sprawdza go w tekście. Ślad cytatów trafia do `trace/` (nie do `output/`).
-- Tylko open source, w tym modele open-weights. Model jest wołany przez API zgodne z OpenAI (LiteLLM, vLLM, Ollama). Kod nie wymaga GPU. Wymagania organizatora (FAQ): model da się zainstalować lokalnie, a API jest hostowane w UE przez dostawcę z polityką prywatności; klucz API do używanej usługi dostarcza zespół.
-- Imiona i nazwiska są zwracane w mianowniku („Mateusz Szymański”), brak informacji to `null`.
+Szczegóły pomiarów: [`docs/benchmark.md`](docs/benchmark.md).
 
-## Szybki start dla jury
+## Uruchomienie
 
-Wymagania: Python 3.13+ i klucz API przekazany w zgłoszeniu (HackTribe). GPU ani Docker nie są potrzebne.
+**1. Klucz API.** Skopiuj `.env.example` do `.env` i wklej klucz przekazany w zgłoszeniu HackTribe w `OPENAI_API_KEY=`. Adres API i modele są już ustawione.
 
 ```bash
-cp .env.example .env                       # wklej klucz do OPENAI_API_KEY, reszta jest ustawiona
-python3.13 -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt
-python -m src check                        # ok. 5 s: .env, klasy, odpowiedź modeli
-python -m src run                          # input/caseN/*.pdf → output/caseN/*.json
-python -m src gui                          # interfejs w przeglądarce: http://127.0.0.1:8080
+cp .env.example .env          # Windows: copy .env.example .env
 ```
 
-Windows: `start.bat check`, `start.bat` (przetwarza `input/`), `gui.bat` (interfejs). Skrypty same tworzą `.venv` i instalują zależności.
+**2. Dokumenty.** Włóż PDF-y do `input/<sprawa>/`. Wyniki pojawią się w `output/<sprawa>/<ta-sama-nazwa>.json`. Przykładowa sprawa do próby (skan odwołania i dokument spoza klas):
 
-- Katalogi `input/` i `output/` są w repo i startują puste. Przykładowa sprawa do szybkiej próby: `cp -r data/szablon-aplikacja/input/* input/` (Windows: `xcopy /E data\szablon-aplikacja\input input\`).
-- `run` wypisuje liczbę zapisanych, odrzuconych (`{}`) i błędnych plików, czas oraz prognozę dla 150 PDF. Szczegóły per plik: `trace/_summary.json`, cytaty źródłowe: `trace/`.
-- GUI: przeciągnij PDF-y, a po prawej zobaczysz pola z cytatami obok podglądu dokumentu; „Widok JSON” pokazuje wynik w formacie `output/`. „Załaduj dokument demo” działa bez wywołania modelu.
+```bash
+cp -r data/szablon-aplikacja/input/* input/     # Windows: xcopy /E data\szablon-aplikacja\input input\
+```
 
-## Architektura
+**3. Uruchom.** Wybierz jeden wiersz:
+
+| Masz | Przetwarzanie `input/` → `output/` | Sprawdzenie konfiguracji | Interfejs w przeglądarce |
+|---|---|---|---|
+| Docker | `docker compose run --rm app` | `docker compose run --rm app check` | `docker compose up --build` → <http://localhost:8080> |
+| Windows, Python 3.13+ | `start.bat` | `start.bat check` | `gui.bat` → <http://127.0.0.1:8080> |
+| Linux/macOS, Python 3.13+ | `./start.sh` | `./start.sh check` | `./start.sh gui` → <http://127.0.0.1:8080> |
+
+Skrypty `start.*` przy pierwszym uruchomieniu tworzą `.venv` i instalują `requirements.txt` (około minuty). GPU nie jest potrzebne: modele są wołane przez API.
+
+Po przebiegu `run` wypisuje liczbę zapisanych plików, odrzuconych (`{}`) i błędów oraz czas. Szczegóły per plik: `trace/_summary.json`, cytaty źródłowe: `trace/`.
+
+W interfejsie przeciągnij PDF-y albo kliknij „Załaduj dokument demo” (działa bez wywołania modelu). Obok podglądu PDF są pola z cytatami, a źródło każdego pola jest podświetlone w dokumencie; „Widok JSON” pokazuje wynik w formacie `output/`.
+
+**Gdy coś nie działa:** najpierw `check`. Wypisuje, czego brakuje (plik `.env`, klucz, odpowiedź każdego modelu) i co z tym zrobić.
+
+- `BŁĄD .env` / `OPENAI_API_KEY pusty`: wróć do kroku 1.
+- `Brak Pythona 3.13+`: zainstaluj z <https://www.python.org/downloads/> albo użyj Dockera.
+- Port 8080 zajęty: `WEB_PORT=8081 docker compose up` albo `./start.sh gui --port 8081`.
+
+## Jak to działa
+
+### Przetwarzanie dokumentu
 
 ```mermaid
 flowchart LR
-    A["PDF<br/>input/caseN/*.pdf"] --> B{"Warstwa tekstowa?"}
+    A["PDF<br/>input/sprawa/*.pdf"] --> B{"Warstwa<br/>tekstowa?"}
     B -- tak --> C["Tekst (pypdf)"]
-    B -- "nie (skan)" --> D["OCR: model z wizją (VLM)"]
+    B -- "nie (skan)" --> D["OCR: model z wizją<br/>(VLM, strona jako obraz)"]
     D --> C
-    C --> E["Klasyfikacja<br/>LLM (hinty z YAML jako awaria)"]
-    E -- nieznany --> N["{} + wpis w logu"]
-    E -- "klasa z classes/*.yaml" --> F["Ekstrakcja LLM<br/>schemat JSON z YAML, wartość + cytat"]
-    F --> G["Weryfikacja cytatów<br/>dopasowanie przybliżone"]
-    G --> H["Walidatory i normalizacja<br/>NIP, KRS, IBAN, daty... (hybrid)"]
-    H --> I["output/caseN/*.json"]
-    G -.-> T["trace/ (cytaty, tokeny)"]
-    Y[("classes/*.yaml<br/>schemat, prompty, hinty")] -.-> E
+    C --> E["Klasyfikacja<br/>mały model (CLASSIFY_MODEL)<br/>+ hinty i wykluczenia z YAML"]
+    E -- "spoza klas" --> N["{} pod oryginalną nazwą<br/>+ wpis w logu"]
+    E -- "klasa z classes/*.yaml" --> F["Ekstrakcja (LLM_MODEL)<br/>schemat JSON z YAML:<br/>wartość + cytat"]
+    F --> G["Weryfikacja cytatów<br/>dopasowanie przybliżone do tekstu"]
+    G --> H["Walidatory i normalizacja<br/>NIP, KRS, IBAN, daty, kwoty<br/>(tryb hybrid)"]
+    H --> I["output/sprawa/*.json"]
+    G -.-> T["trace/<br/>cytaty, tokeny, czas"]
+    Y[("classes/*.yaml<br/>pola, opisy, reguły, hinty")] -.-> E
     Y -.-> F
     Y -.-> H
 ```
 
-- Klasy opisuje wyłącznie konfiguracja YAML (schemat pól, opis, hinty, reguły), dlatego nowa klasa nie wymaga zmian w kodzie.
-- Cytaty są weryfikowane w kodzie (cytat spoza tekstu wywołuje ponowną próbę, wynik trafia do `trace/`). Wartość o błędnym formacie po ponownej próbie dostaje `null`; program nie zgaduje.
-- Model (ekstrakcja) i VLM (OCR) są wołane przez API zgodne z OpenAI (LiteLLM, vLLM, Ollama), więc maszyna docelowa nie potrzebuje GPU.
+- **Klasy to konfiguracja.** Silnik w `src/` nie zna nazw klas. Pola, opisy dla modelu, reguły i słowa kontrolne są w `classes/*.yaml`.
+- **Nie zgadujemy.** Cytat spoza tekstu dokumentu albo wartość o złym formacie powoduje jedną ponowną próbę, a potem `null`.
+- **Limit czasu.** Dokument, który przekroczy `DOC_TIMEOUT_S` (240 s), dostaje `{}` i wpis w logu, a reszta przebiegu idzie dalej.
+- **Dwa tryby** (`EXTRACTION_MODE` lub `--mode`): `hybrid` (domyślny) to model, walidatory formatów i normalizacja; `llm_only` to sam model ze schematem i weryfikacją cytatów, do porównania F1.
 
-## Uruchomienie
+### Aplikacja
 
-Trzy sposoby, każdy wymaga pliku `.env` (klucz i adres API) oraz PDF-ów w `input/caseN/`; wynik trafia do `output/caseN/`.
+```mermaid
+flowchart LR
+    subgraph Uzytkownik["Użytkownik"]
+        U["Przeglądarka"]
+        CLI["CLI: run / check / eval<br/>start.bat, start.sh, Docker"]
+    end
+    subgraph App["Odwołania2JSON (bez GPU)"]
+        W["UI: web/<br/>statyczny HTML + JS"]
+        A["API: FastAPI<br/>src/api/"]
+        P["Silnik: src/<br/>OCR → klasyfikacja → ekstrakcja → walidacja"]
+    end
+    Y[("classes/*.yaml")]
+    S[("Storage<br/>katalog storage/ lub S3/MinIO")]
+    R[("data/, results/<br/>zbiory i raporty ewaluacji")]
+    L["Modele open-weights<br/>API zgodne z OpenAI<br/>(LiteLLM, vLLM, Ollama)"]
+    IO[("input/ → output/, trace/")]
 
-| Sposób | Komenda | Wymagania |
-|---|---|---|
-| pip (Linux/macOS) | `pip install -r requirements.txt && python -m src run` w venv | Python 3.13+ |
-| Windows | `start.bat` (venv, pip i `run` w jednym kroku) | Python 3.13+ |
-| Docker | `docker compose run --rm app` | Docker |
-| UI bez Dockera | `python -m src gui` (Windows: `gui.bat`), potem http://127.0.0.1:8080 | Python 3.13+ |
-| UI + API | `docker compose up --build`, potem http://localhost:8080 | Docker |
-| Diagnostyka | `python -m src check` | Python 3.13+ |
-
-Lokalne API i interfejs graficzny: sekcja „UI i API”.
-
-Szczegóły poniżej. Wymagania: Python 3.13+. Instalacja przez `pip` (`requirements.txt`) albo [uv](https://docs.astral.sh/uv/) (`uv.lock`). Do skanów potrzebny jest model z wizją (VLM, patrz „OCR skanów”); Tesseract jest opcjonalny i nie instaluje się domyślnie.
-
-```bash
-cp .env.example .env        # uzupełnij OPENAI_API_KEY, OPENAI_BASE_URL, LLM_MODEL (+ VLM_MODEL dla skanów)
-mkdir -p input/case1 && cp "twoj plik.pdf" input/case1/
-
-# pip (Linux/macOS)
-python3.13 -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt
-python -m src run
-
-# uv
-uv sync && uv run python -m src run
+    U --> W -- "/api" --> A --> P
+    CLI --> P
+    CLI <--> IO
+    P --> L
+    Y -.-> P
+    A <-- "edycja schematów" --> Y
+    A <--> S
+    A -. odczyt .-> R
 ```
 
-Windows: `start.bat` sam tworzy `.venv`, instaluje `requirements.txt` i uruchamia `run` (argumenty są przekazywane, np. `start.bat classes`). Docker:
+- **UI** ma cztery widoki: *Dokumenty* (wgranie, kolejka, eksport JSON/JSONL/CSV), *Przegląd* (PDF z podświetlonymi cytatami obok pól, status AI / Poprawione / Zatwierdzone), *Schematy* (edycja klasy formularzem albo w YAML, działa od następnego dokumentu bez restartu) i *Ewaluacja* (F1 per pole i różnice per dokument).
+- **Docker** (`docker compose up`) to dwa kontenery: `web` (nginx, przekazuje `/api/` do API) i `api`. **Bez Dockera** (`gui`) jeden proces FastAPI serwuje API i pliki z `web/`. Kontrakt endpointów: [`docs/api.md`](docs/api.md).
+- **Storage.** Bez `S3_BUCKET` wgrane PDF-y, wyniki i korekty trafiają do katalogu `storage/` (w Dockerze do wolumenu). Podłączenie S3/MinIO to tylko zmienne `S3_*` w `.env`.
 
-```bash
-cp .env.example .env
-docker compose build
-docker compose run --rm app            # = run na input/ → output/
-docker compose run --rm app classes    # lista wczytanych klas
-```
+## Model i dane
 
-W kontenerze `localhost` to nie Twój komputer. Jeśli LiteLLM działa na hoście, ustaw `OPENAI_BASE_URL=http://host.docker.internal:4000/v1`.
+- Klasyfikacja: `mistralai/ministral-3b-2512` (3B). Ekstrakcja i OCR skanów: `mistralai/ministral-8b-2512` (8B, z wizją). Oba to modele open-weights, wołane przez LiteLLM zespołu. Kod nie zależy od dostawcy: zmiana modelu lub endpointu to zmiana `.env`.
+- Wymagania organizatora (FAQ): model da się zainstalować lokalnie, API jest hostowane w UE, klucz dostarcza zespół.
+- Dane: przykłady organizatora (`data/dane/`: 60 syntetycznych spraw, skany i dokumenty spoza klas). Wyniki na nich: [`docs/benchmark.md`](docs/benchmark.md).
 
-### OCR skanów
+## Jak dodać klasę dokumentu
 
-PDF bez warstwy tekstowej jest czytany przez model z wizją (VLM): każda strona idzie jako obraz do API zgodnego z OpenAI, a model zwraca przepisany tekst. Ustawienia w `.env`:
+Bez zmian w Pythonie. Gotowy przykład: `classes_examples/faktura.yaml`.
 
-| Zmienna | Znaczenie |
+1. Skopiuj plik do `classes/` (nazwa pliku = `name` w środku): `cp classes_examples/faktura.yaml classes/`. To samo można zrobić w UI: *Schematy* → „+ Nowy typ”.
+2. Opisz klasę:
+   - `description`: po tym model rozpoznaje klasę; warto dopisać, czym klasa nie jest.
+   - `hints`: słowa kontrolne, opcjonalnie. Dopasowanie ignoruje polskie znaki i wielkość liter, a rozstrzelone tytuły („P E Ł N O”) są sklejane.
+   - `exclude_hints`: słowa wykluczające; gdy któreś stoi na początku dokumentu, to nie ta klasa (np. „orzeka:” w wyroku KIO).
+   - `hint_veto`: `always` (domyślnie, brak hintu unieważnia wybór modelu), `other_class` (tylko gdy pasują hinty innej klasy) albo `never`.
+   - `rules`: reguły w języku naturalnym.
+   - `examples`: few-shot, opcjonalnie.
+   - `requires`: opcjonalna kontrola spójności w trybie hybrid (`when: Sekcja.pole`, `then: [Sekcja.inne_pole]`); gdy `when` ma wartość, a pole z `then` jest puste, ekstrakcja jest raz ponawiana.
+3. Opisz pola w `fields`:
+   - Typy: `text`, `number`, `integer`, `flag` (1/0), `enum` (z `options`), `object`, `array`.
+   - Pole może mieć `validator` (`nip`, `krs`, `regon`, `bzp`, `ted`, `iban`, `date`, `amount`, `email`, `pesel`), `description` dla modelu i `nullable`.
+   - Dla `array` podaj `key` (pola identyfikujące element, używane przez `eval`).
+   - Pole wyliczane ze słownika: `derive: {from: pole, map: {...}}`.
+4. Sprawdź: `python -m src classes`. Od tej chwili klasyfikator widzi nową klasę, a `run` zapisuje jej JSON.
+
+Nowy walidator formatu to jeden wpis w `src/validators.py` (`REGISTRY`).
+
+## Dla deweloperów
+
+Środowisko przez [uv](https://docs.astral.sh/uv/): `uv sync --extra api`. Skróty: `make help`.
+
+| Cel | Komenda |
 |---|---|
-| `OCR_BACKEND` | `vlm` (domyślnie) lub `tesseract` |
-| `VLM_MODEL` | nazwa modelu z wizją (open-weights); wymagana dla `vlm` |
-| `VLM_BASE_URL`, `VLM_API_KEY` | opcjonalnie inny endpoint i klucz niż `OPENAI_*` |
-
-Model ekstrakcji (`LLM_MODEL`) może być tekstowy. Gdy VLM zawiedzie, a Tesseract jest zainstalowany, program użyje go jako zapasowego.
-
-**Tesseract (opcjonalnie, tylko jeśli nie masz VLM).** Nie jest częścią `requirements.txt`. Zainstaluj program z danymi języka polskiego, potem pakiet Pythona:
-
-- macOS: `brew install tesseract tesseract-lang`
-- Debian/Ubuntu: `sudo apt install tesseract-ocr tesseract-ocr-pol`
-- Windows: instalator z <https://github.com/UB-Mannheim/tesseract/wiki> (zaznacz język Polish), dodaj do `PATH`
-- pakiet: `pip install pytesseract` (lub `uv sync --extra tesseract`), potem `OCR_BACKEND=tesseract`
-
-Obraz Docker nie zawiera Tesseracta (używa VLM).
-
-### Makefile
-
-Skróty do najczęstszych komend: `make help` (lista), `make install`, `make test`, `make run`, `make classes`, `make eval MODE=llm_only LIMIT=10 MODEL=<nazwa>`, `make eval-hybrid`, `make eval-llm-only`, `make docker-build`, `make docker-run`, `make clean`.
+| Przetwarzanie, diagnostyka, UI | `make run`, `make check`, `make gui` |
+| UI w Dockerze / CLI w Dockerze | `make up`, `make docker-run` |
+| Testy, lint, format | `make test`, `make test-web`, `make lint`, `make format` |
+| Ewaluacja F1 | `make eval` (`MODE`, `MODEL`, `LIMIT`, `EXAMPLES`, `CACHE`) |
+| Seria wariantów | `make sweep CONFIG=sweeps/przyklad.yaml` |
+| `requirements.txt` (wymóg dostawy) | `make requirements` |
 
 ### Opcje `run`
 
 | Opcja | Znaczenie |
 |---|---|
 | `--input`, `--output`, `--trace` | katalogi (domyślnie `input`, `output`, `trace`) |
-| `--classes` | katalog z klasami YAML (domyślnie `CLASSES_DIR`, czyli `classes`) |
+| `--classes` | katalog z klasami YAML (domyślnie `CLASSES_DIR`) |
 | `--mode hybrid\|llm_only` | tryb ekstrakcji (nadpisuje `EXTRACTION_MODE`) |
-| `--workers N` | równoległość (domyślnie 4) |
-| `--doc-timeout S` | limit czasu na dokument w sekundach (nadpisuje `DOC_TIMEOUT_S`, domyślnie 240; 0 = bez limitu). Po przekroczeniu dokument dostaje `{}` i wpis w logu |
+| `--workers N` | równoległość (domyślnie 4; pomiary czasu: 8) |
+| `--doc-timeout S` | limit czasu na dokument (nadpisuje `DOC_TIMEOUT_S`; 0 = bez limitu) |
+| `--cache DIR` | cache odpowiedzi LLM na dysku (domyślnie wyłączony) |
 
-Na końcu `run` wypisuje czas przebiegu i prognozę dla 150 PDF (limit organizatora: 45 min); szczegóły per plik są w `trace/_summary.json` (`timing`, `files[].seconds`).
-
-Kod wyjścia to 1, gdy jakiś dokument zakończył się błędem (np. model niedostępny, brak tekstu w PDF). Dokument `nieznany` nie jest błędem.
+Kod wyjścia to 1, gdy któryś dokument zakończył się błędem (np. model niedostępny). Dokument spoza klas nie jest błędem.
 
 ### Zmienne środowiskowe
 
+Wzór z wartościami: `.env.example`. Ten sam plik czytają skrypty `start.*`, `python -m src` i `docker compose`.
+
 | Zmienna | Domyślnie | Znaczenie |
 |---|---|---|
-| `OPENAI_API_KEY`, `OPENAI_BASE_URL`, `LLM_MODEL` | | endpoint i model |
-| `EXTRACTION_MODE` | `hybrid` | `hybrid` = model + walidatory/normalizacja; `llm_only` = sam model |
-| `CLASSES_DIR` | `classes` | katalog klas |
+| `OPENAI_API_KEY`, `OPENAI_BASE_URL` | | klucz i adres API zgodnego z OpenAI |
+| `LLM_MODEL` | | model ekstrakcji (i domyślny dla wszystkich zadań) |
+| `CLASSIFY_MODEL`, `EXTRACT_MODEL` | `LLM_MODEL` | osobny model do klasyfikacji / ekstrakcji |
+| `OCR_BACKEND` | `vlm` | `vlm` albo `tesseract` |
+| `VLM_MODEL` | | model z wizją do skanów |
+| `VLM_BASE_URL`, `VLM_API_KEY` | `OPENAI_*` | inny endpoint dla VLM |
+| `EXTRACTION_MODE` | `hybrid` | `hybrid` albo `llm_only` |
+| `DOC_TIMEOUT_S` | `240` | limit czasu na dokument w sekundach |
 | `CITATION_THRESHOLD` | `85` | próg dopasowania cytatu (0–100) |
-| `DOC_TIMEOUT_S` | `240` | limit czasu na dokument (OCR + klasyfikacja + ekstrakcja) |
+| `CLASSES_DIR` | `classes` | katalog klas |
+| `LLM_CONFIG` | `config/llm.json` | parametry wywołań (`max_tokens`, `temperature`, `extra_body`) |
+| `S3_BUCKET`, `S3_ENDPOINT_URL`, `S3_REGION`, `S3_ACCESS_KEY`, `S3_SECRET_KEY`, `S3_CREATE_BUCKET` | | object storage dla UI; bez `S3_BUCKET` katalog `storage/` |
+| `MAX_UPLOAD_MB` | `25` | limit rozmiaru pliku w UI |
+| `WEB_PORT` | `8080` | port UI w `docker compose up` |
 
-## Tryby ekstrakcji
+W kontenerze `localhost` to kontener, nie Twój komputer: dla LiteLLM na hoście ustaw `OPENAI_BASE_URL=http://host.docker.internal:4000/v1`.
 
-- `hybrid` (domyślny): po odpowiedzi modelu działają walidatory formatów (NIP, KRS, REGON, BZP, TED, IBAN, daty ISO, kwota). Błędny format = jedna ponowna próba, potem `null`.
-- `llm_only`: bez walidatorów i normalizacji; wynik to wartości zwrócone przez model. Schemat, weryfikacja cytatów i reguły w języku naturalnym działają nadal.
+### OCR skanów
 
-## Ewaluacja
+PDF bez warstwy tekstowej jest czytany przez model z wizją: każda strona idzie jako obraz, a model zwraca przepisany tekst. Gdy VLM zawiedzie, a Tesseract jest zainstalowany, program użyje go zapasowo.
 
-Lokalny F1 na przykładach z referencją (`data/dane/przyklad_NN/`):
+Tesseract jest opcjonalny i nie wchodzi do `requirements.txt` ani do obrazu Docker. Instalacja: program z językiem polskim (macOS `brew install tesseract tesseract-lang`, Debian/Ubuntu `sudo apt install tesseract-ocr tesseract-ocr-pol`, Windows: instalator z <https://github.com/UB-Mannheim/tesseract/wiki>), potem `pip install pytesseract` i `OCR_BACKEND=tesseract`.
+
+### Ewaluacja
+
+F1 per pole na przykładach z referencją (`data/dane/przyklad_NN/`):
 
 ```bash
 uv run python -m src eval --mode hybrid
-uv run python -m src eval --mode llm_only --model <nazwa> --out-json wyniki.json
-uv run python -m src eval --limit 10        # szybki test
-uv run python -m src eval --dump results/dump   # predykcja, referencja i różnice per dokument
-uv run python -m src eval --examples 01,02,13   # tylko wybrane przykłady (make eval EXAMPLES=01,02,13)
-uv run python -m src eval --cache results/cache  # cache odpowiedzi LLM na dysku (domyślnie wyłączony; też w run)
+uv run python -m src eval --limit 10                 # szybki test
+uv run python -m src eval --examples 01,02,13        # wybrane przykłady
+uv run python -m src eval --dump results/dump        # predykcja, referencja i różnice per dokument
+uv run python -m src sweep sweeps/przyklad.yaml      # porównanie modeli i ustawień
 ```
 
-Raport pokazuje precision, recall i F1 per pole oraz łącznie, exact match dokumentu, poprawność klasyfikacji, odsetek poprawnych cytatów i odsetek `null` przy polach z wartością referencyjną, a także negatywy (PDF-y ponad liczbę referencji, np. `data/dane/negatywne`: ile dostało `{}` i które zostały błędnie przyjęte) oraz czas (s/PDF, najwolniejszy plik, prognoza dla 150 PDF). Skaner organizatora nie jest opublikowany, więc założenia porównania są w dokumencie projektowym (sekcja 7). `--dump` zapisuje dla każdego PDF-a predykcję, referencję, listę różnic i ślad cytatów (`<dump>/<przyklad>/<plik>.json`; `_missed.json` dla klas bez dokumentu). `run` zapisuje dodatkowo `trace/_summary.json` (klasa, błąd, plik wyjściowy, tokeny per plik). Wyniki pomiarów: `docs/benchmark.md`.
+Raport pokazuje precision, recall i F1 per pole i łącznie, exact match dokumentu, poprawność klasyfikacji, odsetek zweryfikowanych cytatów, negatywy (ile PDF-ów spoza klas dostało `{}`) i czas z prognozą dla 150 PDF. Skaner organizatora nie jest opublikowany; nasze założenia porównania opisuje dokument projektowy (sekcja 7). Sweep zapisuje każdy wariant do `<out_dir>/<name>/`, a zestawienie do `summary.md`; wariant z błędem nie przerywa serii.
 
-### Seria ewaluacji na wielu wariantach
+UI czyta dane do ewaluacji wg `config/eval-datasets.yaml` (najpierw object storage, potem katalog lokalny) i pokazuje raporty z `results/`. Wgranie zbiorów do bucketa: `uv run --extra api python -m scripts.upload_datasets`.
 
-Porównanie modeli i ustawień jednym poleceniem (ten sam klucz API z `.env`, wariant zmienia model, tryb, OCR):
+### Wdrożenie (Coolify)
 
-```bash
-uv run python -m src sweep sweeps/przyklad.yaml    # lub: make sweep CONFIG=sweeps/przyklad.yaml
-```
-
-Plik YAML (wzór: `sweeps/przyklad.yaml`) ma `out_dir`, wspólne ustawienia (`data`, `workers`, `cache`, `mode`, `limit`, `examples`, `ocr_backend`, `vlm_model`, `llm_config`) i listę `variants` (`name`, `model` oraz opcjonalne nadpisania). Pełne wyniki każdego wariantu trafiają do `<out_dir>/<name>/` (`report.json`, `report.txt`, `dump/`), a zestawienie do `<out_dir>/summary.md` i `summary.json`. Wariant z błędem (np. brak dostępu do modelu) nie przerywa serii.
-
-## Jak dodać klasę dokumentu
-
-Nic nie edytujesz w Pythonie. Przykład: `classes_examples/faktura.yaml`.
-
-1. Skopiuj plik do `classes/` (nazwa pliku = `name` w środku): `cp classes_examples/faktura.yaml classes/`.
-2. Opisz klasę: `description` (model rozpoznaje po nim klasę), `hints` (słowa kontrolne, opcjonalnie; dopasowanie bez polskich znaków i wielkości liter, rozstrzelone tytuły typu „P E Ł N O” są sklejane), `exclude_hints` (słowa wykluczające: gdy któreś stoi na początku dokumentu, to nie ta klasa, np. „orzeka:” w wyroku KIO), `hint_veto` (`always` domyślnie: brak hintu unieważnia wybór modelu; `other_class`: tylko gdy pasują hinty innej klasy; `never`), `rules` (reguły w języku naturalnym), `examples` (few-shot, opcjonalnie), `requires` (opcjonalna kontrola spójności w trybie hybrid: `when: Sekcja.pole`, `then: [Sekcja.inne_pole]`; gdy `when` ma wartość, a pole z `then` jest puste, ekstrakcja jest raz ponawiana z tą uwagą).
-3. Opisz pola w `fields`. Typy: `text`, `number`, `integer`, `flag` (1/0), `enum` (z `options`), `object`, `array`. Pole może mieć `validator` (`nip`, `krs`, `regon`, `bzp`, `ted`, `iban`, `date`, `amount`, `email`, `pesel`), `description` dla modelu, `nullable`. Dla `array` podaj `key` (pola identyfikujące element, używane przez `eval`). Pole wyliczane ze słownika: `derive: {from: pole, map: {...}}`.
-4. Sprawdź: `uv run python -m src classes`. Od tej chwili klasyfikator widzi nową klasę, a `run` zapisuje jej JSON.
-
-Nowy walidator formatu to jeden wpis w `src/validators.py` (`REGISTRY`).
-
-## UI i API
-
-```bash
-cp .env.example .env
-docker compose up --build        # UI: http://localhost:8080, API: kontener `api` (port 8000 wewnątrz sieci)
-```
-
-Front (`web/`, statyczny HTML + JS, nginx) i API (`src/api/`, FastAPI) to osobne kontenery; nginx przekazuje `/api/` do API. Kontrakt endpointów: [`docs/api.md`](docs/api.md). Bez Dockera: `python -m src gui` (API i front z `web/` w jednym procesie na `127.0.0.1:8080`, otwiera przeglądarkę; `--no-browser`, `--port`). Samo API: `python -m src serve` (opcjonalnie `--web web`). Zależności API są w `requirements.txt`.
-
-- **Dokumenty użytkowników** (wgrane w UI PDF-y, wyniki ekstrakcji, korekty) trafiają do object storage: S3 albo MinIO (`S3_BUCKET`, `S3_ENDPOINT_URL`, `S3_ACCESS_KEY`, `S3_SECRET_KEY`, patrz `.env.example`). Bez `S3_BUCKET` aplikacja zapisuje do katalogu `./storage`, więc działa od razu, a podłączenie bucketa to tylko zmiana `.env`.
-- **Ewaluacja.** Dane do ewaluacji (`config/eval-datasets.yaml`) są czytane z object storage pod `prefix` (np. `datasets/dane`), a gdy tam pusto, z katalogu lokalnego (`path`). Wgranie zbiorów do bucketa: `uv run --extra api python -m scripts.upload_datasets`. Domyślnie UI pokazuje wyniki odczytane z plików lokalnych (`results/`, tylko odczyt: raporty `eval --out-json` i `sweep`). Dodatkowe przebiegi uruchomione z UI zapisują raport i diffy per dokument w object storage.
-- **Schematy.** Typy dokumentów to YAML w `classes/`; edycja w UI zapisuje plik (po walidacji) i działa od następnego dokumentu, bez restartu.
-- **Przegląd.** Pole ma status AI / Poprawione / Zatwierdzone. Zamiast „pewności” UI pokazuje, czy cytat źródłowy został zweryfikowany w tekście. Podświetlenia cytatów w PDF są liczone dopasowaniem przybliżonym do warstwy tekstowej (skany: bez podświetleń).
+Resource → Docker Compose → to repo, plik `docker-compose.yml`. Zmienne ustawia się w UI Coolify, domenę przypisuje się usłudze `web` (port 80). Proxy i TLS zapewnia Coolify, a `docker-compose.override.yml` (port 8080) działa tylko lokalnie.
 
 ## Struktura
 
 ```
-src/               kod (generyczny silnik, nie zna nazw klas)
+src/               silnik (generyczny, nie zna nazw klas) i CLI: python -m src
 src/api/           API (FastAPI): dokumenty, schematy, ewaluacja, storage
-web/               UI (statyczny front + nginx)
-classes/          klasy dokumentów (YAML)
-classes_examples/ przykład klasy do skopiowania
-docs/             projekt, plan, schematy organizatora, benchmark
-data/dane/        60 przykładów z referencją (organizator)
-tests/            testy (pytest)
+web/               UI (statyczny HTML + JS; w Dockerze nginx)
+classes/           klasy dokumentów (YAML)
+classes_examples/  przykład klasy do skopiowania (faktura)
+config/            parametry LLM, rozmiary modeli, zbiory ewaluacji
+sweeps/            konfiguracje serii ewaluacji
+data/              przykłady organizatora, szablon input/output, dokument demo
+results/           zapisane raporty ewaluacji (czytane przez UI)
+docs/              dokument projektowy, schematy UZP, benchmark, API
+input/, output/    wejście i wyjście run (puste w repo)
+start.bat, start.sh, gui.bat   uruchomienie bez Dockera
 ```
 
-Testy: `make test` (`uv run pytest`). Lint i format: `make lint`, `make format` (ruff). Zależności deweloperskie instaluje `uv sync`. `requirements.txt` (wymóg dostawy) generuje `make requirements`.
+## Co powstało podczas HackNation
+
+Całe repozytorium powstało w trakcie HackNation (pierwszy commit 21.11.2026, 10:46): silnik ekstrakcji, klasy YAML, walidatory, OCR przez VLM, ewaluacja i sweep, API, UI oraz Docker. Dane wejściowe pochodzą od organizatora.
 
 ## Licencje
 
-Zależności: pypdf (BSD), pydantic (MIT), PyYAML (MIT), openai SDK (Apache-2.0), RapidFuzz (MIT), pypdfium2 (Apache-2.0/BSD), Pillow (HPND), python-dotenv (BSD). Opcjonalnie: pytesseract (Apache-2.0), Tesseract (Apache-2.0). Licencja wybranego modelu: patrz `docs/benchmark.md` (po wyborze).
+- Zależności: pypdf (BSD), pydantic (MIT), PyYAML (MIT), openai SDK (Apache-2.0), RapidFuzz (MIT), pypdfium2 (Apache-2.0/BSD), Pillow (HPND), python-dotenv (BSD), FastAPI (MIT), uvicorn (BSD), python-multipart (Apache-2.0), boto3 (Apache-2.0).
+- Opcjonalnie: pytesseract (Apache-2.0), Tesseract (Apache-2.0).
+- Front i Docker: nginx (BSD-2-Clause), fonty Source Sans 3 i Source Serif 4 (SIL OFL 1.1, `web/css/fonts/LICENSE.txt`).
+- Modele: licencje według kart modeli Mistral AI (`docs/benchmark.md`).
