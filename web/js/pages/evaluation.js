@@ -8,11 +8,29 @@ function runLabel(r) {
   return r.name || r.id;
 }
 
+const COLS = [
+  ['Przebieg', (r) => runLabel(r)], ['Źródło', (r) => r.source], ['Zbiór', (r) => r.dataset], ['Model', (r) => r.model],
+  ['Tryb', (r) => r.mode], ['Status', (r) => r.status], ['F1', (r) => r.micro_f1], ['P', (r) => r.precision],
+  ['R', (r) => r.recall], ['Dok.', (r) => r.docs], ['Błędy', (r) => r.errors], ['Start', (r) => r.started_at],
+];
+
+function sortRuns(runs, sort) {
+  const get = COLS[sort.col][1];
+  const dir = sort.dir === 'asc' ? 1 : -1;
+  return runs.slice().sort((a, b) => {
+    const x = get(a), y = get(b);
+    const xn = x == null || x === '', yn = y == null || y === '';
+    if (xn || yn) return xn === yn ? 0 : xn ? 1 : -1; // puste zawsze na końcu
+    const c = typeof x === 'number' && typeof y === 'number' ? x - y : String(x).localeCompare(String(y), 'pl', { numeric: true });
+    return c * dir;
+  });
+}
+
 export function mount(root, ctx) {
   ctx.title('Ewaluacja');
   const st = {
     runs: [], datasets: [], settings: null, selectedId: ctx.params[0] || null, detail: null, docs: null,
-    diff: null, diffKey: null, onlyErrors: true, compare: new Set(), compareData: {}, listError: null, loaded: false,
+    sort: { col: 6, dir: 'desc' }, diff: null, diffKey: null, onlyErrors: true, compare: new Set(), compareData: {}, listError: null, loaded: false,
   };
   let timer = null;
   let dead = false;
@@ -55,8 +73,15 @@ export function mount(root, ctx) {
       body = h('div', { class: 'table-wrap' }, h('table', null,
         h('thead', null, h('tr', null,
           h('th', null, h('span', { class: 'sr-only' }, 'Porównaj')),
-          ['Przebieg', 'Źródło', 'Zbiór', 'Model', 'Tryb', 'Status', 'F1', 'P', 'R', 'Dok.', 'Błędy', 'Start'].map((t) => h('th', null, t)))),
-        h('tbody', null, st.runs.map((r) => {
+          COLS.map(([t], i) => {
+            const active = st.sort.col === i;
+            return h('th', { 'aria-sort': active ? (st.sort.dir === 'asc' ? 'ascending' : 'descending') : 'none' },
+              h('button', {
+                type: 'button', class: 'linklike', style: 'font:inherit;font-weight:inherit;color:inherit;text-decoration:none',
+                onclick: () => { st.sort = { col: i, dir: active && st.sort.dir === 'desc' ? 'asc' : 'desc' }; renderRuns(); },
+              }, t, h('span', { 'aria-hidden': 'true' }, active ? (st.sort.dir === 'asc' ? ' ▲' : ' ▼') : ' ↕')));
+          }))),
+        h('tbody', null, sortRuns(st.runs, st.sort).map((r) => {
           const [stText, stKind] = STATUS[r.status] || [r.status, 'idle'];
           return h('tr', { class: r.id === st.selectedId ? 'selected' : null },
             h('td', null, h('input', {
