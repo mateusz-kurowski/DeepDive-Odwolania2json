@@ -196,7 +196,7 @@ export function mount(root, ctx) {
           h('div', { style: 'font-size:14px;font-weight:600;color:var(--muted)' }, `Micro-F1 · ${runLabel(d)}`),
           h('div', { class: 'big' }, pct(d.micro_f1)),
           h('div', { class: 'muted', style: 'font-size:14px;margin-top:6px' },
-            [d.dataset, modelLabel(d), d.mode, d.docs != null ? `${d.docs} dokumentów` : null].filter(Boolean).join(' · '))),
+            [d.dataset, modelLabel(d), d.stage_models ? Object.entries(d.stage_models).filter(([, m]) => m !== d.model).map(([k, m]) => `${k}: ${m}`).join(', ') || null : null, d.mode, d.docs != null ? `${d.docs} dokumentów` : null].filter(Boolean).join(' · '))),
         h('div', { class: 'metrics' },
           metric('Precision', pct(d.precision)),
           metric('Recall', pct(d.recall)),
@@ -302,6 +302,13 @@ export function mount(root, ctx) {
     const model = h('select', { id: 'ev-model', style: 'width:280px' },
       h('option', { value: '' }, st.settings && st.settings.llm_model ? `domyślny (${shortName(st.settings.llm_model)})` : 'domyślny'),
       st.llmModels.map((id) => h('option', { value: id }, shortName(id))));
+    // Opcjonalne nadpisanie modelu dla etapu; puste = model ogólny (VLM: z ustawień API).
+    const stageSel = (id, fallback) => h('select', { id, style: 'width:220px' },
+      h('option', { value: '' }, fallback ? `jak wyżej (${shortName(fallback)})` : 'z ustawień API'),
+      st.llmModels.map((m) => h('option', { value: m }, shortName(m))));
+    const classify = stageSel('ev-classify');
+    const extract = stageSel('ev-extract');
+    const vlm = stageSel('ev-vlm', st.settings && st.settings.vlm_model);
     const mode = h('select', { id: 'ev-mode' },
       h('option', { value: '' }, st.settings ? `domyślny (${st.settings.extraction_mode})` : 'domyślny'),
       h('option', { value: 'hybrid' }, 'hybrid'), h('option', { value: 'llm_only' }, 'llm_only'));
@@ -309,6 +316,9 @@ export function mount(root, ctx) {
     const run = h('button', { class: 'btn primary', type: 'button', disabled: !st.datasets.length, onclick: async () => {
       const body = { dataset: ds.value };
       if (model.value.trim()) body.model = model.value.trim();
+      if (classify.value) body.classify_model = classify.value;
+      if (extract.value) body.extract_model = extract.value;
+      if (vlm.value) body.vlm_model = vlm.value;
       if (mode.value) body.mode = mode.value;
       if (limit.value) body.limit = Number(limit.value);
       run.disabled = true;
@@ -326,9 +336,15 @@ export function mount(root, ctx) {
       h('p', { class: 'muted', style: 'margin:0 0 12px;font-size:14px' }, 'Dane do ewaluacji są czytane z object storage albo lokalnie (config/eval-datasets.yaml); wynik trafia do object storage.'),
       st.datasets.length ? h('div', { class: 'toolbar' },
         h('label', { class: 'field', for: 'ev-ds' }, 'Zbiór danych', ds),
-        h('label', { class: 'field', for: 'ev-model' }, 'Model', model),
+        h('label', { class: 'field', for: 'ev-model' }, 'Model (ogólny)', model),
         h('label', { class: 'field', for: 'ev-mode' }, 'Tryb', mode),
-        h('label', { class: 'field', for: 'ev-limit' }, 'Limit przykładów', limit), run)
+        h('label', { class: 'field', for: 'ev-limit' }, 'Limit przykładów', limit), run) : null,
+      st.datasets.length ? h('details', { style: 'margin-top:12px' },
+        h('summary', { style: 'cursor:pointer;font-weight:600' }, 'Modele per etap pipeline\'u (opcjonalnie)'),
+        h('div', { class: 'toolbar', style: 'margin-top:8px' },
+          h('label', { class: 'field', for: 'ev-classify' }, 'Klasyfikacja', classify),
+          h('label', { class: 'field', for: 'ev-extract' }, 'Ekstrakcja', extract),
+          h('label', { class: 'field', for: 'ev-vlm' }, 'OCR (VLM)', vlm)))
         : h('div', { class: 'empty' }, 'Brak skonfigurowanych zbiorów danych.'));
   }
 
