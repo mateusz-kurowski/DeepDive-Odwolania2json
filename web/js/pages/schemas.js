@@ -26,9 +26,12 @@ function tree(fields) {
       f.fields && f.fields.length ? tree(f.fields) : null)));
 }
 
+// Cache między remountami (zmiana hasha przebudowuje stronę): brak migania „Ładowanie…”.
+const cache = { list: null, details: new Map() };
+
 export function mount(root, ctx) {
   ctx.title('Schematy');
-  const st = { list: [], current: null, detail: null, isNew: false, error: null, saveError: null, info: null, loaded: false };
+  const st = { list: cache.list || [], current: null, detail: null, isNew: false, error: null, saveError: null, info: null, loaded: !!cache.list };
   let dead = false;
   ctx.onCleanup(() => { dead = true; });
 
@@ -42,6 +45,7 @@ export function mount(root, ctx) {
   async function loadList() {
     try {
       st.list = await api.get('/classes');
+      cache.list = st.list;
       st.error = null;
     } catch (e) {
       st.error = e.message;
@@ -55,12 +59,18 @@ export function mount(root, ctx) {
     st.saveError = null;
     st.info = null;
     st.current = name;
+    st.detail = cache.details.get(name) || null;
+    if (st.detail) { st.error = null; renderList(); renderEditor(); renderPreview(); }
     try {
-      st.detail = await api.get(`/classes/${encodeURIComponent(name)}`);
+      const fresh = await api.get(`/classes/${encodeURIComponent(name)}`);
+      cache.details.set(name, fresh);
+      const changed = !st.detail || st.detail.yaml !== fresh.yaml;
+      st.detail = fresh;
       st.error = null;
+      if (!changed) return;
     } catch (e) {
-      st.detail = null;
-      st.error = e.message;
+      if (!st.detail) st.error = e.message;
+      else return;
     }
     if (dead) return;
     renderList();
@@ -108,18 +118,20 @@ export function mount(root, ctx) {
       class: 'yaml', id: 'cls-yaml', spellcheck: 'false', 'aria-label': 'Definicja klasy w YAML',
       value: st.isNew ? TEMPLATE('nowy_typ') : st.detail.yaml,
     });
-    const status = h('div', { role: 'status', 'aria-live': 'polite' },
+    const status = h('div', { role: 'status', 'aria-live': 'polite', style: 'min-height:56px' },
       st.saveError ? errorBox(st.saveError) : null,
       st.info ? h('div', { class: 'alert info' }, st.info) : null);
     const save = async () => {
       const name = st.isNew ? nameInput.value.trim() : st.current;
       try {
         await api.put(`/classes/${encodeURIComponent(name)}`, { yaml: ta.value });
+        cache.details.delete(name);
         st.saveError = null;
         st.info = `Zapisano typ „${name}”.`;
         await loadList();
         if (st.isNew) { location.hash = `#/schemas/${encodeURIComponent(name)}`; return; }
         st.detail = await api.get(`/classes/${encodeURIComponent(name)}`);
+        cache.details.set(name, st.detail);
         renderEditor();
         renderPreview();
       } catch (e) {
@@ -132,6 +144,7 @@ export function mount(root, ctx) {
       if (!confirm(`Usunąć typ „${st.current}”? Plik YAML zostanie skasowany.`)) return;
       try {
         await api.del(`/classes/${encodeURIComponent(st.current)}`);
+        cache.details.delete(st.current);
         st.current = null;
         st.detail = null;
         await loadList();
@@ -163,12 +176,16 @@ export function mount(root, ctx) {
       ] : h('div', { class: 'empty' }, st.isNew ? 'Podgląd pojawi się po zapisaniu.' : 'Brak wybranego typu.'));
   }
 
-  renderList();
-  renderEditor();
-  renderPreview();
+  const name0 = ctx.params[0];
+  if (name0 && cache.details.has(name0)) {
+    openClass(name0);
+  } else {
+    renderList();
+    renderEditor();
+    renderPreview();
+  }
   loadList().then(() => {
     if (dead) return;
-    const name = ctx.params[0];
-    if (name) openClass(name);
+    if (name0 && !cache.details.has(name0)) openClass(name0);
   });
 }
