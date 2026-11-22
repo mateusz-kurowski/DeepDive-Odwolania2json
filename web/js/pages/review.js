@@ -27,11 +27,12 @@ export function mount(root, ctx) {
   const metaEl = h('section', { class: 'docmeta', 'aria-label': 'Metadane dokumentu' });
   const viewerEl = h('section', { class: 'viewer', 'aria-label': 'Podgląd PDF' });
   const fieldsEl = h('section', { class: 'fields', 'aria-label': 'Wyodrębnione pola' });
+  const switchEl = h('div', { class: 'viewswitch' });
   const msg = h('div', { role: 'status', 'aria-live': 'polite', style: 'padding:0 24px' });
   const live = h('div', { class: 'sr-only', role: 'status', 'aria-live': 'polite' });
   // WCAG 2.1.4: skróty jednoznakowe działają tylko, gdy fokus jest w panelu pól
   fieldsEl.addEventListener('keydown', onKey);
-  clear(root, metaEl, msg, live, h('div', { class: 'split' }, viewerEl, fieldsEl));
+  clear(root, metaEl, msg, live, h('div', { class: 'split' }, viewerEl, h('div', { class: 'pane' }, switchEl, fieldsEl)));
   clear(metaEl, loading('Ładowanie…'));
 
   const fields = () => (st.doc && st.doc.fields) || [];
@@ -65,6 +66,7 @@ export function mount(root, ctx) {
     document.title = `${label} · Odwołania2JSON`;
     renderMeta();
     renderViewer();
+    renderSwitch();
     renderFields();
   }
 
@@ -89,9 +91,17 @@ export function mount(root, ctx) {
       h('div', { class: 'btn-row' },
         h('span', { 'aria-live': 'polite', style: 'font-size:15px;color:#334155;margin-right:8px' },
           h('b', null, approved), ` z ${fields().length} pól zatwierdzonych`),
-        h('button', { class: 'btn', type: 'button', onclick: toggleJson }, st.json ? 'Widok pól' : 'Widok JSON'),
         h('button', { class: 'btn primary', type: 'button', disabled: !ready || !fields().length, onclick: approveAll }, 'Zatwierdź wszystko'),
         h('button', { class: 'btn subtle', type: 'button', disabled: !ready, onclick: exportJson }, 'Pobierz JSON po korektach')));
+  }
+
+  function renderSwitch() {
+    if (!st.doc || st.doc.status !== 'done') return clear(switchEl);
+    const opt = (json, text) => h('button', {
+      class: 'seg', type: 'button', 'aria-pressed': String(st.json === json),
+      onclick: () => { if (st.json !== json) toggleJson(); },
+    }, text);
+    clear(switchEl, h('div', { class: 'segs', role: 'group', 'aria-label': 'Widok danych' }, opt(false, 'Pola'), opt(true, 'JSON')));
   }
 
   function renderViewer() {
