@@ -163,7 +163,7 @@ def make_storage(env: Mapping[str, str] | None = None) -> Storage:
         raise ValueError("STORAGE_BACKEND=s3 wymaga S3_BUCKET")
     return S3Storage(
         env["S3_BUCKET"],
-        endpoint_url=env.get("S3_ENDPOINT_URL"),
+        endpoint_url=env.get("S3_ENDPOINT_URL") or env.get("S3_URL"),
         region=env.get("S3_REGION"),
         access_key=env.get("S3_ACCESS_KEY"),
         secret_key=env.get("S3_SECRET_KEY"),
