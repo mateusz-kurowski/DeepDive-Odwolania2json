@@ -52,7 +52,7 @@ start.bat       # lub w Powershell: .\start.bat
 **3. [OPCJONALNIE] Uruchom aplikację (UI + API)**:
 
 ```bash
-docker compose up --build
+docker compose up --build   # lub `gui.bat` / `start.sh gui` 
 ```
 
 **Dodatkowo**:
