@@ -1,21 +1,6 @@
 import { api } from '../api.js';
 import { h, clear, errorBox } from '../ui.js';
-
-const TEMPLATE = (name) => `name: ${name}
-description: >-
-  Krótki opis dokumentu: po czym go rozpoznać.
-hints:
-  - słowo kluczowe
-rules:
-  - "Reguła dla modelu, np. format wartości."
-fields:
-  - name: dokument
-    type: object
-    fields:
-      - name: pole
-        type: text
-        description: Opis pola dla modelu.
-`;
+import { buildNewTypeForm } from '../schema-form.js';
 
 function tree(fields) {
   return h('ul', { class: 'tree' }, fields.map((f) =>
@@ -116,31 +101,32 @@ export function mount(root, ctx) {
     if (!st.isNew && !st.detail) {
       return clear(editorEl, st.error ? errorBox(st.error) : h('div', { class: 'empty' }, 'Wybierz typ dokumentu z listy albo dodaj nowy.'));
     }
-    const nameInput = st.isNew
-      ? h('input', {
-          type: 'text', id: 'cls-name', value: 'nowy_typ', pattern: '[a-z][a-z0-9_]*', style: 'width:220px',
-          oninput: () => {
-            const v = nameInput.value;
-            ta.value = ta.value.replace(/^name:.*$/m, `name: ${v}`);
-          },
-        })
-      : null;
+    if (st.isNew) {
+      return clear(editorEl, buildNewTypeForm({
+        onCancel: () => { st.isNew = false; renderList(); renderEditor(); renderPreview(); },
+        onSubmit: async (name, yaml) => {
+          await api.put(`/classes/${encodeURIComponent(name)}`, { yaml });
+          cache.details.delete(name);
+          await loadList();
+          location.hash = `#/schemas/${encodeURIComponent(name)}`;
+        },
+      }));
+    }
     const ta = h('textarea', {
       class: 'yaml', id: 'cls-yaml', spellcheck: 'false', 'aria-label': 'Definicja klasy w YAML',
-      value: st.isNew ? TEMPLATE('nowy_typ') : st.detail.yaml,
+      value: st.detail.yaml,
     });
     const status = h('div', { role: 'status', 'aria-live': 'polite', style: 'min-height:56px' },
       st.saveError ? errorBox(st.saveError) : null,
       st.info ? h('div', { class: 'alert info' }, st.info) : null);
     const save = async () => {
-      const name = st.isNew ? nameInput.value.trim() : st.current;
+      const name = st.current;
       try {
         await api.put(`/classes/${encodeURIComponent(name)}`, { yaml: ta.value });
         cache.details.delete(name);
         st.saveError = null;
         st.info = `Zapisano typ „${name}”.`;
         await loadList();
-        if (st.isNew) { location.hash = `#/schemas/${encodeURIComponent(name)}`; return; }
         st.detail = await api.get(`/classes/${encodeURIComponent(name)}`);
         cache.details.set(name, st.detail);
         renderEditor();
@@ -168,11 +154,10 @@ export function mount(root, ctx) {
     };
     clear(editorEl,
       h('div', { class: 'toolbar', style: 'margin:0' },
-        h('h2', { style: 'margin:0' }, st.isNew ? 'Nowy typ dokumentu' : `Typ: ${st.current}`),
+        h('h2', { style: 'margin:0' }, `Typ: ${st.current}`),
         h('span', { class: 'spacer' }),
-        st.isNew ? null : h('button', { class: 'btn danger', type: 'button', onclick: remove }, 'Usuń'),
+        h('button', { class: 'btn danger', type: 'button', onclick: remove }, 'Usuń'),
         h('button', { class: 'btn primary', type: 'button', onclick: save }, 'Zapisz')),
-      nameInput ? h('label', { class: 'field', for: 'cls-name' }, 'Nazwa klasy (małe litery, cyfry, _)', nameInput) : null,
       h('label', { class: 'field', for: 'cls-yaml' }, 'YAML', ta),
       status);
   }

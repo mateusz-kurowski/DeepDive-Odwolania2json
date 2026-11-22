@@ -170,3 +170,19 @@ html{scrollbar-gutter:stable}
 .pair>*{height:600px;display:flex;flex-direction:column;overflow:hidden}
 .pair .scroll{flex:1 1 auto;min-height:0;max-height:none}
 .pair thead th{position:sticky;top:0;background:#fff;z-index:1}
+
+/* formularz nowego typu */
+.newtype{display:flex;flex-direction:column;gap:12px}
+.newtype .two{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.newtype textarea{width:100%;box-sizing:border-box}
+.newtype h3.sub{margin:8px 0 0;font-size:13px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--muted)}
+.frows{display:flex;flex-direction:column;gap:8px;align-items:flex-start}
+.frow{width:100%;box-sizing:border-box;border:1px solid var(--line);border-radius:8px;padding:10px 12px;background:#F8F9FB;display:flex;flex-direction:column;gap:8px}
+.frow-top{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.frow-top input[type=text]{width:180px}
+.frow input[type=text]:not(.frow-top input),.frow textarea{width:100%;box-sizing:border-box}
+.fsub{border-left:3px solid var(--navy-soft);padding-left:12px}
+.check{display:flex;align-items:center;gap:8px;font-size:14px}
+.iconbtn.sm,.btn.sm{min-height:36px;height:36px}
+.iconbtn.sm{width:36px}
+.yaml-preview{margin:8px 0 0;background:#0F2447;color:#E8EEF9;border-radius:6px;padding:12px;font-size:13px;line-height:1.5;overflow:auto;max-height:360px}
