@@ -32,12 +32,12 @@ export function mount(root, ctx) {
   const demoBtn = h('button', { class: 'btn primary', type: 'button', onclick: loadDemo }, 'Załaduj dokument demo');
   const drop = h('section', { class: 'drop', 'aria-label': 'Dodawanie dokumentów' },
     h('div', null,
-      h('div', { class: 't' }, 'Przeciągnij pliki PDF z orzeczeniami KIO'),
+      h('div', { class: 't' }, 'Przeciągnij pliki PDF sprawy KIO (odwołanie, pełnomocnictwo, przelew)'),
       h('div', { class: 's' }, 'Wiele plików naraz. Skany przejdą przez OCR. „Dokument demo” otwiera gotowy, przetworzony dokument bez czekania na model.')),
     h('div', { class: 'btn-row' },
       demoBtn,
       h('button', { class: 'btn', type: 'button', onclick: () => fileInput.click() }, 'Wybierz pliki'),
-      h('button', { class: 'btn subtle', type: 'button', onclick: loadSamples }, 'Przetwórz przykładowe orzeczenia (model)')),
+      h('button', { class: 'btn subtle', type: 'button', onclick: loadSamples }, 'Przetwórz przykładową sprawę (model)')),
     fileInput);
   drop.addEventListener('dragover', (e) => { e.preventDefault(); drop.classList.add('over'); });
   drop.addEventListener('dragleave', () => drop.classList.remove('over'));
@@ -129,7 +129,7 @@ export function mount(root, ctx) {
     if (!st.loaded) return clear(tbodyHost, loading('Ładowanie…'));
     if (!st.items.length) {
       return clear(tbodyHost, h('div', { class: 'empty' },
-        st.q || st.filter ? 'Brak dokumentów spełniających kryteria.' : 'Brak dokumentów. Dodaj pliki PDF albo użyj przykładowych orzeczeń KIO.'));
+        st.q || st.filter ? 'Brak dokumentów spełniających kryteria.' : 'Brak dokumentów. Dodaj pliki PDF albo użyj przykładowej sprawy KIO.'));
     }
     const all = st.items.every((i) => st.selected.has(i.id));
     const head = h('tr', null,
@@ -200,7 +200,7 @@ export function mount(root, ctx) {
   }
 
   async function loadSamples() {
-    say('Dodawanie przykładowych orzeczeń…');
+    say('Dodawanie przykładowej sprawy…');
     try {
       const r = await api.post('/documents/samples');
       say(`Dodano ${r.length} przykładowych dokumentów.`);

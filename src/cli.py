@@ -3,8 +3,11 @@ from __future__ import annotations
 import argparse
 import json
 import logging
+import os
 import sys
+import threading
 import time
+import webbrowser
 from collections.abc import Mapping
 from pathlib import Path
 
@@ -64,6 +67,14 @@ def _parser() -> argparse.ArgumentParser:
     serve = sub.add_parser("serve", help="uruchom API (wymaga: uv sync --extra api)")
     serve.add_argument("--host", default="127.0.0.1")
     serve.add_argument("--port", type=int, default=8000)
+    serve.add_argument("--web", type=Path, help="serwuj też statyczny front z tego katalogu")
+
+    gui = sub.add_parser("gui", help="interfejs graficzny w przeglądarce, bez Dockera")
+    gui.add_argument("--host", default="127.0.0.1")
+    gui.add_argument("--port", type=int, default=8080)
+    gui.add_argument("--no-browser", action="store_true", help="nie otwieraj przeglądarki")
+
+    sub.add_parser("check", help="sprawdź konfigurację (.env, klasy, połączenie z modelem)")
 
     classes = sub.add_parser("classes", help="wypisz wczytane klasy")
     classes.add_argument("--classes", type=Path)
@@ -77,7 +88,7 @@ def _settings(args: argparse.Namespace, env: Mapping[str, str] | None) -> Settin
         update["extraction_mode"] = args.mode
     if getattr(args, "model", None):
         update["llm_model"] = args.model
-    if args.classes:
+    if getattr(args, "classes", None):
         update["classes_dir"] = args.classes
     if getattr(args, "doc_timeout", None) is not None:
         update["doc_timeout_s"] = args.doc_timeout
@@ -159,12 +170,27 @@ def _sweep(args: argparse.Namespace, llm: LLM | None, env: Mapping[str, str] | N
     return 1 if any(r["error"] for r in results) else 0
 
 
+WEB_DIR = Path(__file__).resolve().parent.parent / "web"
+
+
 def _serve(args: argparse.Namespace) -> int:
     try:
         import uvicorn
     except ImportError:
-        print("Brak zależności API. Zainstaluj: uv sync --extra api", file=sys.stderr)
+        print(
+            "Brak zależności API. Zainstaluj: pip install -r requirements.txt "
+            "(lub uv sync --extra api)",
+            file=sys.stderr,
+        )
         return 2
+    web = WEB_DIR if args.command == "gui" else args.web
+    if web:
+        os.environ["WEB_DIR"] = str(Path(web).resolve())
+    if args.command == "gui":
+        url = f"http://{args.host}:{args.port}/"
+        print(f"Interfejs: {url}  (Ctrl+C kończy)")
+        if not args.no_browser:
+            threading.Timer(1.5, webbrowser.open, args=(url,)).start()
     uvicorn.run("src.api.app:create_app", factory=True, host=args.host, port=args.port)
     return 0
 
@@ -178,8 +204,12 @@ def main(
     args = _parser().parse_args(argv)
     if args.command == "sweep":
         return _sweep(args, llm, env)
-    if args.command == "serve":
+    if args.command in ("serve", "gui"):
         return _serve(args)
+    if args.command == "check":
+        from src.check import run_check
+
+        return run_check(_settings(args, env), env)
     settings = _settings(args, env)
     try:
         classes = load_classes(settings.classes_dir)
@@ -257,10 +287,15 @@ def main(
         f"zapisanych, {len(unknown)} nieznanych (pusty JSON), {len(errors)} błędów (tryb: {settings.extraction_mode})"
     )
     t = timing(results, wall)
+    # Przy mniej niż 2 plikach na wątek równoległość nie działa i prognoza jest myląco wysoka.
+    projection = (
+        f"prognoza dla 150 PDF: {t['projected_150_pdf_minutes']} min (limit 45)"
+        if len(results) >= 2 * args.workers
+        else f"prognoza dla 150 PDF: za mało plików (potrzeba ≥{2 * args.workers})"
+    )
     print(
         f"czas: {t['wall_seconds']} s ({t['wall_seconds_per_doc']} s/plik przy {args.workers} wątkach), "
-        f"najwolniejszy: {t['slowest']} {t['doc_seconds_max']} s; "
-        f"prognoza dla 150 PDF: {t['projected_150_pdf_minutes']} min (limit 45)"
+        f"najwolniejszy: {t['slowest']} {t['doc_seconds_max']} s; {projection}"
     )
     usage = getattr(llm, "usage", None)
     if usage:
