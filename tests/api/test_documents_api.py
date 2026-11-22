@@ -1,4 +1,5 @@
 import json
+import time
 
 from conftest import classification, extraction
 
@@ -151,3 +152,31 @@ def test_upload_limits(make_client, pdf_bytes):
     with make_client() as c:
         files = [("files", (f"{i}.pdf", pdf_bytes, "application/pdf")) for i in range(51)]
         assert c.post("/api/documents", files=files).status_code == 413
+
+
+def test_delete_during_processing_does_not_resurrect_document(
+    make_client, pdf_bytes, tmp_path, monkeypatch
+):
+    import threading
+
+    from src.api import documents as documents_module
+
+    started, release = threading.Event(), threading.Event()
+    original = documents_module.process_pdf
+
+    def slow(*args, **kwargs):
+        started.set()
+        assert release.wait(5)
+        return original(*args, **kwargs)
+
+    monkeypatch.setattr(documents_module, "process_pdf", slow)
+    with make_client() as c:
+        doc_id = _upload(c, pdf_bytes)
+        assert started.wait(5)
+        assert c.delete(f"/api/documents/{doc_id}").status_code == 204
+        release.set()
+        time.sleep(0.3)  # czas na próbę zapisu przez worker
+        assert c.get(f"/api/documents/{doc_id}").status_code == 404
+        assert c.get("/api/documents").json()["items"] == []
+        files = [p for p in (tmp_path / "storage").rglob("*") if p.is_file()]
+        assert files == []

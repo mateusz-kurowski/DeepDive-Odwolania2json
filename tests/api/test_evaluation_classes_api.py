@@ -138,3 +138,36 @@ def test_new_class_is_used_without_restart(client, pdf_bytes):
 
     r = client.post("/api/documents", files=[("files", ("a.pdf", pdf_bytes, "application/pdf"))])
     assert wait_for(client, r.json()[0]["id"])["status"] == "done"
+
+
+def test_delete_run_removes_everything_and_respects_pin(make_client, tmp_path):
+    _dataset(tmp_path)
+    with make_client() as c:
+        run_id = c.post("/api/evaluation/runs", json={"dataset": "d"}).json()["id"]
+        _wait_run(c, run_id)
+        folder = tmp_path / "storage" / "evaluations" / run_id
+        assert folder.is_dir()
+
+        assert c.put(f"/api/evaluation/runs/{run_id}/pin", json={"pinned": True}).json()["pinned"]
+        assert c.delete(f"/api/evaluation/runs/{run_id}").status_code == 409
+        assert folder.is_dir()
+
+        c.put(f"/api/evaluation/runs/{run_id}/pin", json={"pinned": False})
+        assert c.delete(f"/api/evaluation/runs/{run_id}").status_code == 204
+        assert not [p for p in folder.rglob("*") if p.is_file()]
+        assert c.get("/api/evaluation/runs").json() == []
+        assert c.delete(f"/api/evaluation/runs/{run_id}").status_code == 404
+
+
+def test_delete_rejects_local_and_malformed_ids(make_client, tmp_path):
+    results = tmp_path / "results" / "20261121-1"
+    results.mkdir(parents=True)
+    (results / "report.json").write_text(
+        json.dumps({"per_field": {}, "micro_f1": 0.5, "docs": 1}), encoding="utf-8"
+    )
+    with make_client() as c:
+        local = c.get("/api/evaluation/runs").json()
+        if local:
+            assert c.delete(f"/api/evaluation/runs/{local[0]['id']}").status_code == 409
+        assert c.delete("/api/evaluation/runs/..%2F..%2Fdocuments").status_code in (404, 405)
+        assert c.delete("/api/evaluation/runs/nie-ma").status_code == 404

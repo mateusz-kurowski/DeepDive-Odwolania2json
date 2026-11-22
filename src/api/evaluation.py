@@ -215,6 +215,35 @@ class EvaluationService:
             return {**self._with_size(run), "report": report}
         raise EvaluationError("Nie znaleziono przebiegu.", 404)
 
+    # --- usuwanie i przypinanie --------------------------------------------------------------
+    def _storage_run(self, run_id: str) -> dict:
+        """Przebieg z UI (storage). Lokalne wyniki z results/ są tylko do odczytu."""
+        if any(run["id"] == run_id for run, _ in self._local_runs()):
+            raise EvaluationError("Wyniki lokalne są tylko do odczytu.", 409)
+        if not re.fullmatch(r"s-[0-9a-f]{32}", run_id):
+            raise EvaluationError("Nie znaleziono przebiegu.", 404)
+        try:
+            return json.loads(self.storage.get(f"{PREFIX}{run_id}/run.json"))
+        except NotFound:
+            raise EvaluationError("Nie znaleziono przebiegu.", 404) from None
+
+    def set_pinned(self, run_id: str, pinned: bool) -> dict:
+        run = self._storage_run(run_id)
+        if run.get("status") == "running":
+            raise EvaluationError("Przebieg trwa; przypnij go po zakończeniu.", 409)
+        run["pinned"] = pinned
+        self._save_run(run)
+        return self._with_size(run)
+
+    def delete_run(self, run_id: str) -> None:
+        run = self._storage_run(run_id)
+        if run.get("status") == "running":
+            raise EvaluationError("Przebieg trwa; nie można go usunąć.", 409)
+        if run.get("pinned"):
+            raise EvaluationError("Przebieg jest przypięty; najpierw go odepnij.", 409)
+        for key in self.storage.list(f"{PREFIX}{run_id}/"):
+            self.storage.delete(key)
+
     # --- uruchamianie z UI -------------------------------------------------------------------
     def start(
         self,

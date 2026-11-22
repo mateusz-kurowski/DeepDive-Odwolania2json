@@ -50,6 +50,10 @@ class RunRequest(BaseModel):
     limit: int | None = None
 
 
+class PinRequest(BaseModel):
+    pinned: bool
+
+
 def _download(body: bytes, media_type: str, filename: str) -> Response:
     ascii_name = re.sub(r"[^A-Za-z0-9._-]", "_", filename) or "plik"
     disposition = (
@@ -257,6 +261,15 @@ def create_app(
     @api.get("/evaluation/runs/{run_id}")
     def eval_run(run_id: str) -> dict:
         return evaluations.get_run(run_id)
+
+    @api.delete("/evaluation/runs/{run_id}", status_code=204)
+    def eval_delete(run_id: str) -> Response:
+        evaluations.delete_run(run_id)
+        return Response(status_code=204)
+
+    @api.put("/evaluation/runs/{run_id}/pin")
+    def eval_pin(run_id: str, body: PinRequest) -> dict:
+        return evaluations.set_pinned(run_id, body.pinned)
 
     @api.get("/evaluation/runs/{run_id}/documents")
     def eval_documents(run_id: str) -> list[dict]:
