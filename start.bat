@@ -10,8 +10,10 @@ if not exist .venv\Scripts\python.exe (
         exit /b 1
     )
 )
-.venv\Scripts\python -m pip install -q -r requirements.txt
+echo [start] Instaluje zaleznosci (pierwsze uruchomienie moze potrwac kilka minut)...
+.venv\Scripts\python -m pip install --disable-pip-version-check -r requirements.txt
 if errorlevel 1 exit /b 1
+echo [start] Zaleznosci gotowe, uruchamiam przetwarzanie...
 if "%~1"=="" (
     .venv\Scripts\python -m src run
 ) else (
