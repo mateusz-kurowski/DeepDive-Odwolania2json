@@ -6,7 +6,7 @@
   "pages": 2,
   "duration_s": 10.4
  },
- "result": {
+ "extraction": {
   "class_name": "odwolanie",
   "data": {
    "OdwolanieKIO": {
@@ -46,238 +46,45 @@
     "tytul": "Zakup i dostawa sprzętu komputerowego wraz z oprogramowaniem oraz usługą wdrożenia"
    }
   },
-  "fields": [
-   {
-    "path": "OdwolanieKIO.data",
-    "label": "Data",
-    "section": "OdwolanieKIO",
-    "value": null,
-    "quote": null,
-    "citation_ok": null,
-    "original": null,
-    "edited": false,
-    "approved": false
-   },
-   {
-    "path": "OdwolanieKIO.czynnosc_dzien",
-    "label": "Czynnosc dzien",
-    "section": "OdwolanieKIO",
-    "value": "2026-03-20",
-    "quote": "Zamawiający w dniu 20 marca 2026 roku unieważnił postępowanie.",
-    "citation_ok": true,
-    "original": "2026-03-20",
-    "edited": false,
-    "approved": false
-   },
-   {
-    "path": "OdwolanieKIO.czynnosc_powod_id",
-    "label": "Czynnosc powod id",
-    "section": "OdwolanieKIO",
-    "value": 9,
-    "quote": "Zamawiający w dniu 20 marca 2026 roku unieważnił postępowanie.",
-    "citation_ok": true,
-    "original": 9,
-    "edited": false,
-    "approved": false
-   },
-   {
-    "path": "OdwolanieKIO.miejscowosc",
-    "label": "Miejscowosc",
-    "section": "OdwolanieKIO",
-    "value": null,
-    "quote": null,
-    "citation_ok": null,
-    "original": null,
-    "edited": false,
-    "approved": false
-   },
-   {
-    "path": "Odwolujacy[0].krs",
-    "label": "Odwolujacy 1: Krs",
-    "section": "Odwolujacy",
-    "value": "9999405188",
-    "quote": "KRS: 9999405188",
-    "citation_ok": true,
-    "original": "9999405188",
-    "edited": false,
-    "approved": false
-   },
-   {
-    "path": "Odwolujacy[0].nazwa",
-    "label": "Odwolujacy 1: Nazwa",
-    "section": "Odwolujacy",
-    "value": "Belmoria Rozwiązania S.A.",
-    "quote": "Belmoria Rozwiązania S.A.",
-    "citation_ok": true,
-    "original": "Belmoria Rozwiązania S.A.",
-    "edited": false,
-    "approved": false
-   },
-   {
-    "path": "Odwolujacy[0].nip",
-    "label": "Odwolujacy 1: Nip",
-    "section": "Odwolujacy",
-    "value": "9999284065",
-    "quote": "NIP: 9999284065",
-    "citation_ok": true,
-    "original": "9999284065",
-    "edited": false,
-    "approved": false
-   },
-   {
-    "path": "Odwolujacy[0].regon",
-    "label": "Odwolujacy 1: Regon",
-    "section": "Odwolujacy",
-    "value": "999642785",
-    "quote": "REGON: 999642785",
-    "citation_ok": true,
-    "original": "999642785",
-    "edited": false,
-    "approved": false
-   },
-   {
-    "path": "Odwolujacy[0].przez-pelnomocnika",
-    "label": "Odwolujacy 1: Przez pelnomocnika",
-    "section": "Odwolujacy",
-    "value": 1,
-    "quote": "reprezentowana przez: r. pr. Aleksandra Marciniak, r. pr. Jolanta Zajkowski",
-    "citation_ok": true,
-    "original": 1,
-    "edited": false,
-    "approved": false
-   },
-   {
-    "path": "Odwolujacy[0].pelnomocnik.imie_nazwisko",
-    "label": "Imie nazwisko",
-    "section": "Odwolujacy",
-    "value": "Aleksandra Marciniak",
-    "quote": "r. pr. Aleksandra Marciniak",
-    "citation_ok": true,
-    "original": "Aleksandra Marciniak",
-    "edited": false,
-    "approved": false
-   },
-   {
-    "path": "Odwolujacy[0].pelnomocnik.nazwa",
-    "label": "Nazwa",
-    "section": "Odwolujacy",
-    "value": "Kancelaria Adwokacka Spółka z ograniczoną odpowiedzialnością",
-    "quote": "adres do korespondencji: Kancelaria Adwokacka Spółka z ograniczoną odpowiedzialnością",
-    "citation_ok": true,
-    "original": "Kancelaria Adwokacka Spółka z ograniczoną odpowiedzialnością",
-    "edited": false,
-    "approved": false
-   },
-   {
-    "path": "Odwolujacy[0].pelnomocnik.mail",
-    "label": "Mail",
-    "section": "Odwolujacy",
-    "value": "biuro@poczta.example",
-    "quote": "biuro@poczta.example",
-    "citation_ok": true,
-    "original": "biuro@poczta.example",
-    "edited": false,
-    "approved": false
-   },
-   {
-    "path": "Zamawiajacy[0].krs",
-    "label": "Zamawiajacy 1: Krs",
-    "section": "Zamawiajacy",
-    "value": "9999716254",
-    "quote": "KRS: 9999716254",
-    "citation_ok": true,
-    "original": "9999716254",
-    "edited": false,
-    "approved": false
-   },
-   {
-    "path": "Zamawiajacy[0].nazwa",
-    "label": "Zamawiajacy 1: Nazwa",
-    "section": "Zamawiajacy",
-    "value": "Aurelink Automatyka S.A.",
-    "quote": "Aurelink Automatyka S.A.",
-    "citation_ok": true,
-    "original": "Aurelink Automatyka S.A.",
-    "edited": false,
-    "approved": false
-   },
-   {
-    "path": "Zamawiajacy[0].nip",
-    "label": "Zamawiajacy 1: Nip",
-    "section": "Zamawiajacy",
-    "value": "9997518659",
-    "quote": "NIP: 9997518659",
-    "citation_ok": true,
-    "original": "9997518659",
-    "edited": false,
-    "approved": false
-   },
-   {
-    "path": "Zamawiajacy[0].regon",
-    "label": "Zamawiajacy 1: Regon",
-    "section": "Zamawiajacy",
-    "value": "999184816",
-    "quote": "REGON: 999184816",
-    "citation_ok": true,
-    "original": "999184816",
-    "edited": false,
-    "approved": false
-   },
-   {
-    "path": "Zamawiajacy[0].prowadzacy_postepowanie",
-    "label": "Zamawiajacy 1: Prowadzacy postepowanie",
-    "section": "Zamawiajacy",
-    "value": null,
-    "quote": null,
-    "citation_ok": null,
-    "original": null,
-    "edited": false,
-    "approved": false
-   },
-   {
-    "path": "ZamowieniePubliczne.numer_bzp",
-    "label": "Numer bzp",
-    "section": "ZamowieniePubliczne",
-    "value": "2026/BZP00999778",
-    "quote": "ogłoszenie o zamówieniu nr 2026/BZP00999778",
-    "citation_ok": true,
-    "original": "2026/BZP00999778",
-    "edited": false,
-    "approved": false
-   },
-   {
-    "path": "ZamowieniePubliczne.numer_postepowania",
-    "label": "Numer postepowania",
-    "section": "ZamowieniePubliczne",
-    "value": "ZS.791.2026",
-    "quote": "nr referencyjny sprawy: ZS.791.2026",
-    "citation_ok": true,
-    "original": "ZS.791.2026",
-    "edited": false,
-    "approved": false
-   },
-   {
-    "path": "ZamowieniePubliczne.numer_ted",
-    "label": "Numer ted",
-    "section": "ZamowieniePubliczne",
-    "value": "999137-2026",
-    "quote": "numer ogłoszenia TED: 999137-2026",
-    "citation_ok": true,
-    "original": "999137-2026",
-    "edited": false,
-    "approved": false
-   },
-   {
-    "path": "ZamowieniePubliczne.tytul",
-    "label": "Tytul",
-    "section": "ZamowieniePubliczne",
-    "value": "Zakup i dostawa sprzętu komputerowego wraz z oprogramowaniem oraz usługą wdrożenia",
-    "quote": "postępowania o udzielenie zamówienia w trybie przetargu nieograniczonego pn. \"Zakup i dostawa sprzętu komputerowego wraz z oprogramowaniem oraz usługą wdrożenia\"",
-    "citation_ok": true,
-    "original": "Zakup i dostawa sprzętu komputerowego wraz z oprogramowaniem oraz usługą wdrożenia",
-    "edited": false,
-    "approved": false
-   }
-  ]
+  "quotes": {
+   "OdwolanieKIO.czynnosc_dzien": "Zamawiający w dniu 20 marca 2026 roku unieważnił postępowanie.",
+   "OdwolanieKIO.czynnosc_powod_id": "Zamawiający w dniu 20 marca 2026 roku unieważnił postępowanie.",
+   "Odwolujacy[0].krs": "KRS: 9999405188",
+   "Odwolujacy[0].nazwa": "Belmoria Rozwiązania S.A.",
+   "Odwolujacy[0].nip": "NIP: 9999284065",
+   "Odwolujacy[0].regon": "REGON: 999642785",
+   "Odwolujacy[0].przez-pelnomocnika": "reprezentowana przez: r. pr. Aleksandra Marciniak, r. pr. Jolanta Zajkowski",
+   "Odwolujacy[0].pelnomocnik.imie_nazwisko": "r. pr. Aleksandra Marciniak",
+   "Odwolujacy[0].pelnomocnik.nazwa": "adres do korespondencji: Kancelaria Adwokacka Spółka z ograniczoną odpowiedzialnością",
+   "Odwolujacy[0].pelnomocnik.mail": "biuro@poczta.example",
+   "Zamawiajacy[0].krs": "KRS: 9999716254",
+   "Zamawiajacy[0].nazwa": "Aurelink Automatyka S.A.",
+   "Zamawiajacy[0].nip": "NIP: 9997518659",
+   "Zamawiajacy[0].regon": "REGON: 999184816",
+   "ZamowieniePubliczne.numer_bzp": "ogłoszenie o zamówieniu nr 2026/BZP00999778",
+   "ZamowieniePubliczne.numer_postepowania": "nr referencyjny sprawy: ZS.791.2026",
+   "ZamowieniePubliczne.numer_ted": "numer ogłoszenia TED: 999137-2026",
+   "ZamowieniePubliczne.tytul": "postępowania o udzielenie zamówienia w trybie przetargu nieograniczonego pn. \"Zakup i dostawa sprzętu komputerowego wraz z oprogramowaniem oraz usługą wdrożenia\""
+  },
+  "citation_ok": {
+   "OdwolanieKIO.czynnosc_dzien": true,
+   "OdwolanieKIO.czynnosc_powod_id": true,
+   "Odwolujacy[0].krs": true,
+   "Odwolujacy[0].nazwa": true,
+   "Odwolujacy[0].nip": true,
+   "Odwolujacy[0].regon": true,
+   "Odwolujacy[0].przez-pelnomocnika": true,
+   "Odwolujacy[0].pelnomocnik.imie_nazwisko": true,
+   "Odwolujacy[0].pelnomocnik.nazwa": true,
+   "Odwolujacy[0].pelnomocnik.mail": true,
+   "Zamawiajacy[0].krs": true,
+   "Zamawiajacy[0].nazwa": true,
+   "Zamawiajacy[0].nip": true,
+   "Zamawiajacy[0].regon": true,
+   "ZamowieniePubliczne.numer_bzp": true,
+   "ZamowieniePubliczne.numer_postepowania": true,
+   "ZamowieniePubliczne.numer_ted": true,
+   "ZamowieniePubliczne.tytul": true
+  }
  }
 }

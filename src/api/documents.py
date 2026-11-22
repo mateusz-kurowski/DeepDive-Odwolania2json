@@ -225,6 +225,15 @@ class DocumentService:
         if not pdf_path.is_file() or not fixture_path.is_file():
             raise DocumentError("Brak dokumentu demo na serwerze.", 404)
         fixture = json.loads(fixture_path.read_text(encoding="utf-8"))
+        ex = fixture["extraction"]
+        # Pola budowane z AKTUALNEGO schematu klasy (jak po zwykłym przetwarzaniu), więc edycja
+        # YAML-a klasy zmienia etykiety/sekcje demo; nowe pola pokazują się jako puste.
+        cfg = load_classes(self.settings.classes_dir).get(ex["class_name"])
+        if cfg is None:
+            raise DocumentError(
+                f"Dokument demo wymaga klasy „{ex['class_name']}”, której nie ma w schematach.", 409
+            )
+        fields = build_fields(ex["data"], ex["quotes"], ex["citation_ok"], cfg)
         content = pdf_path.read_bytes()
         # ponowne załadowanie resetuje demo (bez duplikatów i bez starych zatwierdzeń)
         for item in self.list()["items"]:
@@ -232,7 +241,11 @@ class DocumentService:
                 self.delete(item["id"])
         doc_id = uuid.uuid4().hex
         self.storage.put(self._key(doc_id, "source.pdf"), content, "application/pdf")
-        self._write_json(doc_id, "result.json", fixture["result"])
+        self._write_json(
+            doc_id,
+            "result.json",
+            {"class_name": ex["class_name"], "data": ex["data"], "fields": fields},
+        )
         self._write_json(
             doc_id,
             "meta.json",
