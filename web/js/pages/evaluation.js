@@ -87,7 +87,7 @@ export function mount(root, ctx) {
                 type: 'button', class: 'linklike', style: 'font:inherit;font-weight:inherit;color:inherit;text-decoration:none',
                 onclick: () => { st.sort = { col: i, dir: active && st.sort.dir === 'desc' ? 'asc' : 'desc' }; renderRuns(); },
               }, t, h('span', { 'aria-hidden': 'true' }, active ? (st.sort.dir === 'asc' ? ' ▲' : ' ▼') : ' ↕')));
-          }))),
+          }), h('th', null, h('span', { class: 'sr-only' }, 'Akcje')))),
         h('tbody', null, sortRuns(st.runs, st.sort).map((r) => {
           const [stText, stKind] = STATUS[r.status] || [r.status, 'idle'];
           return h('tr', { class: r.id === st.selectedId ? 'selected' : null },
@@ -109,12 +109,32 @@ export function mount(root, ctx) {
             h('td', null, pct(r.recall)),
             h('td', null, r.docs ?? '—'),
             h('td', null, r.errors ?? '—'),
-            h('td', { class: 'muted' }, dt(r.started_at)));
+            h('td', { class: 'muted' }, dt(r.started_at)),
+            h('td', null, r.source === 'local' ? null : h('button', {
+              type: 'button', class: 'btn small danger', 'aria-label': `Usuń ${runLabel(r)}`, disabled: r.status === 'running',
+              title: r.status === 'running' ? 'Przebieg trwa' : null, onclick: () => removeRun(r),
+            }, 'Usuń')));
         }))));
     }
     clear(runsEl, h('h2', null, 'Przebiegi ewaluacji'),
       h('p', { class: 'muted', style: 'margin:0 0 12px;font-size:14px' }, 'Wyniki lokalne (katalog results/) są tylko do odczytu; przebiegi uruchomione z UI zapisują się w object storage. Zaznacz co najmniej dwa, aby porównać pola.'),
       body);
+  }
+
+  async function removeRun(r) {
+    if (!window.confirm(`Usunąć przebieg „${runLabel(r)}” wraz z wynikami? Tej operacji nie można cofnąć.`)) return;
+    try {
+      await api.del(`/evaluation/runs/${encodeURIComponent(r.id)}`);
+    } catch (e) {
+      clear(msg, errorBox(e.message));
+      return;
+    }
+    st.compare.delete(r.id);
+    delete st.compareData[r.id];
+    if (st.selectedId === r.id) { st.selectedId = null; st.detail = null; clear(detailEl); history.replaceState(null, '', '#/evaluation'); }
+    clear(msg, h('div', { class: 'alert info' }, `Usunięto przebieg ${runLabel(r)}.`));
+    await loadRuns();
+    loadCompare();
   }
 
   /* ---------- porównanie ---------- */

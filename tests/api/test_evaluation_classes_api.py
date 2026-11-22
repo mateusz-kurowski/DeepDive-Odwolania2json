@@ -171,3 +171,18 @@ def test_delete_rejects_local_and_malformed_ids(make_client, tmp_path):
             assert c.delete(f"/api/evaluation/runs/{local[0]['id']}").status_code == 409
         assert c.delete("/api/evaluation/runs/..%2F..%2Fdocuments").status_code in (404, 405)
         assert c.delete("/api/evaluation/runs/nie-ma").status_code == 404
+
+
+def test_delete_errored_run_without_report(make_client, tmp_path):
+    run_id = "s-" + "a" * 32
+    folder = tmp_path / "storage" / "evaluations" / run_id
+    folder.mkdir(parents=True)
+    (folder / "run.json").write_text(
+        json.dumps({"id": run_id, "source": "storage", "status": "error", "error": "Boom"}),
+        encoding="utf-8",
+    )
+    with make_client() as c:
+        assert [r["id"] for r in c.get("/api/evaluation/runs").json()] == [run_id]
+        assert c.delete(f"/api/evaluation/runs/{run_id}").status_code == 204
+        assert c.get("/api/evaluation/runs").json() == []
+        assert not [p for p in folder.rglob("*") if p.is_file()]
