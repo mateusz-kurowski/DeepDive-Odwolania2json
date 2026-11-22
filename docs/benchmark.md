@@ -14,7 +14,7 @@ Zasada z `CLAUDE.md`: każda zmiana promptu lub reguły = F1 przed i po na 60 pr
 
 ## Pomiary per klasa
 
-| Data | Klasa | Model | Tryb | F1 | Precision | Recall | Uwagi / zmiana |
+| Data | Klasa | Model (rozmiar, B) | Tryb | F1 | Precision | Recall | Uwagi / zmiana |
 |---|---|---|---|---|---|---|---|
 | | przelew | | hybrid | | | | |
 | | przelew | | llm_only | | | | |
@@ -25,10 +25,12 @@ Zasada z `CLAUDE.md`: każda zmiana promptu lub reguły = F1 przed i po na 60 pr
 
 ## Benchmark modeli (Task 17)
 
-| Model (open-weights) | Licencja | Tryb | F1 (łącznie) | Precision | Recall | s/dokument |
-|---|---|---|---|---|---|---|
-| | | hybrid | | | | |
-| | | llm_only | | | | |
+| Model (open-weights) | Rozmiar (parametry całk. / aktywne) | Licencja | Tryb | F1 (łącznie) | Precision | Recall | s/dokument |
+|---|---|---|---|---|---|---|---|
+| | | | hybrid | | | | |
+| | | | llm_only | | | | |
+
+Rozmiar: każdy model w tabelach podajemy z liczbą parametrów w B, np. `ministral-14b (14B)`; źródło: `config/models.yaml` (nieznany rozmiar = `?B`, uzupełnić przed pomiarem). Liczba parametrów podana przez wydawcę modelu (np. `14B`; dla MoE `całkowite / aktywne`, np. `30B / 3B`). To argument on-prem: mały model działa na jednej karcie lub CPU.
 
 Wybór modelu czeka na odpowiedź organizatora (open-source vs open-weights, pytanie 4).
 
@@ -38,7 +40,7 @@ Jeśli w śladzie (`trace/`) flaga `truncated` pojawia się często i `eval` pok
 
 ## Poprawa F1 po analizie błędów (21.11): plan pomiaru
 
-Punkt wyjścia: `results/20261121-154630/` (model `extractor`, 60 przykładów, 180 PDF, około 1,3 mln tokenów i 376 wywołań na przebieg).
+Punkt wyjścia: `results/20261121-154630/` (60 przykładów, 180 PDF, około 1,3 mln tokenów i 376 wywołań na przebieg).
 Precyzja jest bliska 1. Recall traci się głównie na dokumentach, które przepadły w całości (puste odpowiedzi LLM).
 
 | Krok | Commit | Przyczyna | hybrid F1 / P / R | llm_only F1 / P / R | F1 bez błędów (h / l) | PDF z błędem (h / l) | Klasyf. (h / l) | Tokeny (h / l) |

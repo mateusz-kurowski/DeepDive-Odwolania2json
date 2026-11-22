@@ -4,12 +4,18 @@ import { h, clear, badge, errorBox, pct, num, dt, show } from '../ui.js';
 const STATUS = { running: ['W toku', 'busy'], done: ['Zakończony', 'ok'], error: ['Błąd', 'err'] };
 const DIFF_KIND = { TP: 'ok', FP: 'err', FN: 'warn' };
 
+// Model z rozmiarem w mld parametrów (z config/models.yaml), np. „ministral-14b · 14B”.
+function modelLabel(r) {
+  if (!r.model) return null;
+  return r.model_params_b != null ? `${r.model} · ${r.model_params_b}B` : `${r.model} · ?B`;
+}
+
 function runLabel(r) {
   return r.name || r.id;
 }
 
 const COLS = [
-  ['Przebieg', (r) => runLabel(r)], ['Źródło', (r) => r.source], ['Zbiór', (r) => r.dataset], ['Model', (r) => r.model],
+  ['Przebieg', (r) => runLabel(r)], ['Źródło', (r) => r.source], ['Zbiór', (r) => r.dataset], ['Model', (r) => modelLabel(r)],
   ['Tryb', (r) => r.mode], ['Status', (r) => r.status], ['F1', (r) => r.micro_f1], ['P', (r) => r.precision],
   ['R', (r) => r.recall], ['Dok.', (r) => r.docs], ['Błędy', (r) => r.errors], ['Start', (r) => r.started_at],
 ];
@@ -91,7 +97,7 @@ export function mount(root, ctx) {
             h('td', null, h('a', { href: `#/evaluation/${encodeURIComponent(r.id)}`, style: 'font-weight:600' }, runLabel(r))),
             h('td', null, badge(r.source === 'local' ? 'lokalny' : 'storage', r.source === 'local' ? 'idle' : 'busy')),
             h('td', null, r.dataset || '—'),
-            h('td', null, r.model || '—'),
+            h('td', null, modelLabel(r) || '—'),
             h('td', null, r.mode || '—'),
             h('td', null, badge(stText, stKind), r.status === 'running' && r.progress && r.progress.total
               ? h('div', { class: 'progress', role: 'progressbar', 'aria-label': 'Postęp ewaluacji', 'aria-valuemin': '0', 'aria-valuemax': String(r.progress.total), 'aria-valuenow': String(r.progress.done), style: 'margin-top:6px' },
@@ -169,7 +175,7 @@ export function mount(root, ctx) {
           h('div', { style: 'font-size:14px;font-weight:600;color:var(--muted)' }, `Micro-F1 · ${runLabel(d)}`),
           h('div', { class: 'big' }, pct(d.micro_f1)),
           h('div', { class: 'muted', style: 'font-size:14px;margin-top:6px' },
-            [d.dataset, d.model, d.mode, d.docs != null ? `${d.docs} dokumentów` : null].filter(Boolean).join(' · '))),
+            [d.dataset, modelLabel(d), d.mode, d.docs != null ? `${d.docs} dokumentów` : null].filter(Boolean).join(' · '))),
         h('div', { class: 'metrics' },
           metric('Precision', pct(d.precision)),
           metric('Recall', pct(d.recall)),
