@@ -47,10 +47,10 @@ def test_llm_only_leaves_value_raw(fake_llm):
 
 
 def test_llm_only_does_not_retry_for_format(fake_llm):
-    llm = fake_llm([raw("123", nip_quote="527-000-00-00")])
+    llm = fake_llm([raw("52700000", nip_quote="527-000-00-00")])
     result = run(llm, mode="llm_only")
     assert len(llm.calls) == 1
-    assert result.data["nip"] == "123"
+    assert result.data["nip"] == "52700000"
 
 
 def test_invalid_format_retried_once_then_nulled(fake_llm):
@@ -207,3 +207,27 @@ def test_requires_unknown_path_rejected():
                 "fields": [{"name": "nip", "type": "text"}],
             }
         )
+
+
+def test_value_not_supported_by_real_quote_is_retried_and_flagged(fake_llm):
+    llm = fake_llm([raw("5260000000"), raw("5260000000")])
+    result = run(llm)
+    assert result.retries == 1
+    assert "nie wynika z podanego cytatu" in llm.calls[1]["user"]
+    assert result.citation_ok["nip"] is False
+
+
+def test_value_grounded_in_quote_is_cited(fake_llm):
+    assert run(fake_llm([raw("527-000-00-00")])).citation_ok["nip"] is True
+
+
+def test_bad_checksum_only_warns_and_retries_for_scans(fake_llm):
+    # 527-000-00-00 nie ma poprawnej sumy kontrolnej NIP; wartość zostaje (dane syntetyczne)
+    result = run(fake_llm([raw("527-000-00-00")]))
+    assert result.retries == 0
+    assert result.data["nip"] == "5270000000"
+    assert result.warnings == ["nip: niepoprawna suma kontrolna"]
+    llm = fake_llm([raw("527-000-00-00"), raw("527-000-00-00")])
+    scan = DocText(text=TEXT, pages=1, ocr_used=True)
+    out = extract(scan, CFG, llm, "hybrid", 85)
+    assert out.retries == 1 and out.data["nip"] == "5270000000"

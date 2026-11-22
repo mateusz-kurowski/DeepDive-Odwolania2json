@@ -261,3 +261,18 @@ def test_delete_during_processing_does_not_resurrect_document(
         assert c.get("/api/documents").json()["items"] == []
         files = [p for p in (tmp_path / "storage").rglob("*") if p.is_file()]
         assert files == []
+
+
+def test_patch_field_validates_and_normalizes_edits(client, pdf_bytes):
+    doc_id = _upload(client, pdf_bytes)
+    wait_for(client, doc_id)
+    url = f"/api/documents/{doc_id}/fields"
+    bad = client.patch(url, json={"path": "nip", "value": "123"})
+    assert bad.status_code == 422 and "NIP" in bad.json()["detail"]
+    ok = client.patch(url, json={"path": "nip", "value": "526-025-02-74"})
+    assert ok.status_code == 200 and ok.json()["value"] == "5260250274"
+    assert ok.json()["status"] == "edited"
+    # po odrzuconej edycji zostaje ostatnia poprawna wartość
+    assert client.get(f"/api/documents/{doc_id}").json()["data"]["nip"] == "5260250274"
+    cleared = client.patch(url, json={"path": "nip", "value": ""})
+    assert cleared.status_code == 200 and cleared.json()["value"] is None

@@ -80,3 +80,29 @@ def test_enum_rejects_unknown_option():
     assert validate_value(spec, 4) == 4
     with pytest.raises(ValueError):
         validate_value(spec, 7)
+
+
+def test_checksums():
+    from src.validators import checksum_ok
+
+    assert checksum_ok("nip", "5260250274") is True
+    assert checksum_ok("nip", "5260250275") is False
+    assert checksum_ok("regon", "123456785") is True
+    assert checksum_ok("regon", "123456786") is False
+    assert checksum_ok("pesel", 44051401359) is True
+    assert checksum_ok("pesel", 44051401358) is False
+    assert checksum_ok("iban", "61109010140000071219812874") is True
+    assert checksum_ok("iban", "62109010140000071219812874") is False
+    assert checksum_ok("krs", "0000123456") is None
+    assert checksum_ok("nip", "123") is None
+
+
+def test_grounded_in_quote():
+    from src.validators import grounded_in_quote
+
+    assert grounded_in_quote("nip", "5270000000", "NIP 527-000-00-00")
+    assert not grounded_in_quote("nip", "5260000000", "NIP 527-000-00-00")
+    assert grounded_in_quote("krs", "0000123456", "KRS 123456")
+    assert grounded_in_quote("amount", 1234.56, "1 234,56 zł")
+    assert not grounded_in_quote("amount", 999.0, "1 234,56 zł")
+    assert grounded_in_quote("date", "2024-01-01", "cokolwiek")

@@ -24,6 +24,7 @@ from src.classconfig import ClassConfig, FieldSpec, load_classes
 from src.llm import LLM
 from src.pipeline import process_pdf
 from src.settings import Settings
+from src.validators import validate_value
 
 log = logging.getLogger(__name__)
 
@@ -125,20 +126,45 @@ def set_path(data: dict, path: str, value: Any) -> None:
             raise DocumentError(f"Nieznana ścieżka pola: {path}", 404) from None
 
 
-def _coerce(original: Any, value: Any) -> Any:
-    if isinstance(value, str):
-        value = value.strip()
-        if value == "":
+def spec_for_path(cfg: ClassConfig, path: str) -> FieldSpec | None:
+    """Specyfikacja pola ze schematu klasy dla ścieżki typu `a.b[0].c` (indeksy pomijamy)."""
+    fields = cfg.fields
+    found: FieldSpec | None = None
+    for m in _PATH_PART.finditer(path):
+        if m.group(1) is None:
+            continue
+        found = next((f for f in fields if f.name == m.group(1)), None)
+        if found is None:
             return None
-        if isinstance(original, bool):
-            return value
-        if isinstance(original, int | float):
-            try:
-                number = float(value.replace(",", ".").replace(" ", ""))
-            except ValueError:
-                return value
-            return int(number) if isinstance(original, int) and number.is_integer() else number
-    return value
+        fields = found.fields
+    return found
+
+
+def _coerce(original: Any, value: Any, spec: FieldSpec | None = None) -> Any:
+    if not isinstance(value, str):
+        return value
+    value = value.strip()
+    if value == "":
+        return None
+    if spec is not None and spec.type == "enum":
+        for key in spec.options or {}:
+            if value == str(key):
+                return key
+        return value
+    if spec is not None:
+        numeric = spec.type in ("number", "integer", "flag")
+    else:
+        numeric = isinstance(original, int | float) and not isinstance(original, bool)
+    if not numeric:
+        return value
+    try:
+        number = float(value.replace(",", ".").replace(" ", ""))
+    except ValueError:
+        if spec is not None:
+            raise DocumentError(f"Oczekiwano liczby, otrzymano: {value!r}.", 422) from None
+        return value
+    as_int = spec.type in ("integer", "flag") if spec else isinstance(original, int)
+    return int(number) if as_int and number.is_integer() else number
 
 
 class DocumentService:
@@ -464,7 +490,15 @@ class DocumentService:
         if revert:  # wartość z modelu, bez zatwierdzenia
             field.update(value=field["original"], edited=False, approved=False)
         if has_value:
-            field["value"] = _coerce(field["original"], value)
+            cfg = load_classes(self.settings.classes_dir).get(result.get("class_name", ""))
+            spec = spec_for_path(cfg, path) if cfg else None
+            new_value = _coerce(field["original"], value, spec)
+            if spec is not None and new_value is not None:
+                try:  # ta sama walidacja i normalizacja co przy ekstrakcji
+                    new_value = validate_value(spec, new_value)
+                except ValueError as exc:
+                    raise DocumentError(f"{field['label']}: {exc}", 422) from None
+            field["value"] = new_value
             field["edited"] = field["value"] != field["original"]
             field["approved"] = False
         if status is not None and not revert:
