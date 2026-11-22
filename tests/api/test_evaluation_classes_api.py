@@ -56,6 +56,17 @@ def test_run_from_ui_is_saved_to_storage_and_listed(make_client, tmp_path):
         assert d.json()["reference"] == {"nip": "5270000000", "tytul": "Budowa drogi"}
 
 
+def test_run_with_models_per_stage(make_client, tmp_path):
+    _dataset(tmp_path)
+    with make_client() as c:
+        body = {"dataset": "d", "model": "base", "classify_model": "cls", "vlm_model": "vis"}
+        r = c.post("/api/evaluation/runs", json=body)
+        assert r.status_code == 202
+        stages = r.json()["stage_models"]
+        assert stages["classify"] == "cls" and stages["extract"] == "base"
+        assert _wait_run(c, r.json()["id"])["report"]["stage_models"]["classify"] == "cls"
+
+
 def test_run_validation(make_client, tmp_path):
     _dataset(tmp_path)
     with make_client() as c:

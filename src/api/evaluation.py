@@ -64,6 +64,17 @@ def _examples_from_keys(prefix: str, keys: list[str]) -> list[str]:
     return sorted({prefix + r.rsplit("/", 1)[0] + "/" for r in rels if r.lower().endswith(".pdf")})
 
 
+def _stage_models(settings: Settings) -> dict[str, str]:
+    """Efektywny model każdego etapu (VLM tylko gdy OCR idzie przez VLM)."""
+    out = {
+        "classify": settings.model_for("classification"),
+        "extract": settings.model_for("extraction"),
+    }
+    if settings.ocr_backend == "vlm" and settings.vlm_model:
+        out["vlm"] = settings.vlm_model
+    return out
+
+
 @lru_cache(maxsize=1)
 def _model_sizes() -> dict[str, float]:
     return load_model_sizes()
@@ -271,6 +282,7 @@ class EvaluationService:
         model: str | None = None,
         mode: str | None = None,
         limit: int | None = None,
+        stage_models: dict[str, str | None] | None = None,
     ) -> dict:
         dataset = next((d for d in self.datasets() if d["id"] == dataset_id), None)
         if dataset is None:
@@ -285,6 +297,7 @@ class EvaluationService:
             update={
                 "llm_model": model or self.settings.llm_model,
                 "extraction_mode": mode or self.settings.extraction_mode,
+                **{k: v.strip() for k, v in (stage_models or {}).items() if v and v.strip()},
             }
         )
         if not settings.llm_model:
@@ -296,6 +309,7 @@ class EvaluationService:
             "dataset": dataset_id,
             "model": settings.llm_model,
             "mode": settings.extraction_mode,
+            "stage_models": _stage_models(settings),
             "status": "running",
             "started_at": _now(),
             "finished_at": None,
@@ -357,6 +371,7 @@ class EvaluationService:
                     **report.to_dict(),
                     "model": settings.llm_model,
                     "mode": settings.extraction_mode,
+                    "stage_models": _stage_models(settings),
                 }
                 usage = getattr(llm, "usage", None)
                 if usage:

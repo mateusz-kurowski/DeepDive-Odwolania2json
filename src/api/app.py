@@ -50,6 +50,10 @@ class ClassData(BaseModel):
 class RunRequest(BaseModel):
     dataset: str
     model: str | None = None
+    # Modele per etap pipeline'u; puste = model domyślny (classify/extract) albo VLM_MODEL.
+    classify_model: str | None = None
+    extract_model: str | None = None
+    vlm_model: str | None = None
     mode: Literal["hybrid", "llm_only"] | None = None
     limit: int | None = None
 
@@ -273,7 +277,17 @@ def create_app(
 
     @api.post("/evaluation/runs", status_code=202)
     def eval_start(body: RunRequest) -> dict:
-        return evaluations.start(body.dataset, body.model, body.mode, body.limit)
+        return evaluations.start(
+            body.dataset,
+            body.model,
+            body.mode,
+            body.limit,
+            stage_models={
+                "classify_model": body.classify_model,
+                "extract_model": body.extract_model,
+                "vlm_model": body.vlm_model,
+            },
+        )
 
     @api.get("/evaluation/runs/{run_id}")
     def eval_run(run_id: str) -> dict:
