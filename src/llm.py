@@ -11,6 +11,7 @@ from typing import Any, Protocol
 
 import openai
 
+from src import deadline
 from src.settings import Settings
 
 log = logging.getLogger(__name__)
@@ -80,6 +81,7 @@ class _BadResponse(Exception):
     pass
 
 
+REQUEST_TIMEOUT_S = 180.0
 BACKOFF_BASE = 3.0
 BACKOFF_MAX = 30.0
 RETRY_TEMPERATURE = 0.2
@@ -148,7 +150,7 @@ class OpenAICompatLLM:
             self._client = openai.OpenAI(
                 api_key=self.settings.openai_api_key or "none",
                 base_url=self.settings.openai_base_url,
-                timeout=180,
+                timeout=REQUEST_TIMEOUT_S,
                 max_retries=0,
             )
         return self._client
@@ -163,12 +165,17 @@ class OpenAICompatLLM:
         for index in range(self.max_attempts):
             attempt = attempt_plan(index, self.max_attempts, base_temperature)
             try:
+                deadline.check()
                 return self._call(system, user, schema, name, attempt)
+            except deadline.DeadlineExceeded as exc:
+                raise LLMError(f"{exc} (próba {index + 1}, ostatni błąd: {last})") from exc
             except (*_RETRIABLE, _BadResponse) as exc:
                 last = exc
                 log.warning("Próba %d/%d nieudana: %s", index + 1, self.max_attempts, exc)
                 if index < self.max_attempts - 1:
-                    self.sleep(min(BACKOFF_BASE * 2.0**index, BACKOFF_MAX))
+                    pause = min(BACKOFF_BASE * 2.0**index, BACKOFF_MAX)
+                    left = deadline.remaining()
+                    self.sleep(pause if left is None else max(min(pause, left), 0))
             except openai.OpenAIError as exc:
                 raise LLMError(f"Błąd modelu: {exc}") from exc
         raise LLMError(f"Model niedostępny po {self.max_attempts} próbach: {last}") from last
@@ -220,6 +227,8 @@ class OpenAICompatLLM:
             extra_body["cache"] = dict(NO_CACHE)
         if extra_body:
             kwargs["extra_body"] = extra_body
+        if deadline.remaining() is not None:
+            kwargs["timeout"] = deadline.request_timeout(REQUEST_TIMEOUT_S)
         try:
             response = self.client.chat.completions.create(**kwargs)
         except openai.BadRequestError as exc:

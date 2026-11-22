@@ -10,6 +10,7 @@ from collections.abc import Iterator
 from pathlib import Path
 from typing import Any
 
+from src import deadline
 from src.settings import Settings
 
 log = logging.getLogger(__name__)
@@ -75,7 +76,11 @@ def vlm_ocr(path: Path, settings: Settings, client: Any = None) -> str:
     client = client or _vlm_client(settings)
     parts = []
     for number, image in enumerate(render_pages(path), start=1):
+        extra = (
+            {"timeout": deadline.request_timeout(180)} if deadline.remaining() is not None else {}
+        )
         response = client.chat.completions.create(
+            **extra,
             model=settings.vlm_model,
             temperature=0,
             max_tokens=VLM_MAX_TOKENS,

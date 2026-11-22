@@ -2,12 +2,14 @@ from __future__ import annotations
 
 import json
 import logging
+import time
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass
 from pathlib import Path
 
 from src.classconfig import ClassConfig
 from src.classify import UNKNOWN, classify, classify_by_hints
+from src.deadline import document_deadline
 from src.extract import Extraction, Mode, extract
 from src.llm import LLM, LLMError
 from src.settings import Settings
@@ -24,6 +26,9 @@ class DocResult:
     extraction: Extraction | None = None
     error: str | None = None
     ocr_used: bool = False
+    # Czas w sekundach: całość dokumentu oraz sam odczyt tekstu (z OCR, jeśli był).
+    seconds: float = 0.0
+    read_seconds: float = 0.0
 
 
 def process_text(
@@ -56,21 +61,34 @@ def process_text(
 def process_pdf(
     path: Path, classes: dict[str, ClassConfig], llm: LLM, settings: Settings
 ) -> DocResult:
+    start = time.perf_counter()
+    with document_deadline(settings.doc_timeout_s):
+        result, read_seconds = _process_pdf(path, classes, llm, settings, start)
+    result.path = path
+    result.seconds = time.perf_counter() - start
+    result.read_seconds = read_seconds
+    return result
+
+
+def _process_pdf(
+    path: Path, classes: dict[str, ClassConfig], llm: LLM, settings: Settings, start: float
+) -> tuple[DocResult, float]:
+    read_seconds = 0.0
     try:
         doc = read_pdf(path, settings)
+        read_seconds = time.perf_counter() - start
         if not doc.text.strip():
             log.warning("Pominięto %s: brak czytelnego tekstu", path)
-            return DocResult(path, UNKNOWN, error="brak czytelnego tekstu w PDF")
+            return DocResult(path, UNKNOWN, error="brak czytelnego tekstu w PDF"), read_seconds
         result = process_text(
             doc, classes, llm, settings.extraction_mode, settings.citation_threshold
         )
     except Exception as exc:
         log.warning("Błąd przetwarzania %s: %s", path, exc)
-        return DocResult(path, UNKNOWN, error=str(exc))
-    result.path = path
+        return DocResult(path, UNKNOWN, error=str(exc)), read_seconds
     if result.class_name == UNKNOWN:
         log.info("Dokument nieznany (poza klasami), zapisuję pusty JSON: %s", path)
-    return result
+    return result, read_seconds
 
 
 def _write_json(path: Path, payload: dict) -> None:
@@ -91,6 +109,8 @@ def _trace(result: DocResult, rel: Path) -> dict:
         "warnings": ex.warnings,
         "retries": ex.retries,
         "truncated": ex.truncated,
+        "seconds": round(result.seconds, 2),
+        "read_seconds": round(result.read_seconds, 2),
     }
 
 
