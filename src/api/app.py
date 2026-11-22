@@ -133,6 +133,17 @@ def create_app(
             "classes": [c["name"] for c in class_store.list()],
         }
 
+    @api.get("/llm-models")
+    def llm_models() -> dict:
+        """Modele udostępnione przez LiteLLM dla skonfigurowanego klucza (GET /v1/models)."""
+        try:
+            client = OpenAICompatLLM(settings).client
+            ids = sorted({m.id for m in client.models.list().data})
+        except Exception as exc:  # noqa: BLE001 - brak połączenia nie może blokować UI
+            log.warning("Nie udało się pobrać listy modeli: %s", exc)
+            ids = []
+        return {"models": ids, "default": settings.llm_model}
+
     # --- dokumenty ---------------------------------------------------------------------------
     @api.post("/documents", status_code=201)
     async def upload(files: Annotated[list[UploadFile], File()]) -> list[dict]:

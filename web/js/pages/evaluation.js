@@ -35,7 +35,7 @@ function sortRuns(runs, sort) {
 export function mount(root, ctx) {
   ctx.title('Ewaluacja');
   const st = {
-    runs: [], datasets: [], settings: null, selectedId: ctx.params[0] || null, detail: null, docs: null,
+    runs: [], datasets: [], settings: null, llmModels: [], selectedId: ctx.params[0] || null, detail: null, docs: null,
     sort: { col: 6, dir: 'desc' }, diff: null, diffKey: null, onlyErrors: true, compare: new Set(), compareData: {}, listError: null, loaded: false,
   };
   let timer = null;
@@ -266,7 +266,11 @@ export function mount(root, ctx) {
   /* ---------- formularz uruchomienia ---------- */
   function renderForm() {
     const ds = h('select', { id: 'ev-ds' }, st.datasets.map((d) => h('option', { value: d.id }, `${d.name} (${d.examples})`)));
-    const model = h('input', { type: 'text', id: 'ev-model', placeholder: st.settings && st.settings.llm_model ? `domyślnie: ${st.settings.llm_model}` : 'domyślny model API', style: 'width:280px' });
+    // Lista z LiteLLM; pokazujemy samą nazwę modelu (bez providera), do API leci pełne id.
+    const shortName = (id) => id.slice(id.lastIndexOf('/') + 1);
+    const model = h('select', { id: 'ev-model', style: 'width:280px' },
+      h('option', { value: '' }, st.settings && st.settings.llm_model ? `domyślny (${shortName(st.settings.llm_model)})` : 'domyślny'),
+      st.llmModels.map((id) => h('option', { value: id }, shortName(id))));
     const mode = h('select', { id: 'ev-mode' },
       h('option', { value: '' }, st.settings ? `domyślny (${st.settings.extraction_mode})` : 'domyślny'),
       h('option', { value: 'hybrid' }, 'hybrid'), h('option', { value: 'llm_only' }, 'llm_only'));
@@ -302,6 +306,7 @@ export function mount(root, ctx) {
   Promise.all([
     api.get('/evaluation/datasets').then((d) => { st.datasets = d; }).catch((e) => { clear(msg, errorBox(e.message)); }),
     api.get('/settings').then((s) => { st.settings = s; }).catch(() => {}),
+    api.get('/llm-models').then((r) => { st.llmModels = r.models || []; }).catch(() => {}),
   ]).then(() => { if (!dead) renderForm(); });
   loadRuns().then(() => {
     if (dead) return;
