@@ -27,7 +27,7 @@ h1,h2,h3{margin:0}
 
 /* układ */
 .layout{display:flex;flex-wrap:wrap;min-height:100vh}
-.nav{flex:0 0 208px;background:var(--navy);color:#fff;padding:20px 12px;display:flex;flex-direction:column;gap:4px}
+.nav{position:sticky;top:0;align-self:flex-start;height:100vh;height:100dvh;overflow-y:auto;flex:0 0 208px;background:var(--navy);color:#fff;padding:20px 12px;display:flex;flex-direction:column;gap:4px}
 .brand{padding:4px 12px 20px;display:flex;flex-direction:column;gap:2px}
 .brand b{font-family:'Source Serif 4',serif;font-size:20px;letter-spacing:-.2px}
 .brand span{font-size:13px;color:#C9D6EC}
@@ -44,7 +44,7 @@ h1,h2,h3{margin:0}
 .crumbs b{color:var(--text)}
 .content{padding:24px;display:flex;flex-direction:column;gap:20px}
 @media (max-width:760px){
-  .nav{flex:0 0 100%;flex-direction:row;flex-wrap:wrap;padding:10px}
+  .nav{position:static;height:auto;overflow:visible;flex:0 0 100%;flex-direction:row;flex-wrap:wrap;padding:10px}
   .brand{padding:4px 8px;flex:0 0 100%}
   .nav-foot{display:none}
   .content{padding:16px}
