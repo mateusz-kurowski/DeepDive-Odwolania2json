@@ -1,6 +1,8 @@
 import json
 import time
+from pathlib import Path
 
+import pytest
 from conftest import classification, extraction
 
 from api.conftest import wait_for
@@ -116,6 +118,21 @@ def test_samples_endpoint(make_client, tmp_path, pdf_bytes):
         assert r.status_code == 201 and r.json()[0]["filename"] == "p.pdf"
     with make_client(env={"SAMPLES_DIR": str(tmp_path / "brak")}) as c:
         assert c.post("/api/documents/samples").status_code == 404
+
+
+def test_demo_endpoint_loads_stored_result_without_llm(make_client, tmp_path):
+    demo = Path("data/demo")
+    if not (demo / "odwolanie.pdf").is_file():
+        pytest.skip("brak data/demo")
+    with make_client(responses=[], env={"DEMO_DIR": str(demo)}) as c:
+        r = c.post("/api/documents/demo")
+        assert r.status_code == 201 and r.json()[0]["status"] == "done"
+        doc = c.get(f"/api/documents/{r.json()[0]['id']}").json()
+        assert doc["status"] == "done" and doc["class_name"] == "odwolanie"
+        assert doc["pages"] == 2 and len(doc["fields"]) > 10
+        assert any(f["highlights"] for f in doc["fields"])
+    with make_client(env={"DEMO_DIR": str(tmp_path / "brak")}) as c:
+        assert c.post("/api/documents/demo").status_code == 404
 
 
 def test_revert_restores_model_value_and_unapprove_keeps_edit(client, pdf_bytes):

@@ -218,6 +218,31 @@ class DocumentService:
         self._pool.submit(self._process, doc_id)
         return {"id": doc_id, "filename": name, "status": "queued"}
 
+    def add_demo(self, demo_dir: Path) -> dict:
+        """Dokument demo: PDF + zapisany wynik prawdziwego przebiegu (bez wywołania modelu)."""
+        pdf_path = demo_dir / "odwolanie.pdf"
+        fixture_path = demo_dir / "odwolanie.fixture.json"
+        if not pdf_path.is_file() or not fixture_path.is_file():
+            raise DocumentError("Brak dokumentu demo na serwerze.", 404)
+        fixture = json.loads(fixture_path.read_text(encoding="utf-8"))
+        content = pdf_path.read_bytes()
+        doc_id = uuid.uuid4().hex
+        self.storage.put(self._key(doc_id, "source.pdf"), content, "application/pdf")
+        self._write_json(doc_id, "result.json", fixture["result"])
+        self._write_json(
+            doc_id,
+            "meta.json",
+            {
+                "id": doc_id,
+                "filename": pdf_path.name,
+                "status": "done",
+                "created_at": _now(),
+                "error": None,
+                **fixture["meta"],
+            },
+        )
+        return {"id": doc_id, "filename": pdf_path.name, "status": "done"}
+
     def resume(self) -> None:
         """Po restarcie: dokumenty `queued`/`processing` wracają do kolejki."""
         for key in self.storage.list(PREFIX):

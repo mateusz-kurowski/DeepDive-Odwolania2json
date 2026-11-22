@@ -1,9 +1,9 @@
 import { api } from '../api.js';
-import { h, clear, errorBox } from '../ui.js';
+import { h, clear, loading, errorBox } from '../ui.js';
 
 export function mount(root, ctx) {
   ctx.title('Ustawienia');
-  const host = h('div', { class: 'content' }, h('div', { class: 'loading' }, 'Ładowanie…'));
+  const host = h('div', { class: 'content' }, loading('Ładowanie…'));
   clear(root, host);
   let dead = false;
   ctx.onCleanup(() => { dead = true; });
@@ -20,6 +20,8 @@ export function mount(root, ctx) {
     }
   }
 
+  function loadSettings() {
+  clear(host, loading('Ładowanie…'));
   api.get('/settings').then((s) => {
     if (dead) return;
     const row = (k, v) => [h('dt', null, k), h('dd', null, v == null || v === '' ? '—' : String(v))];
@@ -44,5 +46,7 @@ export function mount(root, ctx) {
         h('h2', null, 'Dane'),
         h('button', { class: 'btn danger', type: 'button', onclick: purge }, 'Usuń wszystkie dokumenty…'),
         msg));
-  }).catch((e) => { if (!dead) clear(host, errorBox(e.message)); });
+  }).catch((e) => { if (!dead) clear(host, errorBox(e.message, loadSettings)); });
+  }
+  loadSettings();
 }

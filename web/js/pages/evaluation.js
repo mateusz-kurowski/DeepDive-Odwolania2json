@@ -1,5 +1,5 @@
 import { api } from '../api.js';
-import { h, clear, badge, errorBox, pct, num, dt, show } from '../ui.js';
+import { h, clear, loading, badge, errorBox, pct, num, dt, show } from '../ui.js';
 
 const STATUS = { running: ['W toku', 'busy'], done: ['Zakończony', 'ok'], error: ['Błąd', 'err'] };
 const DIFF_KIND = { TP: 'ok', FP: 'err', FN: 'warn' };
@@ -73,8 +73,8 @@ export function mount(root, ctx) {
 
   function renderRuns() {
     let body;
-    if (st.listError) body = errorBox(st.listError);
-    else if (!st.loaded) body = h('div', { class: 'loading' }, 'Ładowanie…');
+    if (st.listError) body = errorBox(st.listError, () => { st.loaded = false; st.listError = null; renderRuns(); loadRuns(); });
+    else if (!st.loaded) body = loading('Ładowanie…');
     else if (!st.runs.length) body = h('div', { class: 'empty' }, 'Brak przebiegów. Uruchom ewaluację poniżej albo dodaj wyniki do katalogu results/.');
     else {
       body = h('div', { class: 'table-wrap' }, h('table', null,
@@ -142,17 +142,17 @@ export function mount(root, ctx) {
     const ids = [...st.compare];
     compareEl.hidden = ids.length < 2;
     if (ids.length < 2) return;
-    clear(compareEl, h('h2', null, 'Porównanie przebiegów'), h('div', { class: 'loading' }, 'Ładowanie…'));
+    clear(compareEl, h('h2', null, 'Porównanie przebiegów'), loading('Ładowanie…'));
     try {
       await Promise.all(ids.filter((i) => !st.compareData[i]).map(async (i) => { st.compareData[i] = await api.get(`/evaluation/runs/${encodeURIComponent(i)}`); }));
     } catch (e) {
-      return clear(compareEl, h('h2', null, 'Porównanie przebiegów'), errorBox(e.message));
+      return clear(compareEl, h('h2', null, 'Porównanie przebiegów'), errorBox(e.message, loadCompare));
     }
     if (dead) return;
     const runs = ids.map((i) => st.compareData[i]);
     const paths = [...new Set(runs.flatMap((r) => Object.keys((r.report && r.report.per_field) || {})))].sort();
     clear(compareEl, h('h2', null, 'Porównanie przebiegów (F1 według pola)'),
-      h('div', { class: 'table-wrap scroll' }, h('table', null,
+      h('div', { class: 'table-wrap scroll', tabindex: '0', role: 'region', 'aria-label': 'Tabela porównania przebiegów' }, h('table', null,
         h('thead', null, h('tr', null, h('th', null, 'Pole'), runs.map((r) => h('th', null, runLabel(r))))),
         h('tbody', null,
           h('tr', null, h('td', { style: 'font-weight:700' }, 'Micro-F1'), runs.map((r) => h('td', { style: 'font-weight:700' }, pct(r.micro_f1)))),
@@ -166,7 +166,7 @@ export function mount(root, ctx) {
   async function loadDetail(quiet = false) {
     if (!st.selectedId) { clear(detailEl); return; }
     const id = st.selectedId;
-    if (!quiet) clear(detailEl, h('div', { class: 'loading' }, 'Ładowanie…'));
+    if (!quiet) clear(detailEl, loading('Ładowanie…'));
     try {
       st.detail = await api.get(`/evaluation/runs/${encodeURIComponent(id)}`);
       if (st.detail.status === 'done' && (!st.docs || st.docsFor !== id)) {
@@ -175,7 +175,7 @@ export function mount(root, ctx) {
       }
     } catch (e) {
       st.detail = null;
-      if (!dead) clear(detailEl, errorBox(e.message));
+      if (!dead) clear(detailEl, errorBox(e.message, () => loadDetail()));
       return;
     }
     if (!dead) renderDetail();
@@ -214,7 +214,7 @@ export function mount(root, ctx) {
       nodes.push(
         h('section', { class: 'card', 'aria-label': 'Wyniki według pola' },
           h('h2', null, 'Wyniki według pola'),
-          h('div', { class: 'table-wrap scroll' }, h('table', null,
+          h('div', { class: 'table-wrap scroll', tabindex: '0', role: 'region', 'aria-label': 'Tabela wyników według pola' }, h('table', null,
             h('thead', null, h('tr', null, ['Pole', 'P', 'R', 'F1', '', 'TP/FP/FN'].map((t, i) => h('th', null, i === 4 ? h('span', { class: 'sr-only' }, 'Wykres F1') : t)))),
             h('tbody', null, rows.map(([name, c]) => h('tr', null,
               h('td', { style: 'font-weight:600' }, name), h('td', null, num(c.precision)), h('td', null, num(c.recall)),
@@ -243,7 +243,7 @@ export function mount(root, ctx) {
     return h('section', { class: 'card', 'aria-label': 'Wyniki według dokumentu' },
       h('h2', null, 'Wyniki według dokumentu'),
       !docs.length ? h('div', { class: 'empty' }, 'Brak danych per dokument.') :
-        h('div', { class: 'table-wrap scroll' }, h('table', null,
+        h('div', { class: 'table-wrap scroll', tabindex: '0', role: 'region', 'aria-label': 'Tabela wyników dokumentów' }, h('table', null,
           h('thead', null, h('tr', null, ['Dokument', 'Klasa', 'TP', 'FP', 'FN', 'F1'].map((t) => h('th', null, t)))),
           h('tbody', null, docs.map((x) => {
             const key = `${x.label}/${x.stem}`;
@@ -274,7 +274,7 @@ export function mount(root, ctx) {
 
   function diffSection() {
     if (!st.diff) return [h('h2', null, 'Różnice dla dokumentu'), h('div', { class: 'empty' }, 'Wybierz dokument z tabeli, aby zobaczyć różnice między oczekiwanym a wyodrębnionym wynikiem.')];
-    if (st.diff.loading && !st.diff.diffs) return [h('div', { class: 'loading' }, 'Ładowanie różnic…')];
+    if (st.diff.loading && !st.diff.diffs) return [loading('Ładowanie różnic…')];
     if (st.diff.failed) return [errorBox(st.diff.failed)];
     const diffs = (st.diff.diffs || []).filter((x) => !st.onlyErrors || x.status !== 'TP');
     return [
@@ -286,7 +286,7 @@ export function mount(root, ctx) {
           'Tylko różnice')),
       st.diff.error ? h('div', { class: 'alert err', role: 'alert', style: 'margin-bottom:8px' }, st.diff.error) : null,
       !diffs.length ? h('div', { class: 'empty' }, 'Brak różnic.') :
-        h('div', { class: 'table-wrap scroll' }, h('table', null,
+        h('div', { class: 'table-wrap scroll', tabindex: '0', role: 'region', 'aria-label': 'Tabela różnic dla dokumentu' }, h('table', null,
           h('thead', null, h('tr', null, ['Pole', 'Oczekiwane', 'Wyodrębnione', 'Wynik'].map((t) => h('th', null, t)))),
           h('tbody', null, diffs.map((x) => h('tr', null,
             h('td', { style: 'font-weight:600' }, x.field), h('td', null, show(x.expected)), h('td', null, show(x.predicted)),

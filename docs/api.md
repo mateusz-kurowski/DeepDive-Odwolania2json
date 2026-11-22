@@ -13,6 +13,7 @@ Prefiks `/api`. W Dockerze front (nginx) proxuje `/api/` do kontenera `api` (por
 
 - `POST /api/documents` (multipart, pole `files`, wiele) → 201 `[{id, filename, status}]`; tylko PDF, ≤ `max_upload_mb`; przetwarzanie w tle (poll `GET`).
 - `POST /api/documents/samples` → 201 jak wyżej (przykładowe PDF-y z katalogu lokalnego).
+- `POST /api/documents/demo` → 201 `[{id, filename, status:"done"}]`; dokument demo z `data/demo/` (PDF + zapisany wynik prawdziwego przebiegu), bez wywołania modelu.
 - `GET /api/documents?q=&status=&needs_review=` → `{items:[DocSummary], summary:{total, processed, needs_review_rate:number|null, avg_citation_ok_rate:number|null, avg_duration_s:number|null}}` (nowe najpierw)
 - `GET /api/documents/{id}` → `DocSummary` + `{ocr_used:bool, model:str, pages:int, fields:[Field], data:object}` (`data` = JSON po korektach)
 - `GET /api/documents/{id}/pdf` → `application/pdf`

@@ -90,6 +90,7 @@ def create_app(
     llm_factory = llm_factory or OpenAICompatLLM
     max_upload_mb = int(env.get("MAX_UPLOAD_MB") or 25)
     samples_dir = Path(env.get("SAMPLES_DIR") or "data/szablon-aplikacja/input")
+    demo_dir = Path(env.get("DEMO_DIR") or "data/demo")
 
     documents = DocumentService(
         storage, settings, llm_factory, max_upload_mb, int(env.get("DOC_WORKERS") or 2)
@@ -166,6 +167,10 @@ def create_app(
         if not pdfs:
             raise DocumentError("Brak przykładowych dokumentów na serwerze.", 404)
         return [documents.add(p.name, p.read_bytes()) for p in pdfs]
+
+    @api.post("/documents/demo", status_code=201)
+    def demo() -> list[dict]:
+        return [documents.add_demo(demo_dir)]
 
     @api.get("/documents")
     def list_documents(q: str = "", status: str = "", needs_review: bool | None = None) -> dict:
