@@ -46,6 +46,7 @@ export function mount(root, ctx) {
   const runsEl = h('section', { class: 'card', 'aria-label': 'Przebiegi ewaluacji' });
   const compareEl = h('section', { class: 'card', 'aria-label': 'Porównanie przebiegów', hidden: true });
   const detailEl = h('div', { style: 'display:flex;flex-direction:column;gap:20px' });
+  const diffHost = h('div', { id: 'diff-host' });
   const msg = h('div', { role: 'status', 'aria-live': 'polite' });
   clear(root, h('div', { class: 'content' }, msg, runsEl, compareEl, detailEl, formEl));
 
@@ -204,8 +205,20 @@ export function mount(root, ctx) {
     } else if (d.status === 'done') {
       nodes.push(docsSection());
     }
-    nodes.push(h('div', { id: 'diff-host' }, diffSection()));
+    nodes.push(diffHost);
+    // Zachowaj przewinięcie tabel przy przebudowie (np. odświeżanie w trakcie przebiegu).
+    const scrolls = [...detailEl.querySelectorAll('.scroll')].map((el) => el.scrollTop);
     clear(detailEl, nodes);
+    detailEl.querySelectorAll('.scroll').forEach((el, i) => { if (scrolls[i]) el.scrollTop = scrolls[i]; });
+    renderDiff();
+  }
+
+  // Podgląd różnic odświeżany osobno: reszta strony (tabele, przewinięcie) zostaje nietknięta.
+  function renderDiff() {
+    clear(diffHost, diffSection());
+    diffHost.style.minHeight = st.diff ? '260px' : '';
+    diffHost.style.opacity = st.diff && st.diff.loading ? '.6' : '';
+    detailEl.querySelectorAll('tr[data-key]').forEach((tr) => tr.classList.toggle('selected', tr.dataset.key === st.diffKey));
   }
 
   function docsSection() {
@@ -217,7 +230,7 @@ export function mount(root, ctx) {
           h('thead', null, h('tr', null, ['Dokument', 'Klasa', 'TP', 'FP', 'FN', 'F1'].map((t) => h('th', null, t)))),
           h('tbody', null, docs.map((x) => {
             const key = `${x.label}/${x.stem}`;
-            return h('tr', { class: key === st.diffKey ? 'selected' : null },
+            return h('tr', { class: key === st.diffKey ? 'selected' : null, 'data-key': key },
               h('td', null, h('button', { type: 'button', class: 'linklike', onclick: () => openDiff(x) }, `${x.label}/${x.stem}`),
                 x.error ? h('div', { class: 'muted', style: 'font-size:13px' }, x.error) : null),
               h('td', null, x.class_name || '—'), h('td', null, x.tp), h('td', null, x.fp), h('td', null, x.fn),
@@ -226,24 +239,27 @@ export function mount(root, ctx) {
   }
 
   async function openDiff(x) {
-    st.diffKey = `${x.label}/${x.stem}`;
-    st.diff = { loading: true };
-    renderDetail();
+    const key = `${x.label}/${x.stem}`;
+    const firstOpen = !st.diff;
+    st.diffKey = key;
+    // Poprzednie różnice zostają widoczne (przygaszone) do czasu załadowania nowych: brak zapadania się układu.
+    st.diff = st.diff && !st.diff.failed ? { ...st.diff, loading: true } : { loading: true };
+    renderDiff();
+    let result;
     try {
-      st.diff = await api.get(`/evaluation/runs/${encodeURIComponent(st.selectedId)}/documents/${encodeURIComponent(x.label)}/${encodeURIComponent(x.stem)}`);
+      result = await api.get(`/evaluation/runs/${encodeURIComponent(st.selectedId)}/documents/${encodeURIComponent(x.label)}/${encodeURIComponent(x.stem)}`);
     } catch (e) {
-      st.diff = { failed: e.message };
+      result = { failed: e.message };
     }
-    if (!dead) {
-      renderDetail();
-      const el = detailEl.querySelector('#diff-host');
-      if (el) el.scrollIntoView({ block: 'nearest' });
-    }
+    if (dead || st.diffKey !== key) return; // użytkownik kliknął inny dokument
+    st.diff = result;
+    renderDiff();
+    if (firstOpen) diffHost.scrollIntoView({ block: 'nearest' });
   }
 
   function diffSection() {
     if (!st.diff) return null;
-    if (st.diff.loading) return h('div', { class: 'loading' }, 'Ładowanie różnic…');
+    if (st.diff.loading && !st.diff.diffs) return h('div', { class: 'loading' }, 'Ładowanie różnic…');
     if (st.diff.failed) return errorBox(st.diff.failed);
     const diffs = (st.diff.diffs || []).filter((x) => !st.onlyErrors || x.status !== 'TP');
     return h('section', { class: 'card', 'aria-label': 'Różnice dla dokumentu' },
@@ -251,7 +267,7 @@ export function mount(root, ctx) {
         h('h2', { style: 'margin:0' }, `${st.diffKey} – oczekiwane vs wyodrębnione`),
         h('span', { class: 'spacer' }),
         h('label', { style: 'display:flex;gap:8px;align-items:center;font-size:15px' },
-          h('input', { type: 'checkbox', checked: st.onlyErrors, onchange: (e) => { st.onlyErrors = e.target.checked; renderDetail(); } }),
+          h('input', { type: 'checkbox', checked: st.onlyErrors, onchange: (e) => { st.onlyErrors = e.target.checked; renderDiff(); } }),
           'Tylko różnice')),
       st.diff.error ? h('div', { class: 'alert err', role: 'alert', style: 'margin-bottom:8px' }, st.diff.error) : null,
       !diffs.length ? h('div', { class: 'empty' }, 'Brak różnic.') :
