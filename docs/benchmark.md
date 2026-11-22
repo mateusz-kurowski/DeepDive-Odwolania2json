@@ -34,6 +34,23 @@ Rozmiar: każdy model w tabelach podajemy z liczbą parametrów w B, np. `minist
 
 Wybór modelu czeka na odpowiedź organizatora (open-source vs open-weights, pytanie 4).
 
+## Czas i negatywy (22.11)
+
+Konfiguracja z `.env`: klasyfikacja `ministral-3b`, ekstrakcja i OCR (VLM) `ministral-8b`, tryb `hybrid`, `--workers 8`, `DOC_TIMEOUT_S=240`, bez cache.
+Limit organizatora: 150 PDF w ≤45 min.
+
+| Zbiór | PDF | F1 | Klasyf. | Negatywy odrzucone | Czas | s/PDF | Najwolniejszy | Prognoza 150 PDF |
+|---|---|---|---|---|---|---|---|---|
+| `data/dane` (60 przykładów) | 184 | 0,9837 | 1,000 | 4/4 | 234 s | 1,27 | 40 s (`przyklad_53/odwolanie.pdf`) | 3,2 min |
+| `data/dane/skany` | 30 | 0,9223 | 0,933 | – | 134 s | 4,48 | 87 s (`odwolania/0001`) | 11,2 min |
+| `data/dane/negatywne`, przed `exclude_hints` | 12 | – | – | 10/12 | 64 s | 5,34 | 22 s | – |
+| `data/dane/negatywne`, po `exclude_hints` | 12 | – | – | 12/12 | 8 s | 0,64 | 1,5 s | – |
+
+- Przed zmianą błędnie przyjęte były: ogłoszenie TED `2025_S 112-383751.pdf` (jako `przelew`) i postanowienie KIO `KIO_KIO 2617-21.pdf` (jako `odwolanie`). Poprawka bez kodu klas: `exclude_hints` w YAML („orzeka:”, „po rozpoznaniu na posiedzeniu/rozprawie”, „See the notice on TED”) i zdanie „czym klasa nie jest” w `description`. Frazy sprawdzone offline na 184 PDF: żadna nie występuje na początku dokumentu pozytywnego.
+- F1 na 180 dokumentach z referencją bez spadku (0,9837 wobec 0,9832 dla samego `ministral-8b` w `results/sweep-big-test`).
+- Żaden dokument nie przekroczył limitu czasu. Jedyna awaria to skan `potwierdzenia/0007` (VLM nie zwraca czytelnego tekstu; znane z wcześniejszych sweepów).
+- Prognoza = czas ściany / liczba PDF × 150. Najgorszy przypadek (same skany) to około 11 min, czyli 4× zapasu. Czas rośnie przy limitach zapytań API (429): wtedy zmniejszyć `--workers`.
+
 ## Warunek wrócenia do chunkingu
 
 Jeśli w śladzie (`trace/`) flaga `truncated` pojawia się często i `eval` pokazuje spadek F1 na takich dokumentach, rozważyć podział na okna z scalaniem wyników i weryfikacją (poza obecnym zakresem).
