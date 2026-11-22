@@ -68,6 +68,9 @@ class ClassConfig(BaseModel):
     # Kiedy brak hintu w tekście unieważnia wybór modelu:
     # always (domyślnie): zawsze; other_class: tylko gdy pasują hinty innej klasy; never.
     hint_veto: Literal["always", "other_class", "never"] = "always"
+    # Słowa wykluczające: gdy którekolwiek występuje na początku dokumentu, to nie ta klasa
+    # (np. wyrok KIO cytuje odwołanie, ale zaczyna się od „Sygn. akt”, „orzeka”).
+    exclude_hints: list[str] = []
     rules: list[str] = []
     examples: list[Example] = []
     requires: list[Requirement] = []

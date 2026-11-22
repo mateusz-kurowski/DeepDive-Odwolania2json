@@ -143,6 +143,10 @@ def _run_variant(
         "docs": payload["docs"],
         "errors": payload["errors"],
         "citation_ok_rate": payload["citation_ok_rate"],
+        "negatives_total": payload["negatives_total"],
+        "negatives_accepted": payload["negatives_accepted"],
+        "seconds_per_pdf": payload["timing"]["wall_seconds_per_doc"],
+        "projected_150_pdf_minutes": payload["timing"]["projected_150_pdf_minutes"],
         "mode": settings.extraction_mode,
         "usage": payload.get("usage"),
     }
@@ -152,16 +156,25 @@ def _fmt(value) -> str:
     return f"{value:.4f}" if isinstance(value, float) else "-"
 
 
+def _neg(r: dict) -> str:
+    total = r.get("negatives_total")
+    if total is None:
+        return "-"
+    return f"{r.get('negatives_accepted', 0)}/{total}"
+
+
 def _markdown(results: list[dict]) -> str:
     lines = [
-        "| wariant | model | tryb | F1 | P | R | dok. | błędy | cytaty OK | śr. mld param. | pkt rozmiaru | uwagi |",
-        "|---|---|---|---|---|---|---|---|---|---|---|---|",
+        "| wariant | model | tryb | F1 | P | R | dok. | błędy | cytaty OK | negatywy przyjęte | s/PDF | 150 PDF [min] | śr. mld param. | pkt rozmiaru | uwagi |",
+        "|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|",
     ]
     for r in results:
         lines.append(
             f"| {r['name']} | {' + '.join(r.get('models_used') or [r['model']])} | {r.get('mode') or '-'} | {_fmt(r.get('micro_f1'))} "
             f"| {_fmt(r.get('precision'))} | {_fmt(r.get('recall'))} | {r.get('docs', '-')} "
             f"| {r.get('errors', '-')} | {_fmt(r.get('citation_ok_rate'))} "
+            f"| {_neg(r)} | {r.get('seconds_per_pdf') or '-'} "
+            f"| {r.get('projected_150_pdf_minutes') or '-'} "
             f"| {r.get('avg_params_b') if r.get('avg_params_b') is not None else '-'} "
             f"| {r.get('size_points') if r.get('size_points') is not None else '-'} "
             f"| {(r['error'] or '').splitlines()[0][:80] if r['error'] else ''} |"

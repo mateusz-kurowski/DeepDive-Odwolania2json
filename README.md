@@ -108,6 +108,9 @@ Skróty do najczęstszych komend: `make help` (lista), `make install`, `make tes
 | `--classes` | katalog z klasami YAML (domyślnie `CLASSES_DIR`, czyli `classes`) |
 | `--mode hybrid\|llm_only` | tryb ekstrakcji (nadpisuje `EXTRACTION_MODE`) |
 | `--workers N` | równoległość (domyślnie 4) |
+| `--doc-timeout S` | limit czasu na dokument w sekundach (nadpisuje `DOC_TIMEOUT_S`, domyślnie 240; 0 = bez limitu). Po przekroczeniu dokument dostaje `{}` i wpis w logu |
+
+Na końcu `run` wypisuje czas przebiegu i prognozę dla 150 PDF (limit organizatora: 45 min); szczegóły per plik są w `trace/_summary.json` (`timing`, `files[].seconds`).
 
 Kod wyjścia to 1, gdy jakiś dokument zakończył się błędem (np. model niedostępny, brak tekstu w PDF). Dokument `nieznany` nie jest błędem.
 
@@ -119,6 +122,7 @@ Kod wyjścia to 1, gdy jakiś dokument zakończył się błędem (np. model nied
 | `EXTRACTION_MODE` | `hybrid` | `hybrid` = model + walidatory/normalizacja; `llm_only` = sam model |
 | `CLASSES_DIR` | `classes` | katalog klas |
 | `CITATION_THRESHOLD` | `85` | próg dopasowania cytatu (0–100) |
+| `DOC_TIMEOUT_S` | `240` | limit czasu na dokument (OCR + klasyfikacja + ekstrakcja) |
 
 ## Tryby ekstrakcji
 
@@ -138,7 +142,7 @@ uv run python -m src eval --examples 01,02,13   # tylko wybrane przykłady (make
 uv run python -m src eval --cache results/cache  # cache odpowiedzi LLM na dysku (domyślnie wyłączony; też w run)
 ```
 
-Raport pokazuje precision, recall i F1 per pole oraz łącznie, exact match dokumentu, poprawność klasyfikacji, odsetek poprawnych cytatów i odsetek `null` przy polach z wartością referencyjną. Skaner organizatora nie jest opublikowany, więc założenia porównania są w dokumencie projektowym (sekcja 7). `--dump` zapisuje dla każdego PDF-a predykcję, referencję, listę różnic i ślad cytatów (`<dump>/<przyklad>/<plik>.json`; `_missed.json` dla klas bez dokumentu). `run` zapisuje dodatkowo `trace/_summary.json` (klasa, błąd, plik wyjściowy, tokeny per plik). Wyniki pomiarów: `docs/benchmark.md`.
+Raport pokazuje precision, recall i F1 per pole oraz łącznie, exact match dokumentu, poprawność klasyfikacji, odsetek poprawnych cytatów i odsetek `null` przy polach z wartością referencyjną, a także negatywy (PDF-y ponad liczbę referencji, np. `data/dane/negatywne`: ile dostało `{}` i które zostały błędnie przyjęte) oraz czas (s/PDF, najwolniejszy plik, prognoza dla 150 PDF). Skaner organizatora nie jest opublikowany, więc założenia porównania są w dokumencie projektowym (sekcja 7). `--dump` zapisuje dla każdego PDF-a predykcję, referencję, listę różnic i ślad cytatów (`<dump>/<przyklad>/<plik>.json`; `_missed.json` dla klas bez dokumentu). `run` zapisuje dodatkowo `trace/_summary.json` (klasa, błąd, plik wyjściowy, tokeny per plik). Wyniki pomiarów: `docs/benchmark.md`.
 
 ### Seria ewaluacji na wielu wariantach
 
@@ -155,7 +159,7 @@ Plik YAML (wzór: `sweeps/przyklad.yaml`) ma `out_dir`, wspólne ustawienia (`da
 Nic nie edytujesz w Pythonie. Przykład: `classes_examples/faktura.yaml`.
 
 1. Skopiuj plik do `classes/` (nazwa pliku = `name` w środku): `cp classes_examples/faktura.yaml classes/`.
-2. Opisz klasę: `description` (model rozpoznaje po nim klasę), `hints` (słowa kontrolne, opcjonalnie; dopasowanie bez polskich znaków i wielkości liter, rozstrzelone tytuły typu „P E Ł N O” są sklejane), `hint_veto` (`always` domyślnie: brak hintu unieważnia wybór modelu; `other_class`: tylko gdy pasują hinty innej klasy; `never`), `rules` (reguły w języku naturalnym), `examples` (few-shot, opcjonalnie), `requires` (opcjonalna kontrola spójności w trybie hybrid: `when: Sekcja.pole`, `then: [Sekcja.inne_pole]`; gdy `when` ma wartość, a pole z `then` jest puste, ekstrakcja jest raz ponawiana z tą uwagą).
+2. Opisz klasę: `description` (model rozpoznaje po nim klasę), `hints` (słowa kontrolne, opcjonalnie; dopasowanie bez polskich znaków i wielkości liter, rozstrzelone tytuły typu „P E Ł N O” są sklejane), `exclude_hints` (słowa wykluczające: gdy któreś stoi na początku dokumentu, to nie ta klasa, np. „orzeka:” w wyroku KIO), `hint_veto` (`always` domyślnie: brak hintu unieważnia wybór modelu; `other_class`: tylko gdy pasują hinty innej klasy; `never`), `rules` (reguły w języku naturalnym), `examples` (few-shot, opcjonalnie), `requires` (opcjonalna kontrola spójności w trybie hybrid: `when: Sekcja.pole`, `then: [Sekcja.inne_pole]`; gdy `when` ma wartość, a pole z `then` jest puste, ekstrakcja jest raz ponawiana z tą uwagą).
 3. Opisz pola w `fields`. Typy: `text`, `number`, `integer`, `flag` (1/0), `enum` (z `options`), `object`, `array`. Pole może mieć `validator` (`nip`, `krs`, `regon`, `bzp`, `ted`, `iban`, `date`, `amount`, `email`, `pesel`), `description` dla modelu, `nullable`. Dla `array` podaj `key` (pola identyfikujące element, używane przez `eval`). Pole wyliczane ze słownika: `derive: {from: pole, map: {...}}`.
 4. Sprawdź: `uv run python -m src classes`. Od tej chwili klasyfikator widzi nową klasę, a `run` zapisuje jej JSON.
 

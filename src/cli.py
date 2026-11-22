@@ -4,6 +4,7 @@ import argparse
 import json
 import logging
 import sys
+import time
 from collections.abc import Mapping
 from pathlib import Path
 
@@ -28,6 +29,11 @@ def _parser() -> argparse.ArgumentParser:
         )
         p.add_argument("--mode", choices=["hybrid", "llm_only"], help="nadpisuje EXTRACTION_MODE")
         p.add_argument("--workers", type=int, default=4)
+        p.add_argument(
+            "--doc-timeout",
+            type=float,
+            help="limit czasu na dokument w sekundach (nadpisuje DOC_TIMEOUT_S; 0 = bez limitu)",
+        )
         p.add_argument(
             "--cache",
             type=Path,
@@ -73,6 +79,8 @@ def _settings(args: argparse.Namespace, env: Mapping[str, str] | None) -> Settin
         update["llm_model"] = args.model
     if args.classes:
         update["classes_dir"] = args.classes
+    if getattr(args, "doc_timeout", None) is not None:
+        update["doc_timeout_s"] = args.doc_timeout
     return settings.model_copy(update=update)
 
 
@@ -87,7 +95,26 @@ def _print_cache_stats(llm: LLM) -> None:
         print("cache:", llm.stats())
 
 
-def _write_summary(args, results, settings, llm) -> None:
+def timing(results, wall_seconds: float) -> dict:
+    """Czas przebiegu: ściana zegara i statystyki per dokument (do limitu 150 PDF / 45 min)."""
+    per_doc = sorted(r.seconds for r in results)
+    n = len(per_doc)
+    slowest = max(results, key=lambda r: r.seconds, default=None)
+    return {
+        "wall_seconds": round(wall_seconds, 1),
+        "docs": n,
+        "wall_seconds_per_doc": round(wall_seconds / n, 2) if n else None,
+        "doc_seconds_mean": round(sum(per_doc) / n, 2) if n else None,
+        "doc_seconds_p95": round(per_doc[min(n - 1, int(0.95 * n))], 2) if n else None,
+        "doc_seconds_max": round(per_doc[-1], 2) if n else None,
+        "slowest": slowest.path.name if slowest and slowest.path else None,
+        "read_seconds_total": round(sum(r.read_seconds for r in results), 1),
+        "ocr_docs": sum(1 for r in results if r.ocr_used),
+        "projected_150_pdf_minutes": round(wall_seconds / n * 150 / 60, 1) if n else None,
+    }
+
+
+def _write_summary(args, results, settings, llm, wall_seconds: float = 0.0) -> None:
     usage = getattr(llm, "usage", None)
     files = []
     for r in results:
@@ -98,12 +125,17 @@ def _write_summary(args, results, settings, llm) -> None:
                 "class": r.class_name,
                 "error": r.error,
                 "ocr_used": r.ocr_used,
+                "seconds": round(r.seconds, 2),
+                "read_seconds": round(r.read_seconds, 2),
                 "output": rel.with_suffix(".json").as_posix() if rel else None,
             }
         )
     summary = {
         "model": settings.llm_model,
         "mode": settings.extraction_mode,
+        "workers": args.workers,
+        "doc_timeout_s": settings.doc_timeout_s,
+        "timing": timing(results, wall_seconds),
         "files": files,
         **({"usage": usage.to_dict()} if usage else {}),
     }
@@ -212,15 +244,23 @@ def main(
         print(f"Brak plików PDF w {args.input}")
         return 0
     llm = _with_cache(llm or OpenAICompatLLM(settings), args, settings)
+    start = time.perf_counter()
     results = run_batch(
         args.input, args.output, args.trace, classes, llm, settings, workers=args.workers
     )
-    _write_summary(args, results, settings, llm)
+    wall = time.perf_counter() - start
+    _write_summary(args, results, settings, llm, wall)
     errors = [r for r in results if r.error]
     unknown = [r for r in results if r.class_name == UNKNOWN and not r.error]
     print(
         f"Przetworzono {len(results)} plików: {len(results) - len(errors) - len(unknown)} "
         f"zapisanych, {len(unknown)} nieznanych (pusty JSON), {len(errors)} błędów (tryb: {settings.extraction_mode})"
+    )
+    t = timing(results, wall)
+    print(
+        f"czas: {t['wall_seconds']} s ({t['wall_seconds_per_doc']} s/plik przy {args.workers} wątkach), "
+        f"najwolniejszy: {t['slowest']} {t['doc_seconds_max']} s; "
+        f"prognoza dla 150 PDF: {t['projected_150_pdf_minutes']} min (limit 45)"
     )
     usage = getattr(llm, "usage", None)
     if usage:

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import logging
 import re
 import unicodedata
 
@@ -10,6 +11,8 @@ from src.textextract import DocText
 
 UNKNOWN = "nieznany"
 HEAD_CHARS = 3000
+
+log = logging.getLogger(__name__)
 
 
 def _system_prompt(classes: dict[str, ClassConfig]) -> str:
@@ -51,6 +54,12 @@ def _hint_count(cfg: ClassConfig, text: str) -> int:
     return sum(hint in normalized for hint in _hints(cfg))
 
 
+def excluded(cfg: ClassConfig, text: str) -> bool:
+    """Czy początek tekstu zawiera słowo wykluczające klasę (`exclude_hints` z YAML)."""
+    head = normalize_for_hints(text[:HEAD_CHARS])
+    return any(normalize_for_hints(h) in head for h in cfg.exclude_hints if h.strip())
+
+
 def classify_by_hints(doc: DocText, classes: dict[str, ClassConfig]) -> str:
     """Klasyfikacja awaryjna bez modelu (gdy LLM zawiódł): hinty z YAML na początku tekstu.
 
@@ -60,7 +69,11 @@ def classify_by_hints(doc: DocText, classes: dict[str, ClassConfig]) -> str:
     wymóg dopasowania tylko jednej klasy.
     """
     head = doc.text[:HEAD_CHARS]
-    counts = {name: _hint_count(cfg, head) for name, cfg in classes.items() if cfg.hints}
+    counts = {
+        name: _hint_count(cfg, head)
+        for name, cfg in classes.items()
+        if cfg.hints and not excluded(cfg, head)
+    }
     best = max(counts.values(), default=0)
     if best == 0:
         return UNKNOWN
@@ -85,6 +98,9 @@ def classify(doc: DocText, classes: dict[str, ClassConfig], llm: LLM) -> str:
     if cfg is None:
         return UNKNOWN
     if _vetoed(chosen, cfg, classes, doc.text):
+        return UNKNOWN
+    if excluded(cfg, doc.text):
+        log.info("Klasa %s wykluczona słowem z exclude_hints", chosen)
         return UNKNOWN
     return chosen
 

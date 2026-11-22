@@ -124,3 +124,35 @@ def test_hint_veto_other_class_trusts_model_when_no_other_class_matches(fake_llm
 def test_hint_veto_never_trusts_model(fake_llm):
     classes = {"x": cls("x", "X", hints=["iks"], hint_veto="never")}
     assert classify(doc("cokolwiek"), classes, fake_llm([{"class": "x"}])) == "x"
+
+
+def _with_exclude(words):
+    return {
+        "alfa": ClassConfig.model_validate(
+            {
+                "name": "alfa",
+                "description": "Dokument alfa",
+                "hints": ["ALFA-marker"],
+                "exclude_hints": list(words),
+                "fields": [{"name": "a", "type": "text"}],
+            }
+        )
+    }
+
+
+def test_exclude_hint_on_head_vetoes_model_choice(fake_llm):
+    classes = _with_exclude(["orzeka:"])
+    llm = fake_llm([{"class": "alfa"}])
+    assert classify(doc("Sygn. akt\nIzba orzeka: oddala ALFA-marker"), classes, llm) == UNKNOWN
+
+
+def test_exclude_hint_only_checked_in_head(fake_llm):
+    classes = _with_exclude(["orzeka:"])
+    llm = fake_llm([{"class": "alfa"}])
+    text = "ALFA-marker " + "x " * 3000 + "orzeka:"
+    assert classify(doc(text), classes, llm) == "alfa"
+
+
+def test_exclude_hint_blocks_hint_fallback():
+    classes = _with_exclude(["See the notice on TED"])
+    assert classify_by_hints(doc("see the notice on ted ALFA-marker"), classes) == UNKNOWN

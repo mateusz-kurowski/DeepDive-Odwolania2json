@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import logging
 import re
+import time
 from collections.abc import Callable
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass, field
@@ -230,6 +231,18 @@ class Report:
     errors: int = 0
     docs_lost_to_errors: int = 0
     per_field_clean: dict[str, Counts] = field(default_factory=dict)
+    # Negatywy: PDF-y ponad liczbę referencji w przykładzie (np. `negatywne/`, obce PDF-y
+    # w `przyklad_04`). Powinny dostać `{}`. Każdy dokument z danymi bez pary w referencji
+    # liczymy jako przyjęty negatyw (to on daje FP na wszystkich polach klasy).
+    negatives_total: int = 0
+    negatives_accepted: int = 0
+    accepted_files: list[str] = field(default_factory=list)
+    # Czas: suma i maksimum per PDF (ściana zegara całego przebiegu: `wall_seconds`).
+    pdfs: int = 0
+    doc_seconds_total: float = 0.0
+    doc_seconds_max: float = 0.0
+    slowest: str | None = None
+    wall_seconds: float = 0.0
 
     def add_counts(self, counts: dict[str, Counts], clean: bool = True) -> None:
         for key, c in counts.items():
@@ -258,8 +271,15 @@ class Report:
             "cited_total",
             "errors",
             "docs_lost_to_errors",
+            "negatives_total",
+            "negatives_accepted",
+            "pdfs",
+            "doc_seconds_total",
         ):
             setattr(self, name, getattr(self, name) + getattr(other, name))
+        self.accepted_files += other.accepted_files
+        if other.doc_seconds_max > self.doc_seconds_max:
+            self.doc_seconds_max, self.slowest = other.doc_seconds_max, other.slowest
 
     @property
     def totals(self) -> Counts:
@@ -312,6 +332,25 @@ class Report:
         return self.cited_ok / self.cited_total if self.cited_total else 0.0
 
     @property
+    def negatives_rejected_rate(self) -> float | None:
+        if not self.negatives_total:
+            return None
+        return 1 - min(self.negatives_accepted, self.negatives_total) / self.negatives_total
+
+    def timing(self) -> dict:
+        n = self.pdfs
+        per_doc = self.wall_seconds / n if n and self.wall_seconds else None
+        return {
+            "pdfs": n,
+            "wall_seconds": round(self.wall_seconds, 1),
+            "wall_seconds_per_doc": round(per_doc, 2) if per_doc else None,
+            "doc_seconds_mean": round(self.doc_seconds_total / n, 2) if n else None,
+            "doc_seconds_max": round(self.doc_seconds_max, 2),
+            "slowest": self.slowest,
+            "projected_150_pdf_minutes": round(per_doc * 150 / 60, 1) if per_doc else None,
+        }
+
+    @property
     def null_rate_on_ref_valued(self) -> float:
         t = self.totals
         valued = t.tp + t.wrong + t.nulled
@@ -332,6 +371,11 @@ class Report:
             "classification_accuracy": self.classification_accuracy,
             "citation_ok_rate": self.citation_ok_rate,
             "null_rate_on_ref_valued": self.null_rate_on_ref_valued,
+            "negatives_total": self.negatives_total,
+            "negatives_accepted": self.negatives_accepted,
+            "negatives_rejected_rate": self.negatives_rejected_rate,
+            "accepted_files": sorted(self.accepted_files),
+            "timing": self.timing(),
             "per_field": {
                 k: {
                     "tp": c.tp,
@@ -365,6 +409,20 @@ class Report:
             f"poprawne cytaty:                 {self.citation_ok_rate:.4f}",
             f"null przy polach z referencją:   {self.null_rate_on_ref_valued:.4f}",
         ]
+        if self.negatives_total or self.accepted_files:
+            lines.append(
+                f"negatywy odrzucone ({{}}):         "
+                f"{self.negatives_total - min(self.negatives_accepted, self.negatives_total)}"
+                f"/{self.negatives_total}"
+            )
+            lines += [f"  przyjęty bez referencji: {f}" for f in sorted(self.accepted_files)]
+        t = self.timing()
+        if t["wall_seconds_per_doc"]:
+            lines.append(
+                f"czas:                            {t['wall_seconds']} s, "
+                f"{t['wall_seconds_per_doc']} s/PDF, max {t['doc_seconds_max']} s ({t['slowest']}); "
+                f"prognoza 150 PDF: {t['projected_150_pdf_minutes']} min"
+            )
         return "\n".join(lines)
 
 
@@ -431,9 +489,18 @@ def _evaluate_example(
         # Brak dokumentu przy awarii w tym przykładzie: nie wliczamy do F1 „bez błędów”.
         lost = not matching and report.errors > 0
         report.add_document(score_document(pred, ref, classes[class_name]), clean=not lost)
+    report.pdfs = len(results)
+    report.negatives_total = max(len(results) - len(refs), 0)
     for r in results:
+        report.doc_seconds_total += r.seconds
+        if r.seconds > report.doc_seconds_max:
+            report.doc_seconds_max = r.seconds
+            report.slowest = f"{_label(example)}/{r.path.name}" if r.path else None
         if r.data is not None and id(r) not in scored:
             report.add_counts(score_document(r.data, {}, classes[r.class_name]))
+            report.negatives_accepted += 1
+            if r.path is not None:
+                report.accepted_files.append(f"{_label(example)}/{r.path.name} → {r.class_name}")
         if r.extraction is not None:
             report.cited_total += len(r.extraction.citation_ok)
             report.cited_ok += sum(r.extraction.citation_ok.values())
@@ -493,6 +560,7 @@ def evaluate(
     if limit is not None:
         examples = examples[:limit]
     total = Report()
+    start = time.perf_counter()
     with ThreadPoolExecutor(max_workers=max(workers, 1)) as pool:
         for i, part in enumerate(
             pool.map(lambda e: _evaluate_example(e, classes, llm, settings, dump_dir), examples), 1
@@ -501,4 +569,5 @@ def evaluate(
             log.info("eval %d/%d", i, len(examples))
             if on_progress:
                 on_progress(i, len(examples))
+    total.wall_seconds = time.perf_counter() - start
     return total

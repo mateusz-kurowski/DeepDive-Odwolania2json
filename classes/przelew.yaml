@@ -1,11 +1,18 @@
 name: przelew
 description: >-
   Potwierdzenie przelewu bankowego (polecenie przelewu, potwierdzenie realizacji),
-  zwykle opłaty skarbowej od pełnomocnictwa lub wpisu od odwołania do KIO.
+  zwykle opłaty skarbowej od pełnomocnictwa lub wpisu od odwołania do KIO. Nie jest nim
+  ogłoszenie o zamówieniu (TED, BZP) ani dokument, który tylko wspomina o kwocie lub rachunku.
 hints:
   - przelew
   - rachunek
   - kwota
+# Słowa wykluczające (początek dokumentu): wyroki i postanowienia KIO, ogłoszenia TED.
+exclude_hints:
+  - "orzeka:"
+  - po rozpoznaniu na posiedzeniu
+  - po rozpoznaniu na rozprawie
+  - See the notice on TED
 rules:
   - "Kwotę zapisz jako liczbę (bez waluty), np. 200.0."
   - "Numery rachunków zapisz jako 26 cyfr, bez spacji i bez prefiksu PL. Rachunek obciążany (płatnika) to z_rachunku, rachunek odbiorcy to na_rachunek."
