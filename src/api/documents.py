@@ -9,6 +9,7 @@ import json
 import logging
 import re
 import tempfile
+import threading
 import time
 import uuid
 from collections.abc import Callable
@@ -155,6 +156,9 @@ class DocumentService:
         self.max_upload_bytes = max_upload_mb * 1024 * 1024
         self._pool = ThreadPoolExecutor(max_workers=max(workers, 1), thread_name_prefix="doc")
         self._llm: LLM | None = None
+        # Usunięte dokumenty: zapis z trwającego `_process` nie może ich odtworzyć.
+        self._deleted: set[str] = set()
+        self._write_lock = threading.Lock()
 
     # --- klucze -----------------------------------------------------------------------------
     @staticmethod
@@ -170,11 +174,15 @@ class DocumentService:
             raise DocumentError("Nie znaleziono dokumentu.", 404) from None
 
     def _write_json(self, doc_id: str, name: str, payload: dict) -> None:
-        self.storage.put(
-            self._key(doc_id, name),
-            json.dumps(payload, ensure_ascii=False).encode("utf-8"),
-            "application/json",
-        )
+        key = self._key(doc_id, name)
+        with self._write_lock:
+            if doc_id in self._deleted:
+                raise DocumentError("Nie znaleziono dokumentu.", 404)
+            self.storage.put(
+                key,
+                json.dumps(payload, ensure_ascii=False).encode("utf-8"),
+                "application/json",
+            )
 
     def _meta(self, doc_id: str) -> dict:
         return self._read_json(doc_id, "meta.json")
@@ -270,6 +278,11 @@ class DocumentService:
                 )
                 meta["status"] = "done"
             self._write_json(doc_id, "meta.json", meta)
+        except DocumentError as exc:
+            if exc.status == 404:  # dokument usunięty w trakcie przetwarzania
+                log.info("Dokument %s usunięty podczas przetwarzania, pomijam wynik", doc_id)
+                return
+            raise
         except Exception as exc:  # awaria jednego dokumentu nie zatrzymuje reszty
             log.exception("Przetwarzanie %s nieudane", doc_id)
             try:
@@ -426,12 +439,18 @@ class DocumentService:
 
     def delete(self, doc_id: str) -> None:
         self._meta(doc_id)
-        for key in self.storage.list(f"{PREFIX}{doc_id}/"):
-            self.storage.delete(key)
+        with self._write_lock:
+            self._deleted.add(doc_id)
+            for key in self.storage.list(f"{PREFIX}{doc_id}/"):
+                self.storage.delete(key)
 
     def delete_all(self) -> None:
-        for key in self.storage.list(PREFIX):
-            self.storage.delete(key)
+        with self._write_lock:
+            for key in self.storage.list(PREFIX):
+                parts = key.split("/")
+                if len(parts) > 1:
+                    self._deleted.add(parts[1])
+                self.storage.delete(key)
 
     # --- eksport -----------------------------------------------------------------------------
     def export_data(self, doc_id: str) -> tuple[str, dict]:
