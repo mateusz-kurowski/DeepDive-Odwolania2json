@@ -249,8 +249,12 @@ html{scrollbar-gutter:stable}
 /* przełącznik formularz / YAML i edytor pól */
 .segs{display:inline-flex;border:1px solid var(--navy);border-radius:6px;overflow:hidden}
 .seg{background:#fff;color:var(--navy);border:0;padding:8px 14px;font-weight:600;min-height:44px}
-.seg[aria-selected=true]{background:var(--navy);color:#fff}
+.seg[aria-selected=true],.seg[aria-pressed=true]{background:var(--navy);color:#fff}
 .sf-form{display:flex;flex-direction:column;gap:12px}
 .sf-row{border:1px solid var(--line);border-radius:6px;padding:10px;display:flex;flex-direction:column;gap:8px}
 .sf-head{display:flex;flex-wrap:wrap;gap:8px;align-items:flex-end}
 .sf-nest{margin-left:12px;padding-left:12px;border-left:3px solid var(--line)}
+
+.pane{flex:1 1 440px;max-width:560px;min-width:0;display:flex;flex-direction:column}
+.pane .fields{flex:1 1 auto;max-width:none}
+.viewswitch{padding:16px 16px 0}
