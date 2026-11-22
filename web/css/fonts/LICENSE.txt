@@ -1,0 +1,9 @@
+Source Sans 3 i Source Serif 4
+Copyright 2010-2023 Adobe (http://www.adobe.com/), with Reserved Font Name 'Source'.
+
+Pliki woff2 w tym katalogu są konwersją oficjalnych plików TTF
+(https://github.com/adobe-fonts/source-sans, https://github.com/adobe-fonts/source-serif).
+
+Licencja: SIL Open Font License, Version 1.1
+Pełny tekst: https://openfontlicense.org/open-font-license-official-text/
+Licencja zezwala na używanie, osadzanie i redystrybucję fontów.

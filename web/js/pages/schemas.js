@@ -69,7 +69,7 @@ export function mount(root, ctx) {
       h('h2', { style: 'font-size:16px;margin-bottom:4px' }, 'Typy dokumentów'),
       h('button', { class: 'btn', type: 'button', onclick: startNew }, '+ Nowy typ'),
       !st.loaded ? [1, 2, 3].map(() => h('div', { class: 'sitem skel', 'aria-hidden': 'true' }, '\u00a0', h('small', null, '\u00a0'))) : null,
-      st.error && !st.list.length ? errorBox(st.error) : null,
+      st.error && !st.list.length ? errorBox(st.error, () => { st.error = null; renderList(); loadList(); }) : null,
       st.list.map((c) => h('button', {
         type: 'button', class: 'sitem', 'aria-current': !st.isNew && c.name === st.current ? 'true' : null,
         onclick: () => { location.hash = `#/schemas/${encodeURIComponent(c.name)}`; },

@@ -45,8 +45,29 @@ export function badge(text, kind = 'idle') {
   return h('span', { class: `badge ${kind}` }, text);
 }
 
-export function errorBox(msg) {
-  return h('div', { class: 'alert err', role: 'alert' }, msg);
+export function errorBox(msg, onRetry) {
+  return h('div', { class: 'alert err', role: 'alert' },
+    h('span', null, msg),
+    onRetry ? h('button', { class: 'btn small', type: 'button', onclick: onRetry }, 'Spróbuj ponownie') : null);
+}
+
+export function loading(text = 'Ładowanie…') {
+  return h('div', { class: 'loading', role: 'status' }, h('span', { class: 'spinner', 'aria-hidden': 'true' }), text);
+}
+
+/** Pasek postępu. Bez `max` = nieokreślony (tryb „trwa przetwarzanie”). */
+export function progressBar({ value, max, label }) {
+  const det = max > 0;
+  const attrs = { class: 'progress' + (det ? '' : ' indeterminate'), role: 'progressbar', 'aria-label': label };
+  if (det) Object.assign(attrs, { 'aria-valuemin': '0', 'aria-valuemax': String(max), 'aria-valuenow': String(value) });
+  return h('div', attrs, h('div', { style: det ? `width:${Math.round((value / max) * 100)}%` : null }));
+}
+
+export function elapsed(iso) {
+  const t = iso ? Date.parse(iso) : NaN;
+  if (isNaN(t)) return null;
+  const s = Math.max(0, Math.round((Date.now() - t) / 1000));
+  return s < 60 ? `${s} s` : `${Math.floor(s / 60)} min ${String(s % 60).padStart(2, '0')} s`;
 }
 
 export function download(blob, filename) {
