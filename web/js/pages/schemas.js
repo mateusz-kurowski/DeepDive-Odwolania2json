@@ -225,6 +225,7 @@ export function mount(root, ctx) {
         lab('Opis typu (po czym go rozpoznać)', h('textarea', { rows: 3, style: 'height:auto;padding:8px 12px', value: d.description || '',
           oninput: (e) => { d.description = e.target.value; } })),
         listEditor('Podpowiedzi (hints, jedna na linię)', 'hints', d),
+        listEditor('Słowa wykluczające (exclude_hints, jedno na linię)', 'exclude_hints', d),
         listEditor('Reguły dla modelu (rules, jedna na linię)', 'rules', d),
         h('h3', { style: 'margin:8px 0 0;font-size:15px' }, 'Pola'),
         fieldEditor(d.fields || (d.fields = []), 0, renderEditor),

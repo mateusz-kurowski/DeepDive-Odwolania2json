@@ -2,12 +2,19 @@ name: odwolanie
 description: >-
   Odwołanie do Prezesa Krajowej Izby Odwoławczej (KIO) wnoszone przez wykonawcę
   w postępowaniu o udzielenie zamówienia publicznego: strony, pełnomocnik, numery
-  postępowania i zarzuty.
+  postępowania i zarzuty. Nie jest nim wyrok ani postanowienie KIO (sygnatura akt,
+  „orzeka”), które tylko opisują odwołanie.
 hints:
   - odwołanie
   - odwolanie
   - Krajowej Izby Odwoławczej
   - Odwołujący
+# Słowa wykluczające (początek dokumentu): wyroki i postanowienia KIO, ogłoszenia TED.
+exclude_hints:
+  - "orzeka:"
+  - po rozpoznaniu na posiedzeniu
+  - po rozpoznaniu na rozprawie
+  - See the notice on TED
 rules:
   - "czynnosc_dzien i czynnosc_powod_id opisują czynność albo zaniechanie zamawiającego zaskarżone odwołaniem (to, którego dotyczy pierwszy zarzut). Szukaj go w tej kolejności: (a) zdanie przed listą zarzutów opisujące zaskarżoną czynność, zwykle „Zamawiający w dniu DATA roku [czynność]” (także w części „wnoszę odwołanie wobec czynności/zaniechania…”); (b) punkt 1) wyliczenia „…polegających na: 1) …”; (c) tytuł „Zarzut nr 1 – …”, jeśli nazywa konkretną czynność (np. „bezpodstawnego odrzucenia oferty”). Uzasadnienie zarzutu (ogólne wywody o OPZ, dokumentacji, zasadach konkurencji) NIE wyznacza kodu ani daty."
   - "czynnosc_dzien to data zaskarżonej czynności (ISO) z tego zdania albo z „o którym Zamawiający zawiadomił pismem z dnia …”. Nie bierz daty pisma odwołania ani dat wcześniejszych zdarzeń („Uprzednio, w dniu …”, „Wcześniej, w dniu …”, otwarcie ofert, wezwanie do wyjaśnień). Gdy brak wiarygodnej daty, zwróć null."

@@ -7,6 +7,12 @@ hints:
   - pelnomocnictw
   - udzielam
   - udzielają
+# Słowa wykluczające (początek dokumentu): wyroki i postanowienia KIO, ogłoszenia TED.
+exclude_hints:
+  - "orzeka:"
+  - po rozpoznaniu na posiedzeniu
+  - po rozpoznaniu na rozprawie
+  - See the notice on TED
 rules:
   - "mocodawca to podmiot udzielający pełnomocnictwa. Może być ich kilku (konsorcjum, wykonawcy wspólnie): każdy to osobny element tablicy mocodawca."
   - "data.typ: osoba_prawna dla spółek i innych podmiotów z KRS, osoba_fizyczna dla osoby prowadzącej działalność gospodarczą (CEIDG) lub osoby prywatnej."
