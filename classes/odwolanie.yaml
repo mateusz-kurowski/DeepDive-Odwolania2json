@@ -123,17 +123,21 @@ examples:
         tytul: "Przebudowa stacji uzdatniania wody w Wierzbnie"
 fields:
   - name: OdwolanieKIO
+    label: "Odwołanie KIO"
     type: object
     fields:
       - name: data
+        label: "Data odwołania"
         type: text
         validator: date
         description: Data z nagłówka pierwszej strony (ISO YYYY-MM-DD), null gdy brak.
       - name: czynnosc_dzien
+        label: "Data zaskarżonej czynności"
         type: text
         validator: date
         description: Data zaskarżonej czynności lub zaniechania zamawiającego, opisanej przed pierwszym zarzutem (ISO).
       - name: czynnosc_powod_id
+        label: "Zaskarżona czynność (kod)"
         type: enum
         description: Rodzaj zaskarżonej czynności zamawiającego (zdanie „Zamawiający w dniu …” przed pierwszym zarzutem, punkt 1) wyliczenia, tytuł pierwszego zarzutu).
         options:
@@ -149,6 +153,7 @@ fields:
           10: zaniechanie unieważnienia postępowania
           11: opis przedmiotu zamówienia (OPZ)
       - name: czynnosc_opis
+        label: "Opis czynności"
         type: text
         derive:
           from: czynnosc_powod_id
@@ -165,82 +170,104 @@ fields:
             10: "Zaniechanie unieważnienia postępowania"
             11: "Opis przedmiotu zamówienia (OPZ)"
       - name: miejscowosc
+        label: "Miejscowość"
         type: text
         description: Miejscowość z nagłówka pierwszej strony, null gdy brak.
   - name: Odwolujacy
+    label: "Odwołujący"
     type: array
     key: [krs, nip]
     description: Odwołujący (przy konsorcjum Lider).
     fields:
       - name: krs
+        label: "KRS"
         type: text
         validator: krs
         description: KRS odwołującego lub Lidera konsorcjum.
       - name: nazwa
+        label: "Nazwa"
         type: text
         description: Pełna nazwa odwołującego (przy konsorcjum Lidera).
       - name: nip
+        label: "NIP"
         type: text
         validator: nip
         description: NIP odwołującego lub Lidera.
       - name: regon
+        label: "REGON"
         type: text
         validator: regon
         description: REGON odwołującego lub Lidera.
       - name: przez-pelnomocnika
+        label: "Przez pełnomocnika"
         type: flag
         nullable: false
         description: 1 gdy reprezentuje pełnomocnik, 0 gdy nie.
       - name: pelnomocnik
+        label: "Pełnomocnik"
         type: object
         fields:
           - name: imie_nazwisko
+            label: "Imię i nazwisko"
             type: text
             description: Imię i nazwisko pełnomocnika odwołującego, jeśli występuje.
           - name: nazwa
+            label: "Nazwa"
             type: text
             description: Nazwa kancelarii lub innego podmiotu pełnomocnika (np. z „adres do korespondencji”), nie nazwa odwołującego.
           - name: mail
+            label: "E-mail"
             type: text
             validator: email
             description: Adres e-mail kontaktowy pełnomocnika.
   - name: Zamawiajacy
+    label: "Zamawiający"
     type: array
     key: [krs, nip]
     description: Zamawiający.
     fields:
       - name: krs
+        label: "KRS"
         type: text
         validator: krs
         description: KRS zamawiającego, jeśli jawnie podany.
       - name: nazwa
+        label: "Nazwa"
         type: text
         description: Pełna nazwa zamawiającego.
       - name: nip
+        label: "NIP"
         type: text
         validator: nip
         description: NIP zamawiającego, jeśli jawnie podany.
       - name: regon
+        label: "REGON"
         type: text
         validator: regon
         description: REGON zamawiającego, jeśli jawnie podany.
       - name: prowadzacy_postepowanie
+        label: "Prowadzący postępowanie"
         type: flag
         description: null gdy brak informacji, 1 lub 0 gdy jest kilku zamawiających.
   - name: ZamowieniePubliczne
+    label: "Zamówienie publiczne"
     type: object
     fields:
       - name: numer_bzp
+        label: "Numer BZP"
         type: text
         validator: bzp
         description: Numer ogłoszenia w BZP (nie TED), w całości, z końcówką /NN, jeśli jest.
       - name: numer_postepowania
+        label: "Numer postępowania"
         type: text
         description: Numer referencyjny lub numer postępowania.
       - name: numer_ted
+        label: "Numer TED"
         type: text
         validator: ted
         description: Numer ogłoszenia TED.
       - name: tytul
+        label: "Tytuł zamówienia"
         type: text
         description: Tytuł zamówienia lub postępowania.

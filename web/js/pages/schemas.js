@@ -20,7 +20,7 @@ fields:
 function tree(fields) {
   return h('ul', { class: 'tree' }, fields.map((f) =>
     h('li', null,
-      h('code', null, f.name), ' ', h('span', { class: 'badge idle' }, f.type),
+      h('code', null, f.name), f.label ? h('span', { class: 'd' }, ` · ${f.label}`) : null, ' ', h('span', { class: 'badge idle' }, f.type),
       f.validator ? [' ', h('span', { class: 'badge outline' }, f.validator)] : null,
       f.description ? h('div', { class: 'd' }, f.description) : null,
       f.fields && f.fields.length ? tree(f.fields) : null)));
@@ -81,7 +81,7 @@ export function mount(root, ctx) {
 
   function renderList() {
     clear(listEl,
-      h('h2', { style: 'font-size:16px;margin-bottom:4px' }, 'Typy dokumentów'),
+      h('h2', { class: 'slist-title' }, 'Typy dokumentów'),
       h('button', { class: 'btn', type: 'button', onclick: startNew }, '+ Nowy typ'),
       !st.loaded ? [1, 2, 3].map(() => h('div', { class: 'sitem skel', 'aria-hidden': 'true' }, '\u00a0', h('small', null, '\u00a0'))) : null,
       st.error && !st.list.length ? errorBox(st.error) : null,
@@ -182,7 +182,7 @@ export function mount(root, ctx) {
     const busy = !d && !st.isNew && !st.error && (st.pending || st.current);
     clear(previewEl, h('h2', null, 'Pola schematu'),
       busy ? h('div', { class: 'skel-block', 'aria-hidden': 'true' }) : d ? [
-        h('p', { class: 'muted', style: 'margin:0 0 8px;font-size:14px' }, d.description),
+        h('p', { class: 'muted note' }, d.description),
         tree(d.fields || []),
         d.example_count != null ? h('p', { class: 'muted', style: 'font-size:13px' }, `Przykładów w schemacie: ${d.example_count}`) : null,
       ] : h('div', { class: 'empty' }, st.isNew ? 'Podgląd pojawi się po zapisaniu.' : 'Brak wybranego typu.'));
@@ -199,5 +199,10 @@ export function mount(root, ctx) {
   loadList().then(() => {
     if (dead) return;
     if (name0 && !cache.details.has(name0)) openClass(name0);
+    // bez wybranego typu: otwieramy pierwszy, zamiast pokazywać puste panele
+    else if (!name0 && !st.current && !st.isNew && st.list.length) {
+      history.replaceState(null, '', `#/schemas/${encodeURIComponent(st.list[0].name)}`);
+      openClass(st.list[0].name);
+    }
   });
 }

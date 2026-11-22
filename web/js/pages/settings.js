@@ -39,7 +39,7 @@ export function mount(root, ctx) {
         h('dl', { class: 'dl' },
           row('Object storage', s.storage_backend === 's3' ? 'S3 / MinIO' : 'Lokalny katalog (tryb deweloperski)'),
           row('Bucket', s.bucket)),
-        h('p', { class: 'muted', style: 'font-size:14px' }, 'Konfiguracja pochodzi ze zmiennych środowiskowych API; z poziomu UI jest tylko do odczytu.')),
+        h('p', { class: 'muted note', style: 'margin:12px 0 0' }, 'Konfiguracja pochodzi ze zmiennych środowiskowych API; z poziomu UI jest tylko do odczytu.')),
       h('section', { class: 'card', 'aria-label': 'Usuwanie danych' },
         h('h2', null, 'Dane'),
         h('button', { class: 'btn danger', type: 'button', onclick: purge }, 'Usuń wszystkie dokumenty…'),

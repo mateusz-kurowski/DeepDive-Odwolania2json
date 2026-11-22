@@ -31,27 +31,34 @@ examples:
         z_rachunku: "05470680287581539721455024"
 fields:
   - name: przelew_bankowy
+    label: "Przelew bankowy"
     type: object
     fields:
       - name: data_operacji
+        label: "Data operacji"
         type: text
         validator: date
         description: Data wykonania przelewu (ISO YYYY-MM-DD).
       - name: kwota
+        label: "Kwota"
         type: number
         validator: amount
         description: Kwota przelewu jako liczba.
       - name: na_rachunek
+        label: "Na rachunek"
         type: text
         validator: iban
         description: Rachunek odbiorcy (26 cyfr).
       - name: numer_transakcji
+        label: "Numer transakcji"
         type: text
         description: Numer referencyjny transakcji, jeśli występuje.
       - name: tytul
+        label: "Tytuł przelewu"
         type: text
         description: Pełny tytuł przelewu.
       - name: z_rachunku
+        label: "Z rachunku"
         type: text
         validator: iban
         description: Rachunek obciążany, czyli płatnika (26 cyfr).

@@ -1,5 +1,5 @@
 import { api } from '../api.js';
-import { h, clear, badge, errorBox, dur, show, isTyping, download } from '../ui.js';
+import { h, clear, badge, errorBox, dur, show, isTyping, download, debounce } from '../ui.js';
 
 const BASE_W = 640;
 
@@ -22,8 +22,15 @@ export function mount(root, ctx) {
     dead = true;
     clearTimeout(timer);
     document.removeEventListener('keydown', onKey);
+    window.removeEventListener('resize', onResize);
   });
   document.addEventListener('keydown', onKey);
+  // szerokość strony zależy od miejsca w podglądzie (100 % = dopasowanie do szerokości)
+  let lastW = 0;
+  const onResize = debounce(() => {
+    if (st.doc && pageWidth() !== lastW) renderViewer();
+  }, 150);
+  window.addEventListener('resize', onResize);
 
   ctx.header(h('div', { class: 'crumbs' }, h('a', { href: '#/documents' }, 'Dokumenty'), ' / ', h('b', null, '…')));
   const metaEl = h('section', { class: 'docmeta', 'aria-label': 'Metadane dokumentu' });
@@ -75,9 +82,9 @@ export function mount(root, ctx) {
     const ready = d.status === 'done';
     clear(metaEl,
       h('div', null,
-        h('div', { style: 'display:flex;align-items:baseline;gap:12px;flex-wrap:wrap' },
+        h('div', { class: 'title' },
           h('h1', null, d.label || d.filename),
-          h('span', { class: 'muted' }, d.filename)),
+          d.label && d.label !== d.filename ? h('span', { class: 'muted' }, d.filename) : null),
         h('div', { class: 'chips' },
           d.class_name ? h('span', { class: 'pill navy' }, d.class_name) : null,
           d.model ? h('span', { class: 'pill' }, `Model: ${d.model}`) : null,
@@ -85,19 +92,28 @@ export function mount(root, ctx) {
           d.ocr_used ? h('span', { class: 'pill' }, 'OCR') : null,
           d.status !== 'done' ? badge(d.status === 'error' ? 'Błąd' : 'Przetwarzanie…', d.status === 'error' ? 'err' : 'busy') : null)),
       h('div', { class: 'btn-row' },
-        h('span', { 'aria-live': 'polite', style: 'font-size:15px;color:#334155;margin-right:8px' },
+        h('span', { 'aria-live': 'polite', class: 'progress-txt' },
           h('b', null, approved), ` z ${fields().length} pól zatwierdzonych`),
-        h('button', { class: 'btn', type: 'button', onclick: toggleJson }, st.json ? 'Widok pól' : 'Widok JSON'),
         h('button', { class: 'btn primary', type: 'button', disabled: !ready || !fields().length, onclick: approveAll }, 'Zatwierdź wszystko'),
-        h('button', { class: 'btn subtle', type: 'button', disabled: !ready, onclick: exportJson }, 'Pobierz JSON po korektach')));
+        h('button', { class: 'btn', type: 'button', disabled: !ready, onclick: exportJson }, 'Pobierz JSON po korektach')));
     if (d.error) clear(msg, errorBox(d.error));
+  }
+
+  function pageWidth() {
+    // miniatury (96 px) są ukryte w CSS poniżej 760 px
+    const thumbs = (st.doc && st.doc.pages > 1 && !matchMedia('(max-width:760px)').matches) ? 96 : 0;
+    const pad = matchMedia('(max-width:760px)').matches ? 16 : 32;
+    const avail = viewerEl.clientWidth - thumbs - pad;
+    const fit = avail > 200 ? Math.min(BASE_W, avail) : BASE_W;
+    return Math.round(fit * st.zoom);
   }
 
   function renderViewer() {
     const d = st.doc;
     if (!d) return clear(viewerEl);
     const pages = d.pages || 0;
-    const w = Math.round(BASE_W * st.zoom);
+    const w = pageWidth();
+    lastW = w;
     const reqW = Math.min(2000, Math.round(w * (window.devicePixelRatio > 1 ? 1.5 : 1)));
     const hls = fields().flatMap((f) =>
       (f.highlights || []).filter((x) => x.page === st.page).map((x) => ({ f, x })));
@@ -141,18 +157,26 @@ export function mount(root, ctx) {
     return null;
   }
 
+  function viewSwitch() {
+    const opt = (json, text) => h('button', {
+      type: 'button', 'aria-pressed': st.json === json ? 'true' : 'false',
+      onclick: () => { if (st.json !== json) toggleJson(); },
+    }, text);
+    return h('div', { class: 'seg', role: 'group', 'aria-label': 'Widok wyników' }, opt(false, 'Pola'), opt(true, 'JSON'));
+  }
+
   function renderFields() {
     if (!st.doc) return clear(fieldsEl);
     if (st.json) {
-      return clear(fieldsEl, h('pre', { class: 'jsonview', style: 'margin:0', tabindex: '0', 'aria-label': 'JSON dokumentu' }, JSON.stringify(st.doc.data ?? {}, null, 2)));
+      return clear(fieldsEl, viewSwitch(), h('pre', { class: 'jsonview', style: 'margin:0', tabindex: '0', 'aria-label': 'JSON dokumentu' }, JSON.stringify(st.doc.data ?? {}, null, 2)));
     }
     if (st.doc.status !== 'done') {
       return clear(fieldsEl, h('div', { class: 'loading' }, st.doc.status === 'error' ? 'Przetwarzanie nie powiodło się.' : 'Trwa przetwarzanie…'));
     }
     if (!fields().length) {
-      return clear(fieldsEl, h('div', { class: 'empty' }, 'Brak wyodrębnionych pól (dokument spoza znanych klas).'));
+      return clear(fieldsEl, viewSwitch(), h('div', { class: 'empty' }, 'Brak wyodrębnionych pól (dokument spoza znanych klas).'));
     }
-    const out = [];
+    const out = [viewSwitch()];
     let section = Symbol();
     for (const f of fields()) {
       const sec = f.section || null;

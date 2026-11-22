@@ -61,21 +61,22 @@ def _walk(
             continue
         value = data.get(spec.name) if isinstance(data, dict) else None
         path = f"{prefix}{spec.name}"
+        label = spec.label or _humanize(spec.name)
         if spec.type == "object":
-            yield from _walk(
-                value or {}, spec.fields, f"{path}.", section or _humanize(spec.name), ""
-            )
+            # obiekt najwyższego poziomu to sekcja; zagnieżdżony dokleja nazwę do etykiet
+            nested = f"{label_prefix}{label}: " if section else ""
+            yield from _walk(value or {}, spec.fields, f"{path}.", section or label, nested)
         elif spec.type == "array":
             for i, item in enumerate(value or []):
                 yield from _walk(
                     item,
                     spec.fields,
                     f"{path}[{i}].",
-                    section or _humanize(spec.name),
-                    f"{_humanize(spec.name)} {i + 1}: ",
+                    section or label,
+                    f"{label_prefix}{label} {i + 1}: ",
                 )
         else:
-            yield path, f"{label_prefix}{_humanize(spec.name)}", section, value
+            yield path, f"{label_prefix}{label}", section, value
 
 
 def build_fields(
@@ -344,9 +345,26 @@ class DocumentService:
         )
         if result:
             marks = self._highlights(doc_id, meta, result["fields"])
-            fields = [{**view(f), "highlights": marks.get(f["path"], [])} for f in result["fields"]]
+            names = self._labels(result)
+            fields = [
+                {**view(f), **names.get(f["path"], {}), "highlights": marks.get(f["path"], [])}
+                for f in result["fields"]
+            ]
             out.update(fields=fields, data=self._current_data(result))
         return out
+
+    def _labels(self, result: dict) -> dict[str, dict]:
+        """Etykiety i sekcje z bieżącego YAML-a klasy (zmiana `label` działa bez reprocessingu)."""
+        try:
+            cfg = load_classes(self.settings.classes_dir).get(result.get("class_name") or "")
+        except Exception:  # zepsuty YAML nie może blokować podglądu dokumentu
+            return {}
+        if cfg is None:
+            return {}
+        return {
+            path: {"label": label, "section": section}
+            for path, label, section, _ in _walk(result.get("data") or {}, cfg.fields, "", None, "")
+        }
 
     def _highlights(self, doc_id: str, meta: dict, fields: list[dict]) -> dict[str, list[dict]]:
         try:

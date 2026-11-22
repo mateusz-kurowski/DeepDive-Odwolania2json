@@ -50,17 +50,18 @@ export function mount(root, ctx) {
   const exportBtns = ['json', 'jsonl', 'csv'].map((f) =>
     h('button', { class: 'btn small', type: 'button', 'data-fmt': f, onclick: () => exportSelected(f) }, f.toUpperCase()));
   const search = h('input', {
-    type: 'search', id: 'doc-q', placeholder: 'Sygnatura lub nazwa pliku', style: 'width:260px',
+    type: 'search', id: 'doc-q', class: 'search', placeholder: 'Nazwa pliku',
     oninput: debounce(() => { st.q = search.value.trim(); load(); }, 300),
   });
   const filter = h('select', { id: 'doc-filter', onchange: () => { st.filter = filter.value; load(); } },
     FILTERS.map(([v, l]) => h('option', { value: v }, l)));
-  const exportLabel = h('span', { class: 'muted', style: 'font-size:14px' }, 'Eksport zaznaczonych:');
+  const exportLabel = h('span', { class: 'lbl' });
+  const exportBox = h('div', { class: 'export', role: 'group', 'aria-label': 'Eksport zaznaczonych' }, exportLabel, exportBtns);
   const listCard = h('section', { class: 'card', 'aria-label': 'Lista dokumentów' },
     h('div', { class: 'toolbar' },
       h('label', { class: 'field', for: 'doc-q' }, 'Szukaj', search),
       h('label', { class: 'field', for: 'doc-filter' }, 'Status', filter),
-      h('span', { class: 'spacer' }), exportLabel, exportBtns),
+      h('span', { class: 'spacer' }), exportBox),
     tbodyHost);
 
   clear(root, h('div', { class: 'content' }, drop, msg, summaryEl, listCard));
@@ -106,7 +107,8 @@ export function mount(root, ctx) {
   }
 
   function renderTable() {
-    exportBtns.forEach((b) => { b.disabled = st.selected.size === 0; });
+    exportBox.hidden = st.selected.size === 0;
+    exportLabel.textContent = `Eksport zaznaczonych (${st.selected.size}):`;
     if (st.error) return clear(tbodyHost, errorBox(st.error));
     if (!st.loaded) return clear(tbodyHost, h('div', { class: 'loading' }, 'Ładowanie…'));
     if (!st.items.length) {
@@ -122,20 +124,20 @@ export function mount(root, ctx) {
           renderTable();
         },
       })),
-      ['Plik', 'Sygnatura', 'Typ', 'Status', 'Zgodność cytatów', 'Czas', 'Akcje'].map((t) => h('th', null, t)));
+      ['Plik', 'Status', 'Typ', 'Zgodność cytatów', 'Czas'].map((t) => h('th', null, t)),
+      h('th', null, h('span', { class: 'sr-only' }, 'Akcje')));
     const rows = st.items.map((d) => h('tr', { class: st.selected.has(d.id) ? 'selected' : null },
       h('td', null, h('input', {
         type: 'checkbox', 'aria-label': `Zaznacz ${d.filename}`, checked: st.selected.has(d.id),
         onchange: (e) => { if (e.target.checked) st.selected.add(d.id); else st.selected.delete(d.id); renderTable(); },
       })),
-      h('td', null, d.filename),
-      h('td', { style: 'font-weight:600' }, d.label && d.label !== d.filename ? d.label : '—'),
-      h('td', null, d.class_name || '—'),
-      h('td', null, statusBadge(d), d.error ? h('div', { class: 'muted', style: 'font-size:13px;margin-top:4px' }, d.error) : null),
-      h('td', null, pct(d.citation_ok_rate, 0)),
-      h('td', { class: 'muted' }, dur(d.duration_s)),
-      h('td', null, h('div', { class: 'btn-row', style: 'gap:6px' }, actions(d)))));
-    clear(tbodyHost, h('table', null, h('thead', null, head), h('tbody', null, rows)));
+      h('td', { class: 'c-file' }, d.filename),
+      h('td', { class: 'c-status' }, statusBadge(d), d.error ? h('div', { class: 'sub' }, d.error) : null),
+      h('td', { class: 'c-meta', 'data-label': 'Typ' }, d.class_name || '—'),
+      h('td', { class: 'c-meta num', 'data-label': 'Cytaty' }, pct(d.citation_ok_rate, 0)),
+      h('td', { class: 'c-meta num muted', 'data-label': 'Czas' }, dur(d.duration_s)),
+      h('td', { class: 'c-actions' }, h('div', { class: 'btn-row', style: 'gap:6px' }, actions(d)))));
+    clear(tbodyHost, h('table', { class: 'doctable' }, h('thead', null, head), h('tbody', null, rows)));
   }
 
   function actions(d) {
@@ -144,7 +146,7 @@ export function mount(root, ctx) {
       out.push(h('button', { class: 'btn small', type: 'button', onclick: () => reprocess(d) }, 'Ponów'));
     } else {
       const label = d.status === 'done' ? (d.needs_review ? 'Przejrzyj' : 'Otwórz') : 'Podgląd';
-      out.push(h('a', { class: 'btn small', href: `#/documents/${encodeURIComponent(d.id)}`, style: 'text-decoration:none;display:inline-flex;align-items:center' }, label));
+      out.push(h('a', { class: 'btn small', href: `#/documents/${encodeURIComponent(d.id)}` }, label));
     }
     out.push(h('button', { class: 'btn small danger', type: 'button', 'aria-label': `Usuń ${d.filename}`, onclick: () => remove(d) }, 'Usuń'));
     return out;

@@ -26,6 +26,7 @@ class Derive(BaseModel):
 class FieldSpec(BaseModel):
     name: str
     type: FieldType
+    label: str | None = None  # etykieta w UI (domyślnie z nazwy pola)
     description: str = ""
     validator: str | None = None
     options: dict[int | str, str] | None = None

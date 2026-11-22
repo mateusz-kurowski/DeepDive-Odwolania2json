@@ -14,11 +14,28 @@ function runLabel(r) {
   return r.name || r.id;
 }
 
+// [nagłówek, wartość do sortowania, komórka, ukryj kolumnę gdy pusta we wszystkich przebiegach]
 const COLS = [
-  ['Przebieg', (r) => runLabel(r)], ['Źródło', (r) => r.source], ['Zbiór', (r) => r.dataset], ['Model', (r) => modelLabel(r)],
-  ['Tryb', (r) => r.mode], ['Status', (r) => r.status], ['F1', (r) => r.micro_f1], ['P', (r) => r.precision],
-  ['R', (r) => r.recall], ['Dok.', (r) => r.docs], ['Błędy', (r) => r.errors], ['Start', (r) => r.started_at],
+  ['Przebieg', (r) => runLabel(r), (r) => h('td', null, h('a', { href: `#/evaluation/${encodeURIComponent(r.id)}`, class: 'runname' }, runLabel(r)))],
+  ['Źródło', (r) => r.source, (r) => h('td', null, badge(r.source === 'local' ? 'lokalny' : 'storage', r.source === 'local' ? 'idle' : 'busy'))],
+  ['Zbiór', (r) => r.dataset, (r) => h('td', null, r.dataset || '—'), true],
+  ['Model', (r) => modelLabel(r), (r) => h('td', null, modelLabel(r) || '—')],
+  ['Tryb', (r) => r.mode, (r) => h('td', null, r.mode || '—')],
+  ['Status', (r) => r.status, (r) => {
+    const [stText, stKind] = STATUS[r.status] || [r.status, 'idle'];
+    return h('td', null, badge(stText, stKind), r.status === 'running' && r.progress && r.progress.total
+      ? h('div', { class: 'progress', role: 'progressbar', 'aria-label': 'Postęp ewaluacji', 'aria-valuemin': '0', 'aria-valuemax': String(r.progress.total), 'aria-valuenow': String(r.progress.done), style: 'margin-top:6px' },
+          h('div', { style: `width:${Math.round((r.progress.done / r.progress.total) * 100)}%` })) : null,
+      r.error ? h('div', { class: 'sub' }, r.error) : null);
+  }],
+  ['F1', (r) => r.micro_f1, (r) => h('td', { class: 'num strong' }, pct(r.micro_f1)), false, true],
+  ['P', (r) => r.precision, (r) => h('td', { class: 'num' }, pct(r.precision)), false, true],
+  ['R', (r) => r.recall, (r) => h('td', { class: 'num' }, pct(r.recall)), false, true],
+  ['Dok.', (r) => r.docs, (r) => h('td', { class: 'num' }, r.docs ?? '—'), false, true],
+  ['Błędy', (r) => r.errors, (r) => h('td', { class: 'num' }, r.errors ?? '—'), false, true],
+  ['Start', (r) => r.started_at, (r) => h('td', { class: 'num muted' }, dt(r.started_at)), true],
 ];
+const isEmpty = (v) => v == null || v === '';
 
 function sortRuns(runs, sort) {
   const get = COLS[sort.col][1];
@@ -76,43 +93,28 @@ export function mount(root, ctx) {
     else if (!st.loaded) body = h('div', { class: 'loading' }, 'Ładowanie…');
     else if (!st.runs.length) body = h('div', { class: 'empty' }, 'Brak przebiegów. Uruchom ewaluację poniżej albo dodaj wyniki do katalogu results/.');
     else {
+      const cols = COLS.map((c, i) => ({ c, i })).filter(({ c }) => !c[3] || st.runs.some((r) => !isEmpty(c[1](r))));
       body = h('div', { class: 'table-wrap' }, h('table', null,
         h('thead', null, h('tr', null,
           h('th', null, h('span', { class: 'sr-only' }, 'Porównaj')),
-          COLS.map(([t], i) => {
+          cols.map(({ c: [t, , , , numeric], i }) => {
             const active = st.sort.col === i;
-            return h('th', { 'aria-sort': active ? (st.sort.dir === 'asc' ? 'ascending' : 'descending') : 'none' },
+            return h('th', { class: numeric ? 'num' : null, 'aria-sort': active ? (st.sort.dir === 'asc' ? 'ascending' : 'descending') : 'none' },
               h('button', {
-                type: 'button', class: 'linklike', style: 'font:inherit;font-weight:inherit;color:inherit;text-decoration:none',
+                type: 'button', class: 'linklike',
                 onclick: () => { st.sort = { col: i, dir: active && st.sort.dir === 'desc' ? 'asc' : 'desc' }; renderRuns(); },
               }, t, h('span', { 'aria-hidden': 'true' }, active ? (st.sort.dir === 'asc' ? ' ▲' : ' ▼') : ' ↕')));
           }))),
-        h('tbody', null, sortRuns(st.runs, st.sort).map((r) => {
-          const [stText, stKind] = STATUS[r.status] || [r.status, 'idle'];
-          return h('tr', { class: r.id === st.selectedId ? 'selected' : null },
+        h('tbody', null, sortRuns(st.runs, st.sort).map((r) =>
+          h('tr', { class: r.id === st.selectedId ? 'selected' : null },
             h('td', null, h('input', {
               type: 'checkbox', 'aria-label': `Porównaj ${runLabel(r)}`, checked: st.compare.has(r.id), disabled: r.status !== 'done',
               onchange: (e) => { if (e.target.checked) st.compare.add(r.id); else st.compare.delete(r.id); loadCompare(); },
             })),
-            h('td', null, h('a', { href: `#/evaluation/${encodeURIComponent(r.id)}`, style: 'font-weight:600' }, runLabel(r))),
-            h('td', null, badge(r.source === 'local' ? 'lokalny' : 'storage', r.source === 'local' ? 'idle' : 'busy')),
-            h('td', null, r.dataset || '—'),
-            h('td', null, modelLabel(r) || '—'),
-            h('td', null, r.mode || '—'),
-            h('td', null, badge(stText, stKind), r.status === 'running' && r.progress && r.progress.total
-              ? h('div', { class: 'progress', role: 'progressbar', 'aria-label': 'Postęp ewaluacji', 'aria-valuemin': '0', 'aria-valuemax': String(r.progress.total), 'aria-valuenow': String(r.progress.done), style: 'margin-top:6px' },
-                  h('div', { style: `width:${Math.round((r.progress.done / r.progress.total) * 100)}%` })) : null,
-              r.error ? h('div', { class: 'muted', style: 'font-size:13px' }, r.error) : null),
-            h('td', { style: 'font-weight:700' }, pct(r.micro_f1)),
-            h('td', null, pct(r.precision)),
-            h('td', null, pct(r.recall)),
-            h('td', null, r.docs ?? '—'),
-            h('td', null, r.errors ?? '—'),
-            h('td', { class: 'muted' }, dt(r.started_at)));
-        }))));
+            cols.map(({ c }) => c[2](r)))))));
     }
     clear(runsEl, h('h2', null, 'Przebiegi ewaluacji'),
-      h('p', { class: 'muted', style: 'margin:0 0 12px;font-size:14px' }, 'Wyniki lokalne (katalog results/) są tylko do odczytu; przebiegi uruchomione z UI zapisują się w object storage. Zaznacz co najmniej dwa, aby porównać pola.'),
+      h('p', { class: 'muted note' }, 'Wyniki lokalne (katalog results/) są tylko do odczytu; przebiegi uruchomione z UI zapisują się w object storage. Zaznacz co najmniej dwa, aby porównać pola.'),
       body);
   }
 
@@ -134,10 +136,10 @@ export function mount(root, ctx) {
       h('div', { class: 'table-wrap scroll' }, h('table', null,
         h('thead', null, h('tr', null, h('th', null, 'Pole'), runs.map((r) => h('th', null, runLabel(r))))),
         h('tbody', null,
-          h('tr', null, h('td', { style: 'font-weight:700' }, 'Micro-F1'), runs.map((r) => h('td', { style: 'font-weight:700' }, pct(r.micro_f1)))),
+          h('tr', null, h('td', { class: 'strong' }, 'Micro-F1'), runs.map((r) => h('td', { class: 'num strong' }, pct(r.micro_f1)))),
           paths.map((p) => h('tr', null, h('td', null, p), runs.map((r) => {
             const c = r.report && r.report.per_field[p];
-            return h('td', null, c ? num(c.f1) : '—');
+            return h('td', { class: 'num' }, c ? num(c.f1) : '—');
           })))))));
   }
 
@@ -196,10 +198,10 @@ export function mount(root, ctx) {
           h('div', { class: 'table-wrap scroll' }, h('table', null,
             h('thead', null, h('tr', null, ['Pole', 'P', 'R', 'F1', '', 'TP/FP/FN'].map((t, i) => h('th', null, i === 4 ? h('span', { class: 'sr-only' }, 'Wykres F1') : t)))),
             h('tbody', null, rows.map(([name, c]) => h('tr', null,
-              h('td', { style: 'font-weight:600' }, name), h('td', null, num(c.precision)), h('td', null, num(c.recall)),
-              h('td', { style: 'font-weight:700' }, num(c.f1)),
+              h('td', { style: 'font-weight:600' }, name), h('td', { class: 'num' }, num(c.precision)), h('td', { class: 'num' }, num(c.recall)),
+              h('td', { class: 'num strong' }, num(c.f1)),
               h('td', { style: 'width:140px' }, h('div', { class: 'bar' + (c.f1 < 0.85 ? ' warn' : '') }, h('div', { style: `width:${Math.round(c.f1 * 100)}%` }))),
-              h('td', { class: 'muted' }, `${c.tp}/${c.fp}/${c.fn}`))))))),
+              h('td', { class: 'num muted' }, `${c.tp}/${c.fp}/${c.fn}`))))))),
         docsSection()));
     } else if (d.status === 'done') {
       nodes.push(docsSection());
@@ -219,9 +221,9 @@ export function mount(root, ctx) {
             const key = `${x.label}/${x.stem}`;
             return h('tr', { class: key === st.diffKey ? 'selected' : null },
               h('td', null, h('button', { type: 'button', class: 'linklike', onclick: () => openDiff(x) }, `${x.label}/${x.stem}`),
-                x.error ? h('div', { class: 'muted', style: 'font-size:13px' }, x.error) : null),
-              h('td', null, x.class_name || '—'), h('td', null, x.tp), h('td', null, x.fp), h('td', null, x.fn),
-              h('td', { style: 'font-weight:700' }, x.f1 == null ? '—' : num(x.f1)));
+                x.error ? h('div', { class: 'sub' }, x.error) : null),
+              h('td', null, x.class_name || '—'), h('td', { class: 'num' }, x.tp), h('td', { class: 'num' }, x.fp), h('td', { class: 'num' }, x.fn),
+              h('td', { class: 'num strong' }, x.f1 == null ? '—' : num(x.f1)));
           })))));
   }
 
@@ -288,7 +290,7 @@ export function mount(root, ctx) {
       run.disabled = false;
     } }, 'Uruchom ewaluację');
     clear(formEl, h('h2', null, 'Uruchom nowy przebieg'),
-      h('p', { class: 'muted', style: 'margin:0 0 12px;font-size:14px' }, 'Dane do ewaluacji są czytane z object storage albo lokalnie (config/eval-datasets.yaml); wynik trafia do object storage.'),
+      h('p', { class: 'muted note' }, 'Dane do ewaluacji są czytane z object storage albo lokalnie (config/eval-datasets.yaml); wynik trafia do object storage.'),
       st.datasets.length ? h('div', { class: 'toolbar' },
         h('label', { class: 'field', for: 'ev-ds' }, 'Zbiór danych', ds),
         h('label', { class: 'field', for: 'ev-model' }, 'Model', model),

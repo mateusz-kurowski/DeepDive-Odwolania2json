@@ -36,49 +36,61 @@ examples:
           pesel: null
 fields:
   - name: mocodawca
+    label: "Mocodawca"
     type: array
     key: [data.krs, data.nip]
     description: Podmioty udzielające pełnomocnictwa.
     fields:
       - name: data
+        label: "Dane"
         type: object
         fields:
           - name: imie_nazwisko
+            label: "Imię i nazwisko"
             type: text
             description: Imię i nazwisko mocodawcy będącego osobą fizyczną, dla osoby prawnej null.
           - name: krs
+            label: "KRS"
             type: text
             validator: krs
             description: Numer KRS mocodawcy będącego osobą prawną.
           - name: nazwa
+            label: "Nazwa"
             type: text
             description: Pełna nazwa mocodawcy.
           - name: nip
+            label: "NIP"
             type: text
             validator: nip
             description: Numer NIP mocodawcy.
           - name: typ
+            label: "Typ"
             type: enum
             description: Typ mocodawcy.
             options:
               osoba_prawna: spółka lub inny podmiot z KRS
               osoba_fizyczna: osoba fizyczna, także prowadząca działalność gospodarczą
       - name: podpisujacy
+        label: "Podpisujący"
         type: array
         key: [imie_nazwisko]
         description: Osoby podpisujące w imieniu mocodawcy.
         fields:
           - name: imie_nazwisko
+            label: "Imię i nazwisko"
             type: text
   - name: pelnomocnicy
+    label: "Pełnomocnik"
     type: array
     key: [imie_nazwisko]
     description: Osoby otrzymujące pełnomocnictwo.
     fields:
       - name: imie_nazwisko
+        label: "Imię i nazwisko"
         type: text
         description: Imię i nazwisko pełnomocnika w mianowniku.
       - name: pesel
+        label: "PESEL"
         type: integer
         validator: pesel
         description: PESEL pełnomocnika, jeśli podany.

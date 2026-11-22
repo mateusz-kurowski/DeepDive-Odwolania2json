@@ -23,6 +23,7 @@ def _field(spec: FieldSpec) -> dict:
     return {
         "name": spec.name,
         "type": spec.type,
+        "label": spec.label,
         "description": spec.description,
         "validator": spec.validator,
         "options": {str(k): v for k, v in spec.options.items()} if spec.options else None,
