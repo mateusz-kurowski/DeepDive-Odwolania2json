@@ -198,7 +198,7 @@ html{scrollbar-gutter:stable}
 .hl{transition:background .15s,border-color .15s;border:2px dashed rgba(18,53,107,.7);background:rgba(18,53,107,.06)}
 .hl:hover{background:rgba(18,53,107,.14)}
 .hl.active{background:rgba(255,196,0,.28);border:2px solid var(--navy);z-index:2}
-.hl-tag{display:none;position:absolute;left:-2px;bottom:100%;margin-bottom:2px;background:var(--navy);color:#fff;font-size:12px;font-weight:600;padding:2px 8px;border-radius:4px 4px 4px 0;white-space:nowrap;pointer-events:none}
+.hl-tag{display:none;position:absolute;left:-2px;bottom:100%;margin-bottom:8px;z-index:3;background:var(--navy);color:#fff;font-size:12px;font-weight:600;padding:2px 8px;border-radius:4px 4px 4px 0;white-space:nowrap;pointer-events:none}
 .hl.active .hl-tag,.hl:focus-visible .hl-tag{display:block}
 .hl.flash{animation:flash .9s ease-out}
 @keyframes flash{0%{box-shadow:0 0 0 0 rgba(255,196,0,.9)}100%{box-shadow:0 0 0 14px rgba(255,196,0,0)}}

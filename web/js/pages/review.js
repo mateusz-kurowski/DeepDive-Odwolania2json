@@ -114,12 +114,12 @@ export function mount(root, ctx) {
           }),
           h('div', { class: 'pageskel', 'aria-hidden': 'true' }, h('span', { class: 'spinner' })),
           h('div', { class: 'pagefail', role: 'alert' }, 'Nie udało się wczytać strony.'),
-          hls.map(({ f, x }) =>
+          hls.map(({ f, x }, i) =>
             h('div', {
               class: 'hl' + (f.path === st.active ? ' active' : ''), 'data-path': f.path, 'aria-hidden': 'true',
               style: `left:${x.x * 100}%;top:${x.y * 100}%;width:${x.w * 100}%;height:${x.h * 100}%`,
               onclick: () => select(f.path, false),
-            }, h('span', { class: 'hl-tag', 'aria-hidden': 'true' }, f.label))))
+            }, hls.findIndex((o) => o.f.path === f.path) === i ? h('span', { class: 'hl-tag', 'aria-hidden': 'true' }, f.label) : null)))
       : h('div', { class: 'empty' }, d.status === 'done' ? 'Brak podglądu strony.' : d.status === 'error' ? 'Brak podglądu: przetwarzanie nie powiodło się.' : 'Podgląd pojawi się po zakończeniu przetwarzania.');
     const thumbs = Array.from({ length: pages }, (_, i) => i + 1).map((n) =>
       h('button', {
