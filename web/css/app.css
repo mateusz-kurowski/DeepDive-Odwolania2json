@@ -245,3 +245,12 @@ html{scrollbar-gutter:stable}
 .iconbtn.sm,.btn.sm{min-height:36px;height:36px}
 .iconbtn.sm{width:36px}
 .yaml-preview{margin:8px 0 0;background:#0F2447;color:#E8EEF9;border-radius:6px;padding:12px;font-size:13px;line-height:1.5;overflow:auto;max-height:360px}
+
+/* przełącznik formularz / YAML i edytor pól */
+.segs{display:inline-flex;border:1px solid var(--navy);border-radius:6px;overflow:hidden}
+.seg{background:#fff;color:var(--navy);border:0;padding:8px 14px;font-weight:600;min-height:44px}
+.seg[aria-selected=true]{background:var(--navy);color:#fff}
+.sf-form{display:flex;flex-direction:column;gap:12px}
+.sf-row{border:1px solid var(--line);border-radius:6px;padding:10px;display:flex;flex-direction:column;gap:8px}
+.sf-head{display:flex;flex-wrap:wrap;gap:8px;align-items:flex-end}
+.sf-nest{margin-left:12px;padding-left:12px;border-left:3px solid var(--line)}

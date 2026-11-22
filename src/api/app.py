@@ -43,6 +43,10 @@ class ClassBody(BaseModel):
     yaml: str
 
 
+class ClassData(BaseModel):
+    data: dict
+
+
 class RunRequest(BaseModel):
     dataset: str
     model: str | None = None
@@ -244,6 +248,14 @@ def create_app(
     @api.put("/classes/{name}")
     def put_class(name: str, body: ClassBody) -> dict:
         return class_store.put(name, body.yaml)
+
+    @api.post("/classes/parse")
+    def parse_class(body: ClassBody) -> dict:
+        return {"data": class_store.parse(body.yaml)}
+
+    @api.post("/classes/dump")
+    def dump_class(body: ClassData) -> dict:
+        return {"yaml": class_store.dump(body.data)}
 
     @api.delete("/classes/{name}", status_code=204)
     def delete_class(name: str) -> Response:

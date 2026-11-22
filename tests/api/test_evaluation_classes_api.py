@@ -186,3 +186,12 @@ def test_delete_errored_run_without_report(make_client, tmp_path):
         assert c.delete(f"/api/evaluation/runs/{run_id}").status_code == 204
         assert c.get("/api/evaluation/runs").json() == []
         assert not [p for p in folder.rglob("*") if p.is_file()]
+
+def test_class_parse_dump_roundtrip(make_client):
+    text = "name: x\ndescription: opis\nfields:\n  - name: a\n    type: text\n"
+    with make_client() as c:
+        data = c.post("/api/classes/parse", json={"yaml": text}).json()["data"]
+        assert data["fields"][0]["name"] == "a"
+        dumped = c.post("/api/classes/dump", json={"data": data}).json()["yaml"]
+        assert "name: x" in dumped and "type: text" in dumped
+        assert c.post("/api/classes/parse", json={"yaml": "a: [1"}).status_code == 422
