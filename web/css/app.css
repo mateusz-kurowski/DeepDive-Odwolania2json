@@ -161,3 +161,12 @@ td .linklike,.linklike{all:unset;cursor:pointer;color:var(--navy);font-weight:60
 .dl{display:grid;grid-template-columns:auto 1fr;gap:10px 20px;font-size:15px;margin:0}
 .dl dt{color:var(--muted)}
 .dl dd{margin:0;word-break:break-all}
+
+/* przełącznik formularz / YAML i edytor pól */
+.segs{display:inline-flex;border:1px solid var(--navy);border-radius:6px;overflow:hidden}
+.seg{background:#fff;color:var(--navy);border:0;padding:8px 14px;font-weight:600;min-height:44px}
+.seg[aria-selected=true]{background:var(--navy);color:#fff}
+.fform{display:flex;flex-direction:column;gap:12px}
+.frow{border:1px solid var(--line);border-radius:6px;padding:10px;display:flex;flex-direction:column;gap:8px}
+.frow-head{display:flex;flex-wrap:wrap;gap:8px;align-items:flex-end}
+.fnest{margin-left:12px;padding-left:12px;border-left:3px solid var(--line)}

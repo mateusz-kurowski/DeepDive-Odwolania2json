@@ -72,6 +72,22 @@ class ClassStore:
             )
         return out
 
+    @staticmethod
+    def parse(text: str) -> dict:
+        """YAML -> struktura (dla trybu formularza)."""
+        try:
+            raw = yaml.safe_load(text)
+        except yaml.YAMLError as exc:
+            raise ClassesError(f"Niepoprawny YAML: {exc}") from exc
+        if not isinstance(raw, dict):
+            raise ClassesError("Niepoprawny schemat: oczekiwano obiektu YAML.")
+        return raw
+
+    @staticmethod
+    def dump(data: dict) -> str:
+        """Struktura -> YAML (dla trybu YAML po edycji w formularzu)."""
+        return yaml.safe_dump(data, allow_unicode=True, sort_keys=False, width=100)
+
     def get(self, name: str) -> dict:
         path = self._path(name)
         if not path.is_file():

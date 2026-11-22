@@ -138,3 +138,13 @@ def test_new_class_is_used_without_restart(client, pdf_bytes):
 
     r = client.post("/api/documents", files=[("files", ("a.pdf", pdf_bytes, "application/pdf"))])
     assert wait_for(client, r.json()[0]["id"])["status"] == "done"
+
+
+def test_class_parse_dump_roundtrip(make_client):
+    text = "name: x\ndescription: opis\nfields:\n  - name: a\n    type: text\n"
+    with make_client() as c:
+        data = c.post("/api/classes/parse", json={"yaml": text}).json()["data"]
+        assert data["fields"][0]["name"] == "a"
+        dumped = c.post("/api/classes/dump", json={"data": data}).json()["yaml"]
+        assert "name: x" in dumped and "type: text" in dumped
+        assert c.post("/api/classes/parse", json={"yaml": "a: [1"}).status_code == 422
