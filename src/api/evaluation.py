@@ -10,6 +10,7 @@ import tempfile
 import uuid
 from collections.abc import Callable
 from concurrent.futures import ThreadPoolExecutor
+from functools import lru_cache
 from datetime import UTC, datetime
 from pathlib import Path
 
@@ -63,6 +64,11 @@ def _examples_from_keys(prefix: str, keys: list[str]) -> list[str]:
     return sorted({prefix + r.rsplit("/", 1)[0] + "/" for r in rels if r.lower().endswith(".pdf")})
 
 
+@lru_cache(maxsize=1)
+def _model_sizes() -> dict[str, float]:
+    return load_model_sizes()
+
+
 def _norm_prefix(prefix: str) -> str:
     return prefix.strip("/") + "/"
 
@@ -112,6 +118,9 @@ class EvaluationService:
         self.datasets_config = Path(datasets_config)
         self.results_dir = Path(results_dir)
         self._pool = ThreadPoolExecutor(max_workers=1, thread_name_prefix="eval")
+        self._io = ThreadPoolExecutor(max_workers=8, thread_name_prefix="eval-io")
+        # path -> ((mtime_ns, size), run, report): raporty lokalne parsujemy tylko po zmianie pliku
+        self._local_cache: dict[Path, tuple[tuple[int, int], dict | None, dict | None]] = {}
 
     # --- zbiory ------------------------------------------------------------------------------
     def datasets(self) -> list[dict]:
@@ -137,49 +146,60 @@ class EvaluationService:
 
     def _local_runs(self) -> list[tuple[dict, Path]]:
         runs = []
+        seen = set()
         for path in self._local_files():
+            seen.add(path)
             try:
-                report = json.loads(path.read_text(encoding="utf-8"))
-            except (OSError, ValueError):
+                stat = path.stat()
+            except OSError:
                 continue
-            if not (isinstance(report, dict) and "per_field" in report and "micro_f1" in report):
-                continue
-            rel = path.relative_to(self.results_dir).with_suffix("")
-            stat = path.stat()
-            runs.append(
-                (
-                    {
-                        "id": self._local_id(path),
-                        "source": "local",
-                        "name": "/".join(
-                            rel.parts[:-1] + (() if rel.name == "report" else (rel.name,))
-                        )
-                        or rel.name,
-                        "dataset": None,
-                        "model": report.get("model"),
-                        "mode": report.get("mode"),
-                        "status": "done",
-                        "started_at": None,
-                        "finished_at": _iso(stat.st_mtime),
-                        "error": None,
-                        "progress": None,
-                        **_summary_fields(report),
-                    },
-                    path,
-                )
-            )
+            sig = (stat.st_mtime_ns, stat.st_size)
+            cached = self._local_cache.get(path)
+            if cached is None or cached[0] != sig:
+                cached = (sig, *self._parse_local(path, stat.st_mtime))
+                self._local_cache[path] = cached
+            if cached[1] is not None:
+                runs.append((cached[1], path))
+        for gone in set(self._local_cache) - seen:
+            del self._local_cache[gone]
         return runs
+
+    def _parse_local(self, path: Path, mtime: float) -> tuple[dict | None, dict | None]:
+        try:
+            report = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            return None, None
+        if not (isinstance(report, dict) and "per_field" in report and "micro_f1" in report):
+            return None, None
+        rel = path.relative_to(self.results_dir).with_suffix("")
+        run = {
+            "id": self._local_id(path),
+            "source": "local",
+            "name": "/".join(rel.parts[:-1] + (() if rel.name == "report" else (rel.name,)))
+            or rel.name,
+            "dataset": None,
+            "model": report.get("model"),
+            "mode": report.get("mode"),
+            "status": "done",
+            "started_at": None,
+            "finished_at": _iso(mtime),
+            "error": None,
+            "progress": None,
+            **_summary_fields(report),
+        }
+        return run, report
 
     # --- wyniki w storage --------------------------------------------------------------------
     def _storage_runs(self) -> list[dict]:
-        runs = []
-        for key in self.storage.list(PREFIX):
-            if key.endswith("/run.json"):
-                try:
-                    runs.append(json.loads(self.storage.get(key)))
-                except (NotFound, ValueError):
-                    continue
-        return runs
+        keys = [k for k in self.storage.list(PREFIX) if k.endswith("/run.json")]
+
+        def load(key: str) -> dict | None:
+            try:
+                return json.loads(self.storage.get(key))
+            except (NotFound, ValueError):
+                return None
+
+        return [r for r in self._io.map(load, keys) if r is not None]
 
     def _save_run(self, run: dict) -> None:
         self.storage.put(
@@ -191,7 +211,7 @@ class EvaluationService:
     @staticmethod
     def _with_size(run: dict) -> dict:
         """Dopisuje rozmiar modelu w mld parametrów (config/models.yaml); None, gdy nieznany."""
-        return {**run, "model_params_b": load_model_sizes().get(run.get("model") or "")}
+        return {**run, "model_params_b": _model_sizes().get(run.get("model") or "")}
 
     def list_runs(self) -> list[dict]:
         runs = [self._with_size(r) for r, _ in self._local_runs()]
@@ -202,7 +222,7 @@ class EvaluationService:
     def get_run(self, run_id: str) -> dict:
         for run, path in self._local_runs():
             if run["id"] == run_id:
-                return {**self._with_size(run), "report": json.loads(path.read_text(encoding="utf-8"))}
+                return {**self._with_size(run), "report": self._local_cache[path][2]}
         if re.fullmatch(r"s-[0-9a-f]{32}", run_id):
             try:
                 run = json.loads(self.storage.get(f"{PREFIX}{run_id}/run.json"))
@@ -374,11 +394,9 @@ class EvaluationService:
                     names.append((parts[0], parts[1][:-5]))
         return [(label, stem) for label, stem in names if stem != "_missed"]
 
-    def read_document(self, run_id: str, label: str, stem: str) -> dict:
+    def _read_dump(self, run_id: str, local: Path | None, label: str, stem: str) -> dict:
         if not (_SAFE.fullmatch(label) and _SAFE.fullmatch(stem)) or ".." in label + stem:
             raise EvaluationError("Niepoprawna nazwa dokumentu.", 404)
-        self.get_run(run_id)
-        local = next((p for r, p in self._local_runs() if r["id"] == run_id), None)
         try:
             if local is not None:
                 return json.loads(
@@ -388,12 +406,21 @@ class EvaluationService:
         except (FileNotFoundError, NotFound):
             raise EvaluationError("Nie znaleziono dokumentu w przebiegu.", 404) from None
 
+    def read_document(self, run_id: str, label: str, stem: str) -> dict:
+        if not (_SAFE.fullmatch(label) and _SAFE.fullmatch(stem)) or ".." in label + stem:
+            raise EvaluationError("Niepoprawna nazwa dokumentu.", 404)
+        self.get_run(run_id)
+        local = next((p for r, p in self._local_runs() if r["id"] == run_id), None)
+        return self._read_dump(run_id, local, label, stem)
+
     def documents(self, run_id: str) -> list[dict]:
         self.get_run(run_id)
+        local = next((p for r, p in self._local_runs() if r["id"] == run_id), None)
         classes = load_classes(self.settings.classes_dir)
-        rows = []
-        for label, stem in self._dump_names(run_id):
-            doc = self.read_document(run_id, label, stem)
+
+        def row(item: tuple[str, str]) -> dict:
+            label, stem = item
+            doc = self._read_dump(run_id, local, label, stem)
             cls = doc.get("class")
             tp = fp = fn = None
             f1 = None
@@ -406,16 +433,15 @@ class EvaluationService:
                 for c in score_document(doc["prediction"], doc["reference"], classes[cls]).values():
                     total = total + c
                 tp, fp, fn, f1 = total.tp, total.fp, total.fn, total.f1
-            rows.append(
-                {
-                    "label": label,
-                    "stem": stem,
-                    "class_name": cls,
-                    "tp": tp,
-                    "fp": fp,
-                    "fn": fn,
-                    "f1": f1,
-                    "error": doc.get("error"),
-                }
-            )
-        return rows
+            return {
+                "label": label,
+                "stem": stem,
+                "class_name": cls,
+                "tp": tp,
+                "fp": fp,
+                "fn": fn,
+                "f1": f1,
+                "error": doc.get("error"),
+            }
+
+        return list(self._io.map(row, self._dump_names(run_id)))
