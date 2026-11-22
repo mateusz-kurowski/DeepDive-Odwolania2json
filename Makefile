@@ -1,5 +1,5 @@
 .DEFAULT_GOAL := help
-.PHONY: help install requirements lint format test run classes eval eval-hybrid eval-llm-only sweep docker-build docker-run up api clean
+.PHONY: help install requirements lint format test test-web run classes eval eval-hybrid eval-llm-only sweep docker-build docker-run up api clean
 
 # Parametry (nadpisz: make eval MODE=llm_only LIMIT=10 MODEL=nazwa)
 MODE ?=
@@ -35,6 +35,9 @@ format: ## Ruff: napraw i sformatuj kod
 
 test: ## Testy (pytest)
 	uv run pytest -q
+
+test-web: ## Testy frontu (Node 20+, bez zależności)
+	node --test web/tests/schema-yaml.test.mjs
 
 run: ## Przetwórz input/ do output/ (MODE=hybrid|llm_only)
 	uv run python -m src run $(EXTRA)
