@@ -52,20 +52,45 @@ def _summary_fields(report: dict) -> dict:
     }
 
 
-def load_datasets(config: Path) -> list[dict]:
+def _examples_from_keys(prefix: str, keys: list[str]) -> list[str]:
+    """Te same reguły co `_find_examples`, ale na kluczach S3: zwraca prefiksy katalogów przykładów."""
+    rels = [k[len(prefix) :] for k in keys if k.startswith(prefix)]
+    first = {r.split("/")[0] for r in rels if "/" in r}
+    examples = sorted(d for d in first if d.startswith("przyklad_"))
+    if examples:
+        return [prefix + d + "/" for d in examples]
+    return sorted({prefix + r.rsplit("/", 1)[0] + "/" for r in rels if r.lower().endswith(".pdf")})
+
+
+def _norm_prefix(prefix: str) -> str:
+    return prefix.strip("/") + "/"
+
+
+def load_datasets(config: Path, storage: Storage | None = None) -> list[dict]:
+    """Zbiór ma `prefix` (klucze w S3) i/lub `path` (lokalny katalog). S3 ma pierwszeństwo, lokalny to fallback."""
     if not config.is_file():
         return []
     raw = yaml.safe_load(config.read_text(encoding="utf-8")) or {}
     out = []
     for item in raw.get("datasets", []):
-        path = Path(item["path"])
+        path = Path(item["path"]) if item.get("path") else None
+        prefix = _norm_prefix(item["prefix"]) if item.get("prefix") else None
+        remote = 0
+        if prefix and storage is not None:
+            try:
+                remote = len(_examples_from_keys(prefix, storage.list(prefix)))
+            except Exception:
+                log.exception("Nie udało się wylistować zbioru %s w storage", item["id"])
+        local = len(_find_examples(path)) if path and path.is_dir() else 0
         out.append(
             {
                 "id": item["id"],
                 "name": item.get("name", item["id"]),
                 "description": item.get("description", ""),
-                "path": str(path),
-                "examples": len(_find_examples(path)) if path.is_dir() else 0,
+                "path": str(path) if path else None,
+                "prefix": prefix,
+                "source": "storage" if remote else ("local" if local else None),
+                "examples": remote or local,
             }
         )
     return out
@@ -89,7 +114,7 @@ class EvaluationService:
 
     # --- zbiory ------------------------------------------------------------------------------
     def datasets(self) -> list[dict]:
-        return load_datasets(self.datasets_config)
+        return load_datasets(self.datasets_config, self.storage)
 
     # --- wyniki lokalne ----------------------------------------------------------------------
     def _local_files(self) -> list[Path]:
@@ -195,7 +220,7 @@ class EvaluationService:
         if dataset is None:
             raise EvaluationError(f"Nieznany zbiór danych: {dataset_id}", 404)
         if dataset["examples"] == 0:
-            raise EvaluationError(f"Zbiór '{dataset_id}' jest pusty lub niedostępny lokalnie.", 409)
+            raise EvaluationError(f"Zbiór '{dataset_id}' jest pusty lub niedostępny (lokalnie i w storage).", 409)
         if mode not in (None, "hybrid", "llm_only"):
             raise EvaluationError("Tryb: hybrid lub llm_only.", 422)
         if limit is not None and limit < 1:
@@ -226,7 +251,7 @@ class EvaluationService:
             **_summary_fields({}),
         }
         self._save_run(run)
-        self._pool.submit(self._execute, run, Path(dataset["path"]), settings, limit)
+        self._pool.submit(self._execute, run, dataset, settings, limit)
         return run
 
     def resume(self) -> None:
@@ -236,7 +261,18 @@ class EvaluationService:
                 run.update(status="error", error="Przerwano restartem API.", finished_at=_now())
                 self._save_run(run)
 
-    def _execute(self, run: dict, data: Path, settings: Settings, limit: int | None) -> None:
+    def _download_dataset(self, prefix: str, dest: Path, limit: int | None) -> Path:
+        """Pobiera ze storage tylko przykłady potrzebne do przebiegu (pierwsze `limit`)."""
+        keys = self.storage.list(prefix)
+        wanted = _examples_from_keys(prefix, keys)[: limit or None]
+        for key in keys:
+            if any(key.startswith(w) for w in wanted):
+                target = dest / key[len(prefix) :]
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_bytes(self.storage.get(key))
+        return dest
+
+    def _execute(self, run: dict, dataset: dict, settings: Settings, limit: int | None) -> None:
         try:
             classes = load_classes(settings.classes_dir)
             llm = self.llm_factory(settings)
@@ -245,8 +281,12 @@ class EvaluationService:
                 run["progress"] = {"done": done, "total": total}
                 self._save_run(run)
 
-            with tempfile.TemporaryDirectory() as tmp:
+            with tempfile.TemporaryDirectory() as tmp, tempfile.TemporaryDirectory() as src:
                 dump = Path(tmp)
+                if dataset["source"] == "storage":
+                    data = self._download_dataset(dataset["prefix"], Path(src), limit)
+                else:
+                    data = Path(dataset["path"])
                 report = evaluate(
                     data,
                     classes,

@@ -282,7 +282,7 @@ export function mount(root, ctx) {
       run.disabled = false;
     } }, 'Uruchom ewaluację');
     clear(formEl, h('h2', null, 'Uruchom nowy przebieg'),
-      h('p', { class: 'muted', style: 'margin:0 0 12px;font-size:14px' }, 'Dane do ewaluacji są czytane lokalnie (config/eval-datasets.yaml); wynik trafia do object storage.'),
+      h('p', { class: 'muted', style: 'margin:0 0 12px;font-size:14px' }, 'Dane do ewaluacji są czytane z object storage albo lokalnie (config/eval-datasets.yaml); wynik trafia do object storage.'),
       st.datasets.length ? h('div', { class: 'toolbar' },
         h('label', { class: 'field', for: 'ev-ds' }, 'Zbiór danych', ds),
         h('label', { class: 'field', for: 'ev-model' }, 'Model', model),

@@ -31,7 +31,7 @@ Prefiks `/api`. W Dockerze front (nginx) proxuje `/api/` do kontenera `api` (por
 - `DELETE /api/classes/{name}` → 204
 
 ## Ewaluacja
-Wyniki domyślne są czytane z plików lokalnych (`results/`, tylko do odczytu, `source:"local"`); przebiegi uruchomione z UI zapisują się w object storage (`source:"storage"`). Dane do ewaluacji są zawsze lokalne (`config/eval-datasets.yaml`).
+Wyniki domyślne są czytane z plików lokalnych (`results/`, tylko do odczytu, `source:"local"`); przebiegi uruchomione z UI zapisują się w object storage (`source:"storage"`). Dane do ewaluacji (`config/eval-datasets.yaml`) są czytane z object storage (`prefix`) albo, gdy tam pusto, lokalnie (`path`); odpowiedź `/eval/datasets` zawiera `source` (`local`/`storage`/`null`).
 
 `RunSummary`: `{id, source:"local"|"storage", name, dataset:str|null, model:str|null, mode:str|null, status:"running"|"done"|"error", started_at:str|null, finished_at:str|null, micro_f1:number|null, precision, recall, docs:int|null, errors:int|null, citation_ok_rate, error:str|null, progress:{done:int,total:int}|null}`
 

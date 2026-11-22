@@ -1,11 +1,14 @@
-# Zbiory do ewaluacji w UI. Dane są zawsze lokalne (nie trafiają do object storage);
-# do storage zapisują się tylko wyniki przebiegów uruchomionych z UI.
+# Zbiory do ewaluacji w UI. `prefix` = klucze w object storage (S3/MinIO, ma pierwszeństwo),
+# `path` = katalog lokalny (fallback, gdy w storage pod prefiksem nic nie ma).
+# Wgranie danych do bucketa: python -m scripts.upload_datasets
 datasets:
   - id: dane
     name: Dane treningowe (60 przykładów)
     description: Syntetyczne sprawy z oczekiwanymi JSON-ami (3 dokumenty na sprawę).
     path: data/dane
+    prefix: datasets/dane
   - id: skany
     name: Skany (OCR)
     description: Skany odwołań, pełnomocnictw i potwierdzeń przelewu.
     path: data/dane/skany
+    prefix: datasets/dane/skany
