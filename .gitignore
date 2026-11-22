@@ -6,8 +6,11 @@ graphify-out
 .superpowers/
 __pycache__/
 .pytest_cache/
-input/
-output/
+# input/ i output/ muszą istnieć w repo (wymóg UZP); ich zawartość nie
+input/*
+!input/.gitkeep
+output/*
+!output/.gitkeep
 trace/
 results/*
 !results/sweep-only-scans/

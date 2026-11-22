@@ -297,4 +297,11 @@ def create_app(
         return evaluations.read_document(run_id, label, stem)
 
     app.include_router(api)
+
+    # Tryb bez Dockera (`python -m src gui`): API serwuje też statyczny front z web/.
+    web_dir = env.get("WEB_DIR")
+    if web_dir and Path(web_dir).is_dir():
+        from fastapi.staticfiles import StaticFiles
+
+        app.mount("/", StaticFiles(directory=web_dir, html=True), name="web")
     return app

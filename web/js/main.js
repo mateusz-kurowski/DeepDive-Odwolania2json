@@ -33,7 +33,7 @@ let navigated = false;
 function renderNav(active) {
   clear(
     nav,
-    h('div', { class: 'brand' }, h('b', null, 'Odwołania2JSON'), h('span', null, 'Analiza orzeczeń KIO')),
+    h('div', { class: 'brand' }, h('b', null, 'Odwołania2JSON'), h('span', null, 'Odwołania KIO → JSON')),
     NAV.map(([key, label, href]) =>
       h('a', { href, 'aria-current': key === active ? 'page' : null }, label),
     ),

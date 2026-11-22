@@ -23,7 +23,7 @@ install: ## Zależności (uv sync)
 	uv sync
 
 requirements: ## Wygeneruj requirements.txt z uv.lock (wymóg dostawy organizatora)
-	uv export --no-dev --no-hashes --no-emit-project -o requirements.txt
+	uv export --no-dev --extra api --no-hashes --no-emit-project -o requirements.txt
 
 lint: ## Ruff: sprawdzenie kodu i formatowania
 	uv run ruff check .

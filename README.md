@@ -12,6 +12,25 @@ input/case1/*.pdf  →  klasyfikacja  →  ekstrakcja modelem  →  walidacja  �
 - Tylko open source, w tym modele open-weights. Model jest wołany przez API zgodne z OpenAI (LiteLLM, vLLM, Ollama). Kod nie wymaga GPU. Wymagania organizatora (FAQ): model da się zainstalować lokalnie, a API jest hostowane w UE przez dostawcę z polityką prywatności; klucz API do używanej usługi dostarcza zespół.
 - Imiona i nazwiska są zwracane w mianowniku („Mateusz Szymański”), brak informacji to `null`.
 
+## Szybki start dla jury
+
+Wymagania: Python 3.13+ i klucz API przekazany w zgłoszeniu (HackTribe). GPU ani Docker nie są potrzebne.
+
+```bash
+cp .env.example .env                       # wklej klucz do OPENAI_API_KEY, reszta jest ustawiona
+python3.13 -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt
+python -m src check                        # ok. 5 s: .env, klasy, odpowiedź modeli
+python -m src run                          # input/caseN/*.pdf → output/caseN/*.json
+python -m src gui                          # interfejs w przeglądarce: http://127.0.0.1:8080
+```
+
+Windows: `start.bat check`, `start.bat` (przetwarza `input/`), `gui.bat` (interfejs). Skrypty same tworzą `.venv` i instalują zależności.
+
+- Katalogi `input/` i `output/` są w repo i startują puste. Przykładowa sprawa do szybkiej próby: `cp -r data/szablon-aplikacja/input/* input/` (Windows: `xcopy /E data\szablon-aplikacja\input input\`).
+- `run` wypisuje liczbę zapisanych, odrzuconych (`{}`) i błędnych plików, czas oraz prognozę dla 150 PDF. Szczegóły per plik: `trace/_summary.json`, cytaty źródłowe: `trace/`.
+- GUI: przeciągnij PDF-y, a po prawej zobaczysz pola z cytatami obok podglądu dokumentu; „Widok JSON” pokazuje wynik w formacie `output/`. „Załaduj dokument demo” działa bez wywołania modelu.
+
 ## Architektura
 
 ```mermaid
@@ -45,7 +64,9 @@ Trzy sposoby, każdy wymaga pliku `.env` (klucz i adres API) oraz PDF-ów w `inp
 | pip (Linux/macOS) | `pip install -r requirements.txt && python -m src run` w venv | Python 3.13+ |
 | Windows | `start.bat` (venv, pip i `run` w jednym kroku) | Python 3.13+ |
 | Docker | `docker compose run --rm app` | Docker |
+| UI bez Dockera | `python -m src gui` (Windows: `gui.bat`), potem http://127.0.0.1:8080 | Python 3.13+ |
 | UI + API | `docker compose up --build`, potem http://localhost:8080 | Docker |
+| Diagnostyka | `python -m src check` | Python 3.13+ |
 
 Lokalne API i interfejs graficzny: sekcja „UI i API”.
 
@@ -172,7 +193,7 @@ cp .env.example .env
 docker compose up --build        # UI: http://localhost:8080, API: kontener `api` (port 8000 wewnątrz sieci)
 ```
 
-Front (`web/`, statyczny HTML + JS, nginx) i API (`src/api/`, FastAPI) to osobne kontenery; nginx przekazuje `/api/` do API. Kontrakt endpointów: [`docs/api.md`](docs/api.md). Bez Dockera: `uv sync --extra api && uv run python -m src serve` (API na `127.0.0.1:8000`; front `web/` serwuj dowolnym serwerem statycznym z proxy `/api`).
+Front (`web/`, statyczny HTML + JS, nginx) i API (`src/api/`, FastAPI) to osobne kontenery; nginx przekazuje `/api/` do API. Kontrakt endpointów: [`docs/api.md`](docs/api.md). Bez Dockera: `python -m src gui` (API i front z `web/` w jednym procesie na `127.0.0.1:8080`, otwiera przeglądarkę; `--no-browser`, `--port`). Samo API: `python -m src serve` (opcjonalnie `--web web`). Zależności API są w `requirements.txt`.
 
 - **Dokumenty użytkowników** (wgrane w UI PDF-y, wyniki ekstrakcji, korekty) trafiają do object storage: S3 albo MinIO (`S3_BUCKET`, `S3_ENDPOINT_URL`, `S3_ACCESS_KEY`, `S3_SECRET_KEY`, patrz `.env.example`). Bez `S3_BUCKET` aplikacja zapisuje do katalogu `./storage`, więc działa od razu, a podłączenie bucketa to tylko zmiana `.env`.
 - **Ewaluacja.** Dane do ewaluacji (`config/eval-datasets.yaml`) są czytane z object storage pod `prefix` (np. `datasets/dane`), a gdy tam pusto, z katalogu lokalnego (`path`). Wgranie zbiorów do bucketa: `uv run --extra api python -m scripts.upload_datasets`. Domyślnie UI pokazuje wyniki odczytane z plików lokalnych (`results/`, tylko odczyt: raporty `eval --out-json` i `sweep`). Dodatkowe przebiegi uruchomione z UI zapisują raport i diffy per dokument w object storage.
