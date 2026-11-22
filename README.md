@@ -37,7 +37,7 @@ Skrypty `start.*` przy pierwszym uruchomieniu tworzą `.venv` i instalują `requ
 
 Po przebiegu `run` wypisuje liczbę zapisanych plików, odrzuconych (`{}`) i błędów oraz czas. Szczegóły per plik: `trace/_summary.json`, cytaty źródłowe: `trace/`.
 
-W interfejsie przeciągnij PDF-y albo kliknij „Załaduj dokument demo” (działa bez wywołania modelu). Obok podglądu PDF są pola z cytatami, a źródło każdego pola jest podświetlone w dokumencie; „Widok JSON” pokazuje wynik w formacie `output/`.
+W interfejsie przeciągnij PDF-y albo kliknij „Załaduj dokument demo” (działa bez wywołania modelu). Obok podglądu PDF są pola z cytatami, a źródło każdego pola jest podświetlone w dokumencie; przełącznik „Pola / JSON” nad panelem pokazuje wynik w formacie `output/`.
 
 **Gdy coś nie działa:** najpierw `check`. Wypisuje, czego brakuje (plik `.env`, klucz, odpowiedź każdego modelu) i co z tym zrobić.
 
