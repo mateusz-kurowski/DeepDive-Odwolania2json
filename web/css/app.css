@@ -166,3 +166,7 @@ html{scrollbar-gutter:stable}
 .dl{display:grid;grid-template-columns:auto 1fr;gap:10px 20px;font-size:15px;margin:0}
 .dl dt{color:var(--muted)}
 .dl dd{margin:0;word-break:break-all}
+.pair{align-items:stretch}
+.pair>*{height:600px;display:flex;flex-direction:column;overflow:hidden}
+.pair .scroll{flex:1 1 auto;min-height:0;max-height:none}
+.pair thead th{position:sticky;top:0;background:#fff;z-index:1}
