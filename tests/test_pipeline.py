@@ -67,7 +67,7 @@ def test_unknown_writes_empty_json_with_same_name_and_logs(
     assert results[0].class_name == "nieznany" and results[0].error is None
 
 
-def test_failed_document_writes_no_file(tmp_path, demo_classes, fake_llm):
+def test_failed_document_writes_empty_json(tmp_path, demo_classes, fake_llm):
     touch(tmp_path / "input", "case1", "a.pdf")
     from src.llm import LLMError
 
@@ -77,7 +77,9 @@ def test_failed_document_writes_no_file(tmp_path, demo_classes, fake_llm):
 
     results = batch(tmp_path, demo_classes[1], Boom())
     assert results[0].error
-    assert not list((tmp_path / "output").rglob("*.json"))
+    out = tmp_path / "output" / "case1" / "a.json"
+    assert json.loads(out.read_text(encoding="utf-8")) == {}
+    assert not (tmp_path / "trace" / "case1" / "a.json").exists()
 
 
 def test_non_pdf_ignored(tmp_path, demo_classes, fake_llm):
@@ -96,7 +98,7 @@ def test_llm_failure_on_one_file_does_not_stop_batch(tmp_path, demo_classes, fak
     assert results[0].error is not None and "429" in results[0].error
     assert results[1].error is None
     assert (tmp_path / "output" / "case1" / "b.json").exists()
-    assert not (tmp_path / "output" / "case1" / "a.json").exists()
+    assert json.loads((tmp_path / "output" / "case1" / "a.json").read_text("utf-8")) == {}
 
 
 def test_unreadable_pdf_skipped_with_log(tmp_path, demo_classes, fake_llm, caplog):
@@ -108,6 +110,7 @@ def test_unreadable_pdf_skipped_with_log(tmp_path, demo_classes, fake_llm, caplo
     assert by_name["pusty.pdf"].error and "tekst" in by_name["pusty.pdf"].error
     assert by_name["b.pdf"].error is None
     assert "pusty.pdf" in caplog.text
+    assert (tmp_path / "output" / "case1" / "pusty.json").read_text("utf-8").strip() == "{}"
     assert (tmp_path / "output" / "case1" / "b.json").exists()
 
 

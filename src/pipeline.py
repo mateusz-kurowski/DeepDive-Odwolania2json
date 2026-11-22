@@ -88,6 +88,7 @@ def _trace(result: DocResult, rel: Path) -> dict:
         "quotes": ex.quotes,
         "citation_ok": ex.citation_ok,
         "nulled": ex.nulled,
+        "warnings": ex.warnings,
         "retries": ex.retries,
         "truncated": ex.truncated,
     }
@@ -116,6 +117,8 @@ def run_batch(
         if result.data is not None:
             _write_json(output_dir / rel, result.data)
             _write_json(trace_dir / rel, _trace(result, rel))
-        elif result.class_name == UNKNOWN and not result.error:
-            _write_json(output_dir / rel, {})  # obcy dokument: pusty JSON pod nazwą pliku
+        else:
+            # Obcy dokument albo awaria: pusty JSON pod nazwą pliku, żeby skaner zawsze
+            # znalazł plik. Awaria zostaje w `result.error`, logu i podsumowaniu CLI.
+            _write_json(output_dir / rel, {})
     return results

@@ -98,9 +98,7 @@ def _write_summary(args, results, settings, llm) -> None:
                 "class": r.class_name,
                 "error": r.error,
                 "ocr_used": r.ocr_used,
-                "output": rel.with_suffix(".json").as_posix()
-                if rel and (r.data is not None or (r.class_name == UNKNOWN and not r.error))
-                else None,
+                "output": rel.with_suffix(".json").as_posix() if rel else None,
             }
         )
     summary = {

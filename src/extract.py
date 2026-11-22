@@ -11,7 +11,7 @@ from src.classconfig import ClassConfig, FieldSpec
 from src.llm import LLM, LLMError
 from src.schema import build_response_schema, unwrap
 from src.textextract import DocText
-from src.validators import validate_value
+from src.validators import checksum_ok, grounded_in_quote, validate_value
 
 log = logging.getLogger(__name__)
 
@@ -26,6 +26,7 @@ class Extraction:
     quotes: dict[str, str | None]
     citation_ok: dict[str, bool]
     nulled: list[str] = field(default_factory=list)
+    warnings: list[str] = field(default_factory=list)
     retries: int = 0
     truncated: bool = False
 
@@ -126,7 +127,9 @@ def _consistency_problems(raw: dict, cfg: ClassConfig) -> list[str]:
     return problems
 
 
-def _problems(raw: dict, cfg: ClassConfig, text: str, mode: Mode, threshold: float) -> list[str]:
+def _problems(
+    raw: dict, cfg: ClassConfig, text: str, mode: Mode, threshold: float, ocr_used: bool = False
+) -> list[str]:
     problems = _consistency_problems(raw, cfg) if mode == "hybrid" else []
     for cell, spec, path in _cells(raw, cfg.fields):
         value = cell.get("value")
@@ -134,13 +137,23 @@ def _problems(raw: dict, cfg: ClassConfig, text: str, mode: Mode, threshold: flo
             continue
         if mode == "hybrid":
             try:
-                validate_value(spec, value)
+                value = validate_value(spec, value)
             except ValueError as exc:
                 problems.append(f"{path}: {exc}")
                 continue
         if not citation_ok(cell.get("quote"), text, threshold):
             problems.append(
                 f"{path}: cytat nie występuje w tekście; podaj dosłowny fragment albo null"
+            )
+        elif not grounded_in_quote(spec.validator, value, cell.get("quote")):
+            problems.append(
+                f"{path}: wartość {value!r} nie wynika z podanego cytatu; "
+                "popraw wartość albo cytat, albo zwróć null"
+            )
+        elif mode == "hybrid" and ocr_used and checksum_ok(spec.validator, value) is False:
+            problems.append(
+                f"{path}: {value!r} ma niepoprawną sumę kontrolną (możliwy błąd odczytu skanu); "
+                "sprawdź cyfry ponownie"
             )
     return problems
 
@@ -152,7 +165,7 @@ def extract(doc: DocText, cfg: ClassConfig, llm: LLM, mode: Mode, threshold: flo
     raw = llm.complete_json(system, text, schema, cfg.name)
     retries = 0
 
-    problems = _problems(raw, cfg, text, mode, threshold)
+    problems = _problems(raw, cfg, text, mode, threshold, doc.ocr_used)
     if problems:
         retries = 1
         feedback = f"{text}\n\nPoprzednia odpowiedź miała problemy, popraw je:\n" + "\n".join(
@@ -172,17 +185,25 @@ def extract(doc: DocText, cfg: ClassConfig, llm: LLM, mode: Mode, threshold: flo
                 cell["value"] = None
                 nulled.append(path)
 
+    warnings: list[str] = []
+    cited: dict[str, bool] = {}
+    for cell, spec, path in _cells(raw, cfg.fields):
+        value = cell.get("value")
+        if value is None:
+            continue
+        quote = cell.get("quote")
+        cited[path] = citation_ok(quote, text, threshold) and grounded_in_quote(
+            spec.validator, value, quote
+        )
+        if checksum_ok(spec.validator, value) is False:
+            warnings.append(f"{path}: niepoprawna suma kontrolna")
     data, quotes = unwrap(raw, cfg)
-    cited = {
-        path: citation_ok(quotes[path], text, threshold)
-        for cell, _, path in _cells(raw, cfg.fields)
-        if cell.get("value") is not None
-    }
     return Extraction(
         data=data,
         quotes=quotes,
         citation_ok=cited,
         nulled=nulled,
+        warnings=warnings,
         retries=retries,
         truncated=truncated,
     )
