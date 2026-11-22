@@ -35,13 +35,23 @@ class Usage:
         self.calls = 0
         self.prompt_tokens = 0
         self.completion_tokens = 0
+        self.by_model: dict[str, dict[str, int]] = {}
 
-    def add(self, response: Any) -> None:
+    def add(self, response: Any, model: str = "") -> None:
         u = getattr(response, "usage", None)
+        prompt = getattr(u, "prompt_tokens", 0) or 0
+        completion = getattr(u, "completion_tokens", 0) or 0
         with self._lock:
             self.calls += 1
-            self.prompt_tokens += getattr(u, "prompt_tokens", 0) or 0
-            self.completion_tokens += getattr(u, "completion_tokens", 0) or 0
+            self.prompt_tokens += prompt
+            self.completion_tokens += completion
+            if model:
+                row = self.by_model.setdefault(
+                    model, {"calls": 0, "prompt_tokens": 0, "completion_tokens": 0}
+                )
+                row["calls"] += 1
+                row["prompt_tokens"] += prompt
+                row["completion_tokens"] += completion
 
     def to_dict(self) -> dict:
         return {
@@ -49,6 +59,11 @@ class Usage:
             "prompt_tokens": self.prompt_tokens,
             "completion_tokens": self.completion_tokens,
             "total_tokens": self.prompt_tokens + self.completion_tokens,
+            **(
+                {"by_model": {k: dict(v) for k, v in self.by_model.items()}}
+                if self.by_model
+                else {}
+            ),
         }
 
 
@@ -138,6 +153,10 @@ class OpenAICompatLLM:
             )
         return self._client
 
+    def model_for(self, name: str) -> str:
+        """Model dla zadania (name: "classification" albo nazwa klasy przy ekstrakcji)."""
+        return self.settings.model_for(name)
+
     def complete_json(self, system: str, user: str, schema: dict, name: str) -> dict:
         last: Exception | None = None
         base_temperature = float(self.params.get("temperature", 0) or 0)
@@ -165,6 +184,7 @@ class OpenAICompatLLM:
                         "json_schema": {"name": name, "schema": schema, "strict": True},
                     },
                     attempt,
+                    name,
                 )
             except openai.BadRequestError as exc:
                 if not _schema_unsupported(exc):
@@ -177,11 +197,15 @@ class OpenAICompatLLM:
             user,
             {"type": "json_object"},
             attempt,
+            name,
         )
 
-    def _request(self, system: str, user: str, response_format: dict, attempt: Attempt) -> dict:
+    def _request(
+        self, system: str, user: str, response_format: dict, attempt: Attempt, name: str = ""
+    ) -> dict:
+        model = self.model_for(name)
         kwargs: dict[str, Any] = {
-            "model": self.settings.llm_model,
+            "model": model,
             "temperature": attempt.temperature,
             "messages": [
                 {"role": "system", "content": system},
@@ -211,7 +235,7 @@ class OpenAICompatLLM:
             else:
                 kwargs.pop("extra_body", None)
             response = self.client.chat.completions.create(**kwargs)
-        self.usage.add(response)
+        self.usage.add(response, model)
         content = response.choices[0].message.content
         try:
             parsed = json.loads(content or "")

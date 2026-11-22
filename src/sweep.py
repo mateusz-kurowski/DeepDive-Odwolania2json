@@ -23,6 +23,7 @@ from src.classconfig import load_classes
 from src.evaluate import evaluate
 from src.llm import LLM, OpenAICompatLLM
 from src.llmcache import DiskCachedLLM
+from src.models import average_params, load_model_sizes, size_points
 from src.settings import Settings
 
 log = logging.getLogger(__name__)
@@ -40,6 +41,8 @@ class _Common(BaseModel):
     ocr_backend: Literal["vlm", "tesseract"] | None = None
     vlm_model: str | None = None
     llm_config: Path | None = None
+    classify_model: str | None = None
+    extract_model: str | None = None
     data: Path | None = None
     limit: int | None = None
     examples: list[str] | None = None
@@ -94,6 +97,8 @@ def _run_variant(
         ("ocr_backend", "ocr_backend"),
         ("vlm_model", "vlm_model"),
         ("llm_config", "llm_config"),
+        ("classify_model", "classify_model"),
+        ("extract_model", "extract_model"),
     ):
         value = _pick(variant, cfg, src_field)
         if value is not None:
@@ -127,7 +132,11 @@ def _run_variant(
         json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
     )
     (out / "report.txt").write_text(report.render() + "\n", encoding="utf-8")
+    avg = average_params(settings.models_used(), load_model_sizes())
     return {
+        "models_used": settings.models_used(),
+        "avg_params_b": avg,
+        "size_points": size_points(avg),
         "micro_f1": payload["micro_f1"],
         "precision": payload["precision"],
         "recall": payload["recall"],
@@ -145,14 +154,16 @@ def _fmt(value) -> str:
 
 def _markdown(results: list[dict]) -> str:
     lines = [
-        "| wariant | model | tryb | F1 | P | R | dok. | błędy | cytaty OK | uwagi |",
-        "|---|---|---|---|---|---|---|---|---|---|",
+        "| wariant | model | tryb | F1 | P | R | dok. | błędy | cytaty OK | śr. mld param. | pkt rozmiaru | uwagi |",
+        "|---|---|---|---|---|---|---|---|---|---|---|---|",
     ]
     for r in results:
         lines.append(
-            f"| {r['name']} | {r['model']} | {r.get('mode') or '-'} | {_fmt(r.get('micro_f1'))} "
+            f"| {r['name']} | {' + '.join(r.get('models_used') or [r['model']])} | {r.get('mode') or '-'} | {_fmt(r.get('micro_f1'))} "
             f"| {_fmt(r.get('precision'))} | {_fmt(r.get('recall'))} | {r.get('docs', '-')} "
             f"| {r.get('errors', '-')} | {_fmt(r.get('citation_ok_rate'))} "
+            f"| {r.get('avg_params_b') if r.get('avg_params_b') is not None else '-'} "
+            f"| {r.get('size_points') if r.get('size_points') is not None else '-'} "
             f"| {(r['error'] or '').splitlines()[0][:80] if r['error'] else ''} |"
         )
     return "\n".join(lines) + "\n"
