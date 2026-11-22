@@ -5,6 +5,7 @@ import unicodedata
 
 from src.classconfig import ClassConfig
 from src.llm import LLM
+from src.settings import CLASSIFY_TASK
 from src.textextract import DocText
 
 UNKNOWN = "nieznany"
@@ -77,7 +78,7 @@ def classify(doc: DocText, classes: dict[str, ClassConfig], llm: LLM) -> str:
         "additionalProperties": False,
     }
     answer = llm.complete_json(
-        _system_prompt(classes), doc.text[:HEAD_CHARS], schema, "classification"
+        _system_prompt(classes), doc.text[:HEAD_CHARS], schema, CLASSIFY_TASK
     )
     chosen = answer.get("class", UNKNOWN)
     cfg = classes.get(chosen)

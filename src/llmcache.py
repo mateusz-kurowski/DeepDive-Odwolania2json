@@ -34,10 +34,14 @@ class DiskCachedLLM:
     def usage(self) -> Any:
         return getattr(self.inner, "usage", None)
 
+    def _model_for(self, name: str) -> str:
+        model_for = getattr(self.inner, "model_for", None)
+        return model_for(name) if callable(model_for) else self.model
+
     def key(self, system: str, user: str, schema: dict, name: str) -> str:
         payload = json.dumps(
             {
-                "model": self.model,
+                "model": self._model_for(name),
                 "params": self.params,
                 "system": system,
                 "user": user,

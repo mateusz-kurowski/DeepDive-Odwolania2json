@@ -1,0 +1,23 @@
+# Routing modeli per zadanie + punkty za rozmiar: make sweep CONFIG=sweeps/routing.yaml
+# Punktacja rozmiaru liczy średnią z RÓŻNYCH użytych modeli (klasyfikacja, ekstrakcja, VLM do OCR).
+# Rozmiary modeli: config/models.yaml. Na skanach różnice między modelami są największe.
+out_dir: results/sweep-routing
+data: data/dane/skany
+workers: 2
+mode: hybrid
+
+variants:
+  - name: all-8b
+    model: mistralai/ministral-8b-2512
+    vlm_model: mistralai/ministral-8b-2512
+  - name: all-3b
+    model: mistralai/ministral-3b-2512
+    vlm_model: mistralai/ministral-3b-2512
+  - name: cls3b-ext8b-ocr8b
+    model: mistralai/ministral-8b-2512
+    classify_model: mistralai/ministral-3b-2512
+    vlm_model: mistralai/ministral-8b-2512
+  - name: cls3b-ext8b-ocr3b
+    model: mistralai/ministral-8b-2512
+    classify_model: mistralai/ministral-3b-2512
+    vlm_model: mistralai/ministral-3b-2512

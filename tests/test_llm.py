@@ -251,3 +251,13 @@ def test_unrelated_bad_request_keeps_config_extra_body():
         llm.complete_json("s", "u", SCHEMA, "demo")
     assert llm.params["extra_body"] == {"reasoning": {"enabled": False}}
     assert len(client.kwargs) == 1
+
+
+def test_model_is_routed_per_task():
+    client = FakeClient(['{"a": 1}', '{"a": 1}'])
+    llm = OpenAICompatLLM(
+        Settings(llm_model="big", classify_model="small"), client=client, params={}
+    )
+    llm.complete_json("s", "u", SCHEMA, "classification")
+    llm.complete_json("s", "u", SCHEMA, "odwolanie")
+    assert [k["model"] for k in client.kwargs] == ["small", "big"]

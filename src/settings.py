@@ -7,11 +7,16 @@ from typing import Literal
 
 from pydantic import BaseModel
 
+CLASSIFY_TASK = "classification"
+
 
 class Settings(BaseModel):
     openai_api_key: str = ""
     openai_base_url: str = "http://localhost:4000/v1"
     llm_model: str = ""
+    # Opcjonalne modele per zadanie; puste = llm_model.
+    classify_model: str = ""
+    extract_model: str = ""
     extraction_mode: Literal["hybrid", "llm_only"] = "hybrid"
     classes_dir: Path = Path("classes")
     citation_threshold: float = 85
@@ -20,6 +25,19 @@ class Settings(BaseModel):
     vlm_model: str = ""
     vlm_base_url: str = ""
     vlm_api_key: str = ""
+
+    def model_for(self, task: str) -> str:
+        """Model dla zadania: "classification" albo ekstrakcja (nazwa klasy dokumentu)."""
+        specific = self.classify_model if task == CLASSIFY_TASK else self.extract_model
+        return specific or self.llm_model
+
+    def models_used(self) -> list[str]:
+        """Różne modele LLM użyte w rozwiązaniu (do średniej liczby parametrów).
+        OCR przez Tesseract nie jest LLM-em, więc nie wchodzi do listy."""
+        names = [self.model_for(CLASSIFY_TASK), self.model_for("extraction")]
+        if self.ocr_backend == "vlm":
+            names.append(self.vlm_model)
+        return list(dict.fromkeys(n for n in names if n))
 
     @classmethod
     def from_env(cls, env: Mapping[str, str] | None = None) -> Settings:
@@ -32,6 +50,8 @@ class Settings(BaseModel):
             "openai_api_key": env.get("OPENAI_API_KEY"),
             "openai_base_url": env.get("OPENAI_BASE_URL"),
             "llm_model": env.get("LLM_MODEL"),
+            "classify_model": env.get("CLASSIFY_MODEL"),
+            "extract_model": env.get("EXTRACT_MODEL"),
             "extraction_mode": env.get("EXTRACTION_MODE"),
             "classes_dir": env.get("CLASSES_DIR"),
             "citation_threshold": env.get("CITATION_THRESHOLD"),
